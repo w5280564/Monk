@@ -1,0 +1,179 @@
+<resources>
+
+    <item name="tag_first" type="id"></item>
+
+
+    <item name="tag_second" type="id"></item>
+
+    <plurals name="error_over_count">
+        <item quantity="one">You can only select one media file</item>
+        <item quantity="many">You can only select up to %1$d media files</item>
+    </plurals>
+
+
+    <string name="app_name">南二环</string>
+    <string name="privacy_policy_dialog_content">\u3000\u3000亲爱的南二环用户，感谢您使用南二环！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您充分阅读并理解《用户协议》和《隐私政策》的全部内容，同意并接受全部条款后开始使用我们的产品和服务。</string>
+    <string name="privacy_policy_dialog_content_again">\u3000\u3000您需要同意本用户协议和隐私政策才能继续使用南二环，若您不同意，很遗憾我们将无法为您提供服务。</string>
+    <string name="number_letter_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <!-- msgadapter -->
+    <string name="id_card_digits">0123456789xX</string>
+    <string name="letter_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+
+    <!--727新加-->
+    <!--写入权限的提示语-->
+    <string name="english_introduce">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.?!;"!</string>
+    <string name="permission_download_tip">为了正常使用下载功能，请开启“读写手机存储”权限!</string>
+    <string name="permission_write_tip">为了正常使用相册功能，请开启“读写手机存储”权限!</string>
+    <string name="permission_read_phone_tip">为了给您提供更全面的服务，请开启“读写手机状态”权限!</string>
+    <string name="permission_call_phone_tip">为了正常使用电话功能，请开启“电话”权限!</string>
+    <string name="permission_camera_tip">为了正常使用拍照功能，请开启“相机”权限和“读写手机存储”权限!</string>
+    <string name="permission_camera_IDCard_tip">为了正常使用刷脸功能，请开启“相机”权限权限!</string>
+    <string name="permission_scan_code_tip">为了正常使用扫码功能，请开启“相机”权限!</string>
+    <string name="permission_record_audio_tip">为了正常使用语音功能，请开启“麦克风”权限!</string>
+    <string name="permission_read_contacts_tip">为了正常使用添加好友功能，请开启“通讯录”权限!</string>
+
+
+    <string name="permission_douniu_tip">为了正常使用拍摄视频功能，请开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限!</string>
+    <string name="permission_camera_denied">对不起，由于获取不了“相机”权限和“读写手机存储”权限，所以无法正常使用相机功能!请在【设置-应用-南二环-权限】中开启“相机”权限和“读写手机存储”权限，以正常使用南二环。</string>
+    <string name="permission_camera_IDCard_denied">对不起，由于获取不了“相机”权限，所以无法正常使用刷脸功能!请在【设置-应用-南二环-权限】中开启“相机”权限，以正常使用南二环。</string>
+    <string name="permission_scan_code_denied">对不起，由于获取不了“相机”权限，所以无法正常使用扫码功能!请在【设置-应用-南二环-权限】中开启“相机”权限，以正常使用南二环。</string>
+    <string name="permission_write_denied">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用相册功能!请在【设置-应用-南二环-权限】中开启“读写手机存储”权限，以正常使用南二环。</string>
+    <string name="permission_write_denied_download">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用下载功能!请在【设置-应用-南二环-权限】中开启“读写手机存储”权限，以正常使用南二环。</string>
+    <string name="permission_write_denied_call_phone">对不起，由于获取不了“读写手机状态”权限，所以无法正常使用电话功能!请在【设置-应用-南二环-权限】中开启“读写手机状态”权限，以正常使用南二环。</string>
+    <string name="permission_read_contacts_denied">对不起，由于获取不了“通讯录”权限，所以无法正常使用添加好友功能!请在【设置-应用-南二环-权限】中开启“通讯录”权限，以正常使用南二环。</string>
+    <string name="permission_douniu_denied">对不起，由于获取不了“相机”权限、“麦克风”权限，以及“读写手机存储”权限，所以无法正常使用拍摄视频功能!请在【设置-应用-南二环-权限】中开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，以正常使用南二环。</string>
+
+
+    <string name="permission_record_audio_denied">对不起，由于获取不了“麦克风”权限，所以无法正常使用语音搜索功能!请在【设置-应用-南二环-权限】中开启“麦克风”权限，以正常使用南二环。</string>
+    <string name="permission_apply_camera_reason">不开启“相机”权限和“读写手机存储”权限，将不能使用相机功能!</string>
+    <string name="permission_apply_camera_IDCard_reason">不开启“相机”权限，将不能使用刷脸功能!</string>
+    <string name="permission_apply_scan_code_reason">不开启“相机”权限，将不能使用扫码功能!</string>
+    <string name="permission_apply_photo_reason">不开启“读写手机存储”权限，将不能使用相册功能!</string>
+    <string name="permission_apply_download_reason">不开启“读写手机存储”权限，将不能使用下载功能!</string>
+    <string name="permission_apply_call_phone_reason">不开启“读写手机状态”权限，将不能使用电话功能!</string>
+    <string name="permission_apply_read_contacts_reason">不开启“通讯录”权限，将不能使用添加好友功能!</string>
+    <string name="permission_apply_douniu_reason">不开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，将不能使用拍摄视频功能!</string>
+
+
+    <string name="permission_apply_record_audio_reason">不开启“麦克风”权限，将不能使用语音搜索功能!</string>
+
+    <string name="setting">设置</string>
+    <string name="setting_shdzgl">收货地址管理</string>
+    <string name="setting_xgmm">修改密码</string>
+    <string name="setting_gy">关于</string>
+
+    <string name="setting_logout">退出当前账户</string>
+
+
+    <string name="tabbar_home">首页</string>
+    <string name="tabbar_message">消息</string>
+    <string name="tabbar_cart">购物车</string>
+    <string name="tabbar_mine">我的</string>
+    <string name="Dialog_WXHY">微信好友</string>
+    <string name="Dialog_PYQ">朋友圈</string>
+    <string name="Dialog_FXD">分享到</string>
+
+    // 登录相关
+    <string name="account">用户名</string>
+    <string name="password">密码</string>
+
+
+    <string name="login_account">账号登录</string>
+    <string name="login_sm">短信登录</string>
+    <string name="input_image_code">请输入图形验证码</string>
+    <string name="input_sm_code">请输入短信验证码</string>
+    <string name="get_sm_code">获取验证码</string>
+    <string name="phone_form_error">手机号码格式不对</string>
+
+    <string name="Mine_QB">全部订单</string>
+    <string name="Mine_DFK">待付款</string>
+    <string name="Mine_DFH">待发货</string>
+    <string name="Mine_DSH">待收货</string>
+    <string name="Mine_YSH">已收货</string>
+
+    <string name="setting_dqbb">当前版本</string>
+    <string name="setting_lxkf">联系客服</string>
+    <string name="setting_login">登录</string>
+    <string name="setting_exit">确定退出吗?</string>
+    <string name="Setting_YSZC">隐私政策</string>
+
+    <string name="Sure">确定</string>
+    <string name="Cancel">取消</string>
+    <string name="Complete">完成</string>
+
+    <string name="Search_SS">搜索</string>
+    <string name="Search_SSJL">搜索记录</string>
+    <string name="Search_QKLSSS">清空历史搜索</string>
+    <string name="WanQu_Search">请输入搜索内容</string>
+
+    <string name="Common_loading">努力加载中...</string>
+    <string name="brvah_loading">努力加载中...</string>
+    <string name="brvah_load_failed">加载失败，请点我重试</string>
+    <string name="brvah_load_end">没有更多数据</string>
+
+    <string name="permission_apply">权限申请</string>
+    <string name="toast_ok">知道了</string>
+    <string name="Dialog_Market_SCZP">请上传您的照片</string>
+    <string name="Photo_camera">拍照</string>
+    <string name="Photo_xiangce">相册</string>
+    <string name="Common_no_date">暂无数据</string>
+    <string name="Cart_BJ">编辑</string>
+    <string name="Cart_JS">结算</string>
+    <string name="Cart_SC">删除</string>
+    <string name="PTYHZG_WYTY">已阅读并同意</string>
+    <string name="PTYHZG_YHXY">《用户注册协议》</string>
+    <string name="Order_KDDH">快递单号：</string>
+    <string name="Order_DDBH">订单编号：</string>
+    <string name="Order_QXDD">取消订单</string>
+    <string name="Order_LJFK">立即付款</string>
+    <string name="Order_TXFH">提醒发货</string>
+    <string name="Order_CKWL">查看物流</string>
+    <string name="Cart_QX">全选</string>
+    <string name="Cart_HJ">合计：￥&#160;</string>
+
+    <string name="Order_THTK">退货退款</string>
+    <string name="Order_JTK">仅退款</string>
+    <string name="THH_SQHH">申请换货</string>
+    <string name="Dialog_XZSJ">请选择时间</string>
+    <string name="Dialog_XZQY">请选择区域</string>
+    <string name="toast_warm_prompt">温馨提示</string>
+    <string name="Base_yzmyfs">验证码已发送</string>
+    <string name="Register_resend">重新发送</string>
+    <string name="Register_second">秒</string>
+    <string name="LOGIN_CG">登录成功</string>
+    <string name="Home_press_again">再按一次退出程序</string>
+
+    <string name="Loading_dialog_check">努力查询中...</string>
+    <string name="HttpSender_FWQKXC">服务器开小差啦</string>
+    <string name="HttpSender_FWQCS">请求服务器超时</string>
+    <string name="HttpSender_FWQDW">无法连接到服务器,请检查网络连接</string>
+    <string name="HttpSender_ERROR_404">服务维护中，请稍后再试...</string>
+    <string name="Seven_FL">分类</string>
+
+    <string name="Order_All">共</string>
+    <string name="Order_JSP">件商品</string>
+    <string name="Order_XJ">小计</string>
+    <string name="Order_HYF">含运费</string>
+    <string name="Order_WFK">未付款</string>
+    <string name="Order_WFH">未发货</string>
+    <string name="Order_WSH">未收货</string>
+    <string name="Order_YSH">已收货</string>
+    <string name="Order_QRSH">确认收货</string>
+    <string name="Order_QPJ">去评价</string>
+    <string name="Order_GWZP">购物追评</string>
+    <string name="Order_CKPJ">查看评价</string>
+    <string name="Order_QFWK">去付尾款</string>
+    <string name="Order_WFWK">未付尾款</string>
+    <string name="open">开启</string>
+    <string name="Dialog_XCX">小程序</string>
+    <string name="Dialog_SC">收藏</string>
+    <string name="Dialog_HYQ">小万群</string>
+    <string name="Dialog_HQTPSB">获取分享图片失败</string>
+    <string name="Cart_dialog_SC1">确定将该宝贝删除吗</string>
+    <string name="Cart_dialog_SC2">确定将这些宝贝删除吗</string>
+    <string name="Cart_toast_XZ">您还没选择宝贝呢</string>
+
+    <string name="aite_ta">&#064;TA</string>
+</resources>

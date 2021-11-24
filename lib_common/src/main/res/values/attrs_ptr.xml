@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="PtrFrameLayout">
+        <!-- Optional. If you put header and content in xml, you can you these to specify them. -->
+        <attr name="ptr_header" format="reference"/>
+        <attr name="ptr_content" format="reference"/>
+        <attr name="ptr_footer" format="reference"/>
+
+        <!-- the resistance when you are moving the frame -->
+        <attr name="ptr_resistance" format="float"/>
+        <attr name="ptr_resistance_header" format="float"/>
+        <attr name="ptr_resistance_footer" format="float"/>
+
+        <!-- the ration of the height of the header to trigger refresh -->
+        <attr name="ptr_ratio_of_header_height_to_refresh" format="float"/>
+
+        <attr name="ptr_duration_to_back_refresh" format="integer"/>
+        <attr name="ptr_duration_to_back_header" format="integer"/>
+        <attr name="ptr_duration_to_back_footer" format="integer"/>
+
+        <attr name="ptr_duration_to_close_either" format="integer"/>
+        <attr name="ptr_duration_to_close_header" format="integer"/>
+        <attr name="ptr_duration_to_close_footer" format="integer"/>
+
+        <!-- pull to refresh, otherwise release to refresh, default is release to refresh -->
+        <attr name="ptr_pull_to_fresh" format="boolean"/>
+
+        <!-- keep header when refreshing-->
+        <attr name="ptr_keep_header_when_refresh" format="boolean"/>
+        <attr name="ptr_mode" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="refresh" value="1"/>
+            <enum name="loadMore" value="2"/>
+            <enum name="both" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="PtrClassicHeader">
+        <attr name="ptr_rotate_ani_time" format="integer"/>
+    </declare-styleable>
+    
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="pstsIndicatorColor" format="color" />
+        <attr name="pstsUnderlineColor" format="color" />
+        <attr name="pstsDividerColor" format="color" />
+        <attr name="pstsIndicatorHeight" format="dimension" />
+        <attr name="pstsIndicatorPadding" format="dimension"/>
+        <attr name="pstsUnderlineHeight" format="dimension" />
+        <attr name="pstsDividerPadding" format="dimension" />
+        <attr name="pstsTabPaddingLeftRight" format="dimension" />
+        <attr name="pstsScrollOffset" format="dimension" />
+        <attr name="pstsTabBackground" format="reference" />
+        <attr name="pstsShouldExpand" format="boolean" />
+        <attr name="pstsTextAllCaps" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomTitleBar">
+        <attr name="titleBarTitle" format="string" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="titleColor" format="color" />
+        <attr name="titleBarLeftShowFlag">
+            <enum name="VISIBLE" value="0"/>
+            <enum name="INVISIBLE" value="4"/>
+        </attr>
+        <attr name="titleBarLeftShowType">
+            <enum name="IMG" value="0"/>
+            <enum name="TEXT" value="1"/>
+        </attr>
+        <attr name="titleBarLeftTxt" format="string" />
+        <attr name="titleBarLeftTxtSize" format="dimension" />
+        <attr name="titleBarLeftTxtColor" format="color" />
+        <attr name="titleBarLeftImg" format="reference" />
+        <attr name="titleBarRightShowFlag">
+            <enum name="VISIBLE" value="0"/>
+            <enum name="INVISIBLE" value="4"/>
+        </attr>
+        <attr name="titleBarRightShowType">
+            <enum name="IMG" value="0"/>
+            <enum name="TEXT" value="1"/>
+        </attr>
+        <attr name="titleBarRightTxt" format="string" />
+        <attr name="titleBarRightTxtSize" format="dimension" />
+        <attr name="titleBarRightTxtColor" format="color" />
+        <attr name="titleBarRightImg" format="reference" />
+        <attr name="titleBarRightTextBackground" format="reference" />
+        <attr name="titleBarBackgroundShowType">
+            <enum name="COLOR" value="2"/>
+            <enum name="RES" value="3"/>
+        </attr>
+        <attr name="titleBarBackgroundColor" format="color" />
+        <attr name="titleBarBackgroundResource" format="reference" />
+        <attr name="titleBarShowBottomLine" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CarMoreTitleBar">
+        <attr name="title" format="string" />
+    </declare-styleable>
+</resources>

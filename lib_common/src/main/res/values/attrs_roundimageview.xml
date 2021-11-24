@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="borderRadius" format="dimension" />
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="round" value="1" />
+    </attr>
+
+    <declare-styleable name="RoundImageViewByXfermode">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+    <declare-styleable name="FileBrowser">
+        <attr name="baseDir" format="string" />
+        <attr name="backFinish" format="boolean" />
+        <attr name="folderImage" format="reference" />
+        <attr name="otherFileImage" format="reference" />
+        <!-- extName&fileImage以后缀数字不断增加的好像不好定义T^T -->
+    </declare-styleable>
+
+
+</resources>

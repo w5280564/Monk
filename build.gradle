@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+            name 'Google'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'//必不可少
+        classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+            name 'Google'
+        }
+
+        // 子模块含有aar:添加全局引用
+        flatDir {
+            // 由于其他module中引用了 xx module 库的 aar，在多 module 的情况下，
+            // 其他的module编译会报错，所以需要在所有工程的repositories
+            // 下把 xx module 中的libs目录添加到依赖关系中
+            dirs project(':lib_common').file('libs')
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    targetSdkVersion = 30
+    buildToolsVersion = '30.0.3'
+    compileSdkVersion = 30
+    minSdkVersion = 21
+    // Libraries
+    supportLibraryVersion = '28.0.0'
+}

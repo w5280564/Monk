@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- APP主色调  以前 ##00C9AA-->
+    <color name="app_main_color">#FFE411</color>
+
+    <color name="app_begin_color_bag">#FAFAFA</color>
+
+    <!-- APP主色调(按钮点下去)  -->
+    <color name="app_main_color_button_press">#B3FFE411</color>
+
+
+    <color name="app_wechat_green_color">#28C445</color>
+    <!-- 金色  -->
+    <color name="app_gold_color">#C89E50</color>
+    <!-- 整个界面背景颜色 -->
+    <color name="app_background">#EFEFEF</color>
+    <!-- app红色 -->
+    <color name="app_red_color">#FF0000</color>
+    <!-- app黄色 -->
+    <color name="app_yellow_color">#f1c703</color>
+    <!-- SheetDialog蓝色 -->
+    <color name="app_blue_color_SheetDialog">#037BFF</color>
+    <!-- 灰色按钮背景 -->
+    <color name="gray_color">#C9C9C9</color>
+    <!-- 白底上统一横向分割线的颜色 -->
+    <color name="app_line">#E6E6E6</color>
+    <!-- 标题分割线的颜色 -->
+    <color name="title_line">#c9c9c9</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
+
+    <color name="transparent2">#4D000000</color>
+
+    <color name="light_gray">#dddddd</color>
+
+    <!-- 黑色半透明 -->
+    <color name="transparent_black1">#99333333</color>
+    <color name="transparent_black2">#99333333</color>
+    <color name="app_gray_color_main">#B6B6B6</color>
+
+    <!-- 白色 -->
+    <color name="check_original_image_color">#E6383838</color>
+
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+    <!-- item按下去的时颜色 -->
+    <color name="item_press_color">#e0e0e0</color>
+
+    <!-- 灰色 -->
+    <color name="hui">#EFEFEF</color>
+
+    <!-- 文字颜色 -->
+    <!-- 标题文字颜色 -->
+    <color name="ftitle_color">#575757</color>
+    <!-- 正文颜色 -->
+    <color name="text_main_color">#444444</color>
+    <!--其他颜色 -->
+    <color name="text_other_color">#666666</color>
+
+    <!-- 输入框提示文字 -->
+    <color name="text_hint_color">#999999</color>
+    <!-- 禁止点击颜色 -->
+    <color name="text_forbit_color">#C9C9C9</color>
+
+    <color name="colorAccent">#FF4081</color>
+
+
+
+    <!--    字体颜色-->
+    <color name="text_color_666666">#FF666666</color>
+    <color name="text_color_a1a1a1">#A1A1A1</color>
+    <color name="text_color_main">#EE383E</color>
+    <color name="text_color_6f6f6f">#6F6F6F</color>
+    <color name="text_color_FF0000">#FF0000</color>
+    <color name="text_color_FFF1F2">#FFF1F2</color>
+    <color name="text_color_ED2C39">#ED2C39</color>
+    <color name="text_color_444444">#444444</color>
+    <color name="text_color_tag_bag">#1AFF0000</color>
+    <color name="text_color_F4735B">#F4735B</color>
+    <color name="text_color_2391F3">#2391F3</color>
+    <color name="yellow">#FFFFC107</color>
+    <color name="greyline">#ffdcdcdc</color>
+    <color name="vipred">#ffff0000</color>
+    <color name="text_color_6F6F6F">#6F6F6F</color>
+    <color name="text_color_1677D2">#1677D2</color>
+    <color name="text_color_2886f0">#2886f0</color>
+    <color name="text_color_1F8FE5">#1F8FE5</color>
+</resources>
