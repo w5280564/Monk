@@ -54,8 +54,6 @@ public class LoginActivity extends BaseActivity{
         baseMap.put("equipmentName", android.os.Build.BRAND + "" + android.os.Build.MODEL);
         baseMap.put("meid", StringUtil.getIMEI());
         baseMap.put("version", android.os.Build.VERSION.RELEASE);
-
-
         HttpSender sender = new HttpSender(HttpUrl.accountLogin, "账号密码登录", baseMap,
                 new MyOnHttpResListener() {
                     @Override
