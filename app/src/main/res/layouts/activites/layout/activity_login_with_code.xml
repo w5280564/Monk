@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@drawable/ab_back_material_black"
+        app:titleBarShowBottomLine="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_35"
+        android:paddingRight="@dimen/dp_35">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_34"
+            android:text="短信验证码登录"
+            android:textColor="#444444"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="未注册手机验证后自动登录"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="@dimen/sp_12" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:background="@mipmap/img_login_phone">
+            </ImageView>
+
+            <EditText
+                android:id="@+id/phoneCode_edit"
+                style="@style/Widget.EditViewStyle"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/dp_25"
+                android:background="@null"
+                android:ellipsize="end"
+                android:gravity="left|center_vertical"
+                android:hint="请输入手机号"
+                android:inputType="none"
+                android:maxLength="20"
+                android:singleLine="true"
+                android:layout_marginLeft="20dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="#ffdcdcdc"
+            />
+
+        <Button
+            android:id="@+id/phoneCode_btn"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/backgrond_phone_code"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
