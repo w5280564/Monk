@@ -13,7 +13,7 @@
     <!-- 金色  -->
     <color name="app_gold_color">#C89E50</color>
     <!-- 整个界面背景颜色 -->
-    <color name="app_background">#EFEFEF</color>
+    <color name="app_background">#FCFCFC</color>
     <!-- app红色 -->
     <color name="app_red_color">#FF0000</color>
     <!-- app黄色 -->

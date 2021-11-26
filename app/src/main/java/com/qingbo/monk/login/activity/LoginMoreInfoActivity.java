@@ -4,6 +4,7 @@ import android.widget.ImageView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.home.activity.MainActivity;
+import com.qingbo.monk.login.fragment.StepFourFragmentLogin;
 import com.qingbo.monk.login.fragment.StepOneFragmentLogin;
 import com.qingbo.monk.login.fragment.StepThreeFragmentLogin;
 import com.qingbo.monk.login.fragment.StepTwoFragmentLogin;
@@ -12,7 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 
 /**
- * 登陆更多资料
+ * login更多资料
  */
 public class LoginMoreInfoActivity extends BaseActivityWithFragment {
 
@@ -35,7 +36,9 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
         addFragment(new StepOneFragmentLogin());
         addFragment(new StepTwoFragmentLogin());
         addFragment(new StepThreeFragmentLogin());
+        addFragment(new StepFourFragmentLogin());
         showStepOneFragment();
+        registerEventBus();
     }
 
 
@@ -56,11 +59,15 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
 
     private void showStepThreeFragment() {
         iv_step_two.setImageResource(R.mipmap.icon_xingqu_xuanzhong);
-        iv_step_three.setImageResource(R.mipmap.icon_baocun_xuanzhong);
+        iv_step_three.setImageResource(R.mipmap.icon_baocun);
         showFragment(2, fragmentId);
     }
 
-
+    private void showStepFourFragment() {
+        iv_step_two.setImageResource(R.mipmap.icon_xingqu_xuanzhong);
+        iv_step_three.setImageResource(R.mipmap.icon_baocun_xuanzhong);
+        showFragment(3, fragmentId);
+    }
 
     @Subscribe
     public void onGetRegisterNextStepBroadEvent(LoginMoreInfoEvent event) {
@@ -75,6 +82,10 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE://登录填写更多信息第三步
+                    showStepFourFragment();
+                    break;
+
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR://登录填写更多信息第四步
                     goToMainActivity();
                     break;
 

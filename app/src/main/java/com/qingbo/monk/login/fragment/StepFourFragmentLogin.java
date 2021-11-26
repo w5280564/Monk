@@ -11,25 +11,23 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.OnClick;
 
 /**
- * 登录填写更多信息第2步
+ * 登录填写更多信息第4步
  */
-public class StepTwoFragmentLogin extends BaseFragment {
-
-
+public class StepFourFragmentLogin extends BaseFragment {
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_step_two_fragment;
+        return R.layout.fragment_step_four_fragment;
     }
 
 
-    @OnClick({R.id.tv_back,R.id.tv_next})
+    @OnClick({R.id.tv_back,R.id.tv_save})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.tv_back:
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE));
                 break;
-            case R.id.tv_next:
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO));
+            case R.id.tv_save:
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR));
                 break;
 
         }

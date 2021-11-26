@@ -26,9 +26,13 @@
         android:maxLength="80"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintEnd_toEndOf="@+id/tv_content"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:gravity="end"
+        android:layout_marginEnd="@dimen/dp_18"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintRight_toLeftOf="@id/tv_img"
+        app:layout_constraintStart_toEndOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
 

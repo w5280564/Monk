@@ -1,53 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_44"
-    android:background="@color/white"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30">
 
-        <ImageView
-            android:layout_width="@dimen/dp_22"
-            android:layout_height="@dimen/dp_22"
-            android:src="@mipmap/icon_geren" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_21"
+            android:text="收获 – 你想在扫地僧里面收获什么？"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
 
-        <View
-            android:id="@+id/line_one"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="1px"
-            android:layout_marginLeft="@dimen/dp_9"
-            android:layout_marginRight="@dimen/dp_9"
-            android:background="@color/text_color_CCCCCC"
-            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_7"
+            android:text="放心，您的选择将会保密，选择您最想结识的3个
+方向即可。我们将会根据你的选择为你进行精准匹配"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="@dimen/sp_12" />
 
-        <ImageView
-            android:id="@+id/iv_step_two"
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_22"
-            android:src="@mipmap/icon_xingqu" />
-
-        <View
-            android:id="@+id/line_two"
-            android:layout_width="@dimen/dp_48"
-            android:layout_height="1px"
-            android:layout_marginLeft="@dimen/dp_9"
-            android:layout_marginRight="@dimen/dp_9"
-            android:background="@color/text_color_CCCCCC"
-            />
-
-        <ImageView
-            android:id="@+id/iv_step_three"
-            android:layout_width="@dimen/dp_16"
-            android:layout_height="@dimen/dp_20"
-            android:src="@mipmap/icon_baocun" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_15"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="@dimen/dp_63"
+            android:layout_height="@dimen/dp_44"
+            android:gravity="center"
+            android:text="返回"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginLeft="@dimen/dp_11"
+            android:background="@drawable/selector_btn_rectangle"
+            android:gravity="center"
+            android:text="下一步(2/3)"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
