@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
@@ -12,6 +11,7 @@
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_21"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -30,10 +30,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Hi!羊羊"
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_20"
-                android:textStyle="bold"
-                android:text="Hi!羊羊"/>
+                android:textStyle="bold" />
 
 
             <TextView
@@ -42,7 +42,7 @@
                 android:layout_marginTop="@dimen/dp_8"
                 android:text="欢迎光临!"
                 android:textColor="@color/text_color_a1a1a1"
-                android:textSize="@dimen/sp_12"/>
+                android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
 

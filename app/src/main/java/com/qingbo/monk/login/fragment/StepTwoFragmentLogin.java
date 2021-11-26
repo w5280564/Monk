@@ -26,7 +26,7 @@ public class StepTwoFragmentLogin extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.tv_back:
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ZERO));
                 break;
             case R.id.tv_next:
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO));

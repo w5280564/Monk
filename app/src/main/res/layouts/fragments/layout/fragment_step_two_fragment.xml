@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_21"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dp_30"
         android:paddingRight="@dimen/dp_30">
@@ -16,7 +17,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dp_21"
             android:text="告诉我们你感兴趣的话题！"
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_16"

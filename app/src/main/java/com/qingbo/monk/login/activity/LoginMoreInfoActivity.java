@@ -1,6 +1,7 @@
 package com.qingbo.monk.login.activity;
 
 import android.widget.ImageView;
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.home.activity.MainActivity;
@@ -13,7 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 import butterknife.BindView;
 
 /**
- * login更多资料
+ * 登录更多资料
  */
 public class LoginMoreInfoActivity extends BaseActivityWithFragment {
 
@@ -41,7 +42,14 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
         registerEventBus();
     }
 
-
+    @Override
+    protected void setStatusBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(true)
+                .statusBarColor(R.color.app_background)     //状态栏颜色，不写默认透明色
+                .statusBarDarkFont(true)
+                .init();
+    }
 
     private void showStepOneFragment() {
         iv_step_two.setImageResource(R.mipmap.icon_xingqu);
@@ -73,19 +81,23 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
     public void onGetRegisterNextStepBroadEvent(LoginMoreInfoEvent event) {
         if (event instanceof LoginMoreInfoEvent) {
             switch (event.type) {
-                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE://登录填写更多信息第一步
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ZERO://登录填写更多信息第一步
+                    showStepOneFragment();
+                    break;
+
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE://登录填写更多信息第一步点提交
                     showStepTwoFragment();
                     break;
 
-                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO://登录填写更多信息第一步
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO://登录填写更多信息第一步点提交
                     showStepThreeFragment();
                     break;
 
-                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE://登录填写更多信息第三步
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE://登录填写更多信息第三步点提交
                     showStepFourFragment();
                     break;
 
-                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR://登录填写更多信息第四步
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR://登录填写更多信息第四步点提交
                     goToMainActivity();
                     break;
 
