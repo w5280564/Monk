@@ -48,6 +48,7 @@
             android:layout_width="@dimen/dp_63"
             android:layout_height="@dimen/dp_44"
             android:gravity="center"
+            android:background="@drawable/base_gradual"
             android:text="返回"
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_16" />

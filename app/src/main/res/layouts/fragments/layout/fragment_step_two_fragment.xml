@@ -48,6 +48,7 @@
             android:id="@+id/tv_back"
             android:layout_width="@dimen/dp_63"
             android:layout_height="@dimen/dp_44"
+            android:background="@drawable/base_gradual"
             android:gravity="center"
             android:text="返回"
             android:textColor="@color/text_color_444444"

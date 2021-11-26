@@ -33,7 +33,7 @@
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_20"
                 android:textStyle="bold"
-                tools:text="Hi!羊羊"/>
+                android:text="Hi!羊羊"/>
 
 
             <TextView
@@ -42,47 +42,43 @@
                 android:layout_marginTop="@dimen/dp_8"
                 android:text="欢迎光临!"
                 android:textColor="@color/text_color_a1a1a1"
-                android:textSize="@dimen/sp_12"
-                tools:text="告诉我们你丰富又有趣的经验吧."/>
+                android:textSize="@dimen/sp_12"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:layout_below="@id/ll_top"
         android:layout_marginTop="@dimen/dp_23"
-        android:minHeight="116dp"
+        android:background="@drawable/base_gradual"
         android:paddingLeft="@dimen/dp_14"
-        android:paddingRight="@dimen/dp_14"
         android:paddingTop="@dimen/dp_11"
-        android:paddingBottom="@dimen/dp_11"
-        android:orientation="vertical"
-        android:elevation="10dp"
-        >
+        android:paddingRight="@dimen/dp_14"
+        android:paddingBottom="@dimen/dp_11">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="请输入文字！"
             android:lineSpacingExtra="@dimen/dp_3"
             android:textColor="#6F6F6F"
-            android:textSize="@dimen/sp_14"
-            android:background="@null"
-            android:hint="请输入文字！"/>
+            android:textSize="@dimen/sp_14" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:text="最少20个字（5/300）"
             android:textColor="@color/text_color_a1a1a1"
-            android:textSize="@dimen/sp_10"/>
+            android:textSize="@dimen/sp_10" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
@@ -97,6 +93,7 @@
             android:id="@+id/tv_back"
             android:layout_width="@dimen/dp_63"
             android:layout_height="@dimen/dp_44"
+            android:background="@drawable/base_gradual"
             android:gravity="center"
             android:text="返回"
             android:textColor="@color/text_color_444444"
