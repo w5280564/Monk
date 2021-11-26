@@ -49,7 +49,7 @@ public class HttpSender {
 	public HttpSender(String requestUrl, String requestName, Object mRequestObj,
 					  OnHttpResListener mListener, boolean showLoadAnimal) {
 		super();
-		this.requestUrl = requestUrl;
+		this.requestUrl = Config.Link.getWholeUrl()+requestUrl;
 		this.mListener = mListener;
 		this.requestName = requestName;
 		if (mRequestObj != null) {

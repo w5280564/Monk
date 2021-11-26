@@ -13,7 +13,7 @@ import com.xunda.lib.common.common.Config;
  */
 public class L {
 
-	private static final String TAG = "NanerHuan";
+	private static final String TAG = "Monk";
 	private static Context mContext;
 	
 	/**

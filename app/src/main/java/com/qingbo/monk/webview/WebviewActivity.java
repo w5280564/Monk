@@ -1,5 +1,6 @@
 package com.qingbo.monk.webview;
 
+import com.xunda.lib.common.common.Config;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -28,7 +29,7 @@ public class WebviewActivity extends BaseWebviewActivity {
 
         if (!StringUtil.isBlank(linkUrl)) {
             if(!linkUrl.startsWith("http")){
-                linkUrl = HttpUrl.server + linkUrl;
+                linkUrl = Config.Link.getWholeUrl() + linkUrl;
             }
             loadUrl(linkUrl);
         }
