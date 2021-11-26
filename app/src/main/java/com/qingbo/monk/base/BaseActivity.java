@@ -366,7 +366,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     /**
      * 获取验证码
      */
-    protected void getRegisterCode(String phone, CountDownTextView tvGetCode) {
+    protected void getSmsCode(String phone, CountDownTextView tvGetCode) {
         HashMap<String, String> baseMap = new HashMap<String, String>();
         baseMap.put("phone", phone);
         HttpSender sender = new HttpSender(HttpUrl.sendCode, "获取验证码", baseMap,

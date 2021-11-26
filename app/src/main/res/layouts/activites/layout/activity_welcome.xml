@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp_35"
+    android:paddingRight="@dimen/dp_35">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_54"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_36"
+            android:src="@mipmap/icon_logo_round" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:text="欢迎光临!"
+            android:textColor="@color/text_color_333333"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:lineSpacingExtra="@dimen/dp_10"
+        android:text="亲爱的小伙伴，期待您的到来!
+我是你的专属助理
+接下来我们一起看看
+扫地僧可以带给你什么吧！
+在这里，可以跟同行高手聊一聊，拓展专业领域人脉。
+在这里可以跟IP高手聊一聊，看看如何打造个人IP。
+在这里，可以跨行跟不同领域高手聊一聊，看看不同行业风景。
+简单散步，让我们开启一场探索之旅吧！"
+        android:textColor="@color/text_color_333333"
+        android:textSize="@dimen/sp_14" />
+
+    <ImageView
+        android:layout_width="176dp"
+        android:layout_height="176dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/chahua_04"/>
+
+
+    <TextView
+        android:id="@+id/tv_join"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@drawable/selector_btn_rectangle"
+        android:text="立即体验"
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/sp_16" />
+</LinearLayout>

@@ -68,6 +68,8 @@
 
 
 
+
+
     <!--    字体颜色-->
     <color name="text_color_666666">#FF666666</color>
     <color name="text_color_a1a1a1">#A1A1A1</color>
@@ -87,4 +89,6 @@
     <color name="text_color_1677D2">#1677D2</color>
     <color name="text_color_2886f0">#2886f0</color>
     <color name="text_color_1F8FE5">#1F8FE5</color>
+    <color name="text_color_CCCCCC">#CCCCCC</color>
+    <color name="text_color_333333">#333333</color>
 </resources>

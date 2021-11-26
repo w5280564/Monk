@@ -10,7 +10,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:titleBarLeftImg="@drawable/ab_back_material_black"
+        app:titleBarLeftImg="@mipmap/icon_chacha"
         app:titleBarShowBottomLine="false"/>
 
     <LinearLayout
@@ -45,49 +45,108 @@
             android:gravity="center_vertical"
             android:background="@color/white">
 
-            <ImageView
+            <TextView
+                android:id="@+id/tv_number_before"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:background="@mipmap/img_login_phone">
-            </ImageView>
+                android:layout_height="match_parent"
+                android:text="+18"
+                android:drawablePadding="@dimen/dp_9"
+                android:drawableRight="@mipmap/icon_jiantou"
+                android:gravity="center"
+                android:textColor="@color/text_color_444444"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp_16" />
+
 
             <EditText
-                android:id="@+id/phoneCode_edit"
+                android:id="@+id/et_phoneCode"
                 style="@style/Widget.EditViewStyle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="@dimen/dp_25"
+                android:layout_height="match_parent"
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="left|center_vertical"
                 android:hint="请输入手机号"
                 android:inputType="none"
-                android:maxLength="20"
                 android:singleLine="true"
                 android:layout_marginLeft="20dp"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="1dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="#ffdcdcdc"
+            android:background="@color/text_color_1F8FE5"
             />
 
-        <Button
-            android:id="@+id/phoneCode_btn"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/icon_gouxuan_xieyi"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="登录即表示同意"
+                android:textColor="@color/text_color_444444"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_agreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="《扫地僧用户协议》"
+                android:textColor="@color/text_color_1F8FE5"
+                android:textSize="@dimen/sp_12" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_send_code"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:text="下一步"
-            android:textColor="@color/white"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/backgrond_phone_code"
-            android:gravity="center"/>
+            android:layout_height="@dimen/button_height"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_95"
+            android:background="@drawable/selector_btn_rectangle"
+            android:text="发送验证码"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_104"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="1dp"
+                android:background="@color/text_color_CCCCCC"
+                />
+
+            <ImageView
+                android:id="@+id/iv_wechat"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_36"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:src="@mipmap/icon_weixin_2" />
+
+            <View
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="1dp"
+                android:background="@color/text_color_CCCCCC"
+                />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

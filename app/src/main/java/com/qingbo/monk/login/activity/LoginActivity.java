@@ -36,10 +36,10 @@ public class LoginActivity extends BaseActivity{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_wechat_login:
-                login();
+//                login();
                 break;
             case R.id.ll_phone_login:
-//                login();
+                skipAnotherActivity(LoginWithCodeActivity.class);
                 break;
             case R.id.tv_agreement:
                 jumpToWebView("用户协议", H5Url.H5UserPolicy);

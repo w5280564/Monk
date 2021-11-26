@@ -86,6 +86,8 @@
     <color name="text_color_6F6F6F">#6F6F6F</color>
     <color name="text_color_1677D2">#1677D2</color>
     <color name="text_color_2886f0">#2886f0</color>
-
+    <color name="text_color_F6F7FF">#F6F7FF</color>
+    <color name="text_color_CCCCCC">#CCCCCC</color>
     <color name="new_star_bag_ji">#DCDCDC</color>
+    <color name="text_color_1F8FE5">#1F8FE5</color>
 </resources>
