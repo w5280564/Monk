@@ -4,7 +4,6 @@ import android.view.View;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.login.activity.GetPhoneCodeStepTwoActivity;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,7 +16,7 @@ import butterknife.OnClick;
 public class StepOneFragmentLogin extends BaseFragment {
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_step_one_fragment;
+        return R.layout.fragment_step_one_fragment_login;
     }
 
 

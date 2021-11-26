@@ -420,4 +420,15 @@
         <attr name="arrowItemShowTip" format="boolean"/>
         <attr name="arrowItemTip" format="string|reference"/>
     </declare-styleable>
+
+    <style name="main_bottom_view_normal">
+        <item name="android:textColor">@color/text_color_a1a1a1</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="main_bottom_view_selected">
+        <item name="android:textColor">@color/app_main_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

@@ -13,7 +13,7 @@ import butterknife.OnClick;
 public class StepThreeFragmentLogin extends BaseFragment {
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_step_three_fragment;
+        return R.layout.fragment_step_three_fragment_login;
     }
 
     @OnClick({R.id.tv_back,R.id.tv_next})

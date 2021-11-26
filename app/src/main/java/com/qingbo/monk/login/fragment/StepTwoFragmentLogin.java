@@ -18,7 +18,7 @@ public class StepTwoFragmentLogin extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_step_two_fragment;
+        return R.layout.fragment_step_two_fragment_login;
     }
 
 
