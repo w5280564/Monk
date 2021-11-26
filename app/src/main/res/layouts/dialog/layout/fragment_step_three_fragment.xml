@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_44"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/dp_22"
+            android:layout_height="@dimen/dp_22"
+            android:src="@mipmap/icon_geren" />
+
+        <View
+            android:id="@+id/line_one"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/dp_9"
+            android:layout_marginRight="@dimen/dp_9"
+            android:background="@color/text_color_CCCCCC"
+            />
+
+        <ImageView
+            android:id="@+id/iv_step_two"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_22"
+            android:src="@mipmap/icon_xingqu" />
+
+        <View
+            android:id="@+id/line_two"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="1px"
+            android:layout_marginLeft="@dimen/dp_9"
+            android:layout_marginRight="@dimen/dp_9"
+            android:background="@color/text_color_CCCCCC"
+            />
+
+        <ImageView
+            android:id="@+id/iv_step_three"
+            android:layout_width="@dimen/dp_16"
+            android:layout_height="@dimen/dp_20"
+            android:src="@mipmap/icon_baocun" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

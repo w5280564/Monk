@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_30"
+        android:paddingRight="@dimen/dp_30">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_21"
+            android:text="标记立体的你  –  个人超级名片！"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_7"
+            android:text="全面的个人介绍将大大提升你的AI匹配好友成功率"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="@dimen/sp_12" />
+
+        <ImageView
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_14"
+            android:src="@mipmap/icon_logo_round" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_7"
+            android:text="选择一张你要展示的照片"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="@dimen/sp_12" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_marginTop="@dimen/dp_26"
+            android:background="@drawable/shape_bag_line"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/dp_15">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="名称："
+                android:textColor="@color/text_color_444444"
+                android:textSize="@dimen/sp_15" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_6"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical|left"
+                android:paddingRight="@dimen/dp_15" />
+
+        </LinearLayout>
+
+        <com.xunda.lib.common.view.MyArrowItemView
+            android:id="@+id/arrowItemView_industry"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/shape_bag_line"
+            app:arrowItemShowTip="true"
+            app:arrowItemTip="请选择您的行业"
+            app:arrowItemTitle="行业：" />
+
+
+        <com.xunda.lib.common.view.MyArrowItemView
+            android:id="@+id/arrowItemView_year"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/shape_bag_line"
+            app:arrowItemShowTip="true"
+            app:arrowItemTip="请选择您的工作年限"
+            app:arrowItemTitle="工作年限：" />
+
+        <com.xunda.lib.common.view.MyArrowItemView
+            android:id="@+id/arrowItemView_city"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/shape_bag_line"
+            app:arrowItemShowTip="true"
+            app:arrowItemTip="请选择您的城市"
+            app:arrowItemTitle="城市：" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

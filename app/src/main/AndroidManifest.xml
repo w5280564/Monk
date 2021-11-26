@@ -37,6 +37,7 @@
         <activity android:name=".login.activity.LoginWithCodeActivity" />
         <activity android:name=".login.activity.GetPhoneCodeStepTwoActivity" />
         <activity android:name=".login.activity.WelcomeActivity" />
+        <activity android:name=".login.activity.LoginMoreInfoActivity" />
     </application>
 
 

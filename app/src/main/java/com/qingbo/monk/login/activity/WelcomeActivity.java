@@ -21,7 +21,7 @@ public class WelcomeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_join:
-
+                skipAnotherActivity(LoginMoreInfoActivity.class);
                 break;
 
         }
