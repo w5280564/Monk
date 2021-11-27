@@ -61,7 +61,7 @@ public class LoginWithCodeActivity extends BaseActivity {
                 }, true);
 
         sender.setContext(mActivity);
-        sender.sendGetWithAnimal();
+        sender.sendGet();
     }
 
 

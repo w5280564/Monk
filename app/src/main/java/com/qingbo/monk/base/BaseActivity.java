@@ -390,17 +390,6 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
 
 
 
-    protected void initTabLayout(TabLayout mTabLayout) {
-        String localCountryType = MultiLanguageUtil.getCountryType(mContext);//本地语言国家type
-        if ("2".equals(localCountryType)) {
-            mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        } else {
-            mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        }
-    }
-
-
-
 
 
     @Override

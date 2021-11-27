@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentActivity;
-
 import com.xunda.lib.common.R;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
@@ -24,10 +23,8 @@ import com.xunda.lib.common.router.RouterActivityPath;
 import com.xunda.lib.common.router.RouterIntentUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -40,6 +37,7 @@ public class HttpSender {
 
 	private Context context;
 	private OnHttpResListener mListener;
+	private boolean isShowLoadAnimal;
 	private String requestUrl = "",requestName="",dialogMessage="";
 	private Map<String, Object> paramsMap;
 	private LoadingDialog mDialog;
@@ -47,10 +45,11 @@ public class HttpSender {
 
 
 	public HttpSender(String requestUrl, String requestName, Object mRequestObj,
-					  OnHttpResListener mListener, boolean showLoadAnimal) {
+					  OnHttpResListener mListener, boolean isShowLoadAnimal) {
 		super();
 		this.requestUrl = Config.Link.getWholeUrl()+requestUrl;
 		this.mListener = mListener;
+		this.isShowLoadAnimal = isShowLoadAnimal;
 		this.requestName = requestName;
 		if (mRequestObj != null) {
 			this.paramsMap = GsonUtil.getInstance().Obj2Map(mRequestObj);
@@ -80,24 +79,19 @@ public class HttpSender {
 
 
 	public void sendPost() {
-		requestPostEncryptNew(false);
+		requestPost();
 	}
 
-
-	public void sendPostWithAnimal() {
-		requestPostEncryptNew(true);
-	}
 
 
 	public void sendGet() {
-		requestGet(false);
-	}
-
-	public void sendGetWithAnimal() {
-		requestGet(true);
+		requestGet();
 	}
 
 
+	/**
+	 * POST请求（文件上传不加密）
+	 */
 	public void sendPostImage() {
 		this.dialogMessage = "努力加载中...";
 		requestPost();
@@ -111,56 +105,12 @@ public class HttpSender {
 	/**
 	 * get请求
 	 */
-	private void requestGet(boolean isHaveAnimal) {
+	private void requestGet() {
 		HashMap<String, String> upLoadMap = getRequestData();
 		OkHttpUtils.get().url(requestUrl)
 				.params(upLoadMap)
 				.headers(headerMap)
-				.build().execute(new StringDialogCallback(isHaveAnimal));
-	}
-
-
-
-	/**
-	 * POST请求(旧加密)
-	 */
-	private void requestPostEncryptOld() {
-		setRequestData_POST();
-//		L.e("加密前"+GsonUtil.getInstance().toJson(paramsMap));
-		String encrypt_data = encryptRequestData(GsonUtil.getInstance().toJson(paramsMap));
-		if (!StringUtil.isBlank(encrypt_data)) {
-			OkHttpUtils.postString()
-					.url(requestUrl)
-					.content(encrypt_data)
-					.mediaType(MediaType.parse("application/json; charset=utf-8"))
-					.headers(headerMap)
-					.build().execute(new StringDialogCallback(false));
-		}
-	}
-
-
-
-	/**
-	 * POST请求(新加密)
-	 */
-	private void requestPostEncryptNew(boolean isHaveAnimal) {
-		setRequestData_POST();
-		String aesKey = AESEncrypt.getAesKey();
-		String contentStr = AESEncrypt.encrypt(GsonUtil.getInstance().toJson(paramsMap), aesKey);
-		String rsaKey = RsaEncodeMethod.rsaEncode(aesKey);
-		Map<String, String> finalMap = new HashMap<>();
-		finalMap.put("key",rsaKey);
-		finalMap.put("content",contentStr);
-
-		String request_data = GsonUtil.getInstance().toJson(finalMap);
-		if (!StringUtil.isBlank(request_data)) {
-			OkHttpUtils.postString()
-					.url(requestUrl)
-					.content(request_data)
-					.mediaType(MediaType.parse("application/json; charset=utf-8"))
-					.headers(headerMap)
-					.build().execute(new StringDialogCallback(isHaveAnimal));
-		}
+				.build().execute(new StringDialogCallback(isShowLoadAnimal));
 	}
 
 
@@ -177,9 +127,57 @@ public class HttpSender {
 					.content(request_data)
 					.mediaType(MediaType.parse("application/json; charset=utf-8"))
 					.headers(headerMap)
-					.build().execute(new StringDialogCallback(false));
+					.build().execute(new StringDialogCallback(isShowLoadAnimal));
 		}
 	}
+
+
+
+
+	/**
+	 * POST请求(旧加密)
+	 */
+	private void requestPostEncryptOld() {
+		setRequestData_POST();
+//		L.e("加密前"+GsonUtil.getInstance().toJson(paramsMap));
+		String encrypt_data = encryptRequestData(GsonUtil.getInstance().toJson(paramsMap));
+		if (!StringUtil.isBlank(encrypt_data)) {
+			OkHttpUtils.postString()
+					.url(requestUrl)
+					.content(encrypt_data)
+					.mediaType(MediaType.parse("application/json; charset=utf-8"))
+					.headers(headerMap)
+					.build().execute(new StringDialogCallback(isShowLoadAnimal));
+		}
+	}
+
+
+
+	/**
+	 * POST请求(新加密)
+	 */
+	private void requestPostEncryptNew() {
+		setRequestData_POST();
+		String aesKey = AESEncrypt.getAesKey();
+		String contentStr = AESEncrypt.encrypt(GsonUtil.getInstance().toJson(paramsMap), aesKey);
+		String rsaKey = RsaEncodeMethod.rsaEncode(aesKey);
+		Map<String, String> finalMap = new HashMap<>();
+		finalMap.put("key",rsaKey);
+		finalMap.put("content",contentStr);
+
+		String request_data = GsonUtil.getInstance().toJson(finalMap);
+		if (!StringUtil.isBlank(request_data)) {
+			OkHttpUtils.postString()
+					.url(requestUrl)
+					.content(request_data)
+					.mediaType(MediaType.parse("application/json; charset=utf-8"))
+					.headers(headerMap)
+					.build().execute(new StringDialogCallback(isShowLoadAnimal));
+		}
+	}
+
+
+
 
 
 	private String encryptRequestData(String request_data) {

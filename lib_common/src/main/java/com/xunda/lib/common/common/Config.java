@@ -15,7 +15,7 @@ public class Config {
     public static class Setting {
 
         // 开发环境
-        public static final boolean DEBUG = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
+        public static final boolean DEBUG = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
 
         // 是否输出日志
         public static final boolean IS_LOG = true;
@@ -37,7 +37,7 @@ public class Config {
         /**
          * 开发环境
          */
-        public static String URL_WHOLE = "http://122.9.184.79:8088/";
+        public static String URL_WHOLE = "http://shjr.gstai.com:80/";
 
 
 

@@ -13,7 +13,7 @@ public class Constants {
     public static String fresh_face_AppId  = Config.Parameter.getTencentFreshFaceAppId();// 腾讯云刷脸ID
 
 
-    public static final int REQUEST_SUCCESS_CODE = 200;//接口请求成功
+    public static final int REQUEST_SUCCESS_CODE = 0;//接口请求成功
     public static final int REQUEST_FAILURE_TOKEN = 201;//其他账号登录，被挤下线
     public static final int REQUEST_FAILURE_SERVER = -8885;//服务器错误(OKhttp报的错)
     public static final int REQUEST_FAILURE_INTERNET = -8884;//网络错误（网络连接不上）

@@ -30,10 +30,6 @@ public class BaseTabLayoutActivity extends BaseActivity {
         return R.layout.activity_tablayout;
     }
 
-    @Override
-    protected void initView() {
-        initTabLayout(mTabLayout);
-    }
 
 
     protected void initViewPager(int position) {
