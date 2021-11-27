@@ -37,26 +37,18 @@ public class PrefUtil {
             SharePref.user().setUserName(user.getNickname());
         }
 
-        if (!StringUtil.isBlank(user.getHeadImg())) {
-            SharePref.user().setUserHead(user.getHeadImg());
+        if (!StringUtil.isBlank(user.getAvatar())) {
+            SharePref.user().setUserHead(user.getAvatar());
         }
 
-        SharePref.user().setUserId(user.getUserId());
+        if (!StringUtil.isBlank(user.getId())) {
+            SharePref.user().setUserId(user.getId());
+        }
 
         if (!StringUtil.isBlank(user.getToken())) {
             SharePref.user().setToken(user.getToken());
         }
 
-
-        SharePref.user().setIsAuthentication(user.getIsAuthentication());
-
-        SharePref.user().setIsPayPassword(user.getIsPayPassword());
-
-        SharePref.user().setsouthID(user.getSouthId());
-
-        SharePref.user().setDeleteStatus(user.getDeleteStatus());
-
-        SharePref.user().setDeleteRemark(user.getRemark());
     }
 
 

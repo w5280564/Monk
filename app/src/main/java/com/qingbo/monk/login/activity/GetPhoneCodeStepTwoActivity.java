@@ -13,9 +13,7 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.CountDownTextView;
 import java.util.HashMap;
@@ -108,11 +106,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("登录成功");
                             UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
-                            if (obj != null) {
-                                saveUserInfo(obj);
-                            }else{
-                                skipAnotherActivity(WelcomeActivity.class);
-                            }
+                            saveUserInfo(obj);
                         } else {
                             T.ss(msg);
                         }
@@ -124,6 +118,8 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
         sender.sendPost();
     }
 
+
+
     /**
      * 保存用户信息
      *
@@ -131,9 +127,6 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
      */
     private void saveUserInfo(UserBean user) {
         PrefUtil.saveUser(user);
-        if (!StringUtil.isBlank(user.getPhoneNum())) {//单独保存手机号
-            SharePref.local().setUserPhone(user.getPhoneNum());
-        }
         skipAnotherActivity(WelcomeActivity.class);
     }
 

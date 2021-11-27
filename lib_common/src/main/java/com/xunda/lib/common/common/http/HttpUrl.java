@@ -29,5 +29,23 @@ public class HttpUrl {
     public static final String mobileLogin = "login/login/mobile-login";
 
 
+    /**
+     * 行业列表
+     */
+    public static final String industryList = "login/login/industry-list";
+
+
+    /**
+     * 城市列表
+     */
+    public static final String cityList = "login/login/city";
+
+
+    /**
+     * 兴趣列表
+     */
+    public static final String interestedList = "login/login/interested-list";
+
+
 }
 

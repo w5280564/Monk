@@ -17,11 +17,6 @@ public interface UserPreferences {
 	@Clear
 	void clear();
 
-	/**
-	 * userId
-	 */
-	void setsouthID(String userId);
-	String getsouthID();
 
 
 	/**
@@ -58,12 +53,7 @@ public interface UserPreferences {
 	String getToken();
 
 
-	void setIsAuthentication(int isAuthentication);
-	int getIsAuthentication();
 
-
-	void setIsPayPassword(int isPayPassword);
-	int getIsPayPassword();
 
 	/**
 	 * 本地保存用户信息
@@ -74,18 +64,6 @@ public interface UserPreferences {
 
 
 
-	/**
-	 * 封禁提示语
-	 */
-	void setDeleteRemark(String remark);
-	String getDeleteRemark();
-
-
-	/**
-	 * 封禁状态
-	 */
-	void setDeleteStatus(int deleteStatus);
-	int getDeleteStatus();
 
 
 	/**
