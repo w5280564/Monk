@@ -6,17 +6,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.bean.MiddleAreaCodeBean;
 import com.qingbo.monk.bean.BigAreaCodeBean;
-import com.qingbo.monk.login.adapter.AreaCodeListAdapter;
+import com.qingbo.monk.bean.MiddleAreaCodeBean;
+import com.qingbo.monk.bean.SmallAreaCodeBean;
+import com.qingbo.monk.login.adapter.AreaCodeAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.PinnedSectionListView;
 import com.xunda.lib.common.view.SideBar;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +26,9 @@ import java.util.List;
 /**
  * 区号列表
  */
-public class AreaCodeListActivity extends BaseActivity implements AreaCodeListAdapter.OnChooseItemListener {
-    private List<MiddleAreaCodeBean> mList = new ArrayList<>();
-    private AreaCodeListAdapter mAdapter;
+public class AreaCodeListActivity extends BaseActivity implements AreaCodeAdapter.OnChooseItemListener {
+    private List<SmallAreaCodeBean> mList = new ArrayList<>();
+    private AreaCodeAdapter mAdapter;
     private ListView mListView;
     private SideBar mSidBar;
     private TextView mDialogTextView;//中部展示的字母提示
@@ -45,8 +46,6 @@ public class AreaCodeListActivity extends BaseActivity implements AreaCodeListAd
         mSidBar = findViewById(R.id.sidrbar);
         mDialogTextView = findViewById(R.id.group_dialog);
         mSidBar.setTextView(mDialogTextView);
-        mAdapter = new AreaCodeListAdapter(mActivity, mList,this);
-        mListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -96,24 +95,40 @@ public class AreaCodeListActivity extends BaseActivity implements AreaCodeListAd
     }
 
 
-    private void handleData(BigAreaCodeBean obj) {
-        if (obj!=null) {
-            if (!ListUtils.isEmpty(obj.getList())) {
+    private void handleData(BigAreaCodeBean bigObj) {
+        if (bigObj!=null) {
+            if (!ListUtils.isEmpty(bigObj.getList())) {
                 mSidBar.setVisibility(View.VISIBLE);
                 mList.clear();
-                mList.addAll(obj.getList());
+                for (MiddleAreaCodeBean obj:bigObj.getList()) {
+                    String letter = obj.getFirstLetter();
+                    if(!StringUtil.isBlank(letter)){
+                        SmallAreaCodeBean mLetterObj = new SmallAreaCodeBean();
+                        mLetterObj.setArea(letter);
+                        mLetterObj.setClassification(1);
+                        mList.add(mLetterObj);
+                    }
+                    List<SmallAreaCodeBean> codeList = obj.getChildlist();
+                    if(!ListUtils.isEmpty(codeList)){
+                        for (SmallAreaCodeBean mCodeObj:codeList) {
+                            mCodeObj.setClassification(2);
+                        }
+                        mList.addAll(codeList);
+                    }
+                }
+                mAdapter = new AreaCodeAdapter(mActivity, mList,this);
+                mListView.setAdapter(mAdapter);
             } else {
-                mList.clear();
                 mSidBar.setVisibility(View.GONE);
             }
-
             mAdapter.notifyDataSetChanged();
         }
     }
 
 
     @Override
-    public void chooseItem(String code) {
-
+    public void onChooseItem(String code) {
+        T.ss(code);
+        finish();
     }
 }

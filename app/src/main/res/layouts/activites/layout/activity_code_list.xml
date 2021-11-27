@@ -19,7 +19,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ListView
+        <com.xunda.lib.common.view.PinnedSectionListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

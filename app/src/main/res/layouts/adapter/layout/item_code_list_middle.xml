@@ -15,13 +15,4 @@
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"/>
-
-
-    <LinearLayout
-        android:id="@+id/ll_container_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
-
-
 </LinearLayout>
