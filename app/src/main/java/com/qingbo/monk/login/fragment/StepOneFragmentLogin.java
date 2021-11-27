@@ -1,22 +1,17 @@
 package com.qingbo.monk.login.fragment;
 
 import android.view.View;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.bean.BigAreaCodeBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-
 import org.greenrobot.eventbus.EventBus;
-
+import java.io.File;
 import java.util.HashMap;
-
 import butterknife.OnClick;
 
 /**
@@ -29,24 +24,7 @@ public class StepOneFragmentLogin extends BaseFragment {
     }
 
 
-    @OnClick({R.id.arrowItemView_industry,R.id.arrowItemView_year,R.id.arrowItemView_city,R.id.tv_next})
-    public void onViewClicked(View view) {
-        switch (view.getId()){
-            case R.id.arrowItemView_industry:
 
-                break;
-            case R.id.arrowItemView_year:
-
-                break;
-            case R.id.arrowItemView_city:
-
-                break;
-            case R.id.tv_next:
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
-                break;
-
-        }
-    }
 
     @Override
     protected void getServerData() {
@@ -74,5 +52,53 @@ public class StepOneFragmentLogin extends BaseFragment {
 
         sender.setContext(mActivity);
         sender.sendGet();
+    }
+
+    @OnClick({R.id.iv_header,R.id.arrowItemView_industry,R.id.arrowItemView_year,R.id.arrowItemView_city,R.id.tv_next})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.iv_header:
+//                showChoosePhotoDialog();
+                break;
+            case R.id.arrowItemView_industry:
+
+                break;
+            case R.id.arrowItemView_year:
+
+                break;
+            case R.id.arrowItemView_city:
+
+                break;
+            case R.id.tv_next:
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
+                break;
+
+        }
+    }
+
+    /**
+     * 上传头像
+     */
+    private void uploadImage(final File mFile) {
+//        HashMap<String, String> baseMap = new HashMap<String, String>();
+//        baseMap.put("file", "file");
+//        HttpSender sender = new HttpSender(HttpUrl.liveUploadImage, "上传直播封面", baseMap,
+//                new MyOnHttpResListener() {
+//
+//                    @Override
+//                    public void onComplete(String json, int status, String description, String data) {
+//                        if (status == Constants.REQUEST_SUCCESS_STATUS) {
+//                            T.ss(getString(R.string.Image_SCCG));
+//                            haveUploadImg = true;
+//                            Uri uri = Uri.fromFile(mFile);
+//                            Glide.with(mActivity).load(uri).into(iv_live);
+//                        } else {
+//                            T.ss(description);
+//                        }
+//
+//                    }
+//                },true);
+//        sender.setContext(mActivity);
+//        sender.sendPostImage(mFile);
     }
 }

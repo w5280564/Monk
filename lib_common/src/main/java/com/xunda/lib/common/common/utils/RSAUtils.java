@@ -91,7 +91,7 @@ public class RSAUtils {
 
 
     public static void test() {
-        String data = "南二环RSA测试";
+        String data = "扫地僧RSA测试";
         try {
             int keyLength = 2048;
             //生成密钥对

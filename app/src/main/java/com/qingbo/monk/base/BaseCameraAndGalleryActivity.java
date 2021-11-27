@@ -100,7 +100,7 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
                 .thumbnailScale(0.85f)//缩放比例
                 .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
                 .imageEngine(new GlideEngine())//加载方式
-                .capture(false)//设置是否可以拍照
+                .capture(true)//设置是否可以拍照
                 .captureStrategy(new CaptureStrategy(true, getPackageName()+ ".fileProvider"))//存储到哪里，这里的authority要和Manifest当中保持一致
                 .forResult(Constants.PHOTO_REQUEST_GALLERY);//
     }
@@ -237,6 +237,7 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         if(requestCode==APP_SETTINGS_PHOTO){
             checkGalleryPermission();
         }else if(requestCode==APP_SETTINGS_CAMERA){

@@ -47,5 +47,11 @@ public class HttpUrl {
     public static final String interestedList = "login/login/interested-list";
 
 
+    /**
+     * 修改个人信息
+     */
+    public static final String editUserInfo = "user/user/edit-info";
+
+
 }
 

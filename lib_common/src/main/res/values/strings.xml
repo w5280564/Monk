@@ -11,9 +11,9 @@
     </plurals>
 
 
-    <string name="app_name">南二环</string>
-    <string name="privacy_policy_dialog_content">\u3000\u3000亲爱的南二环用户，感谢您使用南二环！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您充分阅读并理解《用户协议》和《隐私政策》的全部内容，同意并接受全部条款后开始使用我们的产品和服务。</string>
-    <string name="privacy_policy_dialog_content_again">\u3000\u3000您需要同意本用户协议和隐私政策才能继续使用南二环，若您不同意，很遗憾我们将无法为您提供服务。</string>
+    <string name="app_name">扫地僧</string>
+    <string name="privacy_policy_dialog_content">\u3000\u3000亲爱的扫地僧用户，感谢您使用扫地僧！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您充分阅读并理解《用户协议》和《隐私政策》的全部内容，同意并接受全部条款后开始使用我们的产品和服务。</string>
+    <string name="privacy_policy_dialog_content_again">\u3000\u3000您需要同意本用户协议和隐私政策才能继续使用扫地僧，若您不同意，很遗憾我们将无法为您提供服务。</string>
     <string name="number_letter_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
     <!-- msgadapter -->
@@ -36,17 +36,17 @@
 
 
     <string name="permission_douniu_tip">为了正常使用拍摄视频功能，请开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限!</string>
-    <string name="permission_camera_denied">对不起，由于获取不了“相机”权限和“读写手机存储”权限，所以无法正常使用相机功能!请在【设置-应用-南二环-权限】中开启“相机”权限和“读写手机存储”权限，以正常使用南二环。</string>
-    <string name="permission_camera_IDCard_denied">对不起，由于获取不了“相机”权限，所以无法正常使用刷脸功能!请在【设置-应用-南二环-权限】中开启“相机”权限，以正常使用南二环。</string>
-    <string name="permission_scan_code_denied">对不起，由于获取不了“相机”权限，所以无法正常使用扫码功能!请在【设置-应用-南二环-权限】中开启“相机”权限，以正常使用南二环。</string>
-    <string name="permission_write_denied">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用相册功能!请在【设置-应用-南二环-权限】中开启“读写手机存储”权限，以正常使用南二环。</string>
-    <string name="permission_write_denied_download">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用下载功能!请在【设置-应用-南二环-权限】中开启“读写手机存储”权限，以正常使用南二环。</string>
-    <string name="permission_write_denied_call_phone">对不起，由于获取不了“读写手机状态”权限，所以无法正常使用电话功能!请在【设置-应用-南二环-权限】中开启“读写手机状态”权限，以正常使用南二环。</string>
-    <string name="permission_read_contacts_denied">对不起，由于获取不了“通讯录”权限，所以无法正常使用添加好友功能!请在【设置-应用-南二环-权限】中开启“通讯录”权限，以正常使用南二环。</string>
-    <string name="permission_douniu_denied">对不起，由于获取不了“相机”权限、“麦克风”权限，以及“读写手机存储”权限，所以无法正常使用拍摄视频功能!请在【设置-应用-南二环-权限】中开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，以正常使用南二环。</string>
+    <string name="permission_camera_denied">对不起，由于获取不了“相机”权限和“读写手机存储”权限，所以无法正常使用相机功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限和“读写手机存储”权限，以正常使用扫地僧。</string>
+    <string name="permission_camera_IDCard_denied">对不起，由于获取不了“相机”权限，所以无法正常使用刷脸功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限，以正常使用扫地僧。</string>
+    <string name="permission_scan_code_denied">对不起，由于获取不了“相机”权限，所以无法正常使用扫码功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限，以正常使用扫地僧。</string>
+    <string name="permission_write_denied">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用相册功能!请在【设置-应用-扫地僧-权限】中开启“读写手机存储”权限，以正常使用扫地僧。</string>
+    <string name="permission_write_denied_download">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用下载功能!请在【设置-应用-扫地僧-权限】中开启“读写手机存储”权限，以正常使用扫地僧。</string>
+    <string name="permission_write_denied_call_phone">对不起，由于获取不了“读写手机状态”权限，所以无法正常使用电话功能!请在【设置-应用-扫地僧-权限】中开启“读写手机状态”权限，以正常使用扫地僧。</string>
+    <string name="permission_read_contacts_denied">对不起，由于获取不了“通讯录”权限，所以无法正常使用添加好友功能!请在【设置-应用-扫地僧-权限】中开启“通讯录”权限，以正常使用扫地僧。</string>
+    <string name="permission_douniu_denied">对不起，由于获取不了“相机”权限、“麦克风”权限，以及“读写手机存储”权限，所以无法正常使用拍摄视频功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，以正常使用扫地僧。</string>
 
 
-    <string name="permission_record_audio_denied">对不起，由于获取不了“麦克风”权限，所以无法正常使用语音搜索功能!请在【设置-应用-南二环-权限】中开启“麦克风”权限，以正常使用南二环。</string>
+    <string name="permission_record_audio_denied">对不起，由于获取不了“麦克风”权限，所以无法正常使用语音搜索功能!请在【设置-应用-扫地僧-权限】中开启“麦克风”权限，以正常使用扫地僧。</string>
     <string name="permission_apply_camera_reason">不开启“相机”权限和“读写手机存储”权限，将不能使用相机功能!</string>
     <string name="permission_apply_camera_IDCard_reason">不开启“相机”权限，将不能使用刷脸功能!</string>
     <string name="permission_apply_scan_code_reason">不开启“相机”权限，将不能使用扫码功能!</string>

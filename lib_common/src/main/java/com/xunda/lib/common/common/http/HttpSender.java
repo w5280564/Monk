@@ -23,6 +23,8 @@ import com.xunda.lib.common.router.RouterActivityPath;
 import com.xunda.lib.common.router.RouterIntentUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import okhttp3.Call;
@@ -92,9 +94,9 @@ public class HttpSender {
 	/**
 	 * POST请求（文件上传不加密）
 	 */
-	public void sendPostImage() {
+	public void sendPostImage(File file) {
 		this.dialogMessage = "努力加载中...";
-		requestPost();
+		requestPostFile(file);
 	}
 
 
@@ -130,6 +132,40 @@ public class HttpSender {
 					.build().execute(new StringDialogCallback(isShowLoadAnimal));
 		}
 	}
+
+
+	/**
+	 * POST 带文件上传时 调用此方法
+	 *
+	 * @param file
+	 */
+	private void requestPostFile(File file) {
+		HashMap<String, String> upLoadMap = new HashMap<String, String>();
+		if (StringUtil.isBlank(requestUrl)) {
+			L.e(requestName + "POST请求 Url为空");
+			return;
+		}
+		if (paramsMap != null) {
+			L.i("POST请求名称：" + requestName);
+			L.i("POST请求Url：" + requestUrl);
+			L.i("图片路径：" + file.getAbsolutePath());
+			L.i("图片名：" + file.getName());
+
+			for (String key : paramsMap.keySet()) {
+				Object requestParams = paramsMap.get(key);
+				if(requestParams!=null){
+					upLoadMap.put(key,requestParams.toString());
+					L.i(key + " = " + requestParams.toString());
+				}
+			}
+		}
+
+		OkHttpUtils.post().url(requestUrl)
+				.params(upLoadMap)
+				.headers(headerMap)
+				.addFile("file",file.getName(),file).build().execute(new StringDialogCallback(isShowLoadAnimal));
+	}
+
 
 
 

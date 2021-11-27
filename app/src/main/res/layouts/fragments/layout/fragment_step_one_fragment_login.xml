@@ -33,6 +33,7 @@
             android:textSize="@dimen/sp_12" />
 
         <ImageView
+            android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_46"
             android:layout_height="@dimen/dp_46"
             android:layout_gravity="center_horizontal"

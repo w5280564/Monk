@@ -429,7 +429,6 @@ public class StringUtil {
         // 对字节数组Base64编码
         Base64 encoder = new Base64();
         return encoder.encode(data);// 返回Base64编码过的字节数组字符串
-        // }
     }
 
 
