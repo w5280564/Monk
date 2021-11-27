@@ -81,7 +81,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.iv_header:
-                showChoosePhotoDialog(1);
+                checkGalleryPermission(1);
                 break;
             case R.id.arrowItemView_industry:
 
@@ -134,12 +134,6 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case Constants.PHOTO_REQUEST_CAMERA:
-                    if (FileUtil.hasSdcard()) {
-                        File mFile = new File(mCurrentPhotoPath);
-                        uploadImage(mFile);
-                    }
-                    break;
                 case Constants.PHOTO_REQUEST_GALLERY:
                     if (data != null) {
                         List<Uri> mSelected = Matisse.obtainResult(data);//图片集合

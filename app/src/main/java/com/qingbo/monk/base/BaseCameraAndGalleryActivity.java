@@ -3,25 +3,17 @@ package com.qingbo.monk.base;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.fileprovider.FileProvider7;
 import com.xunda.lib.common.common.permission.PermissionManager;
 import com.qingbo.monk.R;
-import com.xunda.lib.common.dialog.ChoosePhotoDialog;
 import com.xunda.lib.common.dialog.PermissionApplyDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
@@ -33,56 +25,10 @@ import pub.devrel.easypermissions.EasyPermissions;
 public abstract class BaseCameraAndGalleryActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
 
     private static final int APP_SETTINGS_PHOTO = 100;
-    private static final int APP_SETTINGS_CAMERA = 101;
     private int photo_number = 1;
-    protected  String mCurrentPhotoPath ;//图片路径
-    private ChoosePhotoDialog mDialog;
-
-
-    /**
-     * 弹出选择照片的dialog
-     */
-    protected void showChoosePhotoDialog(int photo_number) {
-        this.photo_number = photo_number;
-
-        if (mDialog == null) {
-            mDialog = new ChoosePhotoDialog(this,
-                    new ChoosePhotoDialog.ChoosePhotoListener() {
-                        @Override
-                        public void takePhoto() {// 拍照
-                            checkCameraPermission();
-                        }
-
-                        @Override
-                        public void choosePhoto() {// 从相册
-                            checkGalleryPermission();
-                        }
-                    });
-        }
-
-        if (!mDialog.isShowing()) {
-            mDialog.show();
-        }
-    }
 
 
 
-
-    /**
-     * 从拍照获取
-     */
-    private  void camera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            String filename = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.CHINA)
-                    .format(new Date()) + ".png";
-            File file = new File(Environment.getExternalStorageDirectory(), filename);
-            mCurrentPhotoPath = file.getAbsolutePath();
-            Uri fileUri = FileProvider7.getUriForFile(this, file);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-            startActivityForResult(takePictureIntent, Constants.PHOTO_REQUEST_CAMERA);
-        }
-    }
 
 
 
@@ -111,7 +57,8 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
     /**
      * 检查读写权限
      */
-    protected void checkGalleryPermission() {
+    protected void checkGalleryPermission(int photo_number) {
+        this.photo_number = photo_number;
         boolean result = PermissionManager.checkPermission(this, Constants.PERMS_WRITE_READ);
         if (result) {
             gallery();
@@ -121,18 +68,6 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
     }
 
 
-
-    /**
-     * 检查相机权限
-     */
-    private void checkCameraPermission() {
-        boolean result = PermissionManager.checkPermission(this, Constants.PERMS_CAMERA);
-        if (result) {
-            camera();
-        }else{
-            PermissionManager.requestPermission(this, getString(R.string.permission_camera_tip), Constants.PERMISSION_CAMERA_CODE, Constants.PERMS_CAMERA);
-        }
-    }
 
 
     @Override
@@ -152,13 +87,8 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         switch(requestCode){
             case Constants.WRITE_PERMISSION_CODE:
-                if (perms.size() == 2) {
-                    gallery();
-                }
-                break;
-            case Constants.PERMISSION_CAMERA_CODE:
                 if (perms.size() == 3) {
-                    camera();
+                    gallery();
                 }
                 break;
         }
@@ -186,10 +116,6 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
                         content = getString(R.string.permission_write_denied);
                         request_code = APP_SETTINGS_PHOTO;
                         break;
-                    case Constants.PERMISSION_CAMERA_CODE:
-                        content = getString(R.string.permission_camera_denied);
-                        request_code = APP_SETTINGS_CAMERA;
-                        break;
                 }
 
                 showPermissionApplyDialog(content,request_code,true);
@@ -197,9 +123,6 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
                 switch(requestCode){
                     case Constants.WRITE_PERMISSION_CODE:
                         showPermissionApplyDialog(getString(R.string.permission_apply_photo_reason),APP_SETTINGS_PHOTO,false);
-                        break;
-                    case Constants.PERMISSION_CAMERA_CODE:
-                        showPermissionApplyDialog(getString(R.string.permission_apply_camera_reason),APP_SETTINGS_CAMERA,false);
                         break;
                 }
             }
@@ -223,9 +146,7 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
                     startActivityForResult( intent,request_code);
                 }else{
                     if(request_code==APP_SETTINGS_PHOTO){
-                        checkGalleryPermission();
-                    }else if(request_code==APP_SETTINGS_CAMERA){
-                        checkCameraPermission();
+                        checkGalleryPermission(photo_number);
                     }
                 }
             }
@@ -239,9 +160,7 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         if(requestCode==APP_SETTINGS_PHOTO){
-            checkGalleryPermission();
-        }else if(requestCode==APP_SETTINGS_CAMERA){
-            checkCameraPermission();
+            checkGalleryPermission(photo_number);
         }
     }
 
