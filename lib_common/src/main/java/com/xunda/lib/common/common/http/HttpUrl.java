@@ -48,9 +48,9 @@ public class HttpUrl {
 
 
     /**
-     * 修改个人信息
+     * 单文件上传
      */
-    public static final String editUserInfo = "user/user/edit-info";
+    public static final String uploadFile = "login/login/upload-file";
 
 
 }

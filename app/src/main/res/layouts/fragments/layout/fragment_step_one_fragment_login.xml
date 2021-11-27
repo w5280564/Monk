@@ -32,13 +32,13 @@
             android:textColor="@color/text_color_a1a1a1"
             android:textSize="@dimen/sp_12" />
 
-        <ImageView
+        <com.xunda.lib.common.view.RoundImageView
             android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_46"
             android:layout_height="@dimen/dp_46"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_14"
-            android:src="@mipmap/icon_logo_round" />
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:layout_width="wrap_content"
