@@ -149,12 +149,12 @@ public class AreaCodeAdapter extends BaseAdapter implements PinnedSectionListVie
         return view;
     }
 
-    public void setItemClickListener(LinearLayout layout, final String code){
+    public void setItemClickListener(LinearLayout layout, final String area_code){
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(clickListener != null){
-                    clickListener.onChooseItem(code);
+                    clickListener.onChooseItem(area_code);
                 }
             }
         });

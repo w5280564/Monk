@@ -1,6 +1,6 @@
 package com.xunda.lib.common.common.preferences;
 
-import com.xunda.lib.common.bean.NanUserBean;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 /**
@@ -27,7 +27,7 @@ public class PrefUtil {
      *
      * @param user
      */
-    public static void saveUser(NanUserBean user) {
+    public static void saveUser(UserBean user) {
 
         if (user != null) {
             SharePref.user().setUserInfo(user);
@@ -74,7 +74,7 @@ public class PrefUtil {
      *
      * @return
      */
-    public static NanUserBean getUser() {
+    public static UserBean getUser() {
         return SharePref.user().getUserInfo();
     }
 }

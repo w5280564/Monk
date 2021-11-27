@@ -4,7 +4,7 @@ import com.baoyz.treasure.Clear;
 import com.baoyz.treasure.Default;
 import com.baoyz.treasure.Preferences;
 import com.baoyz.treasure.Remove;
-import com.xunda.lib.common.bean.NanUserBean;
+import com.xunda.lib.common.bean.UserBean;
 
 
 /**
@@ -69,8 +69,8 @@ public interface UserPreferences {
 	 * 本地保存用户信息
 	 * @param user
 	 */
-	void setUserInfo(NanUserBean user);
-	NanUserBean getUserInfo();
+	void setUserInfo(UserBean user);
+	UserBean getUserInfo();
 
 
 

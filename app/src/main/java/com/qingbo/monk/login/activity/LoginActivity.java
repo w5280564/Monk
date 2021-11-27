@@ -4,7 +4,7 @@ import android.view.View;
 import java.util.HashMap;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.xunda.lib.common.bean.NanUserBean;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -54,7 +54,7 @@ public class LoginActivity extends BaseActivity{
         baseMap.put("equipmentName", android.os.Build.BRAND + "" + android.os.Build.MODEL);
         baseMap.put("meid", StringUtil.getIMEI());
         baseMap.put("version", android.os.Build.VERSION.RELEASE);
-        HttpSender sender = new HttpSender(HttpUrl.accountLogin, "账号密码登录", baseMap,
+        HttpSender sender = new HttpSender(HttpUrl.mobileLogin, "账号密码登录", baseMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity{
 
 
     private void handleSuccessData(String json_data) {
-        NanUserBean obj = GsonUtil.getInstance().json2Bean(json_data, NanUserBean.class);
+        UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
         if (obj != null) {
             saveUserInfo(obj);
             login();
@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity{
      *
      * @param user 用户对象
      */
-    private void saveUserInfo(NanUserBean user) {
+    private void saveUserInfo(UserBean user) {
         PrefUtil.saveUser(user);
     }
 

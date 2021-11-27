@@ -1,11 +1,13 @@
 package com.qingbo.monk.login.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.tuo.customview.VerificationCodeView;
-import com.xunda.lib.common.bean.NanUserBean;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -30,8 +32,16 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
     CountDownTextView tvGetCode;
     @BindView(R.id.et_code)
     VerificationCodeView mCodeView;
-    private String phoneNumber;
+    private String area_code,phoneNumber;
     private boolean fromExitAct;
+
+
+    public static void actionStart(Context context,String area_code,String phoneNumber) {
+        Intent intent = new Intent(context, GetPhoneCodeStepTwoActivity.class);
+        intent.putExtra("area_code",area_code);
+        intent.putExtra("phoneNumber",phoneNumber);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -41,16 +51,15 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
     @Override
     protected void initLocalData() {
         super.initLocalData();
+        area_code = getIntent().getStringExtra("area_code");
         phoneNumber = getIntent().getStringExtra("phoneNumber");
-        phoneNUmberView.setText("+"+phoneNumber);
-
-
+        phoneNUmberView.setText("短信已发送至+"+phoneNumber);
     }
 
 
     @Override
     protected void getServerData() {
-//        getSmsCode(phoneNumber,tvGetCode);
+        getSmsCode(area_code,phoneNumber,tvGetCode);
     }
 
     @Override
@@ -73,39 +82,36 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.tv_getCode:
-                getSmsCode(phoneNumber,tvGetCode);
+                getSmsCode(area_code,phoneNumber,tvGetCode);
                 break;
         }
     }
 
 
     public void finishInPut(String smsCode) {
-        skipAnotherActivity(WelcomeActivity.class);
-//        codeLogin(smsCode);
+        codeLogin(smsCode);
     }
 
 
     /**
-     * 验证码登录
+     * 手机号登录
      * @param smsCode
      */
     private void codeLogin(String smsCode) {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("phoneNum", phoneNumber);
-        baseMap.put("smsCode", smsCode);
-        baseMap.put("osType", "2");//1/2：手机/平板
-        baseMap.put("equipmentName", android.os.Build.BRAND + "" + android.os.Build.MODEL);
-        baseMap.put("meid", StringUtil.getIMEI());
-        baseMap.put("version", android.os.Build.VERSION.RELEASE);
-        HttpSender sender = new HttpSender(HttpUrl.accountLogin, "验证码登录", baseMap,
+        baseMap.put("mobile", phoneNumber);
+        baseMap.put("code", smsCode);
+        HttpSender sender = new HttpSender(HttpUrl.mobileLogin, "手机号登录", baseMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("登录成功");
-                            NanUserBean obj = GsonUtil.getInstance().json2Bean(json_data, NanUserBean.class);
+                            UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                             if (obj != null) {
                                 saveUserInfo(obj);
+                            }else{
+                                skipAnotherActivity(WelcomeActivity.class);
                             }
                         } else {
                             T.ss(msg);
@@ -114,7 +120,6 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
                     }
 
                 }, true);
-
         sender.setContext(mActivity);
         sender.sendPost();
     }
@@ -124,11 +129,12 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
      *
      * @param user 用户对象
      */
-    private void saveUserInfo(NanUserBean user) {
+    private void saveUserInfo(UserBean user) {
         PrefUtil.saveUser(user);
         if (!StringUtil.isBlank(user.getPhoneNum())) {//单独保存手机号
             SharePref.local().setUserPhone(user.getPhoneNum());
         }
+        skipAnotherActivity(WelcomeActivity.class);
     }
 
 

@@ -35,7 +35,6 @@
             android:id="@+id/get_codePhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="短信已发送至+86 13867611114"
             android:layout_marginTop="15dp"
             android:textColor="#A1A1A1"
             android:textSize="14sp" />

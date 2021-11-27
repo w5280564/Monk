@@ -1,6 +1,7 @@
 package com.qingbo.monk.login.activity;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -127,8 +128,10 @@ public class AreaCodeListActivity extends BaseActivity implements AreaCodeAdapte
 
 
     @Override
-    public void onChooseItem(String code) {
-        T.ss(code);
+    public void onChooseItem(String area_code) {
+        Intent intent  = new Intent();
+        intent.putExtra("area_code",area_code);
+        setResult(RESULT_OK,intent);
         finish();
     }
 }

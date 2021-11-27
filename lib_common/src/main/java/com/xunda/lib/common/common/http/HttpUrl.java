@@ -24,9 +24,9 @@ public class HttpUrl {
 
 
     /**
-     * 账号密码登录
+     * 手机号登录
      */
-    public static final String accountLogin = "user/login";
+    public static final String mobileLogin = "login/login/mobile-login";
 
 
 }

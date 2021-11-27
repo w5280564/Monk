@@ -1,10 +1,20 @@
 package com.qingbo.monk.login.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -14,9 +24,10 @@ import butterknife.OnClick;
 public class LoginWithCodeActivity extends BaseActivity {
     @BindView(R.id.tv_number_before)
     TextView tv_number_before;
-    @BindView(R.id.et_phoneCode)
-    EditText et_phoneCode;
-//    private ActivityResultLauncher mActivityResultLauncher;
+    @BindView(R.id.et_phoneNumber)
+    EditText et_phoneNumber;
+    private ActivityResultLauncher mActivityResultLauncher;
+    private String area_code = "86";
 
 
 
@@ -28,17 +39,19 @@ public class LoginWithCodeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-//        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-//            @Override
-//            public void onActivityResult(ActivityResult result) {
-//                if (result!=null) {
-//                    int resultCode = result.getResultCode();
-//                    if (resultCode==RESULT_OK) {
-//                        getMineBankList();
-//                    }
-//                }
-//            }
-//        });
+        tv_number_before.setText("+"+area_code);
+        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result!=null) {
+                    int resultCode = result.getResultCode();
+                    if (resultCode==RESULT_OK) {
+                        area_code = result.getData().getStringExtra("area_code");
+                        tv_number_before.setText("+"+area_code);
+                    }
+                }
+            }
+        });
     }
 
 
@@ -49,13 +62,18 @@ public class LoginWithCodeActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.ll_area_code:
-//                Intent intent = new Intent(mActivity, AreaCodeListActivity.class);
-//                intent.putExtra("isFromRechargeOrCash",true);
-//                mActivityResultLauncher.launch(intent);
-                skipAnotherActivity(AreaCodeListActivity.class);
+                Intent intent = new Intent(mActivity, AreaCodeListActivity.class);
+                mActivityResultLauncher.launch(intent);
                 break;
             case R.id.tv_send_code:
-                skipAnotherActivity(GetPhoneCodeStepTwoActivity.class);
+                String phoneNumber = StringUtil.getEditText(et_phoneNumber);
+
+                if (StringUtil.isBlank(phoneNumber)) {
+                    T.ss("请输入手机号");
+                    return;
+                }
+
+                GetPhoneCodeStepTwoActivity.actionStart(mActivity,area_code,phoneNumber);
                 break;
             case R.id.iv_wechat:
 

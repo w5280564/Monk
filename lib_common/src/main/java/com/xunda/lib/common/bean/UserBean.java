@@ -1,6 +1,6 @@
 package com.xunda.lib.common.bean;
 
-public class NanUserBean {
+public class UserBean {
 
     private int age;
     private String areaCode;
