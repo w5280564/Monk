@@ -38,7 +38,8 @@
             android:layout_height="@dimen/dp_46"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_14"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@mipmap/img_pic_none_square"/>
 
         <TextView
             android:layout_width="wrap_content"
