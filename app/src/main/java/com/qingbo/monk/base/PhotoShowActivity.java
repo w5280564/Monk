@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
-import com.qingbo.monk.adapter.PhotoPagerAdapter;
+
 import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.qingbo.monk.R;

@@ -25,14 +25,5 @@ public class H5Url {
      */
     public static final String H5UserPolicy = server + "protocol.html";
 
-    /**
-     * 充值和提现须知
-     */
-    public static final String H5ChargePolicy = server + "finance_protocol.html";
-
-    /**
-     * 招商
-     */
-    public static final String H5Activity = server + "activity.html";
 
 }

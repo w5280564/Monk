@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
 import com.qingbo.monk.R;
-
+import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import uk.co.senab.photoview.PhotoView;

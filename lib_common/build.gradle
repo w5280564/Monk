@@ -131,9 +131,6 @@ dependencies {
 
     api 'com.android.support:support-v4:+'
 
-    //小辣椒 实体类注解
-    api 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 
     api 'com.android.support:appcompat-v7:26.0.2'
 
