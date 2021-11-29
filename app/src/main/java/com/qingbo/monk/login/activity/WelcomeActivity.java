@@ -23,7 +23,6 @@ public class WelcomeActivity extends BaseActivity {
             case R.id.tv_join:
                 skipAnotherActivity(LoginMoreInfoActivity.class);
                 break;
-
         }
     }
 

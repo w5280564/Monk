@@ -52,7 +52,7 @@ public class PermissionApplyDialog extends Dialog implements View.OnClickListene
 		tv_content = findViewById(R.id.tv_content);
 		tv_right_button = findViewById(R.id.tv_right_button);
 		tv_content.setText(StringUtil.isBlank(content)?"":content);
-		tv_right_button.setText(isNotAskAgain?mContext.getString(R.string.setting):mContext.getString(R.string.open));
+		tv_right_button.setText(isNotAskAgain?"设置":"开启");
 	}
 
 
