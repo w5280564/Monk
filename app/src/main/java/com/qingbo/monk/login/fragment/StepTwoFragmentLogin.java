@@ -24,7 +24,9 @@ import com.xunda.lib.common.common.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,6 +38,7 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     private HaveAdapter mHaveAdapter;
+    private List<HaveBean> mChooseList = new ArrayList<>();
 
 
     @Override
@@ -99,11 +102,11 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ZERO));
                 break;
             case R.id.tv_next:
-
-                for (int i = 0; i < mHaveAdapter.getData().size(); i++) {
-//                    mHaveAdapter
-
+                if (mChooseList.size()<3){
+                    T.ss("至少选择三个方向");
+                    return;
                 }
+
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO));
                 break;
 
@@ -114,8 +117,15 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         HaveBean obj = (HaveBean) adapter.getItem(position);
         if (obj!=null) {
-            obj.setCheck(!obj.isCheck());
+            if (!obj.isCheck()) {
+                mChooseList.add(obj);
+                obj.setCheck(true);
+            }else{
+                mChooseList.remove(obj);
+                obj.setCheck(false);
+            }
+            mHaveAdapter.notifyDataSetChanged();
         }
-        mHaveAdapter.notifyDataSetChanged();
+
     }
 }

@@ -25,10 +25,10 @@ import java.util.List;
 public class PickCityDialog extends Dialog {
     private View view;
     private Activity activity;
-    private CityChooseThreeIdCallback cityChooseCallback;
+    private CityChooseIdCallback cityChooseCallback;
     private List<AreaBean> provinceList;
 
-    public PickCityDialog(Activity activity, List<AreaBean> provinceList, CityChooseThreeIdCallback cityChooseCallback) {
+    public PickCityDialog(Activity activity, List<AreaBean> provinceList, CityChooseIdCallback cityChooseCallback) {
         super(activity, R.style.bottomrDialogStyle);
         this.activity = activity;
         this.cityChooseCallback = cityChooseCallback;
@@ -87,7 +87,7 @@ public class PickCityDialog extends Dialog {
     }
 
 
-    public interface CityChooseThreeIdCallback{
+    public interface CityChooseIdCallback {
         void onConfirm(List<String> nameList,List<Integer> idList);
     }
 

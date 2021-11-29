@@ -48,5 +48,4 @@
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_14" />
     </LinearLayout>
-    <View style="@style/app_line" />
 </LinearLayout>

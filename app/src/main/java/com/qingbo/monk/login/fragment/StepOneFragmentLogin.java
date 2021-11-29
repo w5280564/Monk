@@ -14,6 +14,8 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
 import com.qingbo.monk.login.activity.AreaCodeListActivity;
 import com.qingbo.monk.login.activity.ChooseIndustryActivity;
+import com.xunda.lib.common.bean.AreaBean;
+import com.xunda.lib.common.bean.BaseAreaBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -22,14 +24,17 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.FileUtil;
+import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.PickCityDialog;
 import com.xunda.lib.common.dialog.PickStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.zhihu.matisse.Matisse;
 import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -45,9 +50,12 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     ImageView iv_header;
     @BindView(R.id.arrowItemView_year)
     MyArrowItemView arrowItemView_year;
+    @BindView(R.id.arrowItemView_city)
+    MyArrowItemView arrowItemView_city;
     private boolean haveUploadImg;
     private ActivityResultLauncher mActivityResultLauncher;
     private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
+    private List<AreaBean> mAreaList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -87,7 +95,10 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-
+                            BaseAreaBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseAreaBean.class);
+                            if (obj!=null) {
+                                mAreaList.addAll(obj.getList());
+                            }
                         } else {
                             T.ss(msg);
                         }
@@ -114,7 +125,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 showPickStringDialog();
                 break;
             case R.id.arrowItemView_city:
-
+                showCityDialog();
                 break;
             case R.id.tv_next:
 //                if(!haveUploadImg){
@@ -126,6 +137,23 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 break;
 
         }
+    }
+
+    private void showCityDialog() {
+        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity,mAreaList, new PickCityDialog.CityChooseIdCallback() {
+            @Override
+            public void onConfirm(List<String> nameList, List<Integer> idList) {
+                if (ListUtils.isEmpty(nameList)) {
+                    return;
+                }
+                if (nameList.size()<2) {
+                    return;
+                }
+                arrowItemView_city.getTip().setVisibility(View.GONE);
+                arrowItemView_city.getTvContent().setText(nameList.get(0)+"-"+nameList.get(1));
+            }
+        });
+        mPickCityDialog.show();
     }
 
     private void showPickStringDialog() {

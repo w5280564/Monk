@@ -59,42 +59,4 @@ public class Config {
     }
 
 
-    /**
-     *
-     * 参数配置
-     */
-    public static class Parameter {
-
-        /**
-         * 开发环境
-         */
-
-        public static String BUCKET_NAME = "dayi-test";
-
-        public static String TENCENT_FRESH_FACE_APP_ID = "TIDAhYLx";
-
-
-        /**
-         * 生产环境
-         */
-        static {
-            if (!Setting.DEBUG) {
-                BUCKET_NAME = "southhuan";
-                TENCENT_FRESH_FACE_APP_ID = "IDA2ZNHR";
-            }
-        }
-
-
-
-        public static String getBUCKET_NAME() {
-            return BUCKET_NAME;
-        }
-
-
-        public static String getTencentFreshFaceAppId() {
-            return TENCENT_FRESH_FACE_APP_ID;
-        }
-
-    }
-
 }
