@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
 import com.qingbo.monk.login.activity.AreaCodeListActivity;
+import com.qingbo.monk.login.activity.ChooseIndustryActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -71,6 +72,32 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
         });
     }
 
+    @Override
+    protected void getServerData() {
+        getCityList();
+    }
+
+    /**
+     * 获取城市列表
+     */
+    private void getCityList() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        HttpSender sender = new HttpSender(HttpUrl.cityList, "获取城市列表", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+
+                        } else {
+                            T.ss(msg);
+                        }
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
 
 
     @OnClick({R.id.iv_header,R.id.arrowItemView_industry,R.id.arrowItemView_year,R.id.arrowItemView_city,R.id.tv_next})
@@ -80,7 +107,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 checkGalleryPermission(1);
                 break;
             case R.id.arrowItemView_industry:
-                Intent intent = new Intent(mActivity, AreaCodeListActivity.class);
+                Intent intent = new Intent(mActivity, ChooseIndustryActivity.class);
                 mActivityResultLauncher.launch(intent);
                 break;
             case R.id.arrowItemView_year:

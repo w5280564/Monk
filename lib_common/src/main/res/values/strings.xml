@@ -59,39 +59,11 @@
 
     <string name="permission_apply_record_audio_reason">不开启“麦克风”权限，将不能使用语音搜索功能!</string>
 
-    <string name="setting">设置</string>
-    <string name="setting_shdzgl">收货地址管理</string>
-    <string name="setting_xgmm">修改密码</string>
-    <string name="setting_gy">关于</string>
-
-    <string name="setting_logout">退出当前账户</string>
 
 
-    <string name="tabbar_home">首页</string>
-    <string name="tabbar_message">消息</string>
-    <string name="tabbar_cart">购物车</string>
-    <string name="tabbar_mine">我的</string>
-    <string name="Dialog_WXHY">微信好友</string>
-    <string name="Dialog_PYQ">朋友圈</string>
-    <string name="Dialog_FXD">分享到</string>
 
-    // 登录相关
-    <string name="account">用户名</string>
-    <string name="password">密码</string>
-
-
-    <string name="login_account">账号登录</string>
-    <string name="login_sm">短信登录</string>
-    <string name="input_image_code">请输入图形验证码</string>
-    <string name="input_sm_code">请输入短信验证码</string>
     <string name="get_sm_code">获取验证码</string>
-    <string name="phone_form_error">手机号码格式不对</string>
 
-    <string name="Mine_QB">全部订单</string>
-    <string name="Mine_DFK">待付款</string>
-    <string name="Mine_DFH">待发货</string>
-    <string name="Mine_DSH">待收货</string>
-    <string name="Mine_YSH">已收货</string>
 
     <string name="setting_dqbb">当前版本</string>
     <string name="setting_lxkf">联系客服</string>
@@ -103,10 +75,6 @@
     <string name="Cancel">取消</string>
     <string name="Complete">完成</string>
 
-    <string name="Search_SS">搜索</string>
-    <string name="Search_SSJL">搜索记录</string>
-    <string name="Search_QKLSSS">清空历史搜索</string>
-    <string name="WanQu_Search">请输入搜索内容</string>
 
     <string name="Common_loading">努力加载中...</string>
     <string name="brvah_loading">努力加载中...</string>
@@ -119,30 +87,15 @@
     <string name="Photo_camera">拍照</string>
     <string name="Photo_xiangce">相册</string>
     <string name="Common_no_date">暂无数据</string>
-    <string name="Cart_BJ">编辑</string>
-    <string name="Cart_JS">结算</string>
-    <string name="Cart_SC">删除</string>
     <string name="PTYHZG_WYTY">已阅读并同意</string>
     <string name="PTYHZG_YHXY">《用户注册协议》</string>
-    <string name="Order_KDDH">快递单号：</string>
-    <string name="Order_DDBH">订单编号：</string>
-    <string name="Order_QXDD">取消订单</string>
-    <string name="Order_LJFK">立即付款</string>
-    <string name="Order_TXFH">提醒发货</string>
-    <string name="Order_CKWL">查看物流</string>
-    <string name="Cart_QX">全选</string>
-    <string name="Cart_HJ">合计：￥&#160;</string>
 
-    <string name="Order_THTK">退货退款</string>
-    <string name="Order_JTK">仅退款</string>
-    <string name="THH_SQHH">申请换货</string>
     <string name="Dialog_XZSJ">请选择时间</string>
     <string name="Dialog_XZQY">请选择区域</string>
     <string name="toast_warm_prompt">温馨提示</string>
     <string name="Base_yzmyfs">验证码已发送</string>
     <string name="Register_resend">重新发送验证码</string>
     <string name="Register_second">s后可重新获取</string>
-    <string name="LOGIN_CG">登录成功</string>
     <string name="Home_press_again">再按一次退出程序</string>
 
     <string name="Loading_dialog_check">努力查询中...</string>
@@ -150,30 +103,7 @@
     <string name="HttpSender_FWQCS">请求服务器超时</string>
     <string name="HttpSender_FWQDW">无法连接到服务器,请检查网络连接</string>
     <string name="HttpSender_ERROR_404">服务维护中，请稍后再试...</string>
-    <string name="Seven_FL">分类</string>
 
-    <string name="Order_All">共</string>
-    <string name="Order_JSP">件商品</string>
-    <string name="Order_XJ">小计</string>
-    <string name="Order_HYF">含运费</string>
-    <string name="Order_WFK">未付款</string>
-    <string name="Order_WFH">未发货</string>
-    <string name="Order_WSH">未收货</string>
-    <string name="Order_YSH">已收货</string>
-    <string name="Order_QRSH">确认收货</string>
-    <string name="Order_QPJ">去评价</string>
-    <string name="Order_GWZP">购物追评</string>
-    <string name="Order_CKPJ">查看评价</string>
-    <string name="Order_QFWK">去付尾款</string>
-    <string name="Order_WFWK">未付尾款</string>
-    <string name="open">开启</string>
-    <string name="Dialog_XCX">小程序</string>
-    <string name="Dialog_SC">收藏</string>
-    <string name="Dialog_HYQ">小万群</string>
-    <string name="Dialog_HQTPSB">获取分享图片失败</string>
-    <string name="Cart_dialog_SC1">确定将该宝贝删除吗</string>
-    <string name="Cart_dialog_SC2">确定将这些宝贝删除吗</string>
-    <string name="Cart_toast_XZ">您还没选择宝贝呢</string>
 
     <string name="aite_ta">&#064;TA</string>
 </resources>

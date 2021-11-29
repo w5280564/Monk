@@ -30,14 +30,14 @@ public class ChooseIndustryActivity extends BaseActivity {
 
     @Override
     protected void getServerData() {
-        getIndustryListList();
+        getIndustryList();
     }
 
 
     /**
      * 获取行业列表
      */
-    private void getIndustryListList() {
+    private void getIndustryList() {
         HashMap<String, String> requestMap = new HashMap<>();
         HttpSender sender = new HttpSender(HttpUrl.industryList, "获取行业列表", requestMap,
                 new MyOnHttpResListener() {

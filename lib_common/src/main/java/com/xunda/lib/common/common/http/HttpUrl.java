@@ -53,5 +53,10 @@ public class HttpUrl {
     public static final String uploadFile = "login/login/upload-file";
 
 
+
+    /**
+     * 收获列表
+     */
+    public static final String harvestList = "login/login/harvest-list";
 }
 
