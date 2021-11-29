@@ -3,34 +3,33 @@ package com.qingbo.monk.login.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.opengl.GLUtils;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
-
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import com.bumptech.glide.Glide;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
+import com.qingbo.monk.login.activity.AreaCodeListActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
-import com.xunda.lib.common.common.fileprovider.FileProvider7;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.CompressUtils;
 import com.xunda.lib.common.common.utils.FileUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.PickStringDialog;
+import com.xunda.lib.common.view.MyArrowItemView;
 import com.zhihu.matisse.Matisse;
-
 import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +42,11 @@ import butterknife.OnClick;
 public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     @BindView(R.id.iv_header)
     ImageView iv_header;
+    @BindView(R.id.arrowItemView_year)
+    MyArrowItemView arrowItemView_year;
     private boolean haveUploadImg;
+    private ActivityResultLauncher mActivityResultLauncher;
+    private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
 
     @Override
     protected int getLayoutId() {
@@ -54,35 +57,21 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     @Override
     protected void initView() {
         GlideUtils.loadCircleImage(mContext,iv_header, SharePref.user().getUserHead());
-    }
-
-    @Override
-    protected void getServerData() {
-        getIndustryListList();
-    }
-
-
-    /**
-     * 获取行业列表
-     */
-    private void getIndustryListList() {
-        HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender sender = new HttpSender(HttpUrl.industryList, "获取行业列表", requestMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-
-                        } else {
-                            T.ss(msg);
-                        }
+        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result!=null) {
+                    int resultCode = result.getResultCode();
+                    if (resultCode==Activity.RESULT_OK) {
+//                        area_code = result.getData().getStringExtra("area_code");
+//                        tv_number_before.setText("+"+area_code);
                     }
-
-                }, true);
-
-        sender.setContext(mActivity);
-        sender.sendGet();
+                }
+            }
+        });
     }
+
+
 
     @OnClick({R.id.iv_header,R.id.arrowItemView_industry,R.id.arrowItemView_year,R.id.arrowItemView_city,R.id.tv_next})
     public void onViewClicked(View view) {
@@ -91,24 +80,36 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 checkGalleryPermission(1);
                 break;
             case R.id.arrowItemView_industry:
-
+                Intent intent = new Intent(mActivity, AreaCodeListActivity.class);
+                mActivityResultLauncher.launch(intent);
                 break;
             case R.id.arrowItemView_year:
-
+                showPickStringDialog();
                 break;
             case R.id.arrowItemView_city:
 
                 break;
             case R.id.tv_next:
-                if(!haveUploadImg){
-                    T.ss("请上传照片");
-                    return;
-                }
+//                if(!haveUploadImg){
+//                    T.ss("请上传照片");
+//                    return;
+//                }
 
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
                 break;
 
         }
+    }
+
+    private void showPickStringDialog() {
+        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList),"", new PickStringDialog.ChooseCallback() {
+            @Override
+            public void onConfirm(String value) {
+                arrowItemView_year.getTip().setVisibility(View.GONE);
+                arrowItemView_year.getTvContent().setText(value);
+            }
+        });
+        mPickStringDialog.show();
     }
 
     /**

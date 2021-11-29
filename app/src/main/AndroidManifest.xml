@@ -42,6 +42,7 @@
         <activity android:name=".login.activity.WelcomeActivity" />
         <activity android:name=".login.activity.LoginMoreInfoActivity" />
         <activity android:name=".login.activity.AreaCodeListActivity" />
+        <activity android:name=".login.activity.ChooseIndustryActivity" />
 
 
 
