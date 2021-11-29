@@ -155,8 +155,8 @@ dependencies {
     api project(':webviewjavascriptbridge')
 
     //小辣椒 实体类注解
-    api 'org.projectlombok:lombok:1.18.8'
-    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    api 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     //ActivityResultLauncher
     api "androidx.activity:activity:1.2.0"

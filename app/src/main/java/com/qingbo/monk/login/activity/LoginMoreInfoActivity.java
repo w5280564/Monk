@@ -1,6 +1,7 @@
 package com.qingbo.monk.login.activity;
 
 import android.widget.ImageView;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;

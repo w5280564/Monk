@@ -34,7 +34,7 @@ public class GsonUtil {
 
 	private Gson gson;
 
-	private GsonUtil() {
+	public GsonUtil() {
 		gson = new Gson();
 	}
 
