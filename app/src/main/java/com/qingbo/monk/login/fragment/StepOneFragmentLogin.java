@@ -3,6 +3,8 @@ package com.qingbo.monk.login.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.opengl.GLUtils;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +16,11 @@ import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.fileprovider.FileProvider7;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.CompressUtils;
 import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.L;
@@ -47,7 +51,10 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     }
 
 
-
+    @Override
+    protected void initView() {
+        GlideUtils.loadCircleImage(mContext,iv_header, SharePref.user().getUserHead());
+    }
 
     @Override
     protected void getServerData() {
