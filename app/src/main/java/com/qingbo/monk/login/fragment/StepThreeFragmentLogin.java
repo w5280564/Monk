@@ -2,6 +2,8 @@ package com.qingbo.monk.login.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.internal.FlowLayout;
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
@@ -24,15 +26,18 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.WebSocket;
 
 /**
  * 登录填写更多信息第3步
@@ -55,6 +60,7 @@ public class StepThreeFragmentLogin extends BaseFragment {
                 break;
             case R.id.tv_next:
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE));
+//                Log.d("lab", choice_LableMap.toString());
                 break;
 
         }
@@ -69,6 +75,7 @@ public class StepThreeFragmentLogin extends BaseFragment {
     private void getTopicLab() {
         HashMap<String, String> requestMap = new HashMap<>();
         HttpSender httpSender = new HttpSender(HttpUrl.interestedList, "感兴趣列表", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 Topic_Bean topic_bean = GsonUtil.getInstance().json2Bean(json_data, Topic_Bean.class);
@@ -81,11 +88,9 @@ public class StepThreeFragmentLogin extends BaseFragment {
         httpSender.sendGet();
     }
 
-    ArrayList<TextView> questiontxt_List = new ArrayList<>();
-    ArrayList<LinearLayout> questionlin_List = new ArrayList<>();
     ArrayList<ImageView> arrow_img_List = new ArrayList<>();
     private List<Boolean> choiceList =new ArrayList<>();
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void questionList(Context context, LinearLayout myFlex, Topic_Bean topic_bean) {
         if (myFlex != null) {
             myFlex.removeAllViews();
@@ -95,73 +100,64 @@ public class StepThreeFragmentLogin extends BaseFragment {
             View myView = LayoutInflater.from(context).inflate(R.layout.mainlogin_forgetpsw_questionlist, null);
             ConstraintLayout qusetion_Constraint = myView.findViewById(R.id.qusetion_Constraint);
             TextView questionTxt = myView.findViewById(R.id.questionone_txt);
-            LinearLayout choice_lin = myView.findViewById(R.id.choice_lin);
+            FlowLayout choice_flex = myView.findViewById(R.id.choice_flex);
             ImageView arrow_img = myView.findViewById(R.id.arrow_img);
+            arrow_img.setEnabled(false);
             arrow_img.setImageResource(R.mipmap.topic_down);
             questionTxt.setText(topic_bean.getList().get(i).getName());
-            questiontxt_List.add(questionTxt);
-            questionlin_List.add(choice_lin);
             arrow_img_List.add(arrow_img);
-            choiceList.add(false);
-            qusetion_Constraint.setTag(i);
-
+            choiceList.add(true);
+            questionTxt.setTag(i);
             myFlex.addView(myView);
-            qusetion_Constraint.setOnClickListener(v -> {
+            lableChoiceList(context,choice_flex, topic_bean.getList().get(i));
+            questionTxt.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
                 boolean onChoice = choiceList.get(tag);
                 if (onChoice) {
                     choiceList.set(tag,false);
-                    arrow_img_List.get(tag).animate().rotation(0);
-                    choice_lin.removeAllViews();
+                    arrow_img_List.get(tag).animate().rotation(-90);
+                    choice_flex.setVisibility(View.GONE);
                 } else {
                     choiceList.set(tag,true);
-                    arrow_img_List.get(tag).animate().rotation(-90);
-                    lableChoiceList(context,choice_lin, topic_bean.getList().get(tag), tag);
+                    arrow_img_List.get(tag).animate().rotation(0);
+                    choice_flex.setVisibility(View.VISIBLE);
                 }
             });
+
         }
     }
-
+    HashMap<String,Object> choice_LableMap = new HashMap<>();
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint("RestrictedApi")
-    public void lableChoiceList(Context context,LinearLayout myFlex , Topic_Bean.ListDTO model, int textTag) {
+    public void lableChoiceList(Context context,FlowLayout myFlex , Topic_Bean.ListDTO model) {
+         List<Boolean> choiceLable =new ArrayList<>();
+         List<TextView> choiceTxt =new ArrayList<>();
         if (myFlex != null) {
             myFlex.removeAllViews();
         }
         int size = model.getChildren().size();
         for (int i = 0; i < size; i++) {
-            View myView = LayoutInflater.from(context).inflate(R.layout.mainlogin_forgetpsw_questionlist, null);
-//            TextView lable_Txt = myView.findViewById()
-
-             FlowLayout mylin = new FlowLayout(context);
-//            mylin.setOrientation(LinearLayout.VERTICAL);
-            mylin.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
-
-            TextView projectTxt = new TextView(context);
-            projectTxt.setTextColor(ContextCompat.getColor(context, R.color.app_yellow_color));
-//            projectTxt.setGravity(Gravity.CENTER_VERTICAL);
-//            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 44, getResources().getDisplayMetrics());
-//            RelativeLayout.LayoutParams itemParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height);
-//            int margisleft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
-//            itemParams.setMargins(margisleft, 0, 0, 0);
-//            projectTxt.setLayoutParams(itemParams);
-
-//            View myview = new View(context);
-//            myview.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
-//            int viewheight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-//            RelativeLayout.LayoutParams viewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, viewheight);
-//            myview.setLayoutParams(viewParams);
-
-            projectTxt.setText(model.getChildren().get(i).getName());
-            projectTxt.setTag(i);
-            mylin.addView(projectTxt);
-//            mylin.addView(myview);
-            myFlex.addView(mylin);
-            projectTxt.setOnClickListener(v -> {
+            View myView = LayoutInflater.from(context).inflate(R.layout.topic_lable, null);
+            TextView lable_Txt = myView.findViewById(R.id.lable_Txt);
+            lable_Txt.setText(model.getChildren().get(i).getName());
+            choiceLable.add(false);
+            choiceTxt.add(lable_Txt);
+            lable_Txt.setTag(i);
+            myFlex.addView(myView);
+            lable_Txt.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
-                choiceList.set(textTag,false);
-                arrow_img_List.get(textTag).animate().rotation(0);
-//                questionTxt.setText(model.getData().get(tag).getQuestion());
-                myFlex.removeAllViews();
+                boolean onChoice = choiceLable.get(tag);
+                if (onChoice){
+                    choiceLable.set(tag,false);
+                    choiceTxt.get(tag).setTextColor(ContextCompat.getColor(context,R.color.text_color_a1a1a1));
+                    choiceTxt.get(tag).setBackgroundResource(R.drawable.label_stroke);
+                    choice_LableMap.remove(model.getChildren().get(tag).getName(),model.getChildren().get(tag).getName());
+                }else {
+                    choiceLable.set(tag,true);
+                    choiceTxt.get(tag).setTextColor(ContextCompat.getColor(context,R.color.text_color_444444));
+                    choiceTxt.get(tag).setBackgroundResource(R.drawable.label_stroke_yellow);
+                    choice_LableMap.put(model.getChildren().get(tag).getName(),model.getChildren().get(tag).getName());
+                }
             });
         }
     }
