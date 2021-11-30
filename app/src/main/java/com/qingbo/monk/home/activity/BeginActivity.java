@@ -141,7 +141,7 @@ public class BeginActivity extends FragmentActivity {
      */
     private void goToWhere() {
         if (PrefUtil.isLogin()) {
-            jumpToMainActivity();
+            jumpToLoginActivity();
         }else{
             jumpToLoginActivity();
         }

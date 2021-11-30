@@ -100,14 +100,17 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <CheckBox
+                android:id="@+id/cb_agreement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/icon_gouxuan_xieyi"
-                android:drawablePadding="@dimen/dp_10"
+                android:checked="false"
+                android:background="@null"
+                android:paddingLeft="@dimen/dp_8"
                 android:text="登录即表示同意"
                 android:textColor="@color/text_color_444444"
-                android:textSize="12sp" />
+                android:button="@drawable/checkbox_agreement"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/tv_agreement"

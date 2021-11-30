@@ -58,5 +58,11 @@ public class HttpUrl {
      * 收获列表
      */
     public static final String harvestList = "login/login/harvest-list";
+
+
+    /**
+     * 第三方登录
+     */
+    public static final String authLogin = "login/login/auth-login";
 }
 
