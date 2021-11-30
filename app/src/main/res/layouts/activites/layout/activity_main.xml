@@ -19,8 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@style/main_bottom_view_selected"
-        app:itemTextAppearanceInactive="@style/main_bottom_view_normal"
+        app:itemTextColor="@drawable/tab_txt_selector"
         app:menu="@menu/bottom_main_menu"
         app:itemBackground="@null"/>
 

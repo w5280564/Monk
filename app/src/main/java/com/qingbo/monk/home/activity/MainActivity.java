@@ -7,6 +7,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.home.fragment.HomeFragment;
+import com.qingbo.monk.home.fragment.MessageFragment;
+import com.qingbo.monk.home.fragment.MineFragment;
+import com.qingbo.monk.home.fragment.QuestionFragment;
+import com.qingbo.monk.home.fragment.UniverseFragment;
+
 import butterknife.BindView;
 
 /**
@@ -31,10 +36,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     private void initFragment() {
         addFragment(new HomeFragment());
-        addFragment(new HomeFragment());
-        addFragment(new HomeFragment());
-        addFragment(new HomeFragment());
-        addFragment(new HomeFragment());
+        addFragment(new QuestionFragment());
+        addFragment(new UniverseFragment());
+        addFragment(new MessageFragment());
+        addFragment(new MineFragment());
         showFragment(0, fragmentId);
     }
 

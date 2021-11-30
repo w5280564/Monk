@@ -43,6 +43,7 @@
         <activity android:name=".login.activity.LoginMoreInfoActivity" />
         <activity android:name=".login.activity.AreaCodeListActivity" />
         <activity android:name=".login.activity.ChooseIndustryActivity" />
+        <activity android:name=".webview.WebviewActivity" />
 
 
 

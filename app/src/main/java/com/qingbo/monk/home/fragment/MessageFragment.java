@@ -4,13 +4,13 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 
 /**
- * 首页
+ * 消息
  */
-public class HomeFragment extends BaseFragment {
+public class MessageFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_message;
     }
 
 
