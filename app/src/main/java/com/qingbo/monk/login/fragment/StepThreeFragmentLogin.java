@@ -27,6 +27,7 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
@@ -70,8 +71,7 @@ public class StepThreeFragmentLogin extends BaseFragment {
                     Object obj = i.next();
                     stringBuilder.append(choice_LableMap.get(obj)+",");
                 }
-                Log.d("lab", stringBuilder.toString());
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE,true, stringBuilder.toString()));
                 break;
 
         }

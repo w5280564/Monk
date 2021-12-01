@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -26,12 +27,16 @@ import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.PickCityDialog;
 import com.xunda.lib.common.dialog.PickStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.zhihu.matisse.Matisse;
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +53,8 @@ import butterknife.OnClick;
 public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     @BindView(R.id.iv_header)
     ImageView iv_header;
+    @BindView(R.id.et_name)
+    EditText et_name;
     @BindView(R.id.arrowItemView_industry)
     MyArrowItemView arrowItemView_industry;
     @BindView(R.id.arrowItemView_year)
@@ -58,7 +65,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     private ActivityResultLauncher mActivityResultLauncher;
     private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
     private List<AreaBean> mAreaList = new ArrayList<>();
-    private String industryName ;
+    private String industryName,city,county,work;
 
     @Override
     protected int getLayoutId() {
@@ -82,6 +89,37 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
             }
         });
+    }
+
+    private void showCityDialog() {
+        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity,mAreaList, new PickCityDialog.CityChooseIdCallback() {
+            @Override
+            public void onConfirm(List<String> nameList, List<Integer> idList) {
+                if (ListUtils.isEmpty(nameList)) {
+                    return;
+                }
+                if (nameList.size()<2) {
+                    return;
+                }
+                arrowItemView_city.getTip().setVisibility(View.GONE);
+                city = nameList.get(0);
+                county = nameList.get(1);
+                arrowItemView_city.getTvContent().setText(city+"-"+county);
+            }
+        });
+        mPickCityDialog.show();
+    }
+
+    private void showPickStringDialog() {
+        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList),"", new PickStringDialog.ChooseCallback() {
+            @Override
+            public void onConfirm(String value) {
+                arrowItemView_year.getTip().setVisibility(View.GONE);
+                work = value;
+                arrowItemView_year.getTvContent().setText(work);
+            }
+        });
+        mPickStringDialog.show();
     }
 
     @Override
@@ -130,44 +168,36 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 showCityDialog();
                 break;
             case R.id.tv_next:
-//                if(!haveUploadImg){
-//                    T.ss("请上传照片");
-//                    return;
-//                }
+                if(!haveUploadImg){
+                    T.ss("请上传照片");
+                    return;
+                }
 
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
+                String nickname = StringUtil.getEditText(et_name);
+
+                if(StringUtil.isBlank(nickname)){
+                    T.ss("请填写名称");
+                    return;
+                }
+
+                JSONObject jsonObject  = new JSONObject();
+                try {
+                    jsonObject.put("nickname", nickname);
+                    jsonObject.put("city", city);
+                    jsonObject.put("county", county);
+                    jsonObject.put("work", work);
+                    jsonObject.put("industry", industryName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,nickname,city,county,work,industryName));
                 break;
 
         }
     }
 
-    private void showCityDialog() {
-        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity,mAreaList, new PickCityDialog.CityChooseIdCallback() {
-            @Override
-            public void onConfirm(List<String> nameList, List<Integer> idList) {
-                if (ListUtils.isEmpty(nameList)) {
-                    return;
-                }
-                if (nameList.size()<2) {
-                    return;
-                }
-                arrowItemView_city.getTip().setVisibility(View.GONE);
-                arrowItemView_city.getTvContent().setText(nameList.get(0)+"-"+nameList.get(1));
-            }
-        });
-        mPickCityDialog.show();
-    }
 
-    private void showPickStringDialog() {
-        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList),"", new PickStringDialog.ChooseCallback() {
-            @Override
-            public void onConfirm(String value) {
-                arrowItemView_year.getTip().setVisibility(View.GONE);
-                arrowItemView_year.getTvContent().setText(value);
-            }
-        });
-        mPickStringDialog.show();
-    }
 
     /**
      * 单文件上传

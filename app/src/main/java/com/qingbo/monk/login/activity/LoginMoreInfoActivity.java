@@ -12,6 +12,9 @@ import com.qingbo.monk.login.fragment.StepThreeFragmentLogin;
 import com.qingbo.monk.login.fragment.StepTwoFragmentLogin;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
 
 /**
@@ -25,6 +28,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
     ImageView iv_step_three;
 
     private int fragmentId = R.id.fl_login;
+    private JSONObject submitJsonObject = new JSONObject();
 
 
     @Override
@@ -87,14 +91,39 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE://登录填写更多信息第一步点提交
+                    if (event.isNext) {//是点下一步操作
+                        try {
+                            submitJsonObject.put("nickname", event.nickname);
+                            submitJsonObject.put("city", event.city);
+                            submitJsonObject.put("county", event.county);
+                            submitJsonObject.put("work", event.work);
+                            submitJsonObject.put("industry", event.industry);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     showStepTwoFragment();
                     break;
 
-                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO://登录填写更多信息第一步点提交
+                case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO://登录填写更多信息第二步点提交
+                    if (event.isNext) {//是点下一步操作
+                        try {
+                            submitJsonObject.put("get_resource", event.get_resourceOrInterested);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     showStepThreeFragment();
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE://登录填写更多信息第三步点提交
+                    if (event.isNext) {//是点下一步操作
+                        try {
+                            submitJsonObject.put("interested", event.get_resourceOrInterested);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     showStepFourFragment();
                     break;
 

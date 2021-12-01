@@ -20,6 +20,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,7 +39,7 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     private HaveAdapter mHaveAdapter;
-    private List<HaveBean> mChooseList = new ArrayList<>();
+    private List<String> mChooseGetResourceList = new ArrayList<>();
 
 
     @Override
@@ -100,12 +101,12 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ZERO));
                 break;
             case R.id.tv_next:
-                if (mChooseList.size()<3){
+                if (mChooseGetResourceList.size()<3){
                     T.ss("至少选择三个方向");
                     return;
                 }
 
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO,true, StringUtil.listToString(mChooseGetResourceList)));
                 break;
 
         }
@@ -116,10 +117,10 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
         HaveBean obj = (HaveBean) adapter.getItem(position);
         if (obj!=null) {
             if (!obj.isCheck()) {
-                mChooseList.add(obj);
+                mChooseGetResourceList.add(obj.getName());
                 obj.setCheck(true);
             }else{
-                mChooseList.remove(obj);
+                mChooseGetResourceList.remove(obj.getName());
                 obj.setCheck(false);
             }
             mHaveAdapter.notifyDataSetChanged();

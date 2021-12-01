@@ -87,19 +87,19 @@ public class StepFourFragmentLogin extends BaseFragment {
 
     @Override
     protected void initLocalData() {
-        
+
     }
 
     private void getEdit_Info(String description) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("nickname","");
-        requestMap.put("description",description);
         requestMap.put("city","");
         requestMap.put("county","");
         requestMap.put("industry","");
         requestMap.put("work","");
-        requestMap.put("interested","");
         requestMap.put("get_resource","");
+        requestMap.put("interested","");
+        requestMap.put("nickname","");
+        requestMap.put("description",description);
         HttpSender httpSender = new HttpSender(HttpUrl.interestedList, "修改个人信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
