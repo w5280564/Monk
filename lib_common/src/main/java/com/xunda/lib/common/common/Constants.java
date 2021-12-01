@@ -8,7 +8,9 @@ import android.Manifest;
  */
 public class Constants {
     public static final int REQUEST_SUCCESS_CODE = 0;//接口请求成功
-    public static final int REQUEST_FAILURE_TOKEN = 201;//其他账号登录，被挤下线
+    public static final int REQUEST_ERROR_IDENTIFICATION = 10003;//认证错误，请先登录
+    public static final int REQUEST_ERROR_NO_LOGIN = 10008;//未登录
+    public static final int REQUEST_ERROR_TOKEN = 401;//token已失效
     public static final int REQUEST_FAILURE_SERVER = -8885;//服务器错误(OKhttp报的错)
     public static final int REQUEST_FAILURE_INTERNET = -8884;//网络错误（网络连接不上）
 

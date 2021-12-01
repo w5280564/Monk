@@ -8,46 +8,36 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.Selection;
-import android.text.Spannable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.language.MultiLanguageUtil;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.router.RouterActivityPath;
-import com.xunda.lib.common.router.RouterIntentUtils;
-import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.webview.WebviewActivity;
 import com.xunda.lib.common.view.CountDownTextView;
-
 import org.greenrobot.eventbus.EventBus;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.ButterKnife;
 
 /**
@@ -88,16 +78,6 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     }
 
 
-
-
-    /**
-     * 跳转到登陆页
-     */
-    private void jumpToLoginActivity() {
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("fromExitAct", true);
-        RouterIntentUtils.jumpTo(RouterActivityPath.Main.PAGER_LOGIN, bundle);
-    }
 
 
 

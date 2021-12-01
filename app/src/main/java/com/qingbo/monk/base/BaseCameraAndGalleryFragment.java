@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.qingbo.monk.R;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.permission.PermissionManager;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.dialog.PermissionApplyDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -63,7 +64,7 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
         if (result) {
             gallery();
         }else{
-            PermissionManager.requestPermission(mActivity, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ);
+            PermissionManager.requestPermission(mActivity, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_CAMERA);
         }
     }
 

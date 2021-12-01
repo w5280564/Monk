@@ -24,7 +24,6 @@ import com.xunda.lib.common.router.RouterActivityPath;
 import com.xunda.lib.common.router.RouterIntentUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -338,8 +337,11 @@ public class HttpSender {
 			String msg = GsonUtil.getInstance().getValue(json, "msg");
 
 			int code = (stringCode!=null)?Integer.parseInt(stringCode):500;
-			if(code == Constants.REQUEST_FAILURE_TOKEN){//其他账号登录，被挤下线
-				removeUserData();
+			if(code == Constants.REQUEST_ERROR_IDENTIFICATION){//认证错误，请先登录
+				showTokenDialog(msg);
+			}else if(code == Constants.REQUEST_ERROR_NO_LOGIN){//未登录
+				showTokenDialog(msg);
+			}else if(code == Constants.REQUEST_ERROR_TOKEN){
 				showTokenDialog(msg);
 			}else{
 				String data = GsonUtil.getInstance().getValue(json, "data");
@@ -379,9 +381,10 @@ public class HttpSender {
 
 
 	/**
-	 * token失效提示框（被挤下线）
+	 * token失效提示框
 	 */
 	private void showTokenDialog(String description) {
+		removeUserData();
 		if(!(context instanceof Activity)){
 			return;
 		}
@@ -399,9 +402,7 @@ public class HttpSender {
 	 * 跳到登录界面
 	 */
 	private void jumpToLoginActivity() {
-		Bundle bundle = new Bundle();
-		bundle.putBoolean("fromExitAct", true);
-		RouterIntentUtils.jumpTo(RouterActivityPath.Main.PAGER_LOGIN,bundle);
+		RouterIntentUtils.jumpTo(RouterActivityPath.Main.PAGER_LOGIN);
 	}
 
 
