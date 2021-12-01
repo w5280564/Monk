@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
@@ -26,6 +27,7 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,8 +61,13 @@ public class StepThreeFragmentLogin extends BaseFragment {
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE));
                 break;
             case R.id.tv_next:
+                if (choice_LableMap == null || choice_LableMap.size() < 3){
+                    T.s("至少选择三个话题",3000);
+                    return;
+                }
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE));
 //                Log.d("lab", choice_LableMap.toString());
+
                 break;
 
         }
