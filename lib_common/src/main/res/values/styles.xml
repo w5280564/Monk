@@ -211,7 +211,11 @@
     </style>
 
 
-
+    <!-- tabLayout导航栏样式 -->
+    <style name="MyTabLayoutTextAppearance18" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/app_main_color</item>
+    </style>
 
     <!-- tabLayout导航栏样式 -->
     <style name="MyTabLayoutTextAppearance16" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
