@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.tuo.customview.VerificationCodeView;
+import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -105,7 +106,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("登录成功");
-                            UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                            BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
                             saveUserInfo(obj);
                         }
                     }
@@ -120,11 +121,19 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
     /**
      * 保存用户信息
      *
-     * @param user 用户对象
+     * @param baseUserBean 用户对象
      */
-    private void saveUserInfo(UserBean user) {
-        PrefUtil.saveUser(user);
-        skipAnotherActivity(WelcomeActivity.class);
+    private void saveUserInfo(BaseUserBean baseUserBean) {
+        if (baseUserBean!=null) {
+            UserBean userObj = baseUserBean.getInfo();
+            if (userObj==null) {
+                return;
+            }
+
+            PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
+            skipAnotherActivity(WelcomeActivity.class);
+        }
+
     }
 
 

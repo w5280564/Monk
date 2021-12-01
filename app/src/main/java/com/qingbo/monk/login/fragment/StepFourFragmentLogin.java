@@ -17,6 +17,7 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
@@ -77,9 +78,17 @@ public class StepFourFragmentLogin extends BaseFragment {
                 break;
             case R.id.tv_save:
                 String description = StringUtil.getEditText(et_description);
-                getEdit_Info(description);
+                if (StringUtil.isBlank(description)) {
+                    T.ss("请填写个人介绍");
+                    return;
+                }
 
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR));
+                if (description.length()<20) {
+                    T.ss("最少20个字");
+                    return;
+                }
+
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR,true,description));
                 break;
 
         }
@@ -90,26 +99,6 @@ public class StepFourFragmentLogin extends BaseFragment {
 
     }
 
-    private void getEdit_Info(String description) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("city","");
-        requestMap.put("county","");
-        requestMap.put("industry","");
-        requestMap.put("work","");
-        requestMap.put("get_resource","");
-        requestMap.put("interested","");
-        requestMap.put("nickname","");
-        requestMap.put("description",description);
-        HttpSender httpSender = new HttpSender(HttpUrl.interestedList, "修改个人信息", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
 
-
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
 
 }

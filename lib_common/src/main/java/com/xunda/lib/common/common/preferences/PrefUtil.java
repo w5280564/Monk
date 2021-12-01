@@ -27,7 +27,7 @@ public class PrefUtil {
      *
      * @param user
      */
-    public static void saveUser(UserBean user) {
+    public static void saveUser(UserBean user,String accessToken) {
 
         if (user != null) {
             SharePref.user().setUserInfo(user);
@@ -45,8 +45,8 @@ public class PrefUtil {
             SharePref.user().setUserId(user.getId());
         }
 
-        if (!StringUtil.isBlank(user.getToken())) {
-            SharePref.user().setToken(user.getToken());
+        if (!StringUtil.isBlank(accessToken)) {
+            SharePref.user().setToken(accessToken);
         }
 
     }

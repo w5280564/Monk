@@ -1,6 +1,9 @@
 package com.qingbo.monk.login.activity;
 
+import android.os.Build;
 import android.widget.ImageView;
+
+import androidx.annotation.RequiresApi;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
@@ -10,10 +13,17 @@ import com.qingbo.monk.login.fragment.StepFourFragmentLogin;
 import com.qingbo.monk.login.fragment.StepOneFragmentLogin;
 import com.qingbo.monk.login.fragment.StepThreeFragmentLogin;
 import com.qingbo.monk.login.fragment.StepTwoFragmentLogin;
+import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
+import com.xunda.lib.common.common.http.HttpSender;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 
@@ -28,7 +38,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
     ImageView iv_step_three;
 
     private int fragmentId = R.id.fl_login;
-    private JSONObject submitJsonObject = new JSONObject();
+    private HashMap<String, String> requestMap = new HashMap<>();
 
 
     @Override
@@ -92,47 +102,57 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE://登录填写更多信息第一步点提交
                     if (event.isNext) {//是点下一步操作
-                        try {
-                            submitJsonObject.put("nickname", event.nickname);
-                            submitJsonObject.put("city", event.city);
-                            submitJsonObject.put("county", event.county);
-                            submitJsonObject.put("work", event.work);
-                            submitJsonObject.put("industry", event.industry);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        requestMap.put("nickname", event.nickname);
+                        requestMap.put("city", event.city);
+                        requestMap.put("county", event.county);
+                        requestMap.put("work", event.work);
+                        requestMap.put("industry", event.industry);
                     }
                     showStepTwoFragment();
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO://登录填写更多信息第二步点提交
                     if (event.isNext) {//是点下一步操作
-                        try {
-                            submitJsonObject.put("get_resource", event.get_resourceOrInterested);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        requestMap.put("get_resource", event.get_resourceOrInterestedOrDescription);
                     }
                     showStepThreeFragment();
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE://登录填写更多信息第三步点提交
                     if (event.isNext) {//是点下一步操作
-                        try {
-                            submitJsonObject.put("interested", event.get_resourceOrInterested);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        requestMap.put("interested", event.get_resourceOrInterestedOrDescription);
                     }
                     showStepFourFragment();
                     break;
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_FOUR://登录填写更多信息第四步点提交
-                    goToMainActivity();
+
+                    if (event.isNext) {//是点下一步操作
+                        requestMap.put("description", event.get_resourceOrInterestedOrDescription);
+                    }
+                    edit_Info();
                     break;
 
             }
         }
+    }
+
+
+    /**
+     * 修改个人信息
+     */
+    private void edit_Info() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Edit_Info, "修改个人信息", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    goToMainActivity();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
     @Override

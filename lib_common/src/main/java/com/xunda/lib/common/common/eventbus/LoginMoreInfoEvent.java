@@ -19,7 +19,7 @@ public class LoginMoreInfoEvent {
     public String work;
     public String industry;
 
-    public String get_resourceOrInterested;
+    public String get_resourceOrInterestedOrDescription;
 
     public LoginMoreInfoEvent(int type) {
         this.type = type;
@@ -37,10 +37,10 @@ public class LoginMoreInfoEvent {
     }
 
 
-    public LoginMoreInfoEvent(int type,boolean isNext, String get_resourceOrInterested) {
+    public LoginMoreInfoEvent(int type,boolean isNext, String get_resourceOrInterestedOrDescription) {
         this.type = type;
         this.isNext = isNext;
-        this.get_resourceOrInterested = get_resourceOrInterested;
+        this.get_resourceOrInterestedOrDescription = get_resourceOrInterestedOrDescription;
     }
 
 }

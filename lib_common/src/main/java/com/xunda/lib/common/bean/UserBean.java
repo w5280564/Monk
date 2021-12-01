@@ -7,7 +7,6 @@ public class UserBean {
 
 
     private String id;
-    private String token;
     private String avatar;
     private String tagName;
     private String nickname;
