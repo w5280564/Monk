@@ -7,13 +7,18 @@
         <entry key="..\:/Monk/app/src/main/res/drawable/bg_stroke_withe.xml" value="0.36102564102564105" />
         <entry key="..\:/Monk/app/src/main/res/drawable/label_stroke.xml" value="0.36102564102564105" />
         <entry key="..\:/Monk/app/src/main/res/drawable/label_stroke_yellow.xml" value="0.36041666666666666" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_login_more_info.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_main.xml" value="0.38969310943833235" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment_login.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment_login.xml" value="0.2859375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment_login.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/mainlogin_forgetpsw_questionlist.xml" value="0.2859375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/topic_lable.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/my_arrowitemview.xml" value="0.35052083333333334" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/baise_gradual.xml" value="0.365625" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/checkbox_agreement.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/select_login_checkbox.xml" value="0.30462962962962964" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/selector_btn_rectangle_green.xml" value="0.30833333333333335" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/shape_btn_rectangle_normal.xml" value="0.30833333333333335" />
@@ -48,20 +53,13 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_step_three_fragment.xml" value="0.3532608695652174" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_step_two_fragment.xml" value="0.3532608695652174" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_message.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_question.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment.xml" value="0.3494791666666667" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment_login.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_one_fragment.xml" value="0.3494791666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_one_fragment_login.xml" value="0.21014492753623187" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment.xml" value="0.3494791666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment_login.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment.xml" value="0.3494791666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment_login.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_universe.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/mainlogin_forgetpsw_questionlist.xml" value="0.25769927536231885" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/menu/bottom_main_menu.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_commom/src/main/res/layout/empty_view_layout.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/ab_back_material_black.xml" value="0.3111111111111111" />
@@ -118,6 +116,7 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/webview_layout.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/wheel_area_choose.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/wheelview_title.xml" value="0.3536458333333333" />
+        <entry key="..\:/SDK/platforms/android-30/data/res/drawable/ic_lock_idle_alarm.xml" value="0.36102564102564105" />
         <entry key="..\:/monk/app/src/main/res/drawable/label_stroke.xml" value="0.38871794871794874" />
         <entry key="..\:/monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment_login.xml" value="0.35743589743589743" />
         <entry key="..\:/monk/app/src/main/res/layouts/fragments/layout/mainlogin_forgetpsw_questionlist.xml" value="0.35743589743589743" />

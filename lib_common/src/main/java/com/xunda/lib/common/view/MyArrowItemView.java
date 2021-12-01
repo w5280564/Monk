@@ -29,6 +29,7 @@ public class MyArrowItemView extends ConstraintLayout {
     private float contentSize;
     private View root;
     private ImageView tv_img;
+    private ImageView avatar;
 
     public MyArrowItemView(Context context) {
         this(context, null);
@@ -45,6 +46,7 @@ public class MyArrowItemView extends ConstraintLayout {
 
     public void init(Context context, AttributeSet attrs) {
         root = LayoutInflater.from(context).inflate(R.layout.my_arrowitemview, this);
+        avatar = findViewById(R.id.avatar);
         tvTitle = findViewById(R.id.tv_title);
         tv_tip = findViewById(R.id.tv_tip);
         tvContent = findViewById(R.id.tv_content);
@@ -53,6 +55,14 @@ public class MyArrowItemView extends ConstraintLayout {
         tv_img = findViewById(R.id.tv_img);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ArrowItemView);
+
+        boolean showAvatar = a.getBoolean(R.styleable.ArrowItemView_arrowItemShowAvatar, false);
+        avatar.setVisibility(showAvatar ? VISIBLE : GONE);
+        int avatarSrcResourceId = a.getResourceId(R.styleable.ArrowItemView_arrowItemAvatarSrc, -1);
+        if (avatarSrcResourceId != -1) {
+            avatar.setImageResource(avatarSrcResourceId);
+        }
+
         int titleResourceId = a.getResourceId(R.styleable.ArrowItemView_arrowItemTitle, -1);
         title = a.getString(R.styleable.ArrowItemView_arrowItemTitle);
         if (titleResourceId != -1) {

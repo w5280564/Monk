@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -22,6 +23,7 @@ import com.google.gson.Gson;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.Topic_Bean;
+import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -89,10 +91,12 @@ public class StepThreeFragmentLogin extends BaseFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-                Topic_Bean topic_bean = GsonUtil.getInstance().json2Bean(json_data, Topic_Bean.class);
-                if (topic_bean != null) {
-                    questionList(mActivity, topic_lin, topic_bean);
-                }
+               if (code == Constants.REQUEST_SUCCESS_CODE){
+                   Topic_Bean topic_bean = GsonUtil.getInstance().json2Bean(json_data, Topic_Bean.class);
+                   if (topic_bean != null) {
+                       questionList(mActivity, topic_lin, topic_bean);
+                   }
+               }
             }
         }, true);
         httpSender.setContext(mActivity);

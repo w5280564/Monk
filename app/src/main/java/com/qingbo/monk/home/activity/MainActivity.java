@@ -2,7 +2,12 @@ package com.qingbo.monk.home.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;
@@ -21,7 +26,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @BindView(R.id.mBottomNavigationView)
     BottomNavigationView mBottomNavigationView;
     private int fragmentId = R.id.act_main_fragment;
-
+    @BindView(R.id.dl_layout)
+    DrawerLayout dl_layout;
+    @BindView(R.id.lv_drawer_left)
+    ConstraintLayout lv_drawer_left;
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -70,5 +78,13 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         }
 
         return true;
+    }
+
+    public void LeftDL(){
+        if (dl_layout.isDrawerOpen(lv_drawer_left)) { // 左侧菜单列表已打开
+            dl_layout.closeDrawer(lv_drawer_left); // 关闭左侧抽屉
+        } else { // 左侧菜单列表未打开
+            dl_layout.openDrawer(lv_drawer_left); // 打开左侧抽屉
+        }
     }
 }
