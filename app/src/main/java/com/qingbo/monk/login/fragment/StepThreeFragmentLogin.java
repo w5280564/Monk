@@ -65,9 +65,13 @@ public class StepThreeFragmentLogin extends BaseFragment {
                     T.s("至少选择三个话题",3000);
                     return;
                 }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (Iterator i = choice_LableMap.keySet().iterator(); i.hasNext();) {
+                    Object obj = i.next();
+                    stringBuilder.append(choice_LableMap.get(obj)+",");
+                }
+                Log.d("lab", stringBuilder.toString());
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_THREE));
-//                Log.d("lab", choice_LableMap.toString());
-
                 break;
 
         }
