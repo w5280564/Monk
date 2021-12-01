@@ -34,12 +34,12 @@ public interface LocalPreferences {
 
 
     /**
-     * 用户手机号
+     * 用户昵称
      */
-    void setUserPhone(String phone);
-    String getUserPhone();
+    void setUserNickName(String nickName);
+    String getUserNickName();
     @Remove
-    void removeUserPhone();
+    void removeUserNickName();
 
 
 

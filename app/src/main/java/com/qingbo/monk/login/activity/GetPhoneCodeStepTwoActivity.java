@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.home.activity.MainActivity;
 import com.tuo.customview.VerificationCodeView;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
@@ -15,6 +16,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.CountDownTextView;
 import java.util.HashMap;
@@ -32,7 +34,6 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
     @BindView(R.id.et_code)
     VerificationCodeView mCodeView;
     private String area_code,phoneNumber;
-    private boolean fromExitAct;
 
 
     public static void actionStart(Context context,String area_code,String phoneNumber) {
@@ -131,7 +132,12 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             }
 
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
-            skipAnotherActivity(WelcomeActivity.class);
+            String industry = userObj.getIndustry();
+            if(StringUtil.isBlank(industry)) {//非首次登陆
+                skipAnotherActivity(WelcomeActivity.class);
+            }else{
+                skipAnotherActivity(MainActivity.class);
+            }
         }
 
     }

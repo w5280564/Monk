@@ -192,6 +192,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                     e.printStackTrace();
                 }
 
+                SharePref.local().setUserNickName(nickname);
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,nickname,city,county,work,industryName));
                 break;
 
@@ -215,6 +216,8 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                             haveUploadImg = true;
                             Uri uri = Uri.fromFile(mFile);
                             Glide.with(mActivity).load(uri).into(iv_header);
+                            String header_url = GsonUtil.getInstance().getValue(data,"file");
+                            SharePref.user().setUserHead(header_url);
                         }
                     }
                 },true);

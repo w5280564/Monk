@@ -13,11 +13,15 @@ import com.qingbo.monk.login.fragment.StepFourFragmentLogin;
 import com.qingbo.monk.login.fragment.StepOneFragmentLogin;
 import com.qingbo.monk.login.fragment.StepThreeFragmentLogin;
 import com.qingbo.monk.login.fragment.StepTwoFragmentLogin;
+import com.xunda.lib.common.bean.BaseUserBean;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.GsonUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
@@ -147,12 +151,32 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
+                    saveUserInfo(obj);
                     goToMainActivity();
                 }
             }
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+
+    /**
+     * 保存用户信息
+     *
+     * @param baseUserBean 用户对象
+     */
+    private void saveUserInfo(BaseUserBean baseUserBean) {
+        if (baseUserBean!=null) {
+            UserBean userObj = baseUserBean.getInfo();
+            if (userObj==null) {
+                return;
+            }
+
+            PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
+        }
+
     }
 
     @Override

@@ -1,27 +1,19 @@
 package com.qingbo.monk.login.fragment;
 
-import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
-import com.xunda.lib.common.common.http.HttpSender;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-
 import org.greenrobot.eventbus.EventBus;
-import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -29,6 +21,10 @@ import butterknife.OnClick;
  * 登录填写更多信息第4步
  */
 public class StepFourFragmentLogin extends BaseFragment {
+    @BindView(R.id.iv_header)
+    ImageView iv_header;
+    @BindView(R.id.tv_nickName)
+    TextView tv_nickName;
     @BindView(R.id.tv_description_toast)
     TextView tv_description_toast;
     @BindView(R.id.et_description)
@@ -43,6 +39,16 @@ public class StepFourFragmentLogin extends BaseFragment {
     @Override
     protected void initEvent() {
         addEditTextListener();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userHeadUrl = SharePref.user().getUserHead();
+        String nickName = SharePref.local().getUserNickName();
+        tv_nickName.setText(StringUtil.getStringValue(nickName));
+        GlideUtils.loadCircleImage(mActivity,iv_header,userHeadUrl);
     }
 
     /**
@@ -94,10 +100,6 @@ public class StepFourFragmentLogin extends BaseFragment {
         }
     }
 
-    @Override
-    protected void initLocalData() {
-
-    }
 
 
 

@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
                     return;
                 }
 
-//                login();
+//                thirdLogin();
                 break;
             case R.id.ll_phone_login:
 
@@ -70,13 +70,13 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
     }
 
 
-    private void login() {
+    private void thirdLogin() {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("osType", "2");//1苹果2安卓
         baseMap.put("equipmentName", android.os.Build.BRAND + "" + android.os.Build.MODEL);
         baseMap.put("meid", StringUtil.getIMEI());
         baseMap.put("version", android.os.Build.VERSION.RELEASE);
-        HttpSender sender = new HttpSender(HttpUrl.mobileLogin, "账号密码登录", baseMap,
+        HttpSender sender = new HttpSender(HttpUrl.mobileLogin, "第三方登录", baseMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
