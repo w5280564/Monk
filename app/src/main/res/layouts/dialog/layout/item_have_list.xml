@@ -10,18 +10,18 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintDimensionRatio="1.12"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/iv_img"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_38"
-            android:scaleType="fitCenter"/>
+            android:layout_width="@dimen/dp_52"
+            android:layout_height="@dimen/dp_40"
+            android:scaleType="fitCenter" />
+
 
         <TextView
             android:id="@+id/tv_name"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_10"
             android:textColor="@color/text_color_6f6f6f"
-            android:textSize="@dimen/sp_16"/>
+            android:textSize="@dimen/sp_16" />
 
     </LinearLayout>
 
@@ -37,11 +37,11 @@
         android:id="@+id/iv_check"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
-        android:src="@mipmap/icon_gouxuan"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_9"
         android:layout_marginRight="@dimen/dp_8"
-        android:layout_marginTop="@dimen/dp_9"/>
+        android:src="@mipmap/icon_gouxuan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

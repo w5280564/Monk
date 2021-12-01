@@ -64,6 +64,12 @@ public class HttpUrl {
      * 第三方登录
      */
     public static final String authLogin = "login/login/auth-login";
-    public static final String Edit_Info = "user/user/edit-info";//修改个人信息
+
+    /**
+     * 修改个人信息
+     */
+    public static final String Edit_Info = "user/user/edit-info";
+
+    
 }
 

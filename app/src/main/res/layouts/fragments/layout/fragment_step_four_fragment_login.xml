@@ -60,21 +60,24 @@
         android:paddingBottom="@dimen/dp_11">
 
         <EditText
+            android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:hint="请输入文字！"
             android:lineSpacingExtra="@dimen/dp_3"
+            android:maxLength="200"
             android:textColor="#6F6F6F"
             android:textSize="@dimen/sp_14" />
 
 
         <TextView
+            android:id="@+id/tv_description_toast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:text="最少20个字（5/300）"
+            android:layout_alignParentBottom="true"
+            android:text="最少20个字（0/200）"
             android:textColor="@color/text_color_a1a1a1"
             android:textSize="@dimen/sp_10" />
 

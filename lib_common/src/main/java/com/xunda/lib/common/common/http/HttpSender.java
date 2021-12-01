@@ -17,6 +17,7 @@ import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.RSAUtils;
 import com.xunda.lib.common.common.utils.RsaEncodeMethod;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.LoadingDialog;
 import com.xunda.lib.common.dialog.TokenDialog;
 import com.xunda.lib.common.router.RouterActivityPath;
@@ -291,6 +292,7 @@ public class HttpSender {
 	private void backError(String failure_message,int failure_code){
 		if (mListener != null) {
 			mListener.onComplete("", failure_code, failure_message, null);
+			T.ss(failure_message);
 		}
 	}
 
@@ -345,6 +347,9 @@ public class HttpSender {
 					mListener.onComplete(json, code, msg, StringUtil.isBlank(data)?"":data);
 				}
 				dismissDialog();
+				if (code != Constants.REQUEST_SUCCESS_CODE) {//异常提示错误信息
+					T.ss(msg);
+				}
 			}
 		}
 
