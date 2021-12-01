@@ -76,6 +76,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
 
     @Override
     protected void initView() {
+        haveUploadImg = !StringUtil.isBlank(SharePref.user().getUserHead());
         GlideUtils.loadCircleImage(mContext,iv_header, SharePref.user().getUserHead());
         mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
@@ -178,6 +179,23 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
 
                 if(StringUtil.isBlank(nickname)){
                     T.ss("请填写名称");
+                    return;
+                }
+
+                if(StringUtil.isBlank(industryName)){
+                    T.ss("请选择行业");
+                    return;
+                }
+
+
+                if(StringUtil.isBlank(work)){
+                    T.ss("请选择工作年限");
+                    return;
+                }
+
+
+                if(StringUtil.isBlank(city)){
+                    T.ss("请选择城市");
                     return;
                 }
 

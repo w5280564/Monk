@@ -151,7 +151,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
+                    UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     saveUserInfo(obj);
                     goToMainActivity();
                 }
@@ -165,16 +165,11 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
     /**
      * 保存用户信息
      *
-     * @param baseUserBean 用户对象
+     * @param userObj 用户对象
      */
-    private void saveUserInfo(BaseUserBean baseUserBean) {
-        if (baseUserBean!=null) {
-            UserBean userObj = baseUserBean.getInfo();
-            if (userObj==null) {
-                return;
-            }
-
-            PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
+    private void saveUserInfo(UserBean userObj) {
+        if (userObj!=null) {
+            PrefUtil.saveUser(userObj,"");
         }
 
     }

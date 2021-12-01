@@ -13,9 +13,13 @@ import com.qingbo.monk.base.MonkApplication;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.qingbo.monk.login.activity.WelcomeActivity;
 import com.qingbo.monk.webview.WebviewActivity;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialog;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialogAgain;
 
@@ -141,7 +145,7 @@ public class BeginActivity extends FragmentActivity {
      */
     private void goToWhere() {
         if (PrefUtil.isLogin()) {
-            jumpToMainActivity();
+            jumpToMainOrWelcomeActivity();
         }else{
             jumpToLoginActivity();
         }
@@ -150,12 +154,20 @@ public class BeginActivity extends FragmentActivity {
 
 
     /**
-     * 跳转到首页
+     * 跳转到首页或欢迎页
      */
-    private void jumpToMainActivity() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
-//        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    private void jumpToMainOrWelcomeActivity() {
+        UserBean mUserBean = SharePref.user().getUserInfo();
+        if (mUserBean!=null) {
+            String interested = mUserBean.getInterested();
+            Intent intent = new Intent();
+            if(StringUtil.isBlank(interested)) {//首次登陆
+                intent.setClass(this,WelcomeActivity.class);
+            }else{
+                intent.setClass(this,MainActivity.class);
+            }
+            startActivity(intent);
+        }
     }
 
 

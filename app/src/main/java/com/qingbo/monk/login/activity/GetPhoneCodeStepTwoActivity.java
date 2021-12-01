@@ -132,8 +132,8 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             }
 
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
-            String industry = userObj.getIndustry();
-            if(StringUtil.isBlank(industry)) {//非首次登陆
+            String interested = userObj.getInterested();
+            if(StringUtil.isBlank(interested)) {//首次登陆
                 skipAnotherActivity(WelcomeActivity.class);
             }else{
                 skipAnotherActivity(MainActivity.class);
