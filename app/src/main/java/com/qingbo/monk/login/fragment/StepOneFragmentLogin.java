@@ -103,8 +103,6 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                             if (obj!=null) {
                                 mAreaList.addAll(obj.getList());
                             }
-                        } else {
-                            T.ss(msg);
                         }
                     }
 
@@ -186,10 +184,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                             haveUploadImg = true;
                             Uri uri = Uri.fromFile(mFile);
                             Glide.with(mActivity).load(uri).into(iv_header);
-                        } else {
-                            T.ss(description);
                         }
-
                     }
                 },true);
         sender.setContext(mActivity);

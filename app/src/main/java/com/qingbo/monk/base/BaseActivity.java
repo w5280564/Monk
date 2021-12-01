@@ -378,10 +378,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
                         if (code == Constants.REQUEST_SUCCESS_CODE) {//成功
                             T.ss(getString(R.string.Base_yzmyfs));
                             tvGetCode.start();
-                        } else {
-                            T.ss(msg);
                         }
-
                     }
                 }, true);
         sender.setContext(mActivity);

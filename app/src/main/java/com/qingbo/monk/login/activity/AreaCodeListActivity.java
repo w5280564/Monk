@@ -84,8 +84,6 @@ public class AreaCodeListActivity extends BaseActivity implements AreaCodeAdapte
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BigAreaCodeBean obj = GsonUtil.getInstance().json2Bean(json_data, BigAreaCodeBean.class);
                             handleData(obj);
-                        } else {
-                            T.ss(msg);
                         }
                     }
 

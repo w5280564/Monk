@@ -58,8 +58,6 @@ public class ChooseIndustryActivity extends BaseActivity {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseIndustryBean mObj = GsonUtil.getInstance().json2Bean(json_data, BaseIndustryBean.class);
                             handleObj(mObj);
-                        } else {
-                            T.ss(msg);
                         }
                     }
 

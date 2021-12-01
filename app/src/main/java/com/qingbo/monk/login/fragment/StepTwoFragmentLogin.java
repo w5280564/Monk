@@ -80,8 +80,6 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
                             if (mBaseHaveBean != null) {
                                 handleData(mBaseHaveBean);
                             }
-                        } else {
-                            T.ss(msg);
                         }
                     }
 

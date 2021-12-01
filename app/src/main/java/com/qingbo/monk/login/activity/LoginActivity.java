@@ -81,10 +81,7 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             handleSuccessData(json_data);
-                        } else {
-                            T.ss(msg);
                         }
-
                     }
 
                 }, true);

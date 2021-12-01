@@ -107,10 +107,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
                             T.ss("登录成功");
                             UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                             saveUserInfo(obj);
-                        } else {
-                            T.ss(msg);
                         }
-
                     }
 
                 }, true);
