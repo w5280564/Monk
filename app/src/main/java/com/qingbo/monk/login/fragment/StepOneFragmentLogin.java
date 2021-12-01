@@ -48,6 +48,8 @@ import butterknife.OnClick;
 public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     @BindView(R.id.iv_header)
     ImageView iv_header;
+    @BindView(R.id.arrowItemView_industry)
+    MyArrowItemView arrowItemView_industry;
     @BindView(R.id.arrowItemView_year)
     MyArrowItemView arrowItemView_year;
     @BindView(R.id.arrowItemView_city)
@@ -56,6 +58,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     private ActivityResultLauncher mActivityResultLauncher;
     private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
     private List<AreaBean> mAreaList = new ArrayList<>();
+    private String industryName ;
 
     @Override
     protected int getLayoutId() {
@@ -72,8 +75,9 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 if (result!=null) {
                     int resultCode = result.getResultCode();
                     if (resultCode==Activity.RESULT_OK) {
-//                        area_code = result.getData().getStringExtra("area_code");
-//                        tv_number_before.setText("+"+area_code);
+                        industryName = result.getData().getStringExtra("name");
+                        arrowItemView_industry.getTip().setVisibility(View.GONE);
+                        arrowItemView_industry.getTvContent().setText(industryName);
                     }
                 }
             }
