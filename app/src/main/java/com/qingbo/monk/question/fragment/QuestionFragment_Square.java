@@ -1,10 +1,11 @@
-package com.qingbo.monk.home.fragment;
+package com.qingbo.monk.question.fragment;
 
 import android.graphics.Typeface;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragmentWithSon;
+
 import butterknife.BindView;
 
 /**

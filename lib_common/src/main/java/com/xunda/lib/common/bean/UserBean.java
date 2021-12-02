@@ -1,11 +1,8 @@
 package com.xunda.lib.common.bean;
 
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@Data
+@lombok.NoArgsConstructor
+@lombok.Data
 public class UserBean {
 
 
