@@ -1,27 +1,16 @@
 package com.qingbo.monk.question.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.login.adapter.HaveAdapter;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
-import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
