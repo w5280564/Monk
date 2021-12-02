@@ -69,6 +69,7 @@ public class HttpUrl {
      * 修改个人信息
      */
     public static final String Edit_Info = "user/user/edit-info";
+    public static final String All_Group = "square/interested/allgroup";//全部兴趣圈
 
     
 }

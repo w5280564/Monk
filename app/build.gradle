@@ -92,5 +92,9 @@ android {
         implementation project(':FlycoBanner_Lib')
         //阿里路由
         annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+        /* get set 不用写compileOnly和annotationProcessor 两个都需要添加*/
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     }
 }

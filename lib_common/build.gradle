@@ -90,7 +90,7 @@ dependencies {
 
 
     api 'androidx.multidex:multidex:2.0.0'
-    api 'com.google.code.gson:gson:2.8.2'
+    api 'com.google.code.gson:gson:2.8.8'
 
     api 'androidx.appcompat:appcompat:1.0.1'
 
@@ -154,9 +154,6 @@ dependencies {
 
     api project(':webviewjavascriptbridge')
 
-    //小辣椒 实体类注解
-    api 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     //ActivityResultLauncher
     api "androidx.activity:activity:1.2.0"

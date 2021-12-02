@@ -1,10 +1,20 @@
 package com.xunda.lib.common.bean;
 
 
-@lombok.NoArgsConstructor
-@lombok.Data
 public class BaseUserBean {
 
+
+    public UserBean getInfo() {
+        return info;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
     private UserBean info;
     private String accessToken;
