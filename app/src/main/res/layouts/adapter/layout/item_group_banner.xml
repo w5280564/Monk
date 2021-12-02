@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/dp_10"
-    android:padding="@dimen/dp_15"
-    android:background="@drawable/shape_background_white_radius4"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
-        android:layout_marginTop="@dimen/dp_15"
         app:layout_constraintDimensionRatio="1"
-        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_img"
+            android:id="@+id/iv_img_top"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -36,6 +31,7 @@
             android:padding="@dimen/dp_8">
 
             <TextView
+                android:id="@+id/tv_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="扫地僧的达摩院..."

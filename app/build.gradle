@@ -89,6 +89,7 @@ android {
         implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
         annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
         implementation project(':lib_common')
+        implementation project(':FlycoBanner_Lib')
         //阿里路由
         annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
     }

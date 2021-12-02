@@ -2,3 +2,4 @@ rootProject.name = "Monk"
 include ':app'
 include ':lib_common'
 include ':webviewjavascriptbridge'
+include ':FlycoBanner_Lib'
