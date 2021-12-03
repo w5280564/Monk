@@ -22,7 +22,7 @@ public class ChatAdapter extends MultipleItemRvAdapter<ServiceChatIndexBean, Bas
 
     @Override
     protected int getViewType(ServiceChatIndexBean entity) {
-        if (entity.getType() == ServiceChatIndexBean.CHAT_TYPE_QUESTION) {
+        if (entity.getType() == ServiceChatIndexBean.CHAT_TYPE_SEND) {
             return TYPE_CHAT_SENDER;
         } else if (entity.getType() == ServiceChatIndexBean.CHAT_TYPE_ANSWER) {
             return TYPE_CHAT_RECEIVER;

@@ -57,6 +57,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
         }
 
         addContentToList("hello world", ServiceChatIndexBean.CHAT_TYPE_ANSWER);
+        addContentToList("hello world", ServiceChatIndexBean.CHAT_TYPE_SEND);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
                     return;
                 }
 
-                addContentToList(forbidSensitiveWord(content), ServiceChatIndexBean.CHAT_TYPE_QUESTION);
+                addContentToList(forbidSensitiveWord(content), ServiceChatIndexBean.CHAT_TYPE_SEND);
                 mAdapter.notifyDataSetChanged();
 
                 sendQuestion(content);

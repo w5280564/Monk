@@ -17,7 +17,7 @@ public class ServiceChatIndexBean {
      */
 
     //智能客服会话类型
-    public static final int CHAT_TYPE_QUESTION = 1;//发出的内容
+    public static final int CHAT_TYPE_SEND = 1;//发出的内容
 
     public static final int CHAT_TYPE_ANSWER = 2;//回答的内容
 
