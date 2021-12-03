@@ -45,6 +45,7 @@
         <activity android:name=".login.activity.ChooseIndustryActivity" />
         <activity android:name=".webview.WebviewActivity" />
         <activity android:name=".message.activity.ContactListActivity" />
+        <activity android:name=".message.activity.ChatActivity" />
 
 
 

@@ -9,7 +9,6 @@ public class HttpUrl {
 
 
 
-//-------------------------------------------首页模块-------------------------------------------------------------
 
     /**
      * 获取区号列表
@@ -70,6 +69,12 @@ public class HttpUrl {
      */
     public static final String Edit_Info = "user/user/edit-info";
     public static final String All_Group = "square/interested/allgroup";//全部兴趣圈
+
+
+    /**
+     * 	发送问题请求
+     */
+    public static final String sendQuestion = "app/chat/sendQuestion";
 
     
 }
