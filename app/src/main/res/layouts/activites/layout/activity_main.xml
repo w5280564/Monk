@@ -277,7 +277,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_43"
                         app:arrowItemAvatarHeight="@dimen/dp_12"
-                        app:arrowItemAvatarSrc="@mipmap/shezhi"
+                        app:arrowItemAvatarSrc="@mipmap/shezhi2"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="设置中心"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"

@@ -32,6 +32,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/shape_bag_square_white.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/shape_btn_rectangle_normal.xml" value="0.30833333333333335" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/shape_btn_rectangle_press_green.xml" value="0.30833333333333335" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/shape_line_vertical.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/tab_adress_selector.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/tab_home_selector.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/tab_message_selector.xml" value="0.3697916666666667" />
@@ -72,6 +73,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_message.xml" value="0.3536458333333333" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment.xml" value="0.3494791666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_one_fragment.xml" value="0.3494791666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_one_fragment_login.xml" value="0.21014492753623187" />
