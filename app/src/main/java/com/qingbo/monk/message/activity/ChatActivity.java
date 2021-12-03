@@ -40,8 +40,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
     private ChatAdapter mAdapter;
     private List<ServiceChatIndexBean> mList = new ArrayList<>();
 
-    private boolean haveAnswer;
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_chat;
@@ -57,7 +55,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
         }
 
         addContentToList("hello world", ServiceChatIndexBean.CHAT_TYPE_ANSWER);
-        addContentToList("hello world", ServiceChatIndexBean.CHAT_TYPE_SEND);
+        addContentToList("下班了", ServiceChatIndexBean.CHAT_TYPE_SEND);
     }
 
     @Override
@@ -162,7 +160,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
                         new TypeToken<HttpBaseList<ServiceChatBean>>() {
                         }.getType());
         if (!ListUtils.isEmpty(objList.getData())) {
-            haveAnswer = true;
             ServiceChatIndexBean obj = new ServiceChatIndexBean();
             obj.setList(objList.getData());
             obj.setType(ServiceChatIndexBean.CHAT_TYPE_ANSWER);
