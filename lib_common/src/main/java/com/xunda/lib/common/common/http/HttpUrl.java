@@ -69,6 +69,9 @@ public class HttpUrl {
      */
     public static final String Edit_Info = "user/user/edit-info";
     public static final String All_Group = "square/interested/allgroup";//全部兴趣圈
+    public static final String Interest_Group = "square/interested/interest-recommend";//推荐--兴趣圈列表
+    public static final String Join_Group = "square/interested/join-interested";//加入/退出兴趣圈
+    public static final String Recommend_List = "index/index/recommend-list";//首页-推荐
 
 
     /**

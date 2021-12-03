@@ -9,16 +9,20 @@
         <entry key="..\:/Monk/app/src/main/res/drawable/label_stroke_yellow.xml" value="0.36041666666666666" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_login_more_info.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_main.xml" value="0.38969310943833235" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/follow_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_question.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment_login.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment_login.xml" value="0.2859375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment_login.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_tab.xml" value="0.3229166666666667" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/interest_lable.xml" value="0.75" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/mainlogin_forgetpsw_questionlist.xml" value="0.2859375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/topic_lable.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.29583333333333334" />
+        <entry key="..\:/Monk/lib_common/src/main/res/drawable/interest_lable.xml" value="0.37916666666666665" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/search_bg.xml" value="0.35" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/my_arrowitemview.xml" value="0.35052083333333334" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_chat_input.xml" value="0.35520833333333335" />

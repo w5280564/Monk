@@ -23,16 +23,16 @@
         android:id="@+id/seek_Tv"
         android:layout_width="@dimen/dp_277"
         android:layout_height="@dimen/dp_29"
-        app:layout_constraintStart_toEndOf="@+id/btn_drawer_left"
-        android:layout_marginTop="@dimen/dp_7"
         android:layout_marginStart="@dimen/dp_14"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/dp_7"
         android:background="@drawable/search_bg"
+        android:drawableStart="@mipmap/seek_icon"
         android:drawablePadding="@dimen/dp_9"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_15"
         android:text="搜索你感兴趣的人/公司"
-        android:drawableStart="@mipmap/seek_icon"/>
+        app:layout_constraintStart_toEndOf="@+id/btn_drawer_left"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icon_Img"
@@ -43,54 +43,90 @@
         app:layout_constraintStart_toEndOf="@+id/seek_Tv"
         app:layout_constraintTop_toTopOf="@+id/seek_Tv" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="@dimen/dp_4"
-        android:layout_height="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_23"
-        android:background="@color/app_main_color"
-        app:layout_constraintTop_toBottomOf="@id/seek_Tv" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
-        android:text="我的兴趣圈"
-        android:textColor="@color/text_color_444444"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
 
-    <TextView
-        android:id="@+id/change_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_16"
-        android:text="换一批"
-        android:textColor="@color/text_color_1F8FE5"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
-
-    <ImageView
-        android:layout_width="@dimen/dp_11"
-        android:layout_height="@dimen/dp_11"
-        android:src="@mipmap/huanyihuan"
-        android:layout_marginEnd="@dimen/dp_7"
-        app:layout_constraintBottom_toBottomOf="@+id/change_Tv"
-        app:layout_constraintEnd_toStartOf="@+id/change_Tv"
-        app:layout_constraintTop_toTopOf="@+id/change_Tv" />
-
-    <LinearLayout
-        android:id="@+id/interest_Lin"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/view"
-        android:layout_marginTop="@dimen/dp_14"/>
+        android:layout_marginTop="@dimen/dp_23"
+        app:layout_constraintTop_toBottomOf="@id/seek_Tv">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/dp_4"
+                android:layout_height="@dimen/dp_15"
+                android:background="@color/app_main_color" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_12"
+                android:text="我的兴趣圈"
+                android:textColor="@color/text_color_444444"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view" />
+
+            <TextView
+                android:id="@+id/change_Tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:text="换一批"
+                android:textColor="@color/text_color_1F8FE5"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
+
+            <ImageView
+                android:id="@+id/change_Img"
+                android:layout_width="@dimen/dp_11"
+                android:layout_height="@dimen/dp_11"
+                android:layout_marginEnd="@dimen/dp_7"
+                android:src="@mipmap/huanyihuan"
+                app:layout_constraintBottom_toBottomOf="@+id/change_Tv"
+                app:layout_constraintEnd_toStartOf="@+id/change_Tv"
+                app:layout_constraintTop_toTopOf="@+id/change_Tv" />
+
+            <LinearLayout
+                android:id="@+id/interest_Lin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_14"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/view" />
+
+            <View
+                android:id="@+id/grey_View"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_10"
+                android:background="@color/text_color_EFEFEF"
+                app:layout_constraintTop_toBottomOf="@id/interest_Lin"
+                android:layout_marginTop="@dimen/dp_15"/>
 
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/card_Tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_33"
+                app:tabTextColor="@color/text_color_6f6f6f"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:layout_constraintTop_toBottomOf="@+id/grey_View" />
+
+
+            <com.xunda.lib.common.view.MyViewPager
+                android:id="@+id/card_ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_Tab" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

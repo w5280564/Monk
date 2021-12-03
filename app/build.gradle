@@ -98,3 +98,7 @@ android {
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     }
 }
+
+dependencies {
+    implementation 'org.jetbrains:annotations:15.0'
+}
