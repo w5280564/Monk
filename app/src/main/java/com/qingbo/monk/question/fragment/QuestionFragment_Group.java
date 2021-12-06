@@ -21,10 +21,13 @@ import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +70,14 @@ public class QuestionFragment_Group extends BaseFragment {
                 }
             }
         });
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onFinishEvent(FinishEvent event) {
+        if(event.type == FinishEvent.CREATE_SHEQUN){
+            getMyShequn();
+        }
     }
 
     private void initRecyclerView() {
@@ -83,7 +94,6 @@ public class QuestionFragment_Group extends BaseFragment {
 
     @Override
     protected void getServerData() {
-        getMyShequn();
         getAllShequn();
     }
 
@@ -100,6 +110,7 @@ public class QuestionFragment_Group extends BaseFragment {
                                 mQuestionGroupAdapter.setNewData(list);
                             }
                         }
+                        getMyShequn();
                     }
 
                 }, true);

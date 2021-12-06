@@ -13,6 +13,8 @@ import com.qingbo.monk.base.BaseCameraAndGalleryActivity;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.DecimalInputTextWatcherExtract;
+import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -20,6 +22,9 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.view.RadiusImageWidget;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -30,7 +35,7 @@ import butterknife.BindView;
  */
 public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.iv_header_group)
-    ImageView ivHeaderGroup;
+    RadiusImageWidget ivHeaderGroup;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_group_type)
@@ -65,7 +70,7 @@ public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity imp
         if (StringUtil.isBlank(group_header)) {
             ivHeaderGroup.setImageResource(R.mipmap.bg_create_group);
         }else{
-            GlideUtils.loadRoundImage(mContext,ivHeaderGroup,group_header,10);
+            GlideUtils.loadImage(mContext,ivHeaderGroup,group_header);
         }
 
     }
@@ -135,7 +140,7 @@ public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity imp
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("创建成功");
-
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.CREATE_SHEQUN));
                         }
                     }
 

@@ -23,14 +23,18 @@
         android:layout_weight="1"
         android:padding="@dimen/dp_15">
 
-        <ImageView
+        <com.xunda.lib.common.view.RadiusImageWidget
             android:id="@+id/iv_header_group"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp_28"
             android:scaleType="centerCrop"
-            android:src="@mipmap/bg_create_group" />
+            android:src="@mipmap/bg_create_group"
+            app:left_top_radius="@dimen/dp_10"
+            app:right_top_radius="@dimen/dp_10"
+            app:left_bottom_radius="@dimen/dp_10"
+            app:right_bottom_radius="@dimen/dp_10"/>
 
 
         <TextView
