@@ -67,10 +67,8 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, Quest
         MySheQunBean item = mDatas.get(position);
 
         tv_group_name.setText(StringUtil.getStringValue(item.getShequnName()));
-        tv_name.setText(SharePref.user().getUserName());
-        GlideUtils.loadRoundImage(mContext,iv_img_top,"",8,true,true,false,false);
-
-
+        tv_name.setText(StringUtil.getStringValue(item.getNickname()));
+        GlideUtils.loadRoundImage(mContext,iv_img_top,item.getShequnImage(),R.mipmap.bg,8,true,true,false,false);
 
         return layout;
     }

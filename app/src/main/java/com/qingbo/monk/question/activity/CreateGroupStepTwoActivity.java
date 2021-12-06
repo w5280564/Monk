@@ -142,6 +142,8 @@ public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity imp
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("创建成功");
                             EventBus.getDefault().post(new FinishEvent(FinishEvent.CREATE_SHEQUN));
+                            String shequn_id = GsonUtil.getInstance().getValue(json_data,"shequn_id");
+                            SheQunGroupDetailActivity.actionStart(mActivity, shequn_id);
                         }
                     }
 

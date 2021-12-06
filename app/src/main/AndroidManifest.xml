@@ -49,6 +49,7 @@
         <activity android:name=".question.activity.CreateGroupStepOneActivity" />
         <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
         <activity android:name=".question.activity.AllGroupListActivity" />
+        <activity android:name=".question.activity.SheQunGroupDetailActivity" />
 
 
 

@@ -18,6 +18,8 @@ public class MySheQunBean {
     private String shequnName;
     @SerializedName("shequn_image")
     private String shequnImage;
+    @SerializedName("nickname")
+    private String nickname;
     @SerializedName("shequn_des")
     private String shequnDes;
     @SerializedName("detail")
