@@ -7,13 +7,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.SheQunBean;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ================================================

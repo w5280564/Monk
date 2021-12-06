@@ -106,6 +106,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
 
                 case LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE://登录填写更多信息第一步点提交
                     if (event.isNext) {//是点下一步操作
+                        requestMap.put("avatar", event.avatar);
                         requestMap.put("nickname", event.nickname);
                         requestMap.put("city", event.city);
                         requestMap.put("county", event.county);

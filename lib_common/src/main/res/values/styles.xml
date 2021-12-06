@@ -188,6 +188,13 @@
         <item name="android:background">@color/app_line</item>
     </style>
 
+    <!-- 白底上统一横向分割线 -->
+    <style name="app_line_background">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/text_color_EFEFEF</item>
+    </style>
+
 
     <!-- 主题色的垂直线条 -->
     <style name="app_line_vertical">

@@ -88,5 +88,11 @@ public class HttpUrl {
      * 	我的社群
      */
     public static final String myShequn = "square/detail/my-shequns";
+
+
+    /**
+     * 创建社群
+     */
+    public static final String createShequn = "square/square/create-shequn";
 }
 

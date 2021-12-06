@@ -34,6 +34,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/bag_chat_bubble_receive.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/bag_chat_bubble_send.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/baise_gradual.xml" value="0.365625" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/checkbox_round.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/select_login_checkbox.xml" value="0.30462962962962964" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/selector_btn_rectangle_green.xml" value="0.30833333333333335" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/selector_radio_button_square.xml" value="0.3697916666666667" />
@@ -57,6 +58,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_code_list.xml" value="0.3390625" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_contact_list.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group.xml" value="0.17198581560283688" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_one.xml" value="0.317481884057971" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_two.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_get_code.xml" value="0.3385416666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login.xml" value="0.5" />

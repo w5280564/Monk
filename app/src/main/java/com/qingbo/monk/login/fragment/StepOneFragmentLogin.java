@@ -67,6 +67,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
     private List<AreaBean> mAreaList = new ArrayList<>();
     private String industryName,city,county,work;
+    private String avatar;
 
     @Override
     protected int getLayoutId() {
@@ -211,7 +212,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
 
                 SharePref.local().setUserNickName(nickname);
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,nickname,city,county,work,industryName));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,avatar,nickname,city,county,work,industryName));
                 break;
 
         }
@@ -234,8 +235,8 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                             haveUploadImg = true;
                             Uri uri = Uri.fromFile(mFile);
                             Glide.with(mActivity).load(uri).into(iv_header);
-                            String header_url = GsonUtil.getInstance().getValue(data,"file");
-                            SharePref.user().setUserHead(header_url);
+                            avatar = GsonUtil.getInstance().getValue(data,"file");
+                            SharePref.user().setUserHead(avatar);
                         }
                     }
                 },true);

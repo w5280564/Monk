@@ -72,6 +72,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/dp_6"
                 android:layout_weight="1"
+                android:maxLength="6"
                 android:textColor="@color/text_color_a1a1a1"
                 android:textSize="@dimen/sp_14"
                 android:background="@null"

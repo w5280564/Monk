@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:fitsSystemWindows="true"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -24,6 +23,7 @@
         android:layout_height="@dimen/dp_168"
         android:layout_marginTop="@dimen/dp_22">
         <ImageView
+            android:id="@+id/iv_header_group"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -44,9 +44,11 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
+        android:id="@+id/et_name"
         android:layout_width="@dimen/dp_250"
         android:layout_height="@dimen/dp_44"
         android:layout_marginTop="@dimen/dp_31"
+        android:maxLength="10"
         android:hint="请输入社群名称"
         android:background="@drawable/shape_bag_square_create"
         android:gravity="center_vertical|left"

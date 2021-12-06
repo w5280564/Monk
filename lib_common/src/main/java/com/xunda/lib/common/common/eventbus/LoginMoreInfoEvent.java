@@ -13,6 +13,7 @@ public class LoginMoreInfoEvent {
     //操作所属的模块类型(业务线)
     public int type;
     public boolean isNext;
+    public String avatar;
     public String nickname;
     public String city;
     public String county;
@@ -25,9 +26,10 @@ public class LoginMoreInfoEvent {
         this.type = type;
     }
 
-    public LoginMoreInfoEvent(int type,boolean isNext, String nickname,String city,String county,String work,String industry) {
+    public LoginMoreInfoEvent(int type,boolean isNext, String avatar,String nickname,String city,String county,String work,String industry) {
         this.type = type;
         this.isNext = isNext;
+        this.avatar = avatar;
         this.nickname = nickname;
         this.city = city;
         this.county = county;
