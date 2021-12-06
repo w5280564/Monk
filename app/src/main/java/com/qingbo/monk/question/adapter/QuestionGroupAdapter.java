@@ -28,7 +28,7 @@ public class QuestionGroupAdapter extends BaseQuickAdapter<SheQunBean, BaseViewH
     protected void convert(@NonNull BaseViewHolder helper, SheQunBean item) {
         TextView tv_name_question = helper.getView(R.id.tv_name_question);
         TextView tv_name_fee = helper.getView(R.id.tv_name_fee);
-        if (StringUtil.isBlank(item.getShequnFee())||"0".equals(item.getShequnFee())) {
+        if ("0".equals(item.getType())) {
             tv_name_fee.setText("限时免费");
         }else{
             tv_name_fee.setText("加入");

@@ -129,10 +129,11 @@ public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity imp
         baseMap.put("shequn_name", group_name);
         if (isFree) {
             baseMap.put("fee", "0");
+            baseMap.put("type", "0");
         }else{
             baseMap.put("fee", fee);
+            baseMap.put("type", "1");//0免费 1安卓付费
         }
-
         baseMap.put("image", group_header);
         HttpSender sender = new HttpSender(HttpUrl.createShequn, "创建社群", baseMap,
                 new MyOnHttpResListener() {

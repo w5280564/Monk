@@ -26,6 +26,8 @@ public class SheQunBean {
     private String updateTime;
     @SerializedName("order")
     private String order;
+    @SerializedName("type")
+    private String type;
     @SerializedName("shequn_fee")
     private String shequnFee;
     @SerializedName("detail")

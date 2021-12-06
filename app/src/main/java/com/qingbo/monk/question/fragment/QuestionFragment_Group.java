@@ -1,22 +1,15 @@
 package com.qingbo.monk.question.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.BaseSheQunBean;
 import com.qingbo.monk.bean.SheQunBean;
+import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
@@ -26,13 +19,10 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -48,7 +38,6 @@ public class QuestionFragment_Group extends BaseFragment {
     @BindView(R.id.ll_top_right)
     LinearLayout ll_top_right;
     private QuestionGroupAdapter mQuestionGroupAdapter;
-    private ActivityResultLauncher mActivityResultLauncher;
 
     @Override
     protected int getLayoutId() {
@@ -59,17 +48,6 @@ public class QuestionFragment_Group extends BaseFragment {
     @Override
     protected void initView(Bundle savedInstanceState) {
         initRecyclerView();
-        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                if (result!=null) {
-                    int resultCode = result.getResultCode();
-                    if (resultCode== Activity.RESULT_OK) {
-
-                    }
-                }
-            }
-        });
         registerEventBus();
     }
 
@@ -167,11 +145,10 @@ public class QuestionFragment_Group extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_create:
-                Intent intent = new Intent(mActivity, CreateGroupStepOneActivity.class);
-                mActivityResultLauncher.launch(intent);
+                skipAnotherActivity(CreateGroupStepOneActivity.class);
                 break;
             case R.id.tv_more:
-
+                skipAnotherActivity(AllGroupListActivity.class);
                 break;
         }
     }

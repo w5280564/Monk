@@ -21,6 +21,7 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.http.OnHttpResListener;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
@@ -269,37 +270,43 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
      * @param mAdapter
      */
     protected void handleSplitListData(BaseSplitIndexBean obj, BaseQuickAdapter mAdapter, int mPageSize) {
-//        if(obj!=null){
-//            int bigPage = obj.getLastPage();
-//            if(page==bigPage){
-//                mAdapter.loadMoreEnd();//显示“没有更多数据”
-//            }
-//
-//            boolean isRefresh = page==1?true:false;
-//            if(!ListUtils.isEmpty(obj.getList())){
-//                int size = obj.getList().size();
-//
-//                if (isRefresh) {
-//                    mAdapter.setNewData(obj.getList());
-//                } else {
-//                    mAdapter.addData(obj.getList());
-//                }
-//
-//
-//                if (size < mPageSize) {
-//                    mAdapter.loadMoreEnd(isRefresh);//第一页的话隐藏“没有更多数据”，否则显示“没有更多数据”
-//                } else {
-//                    mAdapter.loadMoreComplete();
-//                }
-//            }else{
-//
-//                if (isRefresh) {
-//                    mAdapter.setNewData(null);//刷新列表
-//                } else {
-//                    mAdapter.loadMoreEnd(false);//显示“没有更多数据”
-//                }
-//            }
-//        }
+        if(obj!=null){
+            int allCount = StringUtil.isBlank(obj.getCount())?0:Integer.parseInt(obj.getCount());
+            int bigPage = 0;//最大页
+            if(allCount%mPageSize!=0){
+                bigPage=allCount/mPageSize+1;
+            }else{
+                bigPage=allCount/mPageSize;
+            }
+            if(page==bigPage){
+                mAdapter.loadMoreEnd();//显示“没有更多数据”
+            }
+
+            boolean isRefresh = page==1?true:false;
+            if(!ListUtils.isEmpty(obj.getList())){
+                int size = obj.getList().size();
+
+                if (isRefresh) {
+                    mAdapter.setNewData(obj.getList());
+                } else {
+                    mAdapter.addData(obj.getList());
+                }
+
+
+                if (size < mPageSize) {
+                    mAdapter.loadMoreEnd(isRefresh);//第一页的话隐藏“没有更多数据”，否则显示“没有更多数据”
+                } else {
+                    mAdapter.loadMoreComplete();
+                }
+            }else{
+
+                if (isRefresh) {
+                    mAdapter.setNewData(null);//刷新列表
+                } else {
+                    mAdapter.loadMoreEnd(false);//显示“没有更多数据”
+                }
+            }
+        }
     }
 
 

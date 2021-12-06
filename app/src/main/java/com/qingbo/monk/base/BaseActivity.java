@@ -17,12 +17,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
@@ -395,5 +399,51 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
         }
     }
 
+
+
+    /**
+     * 全局处理分页的公共方法
+     * @param obj  具体的分页对象  列表适配器
+     * @param mAdapter
+     */
+    protected void handleSplitListData(BaseSplitIndexBean obj, BaseQuickAdapter mAdapter, int mPageSize) {
+        if(obj!=null){
+            int allCount = StringUtil.isBlank(obj.getCount())?0:Integer.parseInt(obj.getCount());
+            int bigPage = 0;//最大页
+            if(allCount%mPageSize!=0){
+                bigPage=allCount/mPageSize+1;
+            }else{
+                bigPage=allCount/mPageSize;
+            }
+            if(page==bigPage){
+                mAdapter.loadMoreEnd();//显示“没有更多数据”
+            }
+
+            boolean isRefresh = page==1?true:false;
+            if(!ListUtils.isEmpty(obj.getList())){
+                int size = obj.getList().size();
+
+                if (isRefresh) {
+                    mAdapter.setNewData(obj.getList());
+                } else {
+                    mAdapter.addData(obj.getList());
+                }
+
+
+                if (size < mPageSize) {
+                    mAdapter.loadMoreEnd(isRefresh);//第一页的话隐藏“没有更多数据”，否则显示“没有更多数据”
+                } else {
+                    mAdapter.loadMoreComplete();
+                }
+            }else{
+
+                if (isRefresh) {
+                    mAdapter.setNewData(null);//刷新列表
+                } else {
+                    mAdapter.loadMoreEnd(false);//显示“没有更多数据”
+                }
+            }
+        }
+    }
 
 }
