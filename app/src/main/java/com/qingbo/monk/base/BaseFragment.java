@@ -42,7 +42,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
     protected BaseActivity mActivity;
     private Unbinder unbinder;
     protected int page = 1;
-    protected int pageSize = 16;
+    protected int limit = 10;
     protected String fileName;/* 图片上传图片名称 */
 
     @Override

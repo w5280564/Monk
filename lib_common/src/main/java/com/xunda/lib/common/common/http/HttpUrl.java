@@ -79,6 +79,14 @@ public class HttpUrl {
      */
     public static final String sendQuestion = "app/chat/sendQuestion";
 
-    
+    /**
+     * 	全部社群
+     */
+    public static final String allShequn = "square/detail/allshequn";
+
+    /**
+     * 	我的社群
+     */
+    public static final String myShequn = "square/detail/my-shequns";
 }
 

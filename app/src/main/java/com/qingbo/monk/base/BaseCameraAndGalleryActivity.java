@@ -44,7 +44,7 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
 //                .gridExpectedSize(240)//图片显示表格的大小
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//图像选择和预览活动所需的方向。
                 .thumbnailScale(0.85f)//缩放比例
-                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
+                .theme(R.style.Matisse_Dracula)//主题  暗色主题 R.style.Matisse_Dracula
                 .imageEngine(new GlideEngine())//加载方式
                 .capture(true)//设置是否可以拍照
                 .captureStrategy(new CaptureStrategy(true, getPackageName()+ ".fileProvider"))//存储到哪里，这里的authority要和Manifest当中保持一致
@@ -59,11 +59,11 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
      */
     protected void checkGalleryPermission(int photo_number) {
         this.photo_number = photo_number;
-        boolean result = PermissionManager.checkPermission(this, Constants.PERMS_WRITE_READ);
+        boolean result = PermissionManager.checkPermission(this, Constants.PERMS_WRITE_READ_CAMERA);
         if (result) {
             gallery();
         }else{
-            PermissionManager.requestPermission(this, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ);
+            PermissionManager.requestPermission(this, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ_CAMERA);
         }
     }
 

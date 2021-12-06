@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:wcw="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -11,11 +11,11 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        wcw:titleBarLeftImg="@mipmap/icon_back"
-        wcw:titleBarRightShowType="TEXT"
-        wcw:titleBarRightShowFlag="VISIBLE"
-        wcw:titleBarRightTxt="取消"
-        wcw:titleBarTitle="一只可爱的羊"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightShowType="TEXT"
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightTxt="取消"
+        app:titleBarTitle="一只可爱的羊"
       />
 
     <androidx.recyclerview.widget.RecyclerView

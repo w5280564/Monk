@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="如何快速链接圈内行家？"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="@dimen/sp_15" />
 
@@ -42,13 +41,12 @@
 
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_name_fee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:drawablePadding="@dimen/dp_7"
             android:drawableRight="@mipmap/icon_youjiantou"
-            android:text="限时免费"
             android:textColor="@color/text_color_a1a1a1"
             android:textSize="@dimen/text_little_size" />
 

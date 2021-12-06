@@ -45,7 +45,7 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
 //                .gridExpectedSize(240)//图片显示表格的大小
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//图像选择和预览活动所需的方向。
                 .thumbnailScale(0.85f)//缩放比例
-                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
+                .theme(R.style.Matisse_Dracula)//主题  暗色主题 R.style.Matisse_Dracula R.style.Matisse_Zhihu
                 .imageEngine(new GlideEngine())//加载方式
                 .capture(true)//设置是否可以拍照
                 .captureStrategy(new CaptureStrategy(true, mActivity.getPackageName()+ ".fileProvider"))//存储到哪里，这里的authority要和Manifest当中保持一致
@@ -60,11 +60,11 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
      */
     protected void checkGalleryPermission(int photo_number) {
         this.photo_number = photo_number;
-        boolean result = PermissionManager.checkPermission(mActivity, Constants.PERMS_CAMERA);
+        boolean result = PermissionManager.checkPermission(mActivity, Constants.PERMS_WRITE_READ_CAMERA);
         if (result) {
             gallery();
         }else{
-            PermissionManager.requestPermission(mActivity, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_CAMERA);
+            PermissionManager.requestPermission(mActivity, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ_CAMERA);
         }
     }
 
@@ -118,10 +118,6 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
                         content = getString(R.string.permission_write_denied);
                         request_code = APP_SETTINGS_PHOTO;
                         break;
-                    case Constants.PERMISSION_CAMERA_CODE:
-                        content = getString(R.string.permission_camera_denied);
-                        request_code = APP_SETTINGS_CAMERA;
-                        break;
                 }
 
                 showPermissionApplyDialog(content,request_code,true);
@@ -129,9 +125,6 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
                 switch(requestCode){
                     case Constants.WRITE_PERMISSION_CODE:
                         showPermissionApplyDialog(getString(R.string.permission_apply_photo_reason),APP_SETTINGS_PHOTO,false);
-                        break;
-                    case Constants.PERMISSION_CAMERA_CODE:
-                        showPermissionApplyDialog(getString(R.string.permission_apply_camera_reason),APP_SETTINGS_CAMERA,false);
                         break;
                 }
             }

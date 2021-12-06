@@ -21,12 +21,10 @@
     <string name="letter_digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 
 
-    <!--727新加-->
     <!--写入权限的提示语-->
     <string name="english_introduce">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,.?!;"!</string>
     <string name="permission_download_tip">为了正常使用下载功能，请开启“读写手机存储”权限!</string>
     <string name="permission_write_tip">为了正常使用相册功能，请开启“读写手机存储”权限!</string>
-    <string name="permission_read_phone_tip">为了给您提供更全面的服务，请开启“读写手机状态”权限!</string>
     <string name="permission_call_phone_tip">为了正常使用电话功能，请开启“电话”权限!</string>
     <string name="permission_camera_tip">为了正常使用拍照功能，请开启“相机”权限和“读写手机存储”权限!</string>
     <string name="permission_camera_IDCard_tip">为了正常使用刷脸功能，请开启“相机”权限权限!</string>
@@ -35,28 +33,19 @@
     <string name="permission_read_contacts_tip">为了正常使用添加好友功能，请开启“通讯录”权限!</string>
 
 
-    <string name="permission_douniu_tip">为了正常使用拍摄视频功能，请开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限!</string>
-    <string name="permission_camera_denied">对不起，由于获取不了“相机”权限和“读写手机存储”权限，所以无法正常使用相机功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限和“读写手机存储”权限，以正常使用扫地僧。</string>
-    <string name="permission_camera_IDCard_denied">对不起，由于获取不了“相机”权限，所以无法正常使用刷脸功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限，以正常使用扫地僧。</string>
     <string name="permission_scan_code_denied">对不起，由于获取不了“相机”权限，所以无法正常使用扫码功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限，以正常使用扫地僧。</string>
     <string name="permission_write_denied">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用相册功能!请在【设置-应用-扫地僧-权限】中开启“读写手机存储”权限，以正常使用扫地僧。</string>
     <string name="permission_write_denied_download">对不起，由于获取不了“读写手机存储”权限，所以无法正常使用下载功能!请在【设置-应用-扫地僧-权限】中开启“读写手机存储”权限，以正常使用扫地僧。</string>
     <string name="permission_write_denied_call_phone">对不起，由于获取不了“读写手机状态”权限，所以无法正常使用电话功能!请在【设置-应用-扫地僧-权限】中开启“读写手机状态”权限，以正常使用扫地僧。</string>
     <string name="permission_read_contacts_denied">对不起，由于获取不了“通讯录”权限，所以无法正常使用添加好友功能!请在【设置-应用-扫地僧-权限】中开启“通讯录”权限，以正常使用扫地僧。</string>
-    <string name="permission_douniu_denied">对不起，由于获取不了“相机”权限、“麦克风”权限，以及“读写手机存储”权限，所以无法正常使用拍摄视频功能!请在【设置-应用-扫地僧-权限】中开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，以正常使用扫地僧。</string>
 
 
     <string name="permission_record_audio_denied">对不起，由于获取不了“麦克风”权限，所以无法正常使用语音搜索功能!请在【设置-应用-扫地僧-权限】中开启“麦克风”权限，以正常使用扫地僧。</string>
-    <string name="permission_apply_camera_reason">不开启“相机”权限和“读写手机存储”权限，将不能使用相机功能!</string>
-    <string name="permission_apply_camera_IDCard_reason">不开启“相机”权限，将不能使用刷脸功能!</string>
     <string name="permission_apply_scan_code_reason">不开启“相机”权限，将不能使用扫码功能!</string>
     <string name="permission_apply_photo_reason">不开启“读写手机存储”权限，将不能使用相册功能!</string>
     <string name="permission_apply_download_reason">不开启“读写手机存储”权限，将不能使用下载功能!</string>
     <string name="permission_apply_call_phone_reason">不开启“读写手机状态”权限，将不能使用电话功能!</string>
     <string name="permission_apply_read_contacts_reason">不开启“通讯录”权限，将不能使用添加好友功能!</string>
-    <string name="permission_apply_douniu_reason">不开启“相机”权限、“麦克风”权限，以及“读写手机存储”权限，将不能使用拍摄视频功能!</string>
-
-
     <string name="permission_apply_record_audio_reason">不开启“麦克风”权限，将不能使用语音搜索功能!</string>
 
 

@@ -46,6 +46,8 @@
         <activity android:name=".webview.WebviewActivity" />
         <activity android:name=".message.activity.ContactListActivity" />
         <activity android:name=".message.activity.ChatActivity" />
+        <activity android:name=".question.activity.CreateGroupStepOneActivity" />
+        <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
 
 
 
