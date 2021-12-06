@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:ignore="MissingConstraints">
 
     <ImageView
@@ -22,21 +22,75 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
+        android:maxLength="10"
         android:text="科技圈大小事"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/group_Img"
         app:layout_constraintTop_toTopOf="@+id/group_Img" />
 
+    <LinearLayout
+        android:id="@+id/lable_Lin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/group_Name"
+        app:layout_constraintStart_toEndOf="@+id/group_Name"
+        app:layout_constraintTop_toTopOf="@+id/group_Name" />
 
-    <ImageView
-        android:layout_width="@dimen/dp_18"
-        android:layout_height="@dimen/dp_18"
-        android:background="@mipmap/icon_logo"
-        android:scaleType="centerCrop"
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:layout_marginTop="@dimen/dp_6"
         app:layout_constraintStart_toStartOf="@+id/group_Name"
-        app:layout_constraintTop_toBottomOf="@+id/group_Name" />
+        app:layout_constraintTop_toBottomOf="@+id/group_Name">
+
+        <ImageView
+            android:id="@+id/personHead_Img"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:background="@mipmap/icon_logo"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/nickName_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_6"
+            android:text="常青树"
+            android:textColor="@color/text_color_6f6f6f"
+            android:textSize="12sp"
+            android:layout_marginEnd="@dimen/dp_9"
+            app:layout_constraintBottom_toBottomOf="@+id/personHead_Img"
+            app:layout_constraintStart_toEndOf="@+id/personHead_Img"
+            app:layout_constraintTop_toTopOf="@+id/personHead_Img" />
+
+        <TextView
+            android:id="@+id/time_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="21分钟前"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@+id/nickName_Tv"
+            app:layout_constraintStart_toEndOf="@+id/nickName_Tv"
+            app:layout_constraintTop_toTopOf="@+id/nickName_Tv" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="@dimen/dp_46"
+        android:layout_height="@dimen/dp_22"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:gravity="center"
+        android:text="关注"
+        android:textColor="@color/text_color_444444"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/group_Img" />
 
 
     <TextView
@@ -46,7 +100,7 @@
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_27"
-        android:lines="2"
+        android:maxLines="2"
         android:text="备战2022,基金经理调仓换股重点关注三大方\n向|一份观察"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
@@ -61,12 +115,25 @@
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_7"
         android:layout_marginEnd="@dimen/dp_15"
-        android:lines="3"
+        android:maxLines="3"
         android:text="九方智投提供上证指数(000001)股票的行情走势、逐笔交易等实时行情数据，及上证指数(000001)的新闻资讯、公司公告、资金流分析、阶段涨幅。"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_Tv" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nine_grid"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

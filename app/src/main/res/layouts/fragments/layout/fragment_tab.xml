@@ -10,7 +10,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/card_Recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:nestedScrollingEnabled="false"
+        android:paddingBottom="@dimen/dp_100"/>
 
 
 

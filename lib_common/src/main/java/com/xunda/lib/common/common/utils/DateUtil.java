@@ -3,6 +3,7 @@ package com.xunda.lib.common.common.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -19,6 +20,7 @@ public class DateUtil {
     public static final String PATTERN_STANDARD16H = "yyyy-MM-dd HH:mm";
     public static final String PATTERN_STANDARD19H = "yyyy-MM-dd HH:mm:ss";
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd";
+    public static final String Date_String = "MM-dd HH:mm";
 
 
     /**
@@ -130,6 +132,21 @@ public class DateUtil {
         return dateToString(PATTERN_STANDARD16H,date);
     }
 
+    public static String getDateString(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(Date_String);
+        return sdf.format(date);
+    }
+
+    public static String getUserDate(String sformat) {
+        String dateString = "2017-03-28";
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(sformat);//先转固定格式
+            dateString = new SimpleDateFormat("MM-dd HH:mm").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateString;
+    }
 
     /**
      * 计算两个日期间隔天数

@@ -12,13 +12,11 @@ import com.google.gson.Gson;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +24,9 @@ import java.util.List;
 import butterknife.BindView;
 
 public class HomeFollowFragment extends BaseFragment {
-//    String type;
+    //    String type;
 //    String status, isVip;
-    @BindView (R.id.card_Recycler)
+    @BindView(R.id.card_Recycler)
     RecyclerView card_Recycler;
 
 
@@ -56,6 +54,7 @@ public class HomeFollowFragment extends BaseFragment {
     }
 
     int page = 1;
+
     private void getListData() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -67,8 +66,7 @@ public class HomeFollowFragment extends BaseFragment {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     HomeFllowBean homeFllowBean = new Gson().fromJson(json_root, HomeFllowBean.class);
                     if (homeFllowBean != null) {
-////                        lableList(mContext, interest_Lin, interestBean.getData());
-                        initlist(mContext,homeFllowBean.getData());
+                        initlist(mContext, homeFllowBean.getData());
                     }
                 }
             }
@@ -78,56 +76,18 @@ public class HomeFollowFragment extends BaseFragment {
     }
 
 
-
-
-//    CardFragment_Bean cardListModel;
-//
-//    @SuppressLint("SetTextI18n")
-//    public void cardData(Context context, String baseUrl) {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("type", type);
-//        map.put("status", status);
-//        xUtils3Http.get(context, baseUrl, map, new xUtils3Http.GetDataCallback() {
-//            @Override
-//            public void success(String result) {
-//                cardListModel = new Gson().fromJson(result, CardFragment_Bean.class);
-//                initlist(context);
-//            }
-//
-//            @Override
-//            public void failed(String... args) {
-//            }
-//        });
-//    }
-
-
-    public void initlist(final Context context,HomeFllowBean.DataDTO homeFllowBean) {
+    public void initlist(final Context context, HomeFllowBean.DataDTO homeFllowBean) {
         LinearLayoutManager mMangaer = new LinearLayoutManager(context);
-        mMangaer.setOrientation(RecyclerView.VERTICAL );
+        mMangaer.setOrientation(RecyclerView.VERTICAL);
         card_Recycler.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         card_Recycler.setHasFixedSize(true);
-        Follow_Adapter  mAdapter = new Follow_Adapter(context,  homeFllowBean);
-        card_Recycler.setAdapter(mAdapter);
-        mAdapter.setOnItemAddRemoveClickLister((view, position) -> {
-//            if (TextUtils.equals(type, "1")) {//1是折扣券
-//                if (TextUtils.equals(isVip, "true")) {
-//                    CardFragment_Bean.DataDTO dataDTO = cardListModel.getData().get(position);
-//                    LiveDataBus.get().with("discountCard").postValue(dataDTO);
-//                    requireActivity().finish();
-//                } else {
-//                    Me_VIP.actionStart(mContext);
-//                }
-//            } else {
-//                String cardId = cardListModel.getData().get(position).getUserCardId();
-//                String toastStr = "经验+" + cardListModel.getData().get(position).getRules().intValue();
-//                useCardData(context, saveFile.UserCard_Use, cardId,toastStr);
-//                mAdapter.removeData(position);//先使用再删除
-//            }
-        });
+//        Follow_Adapter mAdapter = new Follow_Adapter(context, homeFllowBean);
+        Follow_Adapter homeFollowAdapter = new Follow_Adapter();
+        List<HomeFllowBean.DataDTO.ListDTO> list = homeFllowBean.getList();
+        homeFollowAdapter.setNewData(list);
+        card_Recycler.setAdapter(homeFollowAdapter);
     }
-
-
 
 
 }

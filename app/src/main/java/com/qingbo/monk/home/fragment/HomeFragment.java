@@ -193,7 +193,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         int sizes = tabsList.size();
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
-            if (i == 0) {
+            if (i == 1) {
                 tabFragmentList.add(HomeFollowFragment.newInstance(titleType, i + "", ""));
             } else {
                 tabFragmentList.add(HomeCardFragment.newInstance(titleType, i + "", ""));
@@ -220,6 +220,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
         //设置TabLayout和ViewPager联动
         card_Tab.setupWithViewPager(card_ViewPager, false);
+        card_ViewPager.setCurrentItem(1);
+
     }
 
     private void getJoin(String ID) {
