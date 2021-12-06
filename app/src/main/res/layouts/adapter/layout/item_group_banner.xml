@@ -12,11 +12,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:orientation="vertical">
 
-        <ImageView
+        <com.xunda.lib.common.view.RadiusImageWidget
             android:id="@+id/iv_img_top"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
+            app:left_top_radius="@dimen/dp_10"
+            app:right_top_radius="@dimen/dp_10"
             android:scaleType="centerCrop"
             android:src="@mipmap/bg"/>
 

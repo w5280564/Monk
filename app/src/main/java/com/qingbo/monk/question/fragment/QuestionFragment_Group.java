@@ -5,9 +5,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.BaseSheQunBean;
+import com.qingbo.monk.bean.MySheQunBean;
 import com.qingbo.monk.bean.SheQunBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
@@ -15,10 +18,13 @@ import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+
 import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,10 +71,6 @@ public class QuestionFragment_Group extends BaseFragment {
         mRecyclerView.setAdapter(mQuestionGroupAdapter);
     }
 
-    @Override
-    protected void initLocalData() {
-        handleBanner();
-    }
 
     @Override
     protected void getServerData() {
@@ -78,6 +80,47 @@ public class QuestionFragment_Group extends BaseFragment {
     private void getMyShequn() {
         HashMap<String, String> requestMap = new HashMap<>();
         HttpSender sender = new HttpSender(HttpUrl.myShequn, "我的社群", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            handleData(json_root);
+                        }
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+
+    private void handleData(String json) {
+        HttpBaseList<MySheQunBean> objList = GsonUtil
+                .getInstance()
+                .json2List(
+                        json,
+                        new TypeToken<HttpBaseList<MySheQunBean>>() {
+                        }.getType());
+        handleBanner(objList.getData());
+    }
+
+
+    private void handleBanner(List<MySheQunBean> bannerProductVoList) {
+        if (!ListUtils.isEmpty(bannerProductVoList)) {
+            img_top_banner.placeholder(R.mipmap.img_pic_none_square).setSource(bannerProductVoList).startScroll();
+        } else {
+            img_top_banner.setBackgroundResource(R.mipmap.img_pic_none_square);
+        }
+    }
+
+
+    private void getAllShequn() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", page + "");
+        requestMap.put("limit", "3");
+        HttpSender sender = new HttpSender(HttpUrl.allShequn, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -97,37 +140,6 @@ public class QuestionFragment_Group extends BaseFragment {
         sender.sendGet();
     }
 
-    private void getAllShequn() {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", page + "");
-        requestMap.put("limit", "3");
-        HttpSender sender = new HttpSender(HttpUrl.allShequn, "全部社群", requestMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseSheQunBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseSheQunBean.class);
-                            if (obj != null) {
-                                List<SheQunBean> list = obj.getList();
-                                mQuestionGroupAdapter.setNewData(list);
-                            }
-                        }
-                    }
-
-                }, true);
-
-        sender.setContext(mActivity);
-        sender.sendGet();
-    }
-
-    private void handleBanner() {
-        List<String> mList2 = new ArrayList<>();
-        mList2.add("");
-        mList2.add("");
-        mList2.add("");
-        mList2.add("");
-        img_top_banner.placeholder(R.mipmap.img_pic_none_square).setSource(mList2).startScroll();
-    }
 
     @Override
     public void onPause() {

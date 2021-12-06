@@ -16,8 +16,6 @@ public class SheQunBean {
     private String id;
     @SerializedName("shequn_name")
     private String shequnName;
-    @SerializedName("shequn_image")
-    private String shequnImage;
     @SerializedName("shequn_des")
     private String shequnDes;
     @SerializedName("create_time")

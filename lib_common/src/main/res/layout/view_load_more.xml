@@ -29,7 +29,7 @@
                 android:layout_marginRight="4dp"
                 android:clickable="false"
                 android:gravity="center"
-                wheel:matProg_barColor="@color/app_main_color"
+                wheel:matProg_barColor="@color/text_color_1F8FE5"
                 wheel:matProg_progressIndeterminate="true"
                 wheel:matProg_barWidth="2dp"/>
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_4"
                 android:text="@string/brvah_loading"
-                android:textColor="@color/app_main_color"
+                android:textColor="@color/text_color_1F8FE5"
                 android:textSize="@dimen/sp_14" />
         </LinearLayout>
     </LinearLayout>

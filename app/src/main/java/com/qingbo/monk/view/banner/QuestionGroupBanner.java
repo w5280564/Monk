@@ -8,9 +8,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.flyco.banner.widget.Banner.BaseIndicatorBanner;
 import com.qingbo.monk.R;
+import com.qingbo.monk.bean.MySheQunBean;
+import com.qingbo.monk.bean.SheQunBean;
+import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.StringUtil;
+
 import java.util.List;
 
-public class QuestionGroupBanner extends BaseIndicatorBanner<String, QuestionGroupBanner> {
+public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, QuestionGroupBanner> {
     private int drawable;
 
     public QuestionGroupBanner(Context context) {
@@ -34,7 +40,7 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<String, QuestionGro
 
 
     @Override
-    public QuestionGroupBanner setSource(List<String> list) {
+    public QuestionGroupBanner setSource(List<MySheQunBean> list) {
         if (list == null || list.size() <= 1) {
             setIndicatorShow(false);
             setAutoScrollEnable(false);
@@ -58,13 +64,12 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<String, QuestionGro
         TextView tv_group_name = layout.findViewById(R.id.tv_group_name);
         TextView tv_name = layout.findViewById(R.id.tv_name);
         ImageView iv_img_top = layout.findViewById(R.id.iv_img_top);
+        MySheQunBean item = mDatas.get(position);
 
-//        FrameLayout fl_parent = layout.findViewById(R.id.fl_parent);
-//        int parentWith = mDisplayMetrics.widthPixels;
-//        ViewGroup.LayoutParams layoutParams = fl_parent.getLayoutParams();
-//        layoutParams.width = parentWith;
-//        layoutParams.height = (int) (parentWith*0.5);
-//        fl_parent.setLayoutParams(layoutParams);
+        tv_group_name.setText(StringUtil.getStringValue(item.getShequnName()));
+        tv_name.setText(SharePref.user().getUserName());
+        GlideUtils.loadRoundImage(mContext,iv_img_top,"",8,true,true,false,false);
+
 
 
         return layout;

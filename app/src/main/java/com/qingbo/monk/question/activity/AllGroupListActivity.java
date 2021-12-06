@@ -59,14 +59,14 @@ public class AllGroupListActivity extends BaseActivity implements BaseQuickAdapt
     private void getAllShequn(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
-        requestMap.put("limit", pageSize+"");
+        requestMap.put("limit", 11+"");
         HttpSender sender = new HttpSender(HttpUrl.allShequn, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseSheQunBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseSheQunBean.class);
-                            handleSplitListData(obj,mQuestionGroupAdapter,pageSize);
+                            handleSplitListData(obj,mQuestionGroupAdapter,11);
                         }
                     }
 
