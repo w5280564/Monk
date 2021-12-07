@@ -13,7 +13,7 @@
 
     <!-- 文字大小 -->
     <!-- 标题文字大小 -->
-    <dimen name="text_title_size">17sp</dimen>
+    <dimen name="text_title_size">18sp</dimen>
 
     <dimen name="text_big_size">16sp</dimen>
     <!-- 正文字体大小 -->

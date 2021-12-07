@@ -39,9 +39,9 @@ public class PickStringDialog extends Dialog {
 		view = getLayoutInflater().inflate(R.layout.picker_single_layout, null);
 		setCanceledOnTouchOutside(true);
 		Window window = getWindow();
-        TextView tv_ok = (TextView) view.findViewById(R.id.tv_ok);
-        TextView tv_close = (TextView) view.findViewById(R.id.tv_close);
-        TextView tv_title = (TextView) view.findViewById(R.id.tv_title);
+        TextView tv_ok = view.findViewById(R.id.tv_ok);
+        TextView tv_close = view.findViewById(R.id.tv_close);
+        TextView tv_title = view.findViewById(R.id.tv_title);
 		tv_title.setText(title);
 		final StringWheelMain wheelMain = new StringWheelMain(view, activity);
 

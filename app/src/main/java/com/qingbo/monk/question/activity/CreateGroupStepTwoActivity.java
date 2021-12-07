@@ -6,14 +6,11 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity;
-import com.xunda.lib.common.bean.BaseUserBean;
+import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.DecimalInputTextWatcherExtract;
-import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -23,17 +20,14 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.RadiusImageWidget;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 /**
  * 创建社群第二步
  */
-public class CreateGroupStepTwoActivity extends BaseCameraAndGalleryActivity implements CompoundButton.OnCheckedChangeListener {
+public class CreateGroupStepTwoActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.iv_header_group)
     RadiusImageWidget ivHeaderGroup;
     @BindView(R.id.tv_name)

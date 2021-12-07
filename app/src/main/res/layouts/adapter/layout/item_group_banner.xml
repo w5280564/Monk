@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_group_bottom"
     tools:ignore="MissingConstraints">
     <ImageView
         android:id="@+id/iv_img_top"
@@ -15,41 +14,54 @@
         app:left_top_radius="@dimen/dp_10"
         app:right_top_radius="@dimen/dp_10" />
 
-    <TextView
-        android:id="@+id/tv_group_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        android:text="扫地僧的达摩院..."
-        android:textColor="@color/text_color_444444"
-        android:textSize="@dimen/sp_14"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:padding="@dimen/dp_10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_img_top" />
-
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:layout_marginBottom="@dimen/dp_10"
-        android:textColor="@color/text_color_a1a1a1"
-        android:textSize="@dimen/sp_12"
+        app:layout_constraintTop_toBottomOf="@+id/iv_img_top"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_group_name"
-        app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/background_group_bottom"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="扫地僧的达摩院..."
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_14" />
 
 
-    <ImageView
-        android:layout_width="@dimen/dp_12"
-        android:layout_height="@dimen/dp_12"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:src="@mipmap/yonghu_icon"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="@dimen/sp_12" />
+
+
+            <ImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:layout_marginLeft="@dimen/dp_3"
+                android:src="@mipmap/yonghu_icon" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

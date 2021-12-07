@@ -220,49 +220,17 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
 
 
 
-    /**
-     * 单文件上传
-     */
-    private void uploadImage(final File mFile) {
-        HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("file", "file");
-        HttpSender sender = new HttpSender(HttpUrl.uploadFile, "单文件上传", baseMap,
-                new MyOnHttpResListener() {
-
-                    @Override
-                    public void onComplete(String json, int status, String description, String data) {
-                        if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            haveUploadImg = true;
-                            Uri uri = Uri.fromFile(mFile);
-                            Glide.with(mActivity).load(uri).into(iv_header);
-                            avatar = GsonUtil.getInstance().getValue(data,"file");
-                            SharePref.user().setUserHead(avatar);
-                        }
-                    }
-                },true);
-        sender.setContext(mActivity);
-        sender.sendPostImage(mFile);
+    @Override
+    protected void onUploadSuccess(String imageString) {
+        haveUploadImg = true;
+        avatar = imageString;
+        GlideUtils.loadImage(mContext,iv_header,avatar);
+        SharePref.user().setUserHead(avatar);
     }
-
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case Constants.PHOTO_REQUEST_GALLERY:
-                    if (data != null) {
-                        List<Uri> mSelected = Matisse.obtainResult(data);//图片集合
-                        if (!ListUtils.isEmpty(mSelected)) {
-                            try {
-                                File mFile = FileUtil.getTempFile(mActivity, mSelected.get(0));
-                                uploadImage(mFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
+    protected void onUploadFailure(String error_info) {
+
     }
+
 }

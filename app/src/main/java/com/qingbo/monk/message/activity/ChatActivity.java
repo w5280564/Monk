@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.reflect.TypeToken;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity;
+import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.bean.ServiceChatBean;
 import com.qingbo.monk.bean.ServiceChatIndexBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
@@ -30,7 +30,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity{
+public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
 
     @BindView(R.id.recycleView)
     RecyclerView mRecyclerView;
@@ -108,7 +108,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_image:
-                checkGalleryPermission(1);
+                checkGalleryPermission();
                 break;
             case R.id.tv_send:
                 String content = StringUtil.getEditText(etContent);
@@ -146,7 +146,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
                 }
             }
 
-        }, false);
+        }, true);
         sender.setContext(mActivity);
         sender.sendGet();
     }
@@ -195,6 +195,16 @@ public class ChatActivity extends BaseCameraAndGalleryActivity{
     @Override
     public void onRightClick() {
         back();
+    }
+
+    @Override
+    protected void onUploadSuccess(String imageString) {
+
+    }
+
+    @Override
+    protected void onUploadFailure(String error_info) {
+
     }
 }
 

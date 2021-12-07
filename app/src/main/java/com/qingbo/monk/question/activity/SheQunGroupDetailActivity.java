@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
@@ -43,6 +43,7 @@ public class SheQunGroupDetailActivity extends BaseActivity {
     ViewPager viewpager;
     private List<Fragment> fragments = new ArrayList<>();
     private String id;
+    private MySheQunBean sheQunBean;
 
 
     public static void actionStart(Context context, String id) {
@@ -143,18 +144,19 @@ public class SheQunGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            MySheQunBean obj = GsonUtil.getInstance().json2Bean(data, MySheQunBean.class);
-                            handleData(obj);
+                            sheQunBean = GsonUtil.getInstance().json2Bean(data, MySheQunBean.class);
+                            handleData();
                         }
                     }
-                }, false);
+                }, true);
         sender.setContext(mActivity);
         sender.sendGet();
     }
 
-    private void handleData(MySheQunBean obj) {
-        if (obj != null) {
-            String group_header = obj.getShequnImage();
+    private void handleData() {
+        if (sheQunBean != null) {
+            sheQunBean.setId(id);
+            String group_header = sheQunBean.getShequnImage();
             if (StringUtil.isBlank(group_header)) {
                 iv_head_bag.setImageResource(R.mipmap.bg_group_top);
             }else{
@@ -166,26 +168,18 @@ public class SheQunGroupDetailActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.ll_back})
+    @OnClick({R.id.ll_back,R.id.ll_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-//            case R.id.ll_play_live:
-//                jumpToPlayLiveActivity(channel_id,rtmp);
-//                break;
             case R.id.ll_back:
                 back();
+                break;
+            case R.id.ll_menu:
+                SheQunGroupSettingActivity.actionStart(mActivity,sheQunBean);
                 break;
         }
     }
 
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
 
 
 

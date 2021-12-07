@@ -6,16 +6,15 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.qingbo.monk.R;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.permission.PermissionManager;
+import com.qingbo.monk.R;
 import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.dialog.PermissionApplyDialog;
 import com.zhihu.matisse.Matisse;
@@ -31,14 +30,15 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  *
- * 带图片上传的基类Fragment
+ * 单个图片上传的基类Activity
  *
  */
 
-public abstract class BaseCameraAndGalleryFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks{
+public abstract class BaseCameraAndGalleryActivity_Single extends BaseActivity implements EasyPermissions.PermissionCallbacks{
 
     private static final int APP_SETTINGS_PHOTO = 100;
-    private int photo_number = 1;
+
+
 
 
 
@@ -51,14 +51,15 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
                 .choose(MimeType.ofImage())//照片视频全部显示
                 .showSingleMediaType(true)
                 .countable(true)//有序选择图片
-                .maxSelectable(photo_number)//最大选择数量
+                .capture(true)
+                .maxSelectable(1)//最大选择数量
 //                .gridExpectedSize(240)//图片显示表格的大小
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//图像选择和预览活动所需的方向。
                 .thumbnailScale(0.85f)//缩放比例
-                .theme(R.style.Matisse_Dracula)//主题  暗色主题 R.style.Matisse_Dracula R.style.Matisse_Zhihu
+                .theme(R.style.Matisse_Dracula)//主题  暗色主题 R.style.Matisse_Dracula
                 .imageEngine(new GlideEngine())//加载方式
                 .capture(true)//设置是否可以拍照
-                .captureStrategy(new CaptureStrategy(true, mActivity.getPackageName()+ ".fileProvider"))//存储到哪里，这里的authority要和Manifest当中保持一致
+                .captureStrategy(new CaptureStrategy(true, getPackageName()+ ".fileProvider"))//存储到哪里，这里的authority要和Manifest当中保持一致
                 .forResult(Constants.PHOTO_REQUEST_GALLERY);//
     }
 
@@ -68,16 +69,14 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
     /**
      * 检查读写权限
      */
-    protected void checkGalleryPermission(int photo_number) {
-        this.photo_number = photo_number;
-        boolean result = PermissionManager.checkPermission(mActivity, Constants.PERMS_WRITE_READ_CAMERA);
+    protected void checkGalleryPermission() {
+        boolean result = PermissionManager.checkPermission(this, Constants.PERMS_WRITE_READ_CAMERA);
         if (result) {
             gallery();
         }else{
-            PermissionManager.requestPermission(mActivity, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ_CAMERA);
+            PermissionManager.requestPermission(this, getString(R.string.permission_write_tip), Constants.WRITE_PERMISSION_CODE, Constants.PERMS_WRITE_READ_CAMERA);
         }
     }
-
 
 
 
@@ -149,16 +148,16 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
      * 被拒绝后的权限申请引导弹框
      */
     private void showPermissionApplyDialog(String content, final int request_code, final boolean isNotAskAgain) {
-        PermissionApplyDialog mPermissionApplyDialog = new PermissionApplyDialog(mActivity, content, isNotAskAgain,new PermissionApplyDialog.OnJumpToSettingListener() {
+        PermissionApplyDialog mPermissionApplyDialog = new PermissionApplyDialog(this, content, isNotAskAgain,new PermissionApplyDialog.OnJumpToSettingListener() {
             @Override
             public void clickRightButton() {
                 if(isNotAskAgain){
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            .setData(Uri.fromParts("package", mActivity.getPackageName(), null));
+                            .setData(Uri.fromParts("package", getPackageName(), null));
                     startActivityForResult( intent,request_code);
                 }else{
                     if(request_code==APP_SETTINGS_PHOTO){
-                        checkGalleryPermission(photo_number);
+                        checkGalleryPermission();
                     }
                 }
             }
@@ -169,8 +168,8 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
         switch (requestCode) {
             case Constants.PHOTO_REQUEST_GALLERY:
                 if (resultCode == Activity.RESULT_OK) {
@@ -188,7 +187,7 @@ public abstract class BaseCameraAndGalleryFragment extends BaseFragment implemen
                 }
                 break;
             case APP_SETTINGS_PHOTO:
-                checkGalleryPermission(photo_number);
+                checkGalleryPermission();
                 break;
         }
     }

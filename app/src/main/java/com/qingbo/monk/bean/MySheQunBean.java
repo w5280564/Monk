@@ -2,6 +2,7 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class MySheQunBean {
+public class MySheQunBean implements Serializable {
 
 
     @SerializedName("id")
@@ -24,6 +25,8 @@ public class MySheQunBean {
     private String shequnDes;
     @SerializedName("status")
     private String status;
+    @SerializedName("tags")
+    private String tags;
     @SerializedName("detail")
     private List<String> detail;
     @SerializedName("total")

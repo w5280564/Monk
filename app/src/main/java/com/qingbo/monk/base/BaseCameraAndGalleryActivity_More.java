@@ -1,28 +1,42 @@
 package com.qingbo.monk.base;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
-import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.permission.PermissionManager;
+
 import com.qingbo.monk.R;
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpSender;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.permission.PermissionManager;
+import com.xunda.lib.common.common.utils.FileUtil;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.dialog.PermissionApplyDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+
 import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  *
- * 带图片上传的基类Activity
+ * 多个图片上传的基类Activity
  *
  */
 
-public abstract class BaseCameraAndGalleryActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks{
+public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity implements EasyPermissions.PermissionCallbacks{
 
     private static final int APP_SETTINGS_PHOTO = 100;
     private int photo_number = 1;
@@ -160,9 +174,63 @@ public abstract class BaseCameraAndGalleryActivity extends BaseActivity implemen
     @Override
     protected void onActivityResult(int requestCode, int resultCode,Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if(requestCode==APP_SETTINGS_PHOTO){
-            checkGalleryPermission(photo_number);
+        switch (requestCode) {
+            case Constants.PHOTO_REQUEST_GALLERY:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data != null) {
+                        List<Uri> mSelected = Matisse.obtainResult(data);//图片集合
+                        if (!ListUtils.isEmpty(mSelected)) {
+                            try {
+                                File mFile = FileUtil.getTempFile(mActivity, mSelected.get(0));
+                                uploadImage(mFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                break;
+            case APP_SETTINGS_PHOTO:
+                checkGalleryPermission(photo_number);
+                break;
         }
     }
 
+
+    /**
+     * 单文件上传
+     */
+    private void uploadImage(final File mFile) {
+        HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("file", "file");
+        HttpSender sender = new HttpSender(HttpUrl.uploadFile, "单文件上传", baseMap,
+                new MyOnHttpResListener() {
+
+                    @Override
+                    public void onComplete(String json, int status, String description, String data) {
+                        if (status == Constants.REQUEST_SUCCESS_CODE) {
+                            String image_url = GsonUtil.getInstance().getValue(data,"file");
+                            onUploadSuccess(image_url);
+                        }else{
+                            onUploadFailure(description);
+                        }
+                    }
+                },true);
+        sender.setContext(mActivity);
+        sender.sendPostImage(mFile);
+    }
+
+
+
+
+    /**
+     * 上传图片成功的回调
+     */
+    protected abstract void onUploadSuccess(String imageString);
+
+
+    /**
+     *  上传图片失败的回调
+     */
+    protected abstract void onUploadFailure(String error_info);
 }
