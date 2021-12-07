@@ -6,6 +6,8 @@ import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.qingbo.monk.R;
 import com.xunda.lib.common.view.ViewPagerPhoto;
@@ -68,6 +70,7 @@ public class PhotoShowActivity extends BaseActivity {
         index = getIntent().getIntExtra("index",0);
         List<String> tempList = (List<String>) getIntent().getSerializableExtra("imgList");
         if(!ListUtils.isEmpty(tempList)){
+            L.e("imgList>>>>"+ GsonUtil.getInstance().toJson(tempList));
             imageUrlList.addAll(tempList);
             tvNum.setText((index + 1) + "/" + imageUrlList.size());
             initPagerAdapter();

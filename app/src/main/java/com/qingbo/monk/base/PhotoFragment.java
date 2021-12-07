@@ -5,14 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 
 import androidx.annotation.Nullable;
-
-import com.bumptech.glide.Glide;
 import com.qingbo.monk.R;
 import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import butterknife.BindView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -21,9 +22,10 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class PhotoFragment extends BaseFragment implements PhotoViewAttacher.OnPhotoTapListener {
+    @BindView(R.id.photoview)
+    PhotoView mPhotoView;
 
     private String img_url;
-    private PhotoView mPhotoView;
 
     /**
      * 获取这个fragment需要展示图片的url
@@ -39,27 +41,28 @@ public class PhotoFragment extends BaseFragment implements PhotoViewAttacher.OnP
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        img_url = getArguments().getString("url");
+    protected void initLocalData() {
+        getDataFromArguments();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_img, container, false);
-        mPhotoView = view.findViewById(R.id.photoview);
-        mPhotoView.setScaleType(ImageView.ScaleType.CENTER);
+    protected void initView() {
+        mPhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         mPhotoView.setOnPhotoTapListener(this);
-        Glide.with(mActivity)
-                .load(img_url)
-                .into(mPhotoView);
-        return view;
+        GlideUtils.loadImage(mActivity,mPhotoView,img_url,R.mipmap.img_pic_none_square);
     }
+
+    private void getDataFromArguments() {
+        Bundle b = getArguments();
+        if (b!=null) {
+            img_url = getArguments().getString("url");
+        }
+    }
+
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.fragment_img;
     }
 
     @Override
