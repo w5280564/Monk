@@ -1,11 +1,5 @@
 apply plugin: 'com.android.library'
-// 注：需要配置符号表时，使用bugly插件
-apply plugin: 'bugly'
 
-bugly {
-    appId = 'ac35e72a1e'
-    appKey = 'f01efa53-79e9-4651-8ef0-f90dd53572cf'
-}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion

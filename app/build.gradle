@@ -5,8 +5,8 @@ plugins {
 apply plugin: 'bugly'
 
 bugly {
-    appId = 'ac35e72a1e'
-    appKey = 'f01efa53-79e9-4651-8ef0-f90dd53572cf'
+    appId = 'e702e5c066'
+    appKey = 'd2de105b-ac53-45f3-a1c6-1d967b754877'
 }
 
 android {
@@ -15,10 +15,10 @@ android {
     buildToolsVersion rootProject.buildToolsVersion
     signingConfigs {
         config {
-            storeFile file('E:/NanerHuanWorkBase/NanerHuan_keystore/nanerhuan.keystore')
-            storePassword 'nanerhuan123456'
-            keyPassword 'nanerhuan123456'
-            keyAlias 'nanerhuan'
+            storeFile file('E:/MonkWorkBase/Monk_keystore/monk.jks')
+            storePassword 'monk123456'
+            keyPassword 'monk123456'
+            keyAlias 'Monk'
         }
     }
 
