@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
@@ -24,9 +23,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
-
 import org.greenrobot.eventbus.Subscribe;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;

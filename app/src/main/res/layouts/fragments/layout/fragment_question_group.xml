@@ -17,69 +17,63 @@
             android:paddingLeft="@dimen/dp_15"
             android:paddingRight="@dimen/dp_15">
 
-            <LinearLayout
-                android:id="@+id/ll_top"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0"
-                android:layout_marginTop="@dimen/dp_15"
-                android:orientation="horizontal"
-                app:layout_constraintDimensionRatio="2"
-                app:layout_constraintTop_toTopOf="parent">
+            <com.qingbo.monk.view.banner.QuestionGroupBanner
+                android:id="@+id/img_top_banner"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                app:bb_isAutoScrollEnable="true"
+                app:bb_isIndicatorShow="false"
+                app:bb_isLoopEnable="true"
+                app:bb_isTitleShow="false"
+                app:bb_scale="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_chainStyle="spread"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ll_top_right"/>
 
-                <com.qingbo.monk.view.banner.QuestionGroupBanner
-                    android:id="@+id/img_top_banner"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    app:bb_isAutoScrollEnable="true"
-                    app:bb_isIndicatorShow="false"
-                    app:bb_isLoopEnable="true"
-                    app:bb_isTitleShow="false"
-                    app:bb_scale="1" />
+            <LinearLayout
+                android:id="@+id/ll_top_right"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:background="@drawable/shape_bag_square_blue"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp_15"
+                android:paddingRight="@dimen/dp_21"
+                app:layout_constraintBottom_toBottomOf="@+id/img_top_banner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_top_banner"
+                app:layout_constraintTop_toTopOf="@+id/img_top_banner">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:background="#017CB7"
+                    android:padding="@dimen/dp_5"
+                    android:text="创建你的专属社群连接千万粉丝"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12" />
+
 
                 <LinearLayout
-                    android:id="@+id/ll_top_right"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/dp_15"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_bag_square_blue"
-                    android:orientation="vertical"
-                    android:paddingLeft="@dimen/dp_15"
-                    android:paddingRight="@dimen/dp_21">
+                    android:layout_width="@dimen/dp_101"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/shape_bag_square_group_blue"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_create"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_30"
-                        android:background="#017CB7"
-                        android:padding="@dimen/dp_5"
-                        android:text="创建你的专属社群连接千万粉丝"
+                        android:drawableLeft="@mipmap/add"
+                        android:drawablePadding="@dimen/dp_10"
+                        android:text="创建社群"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_12" />
-
-
-                    <LinearLayout
-                        android:layout_width="@dimen/dp_101"
-                        android:layout_height="@dimen/dp_32"
-                        android:layout_marginTop="@dimen/dp_20"
-                        android:background="@drawable/shape_bag_square_group_blue"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_create"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/add"
-                            android:drawablePadding="@dimen/dp_10"
-                            android:text="创建社群"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/sp_12" />
-                    </LinearLayout>
-
                 </LinearLayout>
-
 
             </LinearLayout>
 
@@ -93,8 +87,8 @@
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_15"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/ll_top"
-                app:layout_constraintTop_toBottomOf="@id/ll_top" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_top_banner" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mRecyclerView"

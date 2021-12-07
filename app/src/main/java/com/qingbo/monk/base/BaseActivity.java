@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
@@ -30,7 +29,6 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
-import com.xunda.lib.common.router.RouterActivityPath;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.home.activity.MainActivity;
@@ -46,7 +44,6 @@ import butterknife.ButterKnife;
 
 /**
  * 基类Activity
- *
  * @author ouyang
  */
 
