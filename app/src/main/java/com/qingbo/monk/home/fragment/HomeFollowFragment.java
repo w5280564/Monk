@@ -24,10 +24,12 @@ import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.view.CustomLoadMoreView;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -109,14 +111,13 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         homeFollowAdapter.setEmptyView(addEmptyView("暂无数据", 0));
         homeFollowAdapter.setLoadMoreView(new CustomLoadMoreView());
         card_Recycler.setAdapter(homeFollowAdapter);
-        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
-
-        });
+//        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
+//
+//        });
         homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
             @Override
-            public void OnItemImgClickLister(View view, int position) {
-                String[] tagS = homeFllowBean.getList().get(position).getImages().split(",");
-                jumpToPhotoShowActivity(position, Arrays.asList(tagS));
+            public void OnItemImgClickLister(View view, int position, List<String> strings) {
+                jumpToPhotoShowActivity(position, strings);
             }
         });
     }
@@ -136,7 +137,10 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
                         String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
                         postFollowData(otherUserId,position);
                         break;
-
+                    case R.id.follow_Img:
+                        String commentId = homeFllowBean.getList().get(position).getArticleId();
+                        postLikedData(commentId,position);
+                        break;
                 }
             }
         });
@@ -153,6 +157,24 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     TextView follow_Tv = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler,position, R.id.follow_Tv);
+                    TextView send_Mes = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler,position, R.id.send_Mes);
+                    homeFollowAdapter.isFollow(followStateBena.getFollowStatus(),follow_Tv,send_Mes);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+    private void postLikedData(String commentId,int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("commentId", commentId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Liked_Comment, "点赞/取消点赞评论", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                    TextView follow_Tv = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler,position, R.id.follow_Img);
                     TextView send_Mes = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler,position, R.id.send_Mes);
                     homeFollowAdapter.isFollow(followStateBena.getFollowStatus(),follow_Tv,send_Mes);
                 }

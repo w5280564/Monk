@@ -51,8 +51,7 @@ public class PhotoShowActivity extends BaseActivity {
 
         @Override
     protected void setStatusBar() {
-        ImmersionBar.with(this)
-                .init();
+        ImmersionBar.with(this).init();
     }
 
 

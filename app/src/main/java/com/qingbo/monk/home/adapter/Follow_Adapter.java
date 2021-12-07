@@ -34,6 +34,7 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolder> {
     private RecyclerView mNineView;
@@ -58,8 +59,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
         mNineView = helper.getView(R.id.nine_grid);
-
-
+        ImageView follow_Img = helper.getView(R.id.follow_Img);
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
@@ -94,20 +94,17 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
 
 
         String[] imgS = item.getImages().split(",");
+        List<String> strings = Arrays.asList(imgS);
         mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
         NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        nineGridAdapter.setNewData(Arrays.asList(imgS));
+        nineGridAdapter.setNewData(strings);
         mNineView.setAdapter(nineGridAdapter);
-        nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Toast.makeText(mContext, String.format("Menu:%d", position), Toast.LENGTH_SHORT).show();
-                onItemImgClickLister.OnItemImgClickLister(view,position);
-            }
-        });
 
+        nineGridAdapter.setOnItemClickListener((adapter, view, position) ->
 
+                onItemImgClickLister.OnItemImgClickLister(view,position,strings));
         helper.addOnClickListener(R.id.follow_Tv);
+        helper.addOnClickListener(R.id.follow_Img);
 
     }
 
@@ -177,7 +174,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
     }
 
     public interface OnItemImgClickLister {
-        void OnItemImgClickLister(View view, int position);
+        void OnItemImgClickLister(View view, int position,List<String> strings);
     }
 
     private OnItemImgClickLister onItemImgClickLister;
