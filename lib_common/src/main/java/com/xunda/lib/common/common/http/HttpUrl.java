@@ -114,6 +114,7 @@ public class HttpUrl {
     public static final String Mes_Like = "comment/comment/liked-comment"; //评论 点赞/取消点赞
     public static final String Follow_List = "index/index/follow-list"; //首页-关注
     public static final String Topic_Like = "square/square/topic-like"; //点赞/取消点赞
+    public static final String Insider_List = "index/index/insider-list"; //首页-内部人
 
 }
 

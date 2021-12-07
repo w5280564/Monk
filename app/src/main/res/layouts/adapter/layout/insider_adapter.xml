@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints"
+    android:id="@+id/Insider_Con"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="@dimen/dp_12"
+    android:layout_marginStart="@dimen/dp_9"
+    android:layout_marginEnd="@dimen/dp_9"
+    android:background="@drawable/interest_lable">
+
+    <TextView
+        android:id="@+id/title_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_13"
+        android:layout_marginTop="@dimen/dp_8"
+        android:maxLength="10"
+        android:textColor="@color/text_color_444444"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line_View"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:background="@color/text_color_F4F4F4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/title_Tv"
+        app:layout_constraintTop_toBottomOf="@id/title_Tv" />
+
+    <TextView
+        android:id="@+id/content_Tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:maxLines="2"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_View" />
+
+    <TextView
+        android:id="@+id/time_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="10sp"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginEnd="@dimen/dp_9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dp_14"
+        app:layout_constraintTop_toBottomOf="@id/content_Tv" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
