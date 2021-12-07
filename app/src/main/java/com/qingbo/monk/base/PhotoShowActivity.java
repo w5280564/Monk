@@ -1,13 +1,9 @@
 package com.qingbo.monk.base;
 
-import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
-
 import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
-import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.qingbo.monk.R;
 import com.xunda.lib.common.view.ViewPagerPhoto;
@@ -15,23 +11,19 @@ import com.gyf.barlibrary.ImmersionBar;
 import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
+import butterknife.BindView;
 
 /**
  * 查看图片的公共页面
  */
 public class PhotoShowActivity extends BaseActivity {
-    private ViewPagerPhoto viewPager;
-    private TextView tvNum;
+    @BindView(R.id.viewpager)
+    ViewPagerPhoto viewPager;
+    @BindView(R.id.tv_num)
+    TextView tvNum;
     private List<String> imageUrlList = new ArrayList<>();
     private int index;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initView();
-
-
-    }
 
     @Override
     protected int getLayoutId() {
@@ -58,18 +50,18 @@ public class PhotoShowActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        viewPager = findViewById(R.id.viewpager);
-        tvNum = findViewById(R.id.tv_num);
-        getDataFromIntent();
         registerEventBus();
     }
 
+    @Override
+    protected void initLocalData() {
+        getDataFromIntent();
+    }
 
     private void getDataFromIntent() {
         index = getIntent().getIntExtra("index",0);
         List<String> tempList = (List<String>) getIntent().getSerializableExtra("imgList");
         if(!ListUtils.isEmpty(tempList)){
-            L.e("imgList>>>>"+ GsonUtil.getInstance().toJson(tempList));
             imageUrlList.addAll(tempList);
             tvNum.setText((index + 1) + "/" + imageUrlList.size());
             initPagerAdapter();

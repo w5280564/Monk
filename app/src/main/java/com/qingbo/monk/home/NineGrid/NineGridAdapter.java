@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.xunda.lib.common.common.glide.GlideUtils;
 
 public class NineGridAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     public NineGridAdapter() {
@@ -18,14 +19,7 @@ public class NineGridAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     @Override
     protected void convert(@NonNull BaseViewHolder helper, String item) {
         ImageView image = helper.getView(R.id.image);
-        Glide.with(mContext).load(item).into(image);
+        GlideUtils.loadImage(mContext,image,item);
     }
-
-    @Override
-    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
-        super.setOnItemClickListener(listener);
-    }
-
-
 
 }

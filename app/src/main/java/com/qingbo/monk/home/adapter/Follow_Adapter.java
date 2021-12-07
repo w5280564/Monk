@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolder> {
-    private RecyclerView mNineView;
 
     public Follow_Adapter() {
         super(R.layout.follow_adapter);
@@ -58,7 +57,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView mes_Count = helper.getView(R.id.mes_Count);
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
-        mNineView = helper.getView(R.id.nine_grid);
+        RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
 
         title_Tv.setText(item.getTitle());
@@ -97,15 +96,17 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         List<String> strings = Arrays.asList(imgS);
         mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
         NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        nineGridAdapter.setNewData(strings);
         mNineView.setAdapter(nineGridAdapter);
+        nineGridAdapter.setNewData(strings);
 
-        nineGridAdapter.setOnItemClickListener((adapter, view, position) ->
-
-                onItemImgClickLister.OnItemImgClickLister(view,position,strings));
+        nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                onItemImgClickLister.OnItemImgClickLister(position,strings);
+            }
+        });
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
-
     }
 
     /**
@@ -168,13 +169,9 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         }
     }
 
-    @Override
-    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
-        super.setOnItemClickListener(listener);
-    }
 
     public interface OnItemImgClickLister {
-        void OnItemImgClickLister(View view, int position,List<String> strings);
+        void OnItemImgClickLister(int position,List<String> strings);
     }
 
     private OnItemImgClickLister onItemImgClickLister;

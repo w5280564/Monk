@@ -114,18 +114,12 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
 //        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
 //
 //        });
-        homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(View view, int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+
     }
 
 
     @Override
     protected void initEvent() {
-        super.initEvent();
         homeFollowAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -142,6 +136,15 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
                         postLikedData(commentId,position);
                         break;
                 }
+            }
+        });
+
+
+        homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
+            @Override
+            public void OnItemImgClickLister(int position, List<String> strings) {
+                L.e("imgList>>>>"+ GsonUtil.getInstance().toJson(strings));
+                jumpToPhotoShowActivity(position, strings);
             }
         });
     }
