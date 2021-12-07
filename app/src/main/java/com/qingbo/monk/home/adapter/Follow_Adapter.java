@@ -1,5 +1,6 @@
 package com.qingbo.monk.home.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.text.TextUtils;
@@ -13,15 +14,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
+import com.qingbo.monk.home.fragment.HomeFollowFragment;
+import com.qingbo.monk.home.fragment.HomeFragment;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -49,9 +55,11 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView time_Tv = helper.getView(R.id.time_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
+        TextView follow_Tv = helper.getView(R.id.follow_Tv);
+        TextView send_Mes = helper.getView(R.id.send_Mes);
         mNineView = helper.getView(R.id.nine_grid);
 
-        helper.addOnClickListener(R.id.follow_Tv);
+
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
@@ -81,6 +89,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             personHead_Img.setVisibility(View.GONE);
             nickName_Tv.setVisibility(View.GONE);
             labelFlow(lable_Lin, mContext, item.getTagName());
+            isFollow(item.getFollow_status(),follow_Tv,send_Mes);
         }
 
 
@@ -92,11 +101,48 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Toast.makeText(mContext, String.format("Menu:%d", position), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(mContext, String.format("Menu:%d", position), Toast.LENGTH_SHORT).show();
+                onItemImgClickLister.OnItemImgClickLister(view,position);
             }
         });
+
+
+        helper.addOnClickListener(R.id.follow_Tv);
+
     }
+
+    /**
+     *
+     * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
+     * @param follow_Tv
+     * @param send_Mes
+     */
+    public void isFollow(int follow_status,TextView follow_Tv,View send_Mes) {
+        String s = String.valueOf(follow_status);
+        if (TextUtils.equals(s,"0")){
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.app_main_color));
+            send_Mes.setVisibility(View.GONE);
+        }else if (TextUtils.equals(s,"1")){
+            follow_Tv.setVisibility(View.GONE);
+            send_Mes.setVisibility(View.GONE);
+        }else if (TextUtils.equals(s,"2")){
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("已关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.GONE);
+        }else if (TextUtils.equals(s,"4")){
+            follow_Tv.setVisibility(View.GONE);
+            follow_Tv.setText("互相关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     public void labelFlow(LinearLayout myFlow, Context mContext, String tag) {
         if (myFlow != null) {
@@ -124,6 +170,22 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             });
         }
     }
+
+    @Override
+    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
+        super.setOnItemClickListener(listener);
+    }
+
+    public interface OnItemImgClickLister {
+        void OnItemImgClickLister(View view, int position);
+    }
+
+    private OnItemImgClickLister onItemImgClickLister;
+
+    public void setOnItemImgClickLister(OnItemImgClickLister ItemListener) {
+        onItemImgClickLister = ItemListener;
+    }
+
 
 }
 

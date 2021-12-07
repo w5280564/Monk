@@ -50,6 +50,7 @@
         <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
         <activity android:name=".question.activity.AllGroupListActivity" />
         <activity android:name=".question.activity.SheQunGroupDetailActivity" />
+        <activity android:name=".base.PhotoShowActivity" />
 
 
 

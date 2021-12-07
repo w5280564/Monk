@@ -41,9 +41,13 @@ public class HomeFllowBean {
     @SerializedName("action")
     private String action;
     @SerializedName("shequn_id")
-    private Object shequnId;
+    private String shequnId;
     @SerializedName("group_id")
     private String groupId;
+    @SerializedName("is_json")
+    private String is_json;
+    @SerializedName("follow_status")
+    private int follow_status;
     @SerializedName("shequn")
     private ShequnDTO shequn;
     @SerializedName("group")

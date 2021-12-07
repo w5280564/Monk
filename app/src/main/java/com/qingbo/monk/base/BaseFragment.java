@@ -197,7 +197,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
      * @param position
      * @param mImageList
      */
-    protected void jumpToPhotoShowActivity(int position, List<String> mImageList) {
+    public void jumpToPhotoShowActivity(int position, List<String> mImageList) {
         Intent intent = new Intent(mActivity, PhotoShowActivity.class);
         intent.putExtra("index", position);
         intent.putExtra("imgList", (Serializable) mImageList);
