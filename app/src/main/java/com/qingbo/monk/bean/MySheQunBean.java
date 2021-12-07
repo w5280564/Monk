@@ -22,6 +22,8 @@ public class MySheQunBean {
     private String nickname;
     @SerializedName("shequn_des")
     private String shequnDes;
+    @SerializedName("status")
+    private String status;
     @SerializedName("detail")
     private List<String> detail;
     @SerializedName("total")

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -12,12 +12,17 @@ import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.MySheQunBean;
+import com.qingbo.monk.question.fragment.GroupFragment_All;
 import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,8 +35,8 @@ import butterknife.OnClick;
 public class SheQunGroupDetailActivity extends BaseActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
-    @BindView(R.id.ll_title)
-    LinearLayout llTitle;
+    @BindView(R.id.rl_title)
+    RelativeLayout rl_title;
     @BindView(R.id.tabs)
     TabLayout tabs;
     @BindView(R.id.viewpager)
@@ -78,7 +83,7 @@ public class SheQunGroupDetailActivity extends BaseActivity {
      * 设置状态栏
      */
     private void setBar() {
-        ImmersionBar.with(this).titleBar(llTitle)
+        ImmersionBar.with(this).titleBar(rl_title)
                 .statusBarDarkFont(false)
                 .init();
     }
@@ -89,19 +94,26 @@ public class SheQunGroupDetailActivity extends BaseActivity {
      */
     private void initMenuData() {
         List<AppMenuBean> menuList = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
                 bean.setName("全部");
-//                fragments.add(AnchorShopWindowFragment.NewInstance(user_id));
+                fragments.add(new GroupFragment_All());
             } else if (i == 1) {
                 bean.setName("等你回答");
+                fragments.add(new GroupFragment_All());
             } else if (i == 2) {
                 bean.setName("去提问");
-            } else if (i == 2) {
+                fragments.add(new GroupFragment_All());
+            } else if (i == 3) {
                 bean.setName("我的发布");
-            }  else {
+                fragments.add(new GroupFragment_All());
+            } else if (i == 4) {
                 bean.setName("审核");
+                fragments.add(new GroupFragment_All());
+            } else {
+                bean.setName("预览");
+                fragments.add(new GroupFragment_All());
             }
 
             menuList.add(bean);
@@ -131,8 +143,8 @@ public class SheQunGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-//                            PersonInfoBean obj = GsonUtil.getInstance().json2Bean(data, PersonInfoBean.class);
-//                            handleFollowData(obj);
+                            MySheQunBean obj = GsonUtil.getInstance().json2Bean(data, MySheQunBean.class);
+                            handleData(obj);
                         }
                     }
                 }, false);
@@ -140,17 +152,17 @@ public class SheQunGroupDetailActivity extends BaseActivity {
         sender.sendGet();
     }
 
-//    private void handleFollowData(PersonInfoBean obj) {
-//        if (obj != null) {
-//            initFollowValue(obj);
-//        }
-//    }
+    private void handleData(MySheQunBean obj) {
+        if (obj != null) {
+            String group_header = obj.getShequnImage();
+            if (StringUtil.isBlank(group_header)) {
+                iv_head_bag.setImageResource(R.mipmap.bg_group_top);
+            }else{
+                GlideUtils.loadImage(mContext,iv_head_bag,group_header);
+            }
+        }
+    }
 
-//    private void handleData(PersonInfoBean obj) {
-//        if (obj != null) {
-//        }
-//
-//    }
 
 
 

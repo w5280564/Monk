@@ -2,80 +2,90 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <LinearLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_height="wrap_content"
+                android:background="@color/app_background"
+                app:elevation="0dp">
 
-                <com.google.android.material.appbar.AppBarLayout
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/app_background"
-                    app:elevation="0dp">
+                    android:orientation="vertical"
+                    app:layout_scrollFlags="scroll|enterAlways">
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
+                        <ImageView
+                            android:id="@+id/iv_head_bag"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_170"
+                            android:scaleType="centerCrop" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="154dp"
+                        android:background="@drawable/background_shequn_bottom"
                         android:orientation="vertical"
-                        app:layout_scrollFlags="scroll|enterAlways">
+                        android:paddingTop="@dimen/dp_30"
+                        android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingRight="@dimen/activity_horizontal_margin">
 
-                        <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-
-                            <ImageView
-                                android:id="@+id/iv_head_bag"
-                                android:layout_width="match_parent"
-                                android:layout_height="225dp"
-                                android:scaleType="centerCrop" />
-
-                        </FrameLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:text="一个神秘莫测的群"
+                            android:textColor="@color/text_color_444444"
+                            android:textSize="@dimen/sp_16"/>
 
                     </LinearLayout>
 
+                    </FrameLayout>
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        app:tabBackground="@color/transparent"
-                        app:tabIndicatorColor="@color/app_main_color"
-                        app:tabIndicatorFullWidth="false"
-                        app:tabIndicatorHeight="3dp"
-                        app:tabMode="scrollable"
-                        app:tabRippleColor="@color/transparent"
-                        app:tabSelectedTextColor="@color/text_color_444444"
-                        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-                        app:tabTextColor="@color/text_color_a1a1a1" />
+                </LinearLayout>
 
-                    <View style="@style/title_line_transverse" />
 
-                </com.google.android.material.appbar.AppBarLayout>
-
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/viewpager"
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    app:tabBackground="@color/transparent"
+                    app:tabIndicatorColor="@color/app_main_color"
+                    app:tabIndicatorFullWidth="false"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabMode="scrollable"
+                    app:tabRippleColor="@color/transparent"
+                    app:tabSelectedTextColor="@color/text_color_444444"
+                    app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+                    app:tabTextColor="@color/text_color_a1a1a1" />
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
-        </LinearLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
         <LinearLayout
@@ -83,8 +93,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/ll_title"
+            <RelativeLayout
+                android:id="@+id/rl_title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/title_height"
                 android:background="@color/transparent"
@@ -102,10 +112,27 @@
                         android:id="@+id/iv_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/icon_back" />
+                        android:src="@mipmap/icon_back_white" />
 
                 </LinearLayout>
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_menu"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+
+                    <ImageView
+                        android:id="@+id/iv_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/gongenneg" />
+
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
     </FrameLayout>

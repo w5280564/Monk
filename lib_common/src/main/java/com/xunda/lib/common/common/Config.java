@@ -47,7 +47,7 @@ public class Config {
          */
         static {
             if (!Setting.DEBUG) {
-                URL_WHOLE = "https://abc.shandongdayi.com/";
+                URL_WHOLE = "https://shjr.gstai.com/";
             }
         }
 

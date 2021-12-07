@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
@@ -13,6 +15,7 @@ import com.qingbo.monk.bean.MySheQunBean;
 import com.qingbo.monk.bean.SheQunBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
+import com.qingbo.monk.question.activity.SheQunGroupDetailActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -24,6 +27,8 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
@@ -41,6 +46,7 @@ public class QuestionFragment_Group extends BaseFragment {
     @BindView(R.id.ll_top_right)
     LinearLayout ll_top_right;
     private QuestionGroupAdapter mQuestionGroupAdapter;
+    private List<MySheQunBean> bannerList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -68,6 +74,15 @@ public class QuestionFragment_Group extends BaseFragment {
         mRecyclerView.setAdapter(mQuestionGroupAdapter);
     }
 
+    @Override
+    protected void initEvent() {
+        img_top_banner.setOnItemClickL(new BaseBanner.OnItemClickL() {
+            @Override
+            public void onItemClick(int position) {
+                SheQunGroupDetailActivity.actionStart(mActivity, bannerList.get(position).getId());
+            }
+        });
+    }
 
     @Override
     protected void getServerData() {
@@ -104,9 +119,11 @@ public class QuestionFragment_Group extends BaseFragment {
     }
 
 
-    private void handleBanner(List<MySheQunBean> bannerProductVoList) {
-        if (!ListUtils.isEmpty(bannerProductVoList)) {
-            img_top_banner.placeholder(R.mipmap.img_pic_none_square).setSource(bannerProductVoList).startScroll();
+    private void handleBanner(List<MySheQunBean> tempBannerList) {
+        if (!ListUtils.isEmpty(tempBannerList)) {
+            bannerList.clear();
+            bannerList.addAll(tempBannerList);
+            img_top_banner.placeholder(R.mipmap.img_pic_none_square).setSource(bannerList).startScroll();
         } else {
             img_top_banner.setBackgroundResource(R.mipmap.img_pic_none_square);
         }

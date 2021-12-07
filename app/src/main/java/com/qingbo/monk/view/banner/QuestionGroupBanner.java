@@ -74,9 +74,6 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, Quest
 
         tv_group_name.setText(StringUtil.getStringValue(item.getShequnName()));
         tv_name.setText(StringUtil.getStringValue(item.getNickname()));
-//        GlideUtils.loadRoundImage(mContext,iv_img_top,item.getShequnImage(),R.mipmap.bg,8,true,true,false,false);
-
-//        Glide.with(mContext).load(item.getShequnImage()).into(iv_img_top).
         RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtil.dip2px(mContext, 8));
         transform.setNeedCorner(true, true, false, false);
                 Glide.with(mContext).load(item.getShequnImage()).placeholder(R.mipmap.bg).transforms(transform).into(iv_img_top);
