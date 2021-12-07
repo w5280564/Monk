@@ -99,6 +99,7 @@ public class HttpUrl {
      * 社群上方信息
      */
     public static final String shequnInfo = "square/detail/shequn-info";
+    public static final String User_Follow = "user/user/follow"; //关注/取消关注
 
 }
 

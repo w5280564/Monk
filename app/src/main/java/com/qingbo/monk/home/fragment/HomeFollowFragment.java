@@ -129,11 +129,10 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         getListData();
     }
 
-    private void getFollowData() {
+    private void postFollowData() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", page + "");
-        requestMap.put("limit", pageSize+"");
-        HttpSender httpSender = new HttpSender(HttpUrl.Recommend_List, "首页-推荐", requestMap, new MyOnHttpResListener() {
+//        requestMap.put("otherUserId", otherUserId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -146,7 +145,7 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
             }
         }, true);
         httpSender.setContext(mActivity);
-        httpSender.sendGet();
+        httpSender.sendPost();
     }
 
 }

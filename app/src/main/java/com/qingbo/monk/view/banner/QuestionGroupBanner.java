@@ -6,12 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.flyco.banner.widget.Banner.BaseIndicatorBanner;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.MySheQunBean;
 import com.qingbo.monk.bean.SheQunBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.glide.RoundedCornersTransform;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.List;
@@ -68,8 +74,12 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, Quest
 
         tv_group_name.setText(StringUtil.getStringValue(item.getShequnName()));
         tv_name.setText(StringUtil.getStringValue(item.getNickname()));
-        GlideUtils.loadRoundImage(mContext,iv_img_top,item.getShequnImage(),R.mipmap.bg,8,true,true,false,false);
+//        GlideUtils.loadRoundImage(mContext,iv_img_top,item.getShequnImage(),R.mipmap.bg,8,true,true,false,false);
 
+//        Glide.with(mContext).load(item.getShequnImage()).into(iv_img_top).
+        RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtil.dip2px(mContext, 8));
+        transform.setNeedCorner(true, true, false, false);
+                Glide.with(mContext).load(item.getShequnImage()).placeholder(R.mipmap.bg).transforms(transform).into(iv_img_top);
         return layout;
     }
 }
