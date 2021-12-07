@@ -100,7 +100,9 @@ public class HttpUrl {
      */
     public static final String shequnInfo = "square/detail/shequn-info";
     public static final String User_Follow = "user/user/follow"; //关注/取消关注
-    public static final String Liked_Comment = "comment/comment/liked-comment"; //点赞/取消点赞评论
+    public static final String Mes_Like = "comment/comment/liked-comment"; //评论 点赞/取消点赞
+    public static final String Follow_List = "index/index/follow-list"; //首页-关注
+    public static final String Topic_Like = "square/square/topic-like"; //点赞/取消点赞
 
 }
 

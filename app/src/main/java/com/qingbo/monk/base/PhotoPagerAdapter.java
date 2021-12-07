@@ -1,5 +1,8 @@
 package com.qingbo.monk.base;
 
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -28,4 +31,5 @@ public class PhotoPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return urlList.size();
     }
+
 }

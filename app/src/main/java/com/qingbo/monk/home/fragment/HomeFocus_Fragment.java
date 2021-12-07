@@ -14,23 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.testBean;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -38,28 +28,25 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.view.CustomLoadMoreView;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 
 /**
- * 首页滑动tab页--推荐
+ * 首页滑动tab页--关注
  */
-public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener {
+public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.card_Recycler)
     RecyclerView card_Recycler;
 
 
-    public static HomeFollowFragment newInstance(String type, String status, String isVip) {
+    public static HomeFocus_Fragment newInstance(String type, String status, String isVip) {
         Bundle args = new Bundle();
         args.putString("type", type);
         args.putString("status", status);
         args.putString("isVip", isVip);
-        HomeFollowFragment fragment = new HomeFollowFragment();
+        HomeFocus_Fragment fragment = new HomeFocus_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,11 +59,13 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
 
     @Override
     protected void initView() {
+        super.initView();
         initlist(mContext);
     }
 
     @Override
     protected void getServerData() {
+        super.getServerData();
         getListData();
     }
 
@@ -88,18 +77,14 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", pageSize + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Recommend_List, "首页-推荐", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Follow_List, "首页-关注", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    Gson gson = new GsonBuilder().registerTypeAdapterFactory(new GsonUtil.NullStringToEmptyAdapterFactory()).create();
-                    homeFllowBean = gson.fromJson(json_data, FollowListBean.class);
-//                    String s = gson.toJson(homeFllowBean);
-//                    L.d("test", s);
+                    homeFllowBean = new Gson().fromJson(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
                         handleSplitListData(homeFllowBean, homeFollowAdapter, pageSize);
-
                     }
                 }
             }
@@ -178,7 +163,6 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
                     TextView follow_Tv = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.send_Mes);
                     homeFollowAdapter.isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-
                 }
             }
         }, true);
@@ -186,10 +170,9 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         httpSender.sendPost();
     }
 
-
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", likeId + "");
+        requestMap.put("id", likeId+ "");
         HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -215,7 +198,7 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
             }
         }, true);
         httpSender.setContext(mActivity);
-        httpSender.sendGet();
+        httpSender.sendPost();
     }
 
 }

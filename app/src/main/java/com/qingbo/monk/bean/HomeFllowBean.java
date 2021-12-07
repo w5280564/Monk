@@ -48,6 +48,8 @@ public class HomeFllowBean {
     private String is_json;
     @SerializedName("follow_status")
     private int follow_status;
+    @SerializedName("liked_status")
+    private int liked_status;
     @SerializedName("shequn")
     private ShequnDTO shequn;
     @SerializedName("group")

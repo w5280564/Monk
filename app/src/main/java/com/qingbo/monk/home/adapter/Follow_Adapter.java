@@ -3,6 +3,7 @@ package com.qingbo.monk.home.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,9 +61,11 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
 
-        title_Tv.setText(item.getTitle());
+        title_Tv.setText(StringUtil.getStringValue(item.getTitle()));
         content_Tv.setText(item.getContent());
-        time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
+        if (!TextUtils.isEmpty(item.getCreateTime())) {
+            time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
+        }
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
         group_Name.setText(item.getTitle());
@@ -85,60 +88,76 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
                 nickName_Tv.setText(item.getGroup().getGroupName());
             }
         } else if (TextUtils.equals(action, "3")) {
+            group_Name.setFilters(new InputFilter[] { new InputFilter.LengthFilter(6) });//昵称字数
             personHead_Img.setVisibility(View.GONE);
             nickName_Tv.setVisibility(View.GONE);
             labelFlow(lable_Lin, mContext, item.getTagName());
-            isFollow(item.getFollow_status(),follow_Tv,send_Mes);
+            isFollow(item.getFollow_status(), follow_Tv, send_Mes);
         }
+        isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
 
+        //多张图片
+        if (!TextUtils.isEmpty(item.getImages())) {
+            String[] imgS = item.getImages().split(",");
+            List<String> strings = Arrays.asList(imgS);
+            mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
+            NineGridAdapter nineGridAdapter = new NineGridAdapter();
+            mNineView.setAdapter(nineGridAdapter);
+            nineGridAdapter.setNewData(strings);
 
-        String[] imgS = item.getImages().split(",");
-        List<String> strings = Arrays.asList(imgS);
-        mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
-        NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        mNineView.setAdapter(nineGridAdapter);
-        nineGridAdapter.setNewData(strings);
-
-        nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                onItemImgClickLister.OnItemImgClickLister(position,strings);
-            }
-        });
+            nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    onItemImgClickLister.OnItemImgClickLister(position, strings);
+                }
+            });
+        }
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
     }
 
     /**
-     *
      * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
      * @param follow_Tv
      * @param send_Mes
      */
-    public void isFollow(int follow_status,TextView follow_Tv,View send_Mes) {
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
         String s = String.valueOf(follow_status);
-        if (TextUtils.equals(s,"0")){
+        if (TextUtils.equals(s, "0")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
-            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.app_main_color));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
             send_Mes.setVisibility(View.GONE);
-        }else if (TextUtils.equals(s,"1")){
+        } else if (TextUtils.equals(s, "1")) {
             follow_Tv.setVisibility(View.GONE);
             send_Mes.setVisibility(View.GONE);
-        }else if (TextUtils.equals(s,"2")){
+        } else if (TextUtils.equals(s, "2")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("已关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_a1a1a1));
-            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.GONE);
-        }else if (TextUtils.equals(s,"4")){
+        } else if (TextUtils.equals(s, "4")) {
             follow_Tv.setVisibility(View.GONE);
             follow_Tv.setText("互相关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_a1a1a1));
-            StringUtil.changeShapColor(follow_Tv,ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {
+        int nowLike;
+        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+        if (isLike == 0) {
+//            nowLike -= 1;
+            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+        } else if (isLike == 1) {
+            follow_Img.setBackgroundResource(R.mipmap.dianzan);
+//            nowLike += 1;
+        }
+        follow_Count.setText(nowLike + "");
     }
 
 
@@ -160,7 +179,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             itemParams.setMargins(0, 0, 0, 0);
             view.setLayoutParams(itemParams);
             TextView label_Name = view.findViewById(R.id.label_Name);
-            StringUtil.setColor(mContext,i, label_Name);
+            StringUtil.setColor(mContext, i, label_Name);
             label_Name.setText(tagS[i]);
             label_Name.setTag(i);
             myFlow.addView(view);
@@ -171,7 +190,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
 
 
     public interface OnItemImgClickLister {
-        void OnItemImgClickLister(int position,List<String> strings);
+        void OnItemImgClickLister(int position, List<String> strings);
     }
 
     private OnItemImgClickLister onItemImgClickLister;

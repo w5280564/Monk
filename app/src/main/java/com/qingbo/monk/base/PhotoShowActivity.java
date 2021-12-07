@@ -46,8 +46,6 @@ public class PhotoShowActivity extends BaseActivity {
         ImmersionBar.with(this).init();
     }
 
-
-
     @Override
     protected void initView() {
         registerEventBus();
