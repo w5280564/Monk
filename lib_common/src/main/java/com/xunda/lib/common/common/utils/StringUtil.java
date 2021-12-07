@@ -1,7 +1,9 @@
 package com.xunda.lib.common.common.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.Spannable;
@@ -9,11 +11,15 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.xunda.lib.common.R;
 import com.xunda.lib.common.common.preferences.SharePref;
 
 import org.json.JSONException;
@@ -796,6 +802,30 @@ public class StringUtil {
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
+
+    public static void setColor(Context context,int index, TextView tv) {
+        int dex = index % 4;
+        if (dex == 0) {
+            tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_FF801F));
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_ff801f));
+        } else if (dex == 1) {
+            tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_1F8FE5));
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_1F8FE5));
+        } else if (dex == 2) {
+            tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_76AD45));
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_76AD45));
+        } else if (dex == 3) {
+            tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_7622BD));
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_7622BD));
+        }
+    }
+
+    //修改shape背景颜色
+    public static void changeShapColor(View v, int color) {
+        GradientDrawable da = (GradientDrawable) v.getBackground();
+        da.setColor(color);
+    }
+
 
 
 }

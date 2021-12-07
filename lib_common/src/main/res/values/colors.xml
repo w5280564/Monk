@@ -90,4 +90,16 @@
     <color name="text_color_EEEEEE">#EEEEEE</color>
     <color name="text_color_EFEFEF">#EFEFEF</color>
     <color name="text_color_F5F5F5">#F5F5F5</color>
+
+
+    <color name="text_color_FF801F">#FF801F</color>
+    <color name="text_color_76AD45">#76AD45</color>
+    <color name="text_color_7622BD">#7622BD</color>
+
+
+    <color name="lable_color_ff801f">#1aff801f</color>
+    <color name="lable_color_1F8FE5">#1a1F8FE5</color>
+    <color name="lable_color_76AD45">#1a76AD45</color>
+    <color name="lable_color_7622BD">#1a7622BD</color>
+
 </resources>

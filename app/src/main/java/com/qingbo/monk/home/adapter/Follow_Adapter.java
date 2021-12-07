@@ -24,10 +24,12 @@ import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.Arrays;
 
-public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListDTO, BaseViewHolder> {
+public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolder> {
     private RecyclerView mNineView;
 
     public Follow_Adapter() {
@@ -36,7 +38,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, HomeFllowBean.DataDTO.ListDTO item) {
+    protected void convert(@NonNull BaseViewHolder helper, HomeFllowBean item) {
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView title_Tv = helper.getView(R.id.title_Tv);
@@ -45,7 +47,11 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
         ImageView personHead_Img = helper.getView(R.id.personHead_Img);
         TextView nickName_Tv = helper.getView(R.id.nickName_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
+        TextView follow_Count = helper.getView(R.id.follow_Count);
+        TextView mes_Count = helper.getView(R.id.mes_Count);
         mNineView = helper.getView(R.id.nine_grid);
+
+        helper.addOnClickListener(R.id.follow_Tv);
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
@@ -53,6 +59,8 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
         group_Name.setText(item.getTitle());
+        follow_Count.setText(item.getLikedNum());
+        mes_Count.setText(item.getCommentNum());
 
         String action = item.getAction();//1是社群 2是兴趣圈 3是个人
         if (TextUtils.equals(action, "1")) {
@@ -85,6 +93,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Toast.makeText(mContext, String.format("Menu:%d", position), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -107,7 +116,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
             itemParams.setMargins(0, 0, 0, 0);
             view.setLayoutParams(itemParams);
             TextView label_Name = view.findViewById(R.id.label_Name);
-            setColor(i, label_Name);
+            StringUtil.setColor(mContext,i, label_Name);
             label_Name.setText(tagS[i]);
             label_Name.setTag(i);
             myFlow.addView(view);
@@ -115,30 +124,6 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean.DataDTO.ListD
             });
         }
     }
-
-    private void setColor(int index, TextView tv) {
-        int dex = index % 4;
-        if (dex == 0) {
-            tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FF801F));
-            changeShapColor(tv, ContextCompat.getColor(mContext, R.color.lable_color_ff801f));
-        } else if (dex == 1) {
-            tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
-            changeShapColor(tv, ContextCompat.getColor(mContext, R.color.lable_color_1F8FE5));
-        } else if (dex == 2) {
-            tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_76AD45));
-            changeShapColor(tv, ContextCompat.getColor(mContext, R.color.lable_color_76AD45));
-        } else if (dex == 3) {
-            tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_7622BD));
-            changeShapColor(tv, ContextCompat.getColor(mContext, R.color.lable_color_7622BD));
-        }
-    }
-
-    //修改shape背景颜色
-    public static void changeShapColor(View v, int color) {
-        GradientDrawable da = (GradientDrawable) v.getBackground();
-        da.setColor(color);
-    }
-
 
 }
 

@@ -24,7 +24,6 @@ public class NineGridAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
         super.setOnItemClickListener(listener);
-
     }
 
 

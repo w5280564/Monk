@@ -9,7 +9,8 @@
         <entry key="..\:/Monk/app/src/main/res/drawable/label_stroke_yellow.xml" value="0.36041666666666666" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_login_more_info.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_main.xml" value="0.38969310943833235" />
-        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/follow_adapter.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/follow_adapter.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_label.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.35052083333333334" />
