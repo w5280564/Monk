@@ -61,7 +61,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
 
-        title_Tv.setText(StringUtil.getStringValue(item.getTitle()));
+        title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
@@ -88,7 +88,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
                 nickName_Tv.setText(item.getGroup().getGroupName());
             }
         } else if (TextUtils.equals(action, "3")) {
-            group_Name.setFilters(new InputFilter[] { new InputFilter.LengthFilter(6) });//昵称字数
+            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
             personHead_Img.setVisibility(View.GONE);
             nickName_Tv.setVisibility(View.GONE);
             labelFlow(lable_Lin, mContext, item.getTagName());

@@ -82,7 +82,7 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    homeFllowBean = new Gson().fromJson(json_data, FollowListBean.class);
+                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
                         handleSplitListData(homeFllowBean, homeFollowAdapter, pageSize);
                     }

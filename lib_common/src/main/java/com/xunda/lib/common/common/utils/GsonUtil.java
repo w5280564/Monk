@@ -195,20 +195,8 @@ public class GsonUtil {
 		Gson gson = new GsonBuilder().registerTypeAdapterFactory(new NullStringToEmptyAdapterFactory()).create();
 		//然后用上面一行写的gson来序列化和反序列化实体类type
 		T t = gson.fromJson(json, clazz);
-//		String s = gson.toJson(t);
-//		T obj = null;
-//		if (gson != null) {
-//			try{
-//				obj = gson.fromJson(s, clazz);
-//			}catch(Exception e){
-//				e.printStackTrace();
-//			}
-//		}
 		return t;
 	}
-
-
-
 
 	/**
 	 * 将json格式转换成List对象
