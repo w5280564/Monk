@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class MySheQunBean implements Serializable {
+public class MyGroupBean implements Serializable {
 
 
     @SerializedName("id")

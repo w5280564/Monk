@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -12,7 +13,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.bean.MySheQunBean;
+import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.question.fragment.GroupFragment_All;
 import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
@@ -32,9 +33,11 @@ import butterknife.OnClick;
 /**
  * 社群详情
  */
-public class SheQunGroupDetailActivity extends BaseActivity {
+public class GroupDetailActivity extends BaseActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
+    @BindView(R.id.tv_shequn_name)
+    TextView tv_shequn_name;
     @BindView(R.id.rl_title)
     RelativeLayout rl_title;
     @BindView(R.id.tabs)
@@ -43,18 +46,18 @@ public class SheQunGroupDetailActivity extends BaseActivity {
     ViewPager viewpager;
     private List<Fragment> fragments = new ArrayList<>();
     private String id;
-    private MySheQunBean sheQunBean;
+    private MyGroupBean sheQunBean;
 
 
     public static void actionStart(Context context, String id) {
-        Intent intent = new Intent(context, SheQunGroupDetailActivity.class);
+        Intent intent = new Intent(context, GroupDetailActivity.class);
         intent.putExtra("id",id);
         context.startActivity(intent);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_shequn_detail;
+        return R.layout.activity_group_detail;
     }
 
     @Override
@@ -144,7 +147,7 @@ public class SheQunGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            sheQunBean = GsonUtil.getInstance().json2Bean(data, MySheQunBean.class);
+                            sheQunBean = GsonUtil.getInstance().json2Bean(data, MyGroupBean.class);
                             handleData();
                         }
                     }
@@ -162,6 +165,7 @@ public class SheQunGroupDetailActivity extends BaseActivity {
             }else{
                 GlideUtils.loadImage(mContext,iv_head_bag,group_header);
             }
+            tv_shequn_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
         }
     }
 
@@ -175,7 +179,7 @@ public class SheQunGroupDetailActivity extends BaseActivity {
                 back();
                 break;
             case R.id.ll_menu:
-                SheQunGroupSettingActivity.actionStart(mActivity,sheQunBean);
+                GroupSettingActivity.actionStart(mActivity,sheQunBean);
                 break;
         }
     }

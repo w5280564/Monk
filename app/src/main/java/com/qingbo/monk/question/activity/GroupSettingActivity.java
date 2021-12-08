@@ -3,10 +3,11 @@ package com.qingbo.monk.question.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
-import com.qingbo.monk.bean.MySheQunBean;
+import com.qingbo.monk.bean.MyGroupBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -23,7 +24,7 @@ import butterknife.OnClick;
 /**
  * 社群编辑
  */
-public class SheQunGroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
+public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
     @BindView(R.id.iv_header_group)
     RadiusImageWidget iv_header_group;
     @BindView(R.id.tv_group_tag)
@@ -34,26 +35,29 @@ public class SheQunGroupSettingActivity extends BaseCameraAndGalleryActivity_Sin
     TextView tv_group_des;
     private String id;
     private String group_header;
-    private MySheQunBean sheQunBean;
+    private MyGroupBean sheQunBean;
 
 
-    public static void actionStart(Context context, MySheQunBean sheQunBean) {
-        Intent intent = new Intent(context, SheQunGroupSettingActivity.class);
+    public static void actionStart(Context context, MyGroupBean sheQunBean) {
+        Intent intent = new Intent(context, GroupSettingActivity.class);
         intent.putExtra("sheQunBean",sheQunBean);
         context.startActivity(intent);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_shequn_setting;
+        return R.layout.activity_group_setting;
     }
 
 
-
+    @Override
+    protected void initView() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
 
     @Override
     protected void initLocalData() {
-        sheQunBean = (MySheQunBean) getIntent().getSerializableExtra("sheQunBean");
+        sheQunBean = (MyGroupBean) getIntent().getSerializableExtra("sheQunBean");
         if (sheQunBean!=null) {
             id = sheQunBean.getId();
             tv_group_tag.setText(StringUtil.getStringValue(sheQunBean.getTags()));
@@ -96,7 +100,7 @@ public class SheQunGroupSettingActivity extends BaseCameraAndGalleryActivity_Sin
         sender.sendGet();
     }
 
-    private void handleData(MySheQunBean obj) {
+    private void handleData(MyGroupBean obj) {
         if (obj != null) {
 //            String group_header = obj.getShequnImage();
 //            if (StringUtil.isBlank(group_header)) {

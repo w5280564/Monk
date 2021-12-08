@@ -3,7 +3,7 @@
     android:id="@+id/ll_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_background_white_radius9"
+    android:background="@drawable/shape_background_white_radius19"
     android:gravity="bottom"
     android:orientation="vertical">
 

@@ -39,18 +39,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="154dp"
-                        android:background="@drawable/background_shequn_bottom"
+                        android:background="@drawable/background_group_bottom"
                         android:orientation="vertical"
                         android:paddingTop="@dimen/dp_30"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
                         android:paddingRight="@dimen/activity_horizontal_margin">
 
                         <TextView
+                            android:id="@+id/tv_shequn_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:maxLines="2"
                             android:ellipsize="end"
-                            android:text="一个神秘莫测的群"
+                            android:textStyle="bold"
                             android:textColor="@color/text_color_444444"
                             android:textSize="@dimen/sp_16"/>
 

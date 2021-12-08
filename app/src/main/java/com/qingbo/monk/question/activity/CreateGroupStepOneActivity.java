@@ -1,32 +1,17 @@
 package com.qingbo.monk.question.activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.widget.EditText;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
-import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
-import com.xunda.lib.common.common.http.HttpSender;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.utils.FileUtil;
-import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.RadiusImageWidget;
-import com.zhihu.matisse.Matisse;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -52,7 +37,7 @@ public class CreateGroupStepOneActivity extends BaseCameraAndGalleryActivity_Sin
 
     @Subscribe
     public void onFinishEvent(FinishEvent event) {
-        if(event.type == FinishEvent.CREATE_SHEQUN){
+        if(event.type == FinishEvent.CREATE_GROUP){
             back();
         }
     }

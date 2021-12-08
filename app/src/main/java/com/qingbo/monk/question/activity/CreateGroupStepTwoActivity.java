@@ -135,9 +135,9 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("创建成功");
-                            EventBus.getDefault().post(new FinishEvent(FinishEvent.CREATE_SHEQUN));
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.CREATE_GROUP));
                             String shequn_id = GsonUtil.getInstance().getValue(json_data,"shequn_id");
-                            SheQunGroupDetailActivity.actionStart(mActivity, shequn_id);
+                            GroupDetailActivity.actionStart(mActivity, shequn_id);
                         }
                     }
 

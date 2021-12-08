@@ -45,6 +45,7 @@ public class EditStringDialog extends Dialog implements View.OnClickListener {
 		Window dialogWindow = getWindow();
 		dialogWindow.setGravity(Gravity.BOTTOM);
 		dialogWindow.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+		dialogWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		setCanceledOnTouchOutside(true);
 		initView();
 	}

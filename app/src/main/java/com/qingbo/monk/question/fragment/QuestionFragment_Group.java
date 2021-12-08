@@ -10,12 +10,12 @@ import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.bean.BaseSheQunBean;
-import com.qingbo.monk.bean.MySheQunBean;
-import com.qingbo.monk.bean.SheQunBean;
+import com.qingbo.monk.bean.BaseGroupBean;
+import com.qingbo.monk.bean.MyGroupBean;
+import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
-import com.qingbo.monk.question.activity.SheQunGroupDetailActivity;
+import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -46,7 +46,7 @@ public class QuestionFragment_Group extends BaseFragment {
     @BindView(R.id.ll_top_right)
     LinearLayout ll_top_right;
     private QuestionGroupAdapter mQuestionGroupAdapter;
-    private List<MySheQunBean> bannerList = new ArrayList<>();
+    private List<MyGroupBean> bannerList = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -62,7 +62,7 @@ public class QuestionFragment_Group extends BaseFragment {
 
     @Subscribe
     public void onFinishEvent(FinishEvent event) {
-        if(event.type == FinishEvent.CREATE_SHEQUN){
+        if(event.type == FinishEvent.CREATE_GROUP){
             getMyShequn();
         }
     }
@@ -79,7 +79,7 @@ public class QuestionFragment_Group extends BaseFragment {
         img_top_banner.setOnItemClickL(new BaseBanner.OnItemClickL() {
             @Override
             public void onItemClick(int position) {
-                SheQunGroupDetailActivity.actionStart(mActivity, bannerList.get(position).getId());
+                GroupDetailActivity.actionStart(mActivity, bannerList.get(position).getId());
             }
         });
     }
@@ -109,17 +109,17 @@ public class QuestionFragment_Group extends BaseFragment {
 
 
     private void handleData(String json) {
-        HttpBaseList<MySheQunBean> objList = GsonUtil
+        HttpBaseList<MyGroupBean> objList = GsonUtil
                 .getInstance()
                 .json2List(
                         json,
-                        new TypeToken<HttpBaseList<MySheQunBean>>() {
+                        new TypeToken<HttpBaseList<MyGroupBean>>() {
                         }.getType());
         handleBanner(objList.getData());
     }
 
 
-    private void handleBanner(List<MySheQunBean> tempBannerList) {
+    private void handleBanner(List<MyGroupBean> tempBannerList) {
         if (!ListUtils.isEmpty(tempBannerList)) {
             bannerList.clear();
             bannerList.addAll(tempBannerList);
@@ -139,9 +139,9 @@ public class QuestionFragment_Group extends BaseFragment {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseSheQunBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseSheQunBean.class);
+                            BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
                             if (obj != null) {
-                                List<SheQunBean> list = obj.getList();
+                                List<GroupBean> list = obj.getList();
                                 mQuestionGroupAdapter.setNewData(list);
                             }
                         }

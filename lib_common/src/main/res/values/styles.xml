@@ -150,7 +150,7 @@
         <!-- 背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <!-- 全屏 -->
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>
         <!-- 无标题 -->

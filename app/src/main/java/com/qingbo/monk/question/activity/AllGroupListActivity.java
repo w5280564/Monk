@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.bean.BaseSheQunBean;
+import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -65,7 +65,7 @@ public class AllGroupListActivity extends BaseActivity implements BaseQuickAdapt
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseSheQunBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseSheQunBean.class);
+                            BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
                             handleSplitListData(obj,mQuestionGroupAdapter,pageSize);
                         }
                     }

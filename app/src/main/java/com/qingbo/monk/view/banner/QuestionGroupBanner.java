@@ -8,21 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.flyco.banner.widget.Banner.BaseIndicatorBanner;
 import com.qingbo.monk.R;
-import com.qingbo.monk.bean.MySheQunBean;
-import com.qingbo.monk.bean.SheQunBean;
-import com.xunda.lib.common.common.glide.GlideUtils;
+import com.qingbo.monk.bean.MyGroupBean;
 import com.xunda.lib.common.common.glide.RoundedCornersTransform;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.List;
 
-public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, QuestionGroupBanner> {
+public class QuestionGroupBanner extends BaseIndicatorBanner<MyGroupBean, QuestionGroupBanner> {
     private int drawable;
 
     public QuestionGroupBanner(Context context) {
@@ -46,7 +41,7 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, Quest
 
 
     @Override
-    public QuestionGroupBanner setSource(List<MySheQunBean> list) {
+    public QuestionGroupBanner setSource(List<MyGroupBean> list) {
         if (list == null || list.size() <= 1) {
             setIndicatorShow(false);
             setAutoScrollEnable(false);
@@ -70,7 +65,7 @@ public class QuestionGroupBanner extends BaseIndicatorBanner<MySheQunBean, Quest
         TextView tv_group_name = layout.findViewById(R.id.tv_group_name);
         TextView tv_name = layout.findViewById(R.id.tv_name);
         ImageView iv_img_top = layout.findViewById(R.id.iv_img_top);
-        MySheQunBean item = mDatas.get(position);
+        MyGroupBean item = mDatas.get(position);
 
         tv_group_name.setText(StringUtil.getStringValue(item.getShequnName()));
         tv_name.setText(StringUtil.getStringValue(item.getNickname()));

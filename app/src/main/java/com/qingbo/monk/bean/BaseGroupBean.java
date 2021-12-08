@@ -2,5 +2,5 @@ package com.qingbo.monk.bean;
 
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 
-public class BaseSheQunBean extends BaseSplitIndexBean<SheQunBean> {
+public class BaseGroupBean extends BaseSplitIndexBean<GroupBean> {
 }
