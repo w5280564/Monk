@@ -57,17 +57,15 @@ public class HomeInsider_Fragment extends BaseFragment implements BaseQuickAdapt
     @Override
     protected void getServerData() {
         super.getServerData();
-        getListData();
+        getListData(true);
     }
 
-    int page = 1;
-    protected int pageSize = 10;
     InsiderListBean insiderListBean;
 
-    private void getListData() {
+    private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
-        requestMap.put("limit", pageSize + "");
+        requestMap.put("limit", limit + "");
         requestMap.put("type", "1");
         HttpSender httpSender = new HttpSender(HttpUrl.Insider_List, "首页-内部人", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -76,11 +74,11 @@ public class HomeInsider_Fragment extends BaseFragment implements BaseQuickAdapt
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                      insiderListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderListBean.class);
                     if (insiderListBean != null) {
-                        handleSplitListData(insiderListBean, insider_adapter, pageSize);
+                        handleSplitListData(insiderListBean, insider_adapter, limit);
                     }
                 }
             }
-        }, true);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
@@ -88,7 +86,7 @@ public class HomeInsider_Fragment extends BaseFragment implements BaseQuickAdapt
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getListData();
+        getListData(false);
     }
 
 
@@ -113,6 +111,7 @@ public class HomeInsider_Fragment extends BaseFragment implements BaseQuickAdapt
 
     @Override
     protected void initEvent() {
+        insider_adapter.setOnLoadMoreListener(this,card_Recycler);
     }
 
 

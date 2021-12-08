@@ -37,7 +37,7 @@ public class Config {
         /**
          * 开发环境
          */
-        public static String URL_WHOLE = "http://shjr.gstai.com:80/";
+        public static String URL_WHOLE = "https://shjr.gsdata.cn/";
 
 
 

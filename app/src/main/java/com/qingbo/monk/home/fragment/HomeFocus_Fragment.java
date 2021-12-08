@@ -66,17 +66,15 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
     @Override
     protected void getServerData() {
         super.getServerData();
-        getListData();
+        getListData(true);
     }
 
-    int page = 1;
-    protected int pageSize = 10;
     FollowListBean homeFllowBean;
 
-    private void getListData() {
+    private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
-        requestMap.put("limit", pageSize + "");
+        requestMap.put("limit", limit + "");
         HttpSender httpSender = new HttpSender(HttpUrl.Follow_List, "首页-关注", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -84,11 +82,11 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
-                        handleSplitListData(homeFllowBean, homeFollowAdapter, pageSize);
+                        handleSplitListData(homeFllowBean, homeFollowAdapter, limit);
                     }
                 }
             }
-        }, true);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
@@ -96,7 +94,7 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
     @Override
     public void onLoadMoreRequested() {
         page++;
-        getListData();
+        getListData(false);
     }
 
 
@@ -121,6 +119,7 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
 
     @Override
     protected void initEvent() {
+        homeFollowAdapter.setOnLoadMoreListener(this,card_Recycler);
         homeFollowAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

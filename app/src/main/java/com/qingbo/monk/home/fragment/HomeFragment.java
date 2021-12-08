@@ -189,17 +189,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         int sizes = tabsList.size();
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
-//            if (i == 0) {
-//                tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType, i + "", ""));
-//            }if (i == 1) {
-//                tabFragmentList.add(HomeFollowFragment.newInstance(titleType, i + "", ""));
-//            } else {
-//                tabFragmentList.add(HomeCardFragment.newInstance(titleType, i + "", ""));
-//            }
         }
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType, 0 + "", ""));
         tabFragmentList.add(HomeCommendFragment.newInstance(titleType, 1 + "", ""));
-        tabFragmentList.add(HomeCardFragment.newInstance(titleType, 2 + "", ""));
+        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType, 2 + "", ""));
         tabFragmentList.add(HomeInsider_Fragment.newInstance(titleType, 3 + "", ""));
         tabFragmentList.add(HomeCardFragment.newInstance(titleType, 4 + "", ""));
 

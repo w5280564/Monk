@@ -125,11 +125,9 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         int nowLike;
         nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
         if (isLike == 0) {
-//            nowLike -= 1;
             follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
         } else if (isLike == 1) {
             follow_Img.setBackgroundResource(R.mipmap.dianzan);
-//            nowLike += 1;
         }
         follow_Count.setText(nowLike + "");
     }
