@@ -2,7 +2,6 @@ package com.qingbo.monk.login.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -10,36 +9,31 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import com.bumptech.glide.Glide;
+
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
-import com.qingbo.monk.login.activity.AreaCodeListActivity;
 import com.qingbo.monk.login.activity.ChooseIndustryActivity;
 import com.xunda.lib.common.bean.AreaBean;
 import com.xunda.lib.common.bean.BaseAreaBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
-import com.xunda.lib.common.common.http.HttpSender;
+import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.PickCityDialog;
 import com.xunda.lib.common.dialog.PickStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
-import com.zhihu.matisse.Matisse;
+
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

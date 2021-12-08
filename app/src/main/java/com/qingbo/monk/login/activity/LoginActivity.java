@@ -3,7 +3,6 @@ package com.qingbo.monk.login.activity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-
 import java.util.HashMap;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
@@ -11,19 +10,18 @@ import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.H5Url;
-import com.xunda.lib.common.common.http.HttpSender;
+import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 登陆页面
+ * 登录页面
  */
 public class LoginActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.cb_agreement)

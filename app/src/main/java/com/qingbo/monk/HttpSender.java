@@ -1,13 +1,17 @@
-package com.xunda.lib.common.common.http;
+package com.qingbo.monk;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
+import android.content.Intent;
+
 import androidx.fragment.app.FragmentActivity;
+
+import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.R;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.AESEncrypt;
@@ -20,8 +24,6 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.LoadingDialog;
 import com.xunda.lib.common.dialog.TokenDialog;
-import com.xunda.lib.common.router.RouterActivityPath;
-import com.xunda.lib.common.router.RouterIntentUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.File;
@@ -403,7 +405,8 @@ public class HttpSender {
 	 * 跳到登录界面
 	 */
 	private void jumpToLoginActivity() {
-		RouterIntentUtils.jumpTo(RouterActivityPath.Main.PAGER_LOGIN);
+		Intent intent = new Intent(context, LoginActivity.class);
+		context.startActivity(intent);
 	}
 
 

@@ -17,12 +17,6 @@ android {
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
     }
 
 
@@ -133,9 +127,6 @@ dependencies {
 
     api 'com.baoyz.treasure:treasure:0.7.4'
     annotationProcessor 'com.baoyz.treasure:treasure-compiler:0.7.4'
-
-    api 'com.alibaba:arouter-api:1.5.2'
-    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
 
     api 'com.squareup.okhttp3:okhttp:3.10.0'
 

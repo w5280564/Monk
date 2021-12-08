@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.qingbo.monk.R;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.http.HttpSender;
+import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.permission.PermissionManager;

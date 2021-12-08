@@ -13,6 +13,7 @@ import com.qingbo.monk.question.fragment.QuestionFragment_Group;
 import com.qingbo.monk.question.fragment.QuestionFragment_Square;
 import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
+import com.xunda.lib.common.view.MyTabLayout;
 import com.xunda.lib.common.view.MyViewPagerNoScroll;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import butterknife.BindView;
 public class QuestionFragment extends BaseFragment {
 
     @BindView(R.id.tabs)
-    TabLayout mTabLayout;
+    MyTabLayout mTabLayout;
     @BindView(R.id.viewpager)
     MyViewPagerNoScroll mViewPager;
     private List<Fragment> fragments = new ArrayList<>();
@@ -41,34 +42,6 @@ public class QuestionFragment extends BaseFragment {
     }
 
 
-    @Override
-    protected void initEvent() {
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                //在这里可以设置选中状态下  tab字体显示样式
-//                mViewPager.setCurrentItem(tab.getPosition());
-                View view = tab.getCustomView();
-                if (null != view) {
-                    setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View view = tab.getCustomView();
-                if (null != view) {
-                    setTextViewStyle(view, 15, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-    }
 
     private void initMenuData() {
         for (int i = 0; i < 2; i++) {

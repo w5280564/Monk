@@ -13,19 +13,16 @@ import com.qingbo.monk.login.fragment.StepFourFragmentLogin;
 import com.qingbo.monk.login.fragment.StepOneFragmentLogin;
 import com.qingbo.monk.login.fragment.StepThreeFragmentLogin;
 import com.qingbo.monk.login.fragment.StepTwoFragmentLogin;
-import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.LoginMoreInfoEvent;
-import com.xunda.lib.common.common.http.HttpSender;
+import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 

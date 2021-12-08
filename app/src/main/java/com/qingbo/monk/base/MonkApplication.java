@@ -2,9 +2,6 @@ package com.qingbo.monk.base;
 
 import android.content.Context;
 import android.content.res.Configuration;
-
-import com.alibaba.android.arouter.BuildConfig;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.baoyz.treasure.Treasure;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
@@ -27,20 +24,8 @@ public class MonkApplication extends BaseApplication {
         instance = this;
         Treasure.setConverterFactory(new GsonConverterFactory());//Treasure：数据保存类
         OkhttpInitUtil.init(instance);//初始化网络请求类
-        initARouter();
     }
 
-    /**
-     * 初始化阿里ARouter
-     */
-    private void initARouter() {
-        ARouter.init(this);
-        //第三个参数为SDK调试模式开关，调试模式的行为特性如下： 输出详细的Bugly SDK的Log；每一条Crash都会被立即上报；自定义日志将会在Logcat中输出。
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog();
-            ARouter.openDebug();
-        }
-    }
 
 
 
@@ -67,10 +52,5 @@ public class MonkApplication extends BaseApplication {
         super.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        ARouter.getInstance().destroy();
-    }
 
 }
