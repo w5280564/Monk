@@ -59,7 +59,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.card_Tab)
     TabLayout card_Tab;
     @BindView(R.id.card_ViewPager)
-    MyViewPager card_ViewPager;
+    ViewPager card_ViewPager;
     int page = 1;
 
     @Override
