@@ -211,7 +211,7 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
             }
         }, true);
         httpSender.setContext(mActivity);
-        httpSender.sendGet();
+        httpSender.sendPost();
     }
 
 }
