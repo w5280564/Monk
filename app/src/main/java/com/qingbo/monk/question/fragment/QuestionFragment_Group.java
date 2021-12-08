@@ -55,7 +55,7 @@ public class QuestionFragment_Group extends BaseFragment {
 
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
+    protected void initView() {
         initRecyclerView();
         registerEventBus();
     }

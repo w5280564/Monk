@@ -62,7 +62,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         initLocalData();
         //view与数据绑定
         initView();
-        initView(savedInstanceState);
+        initView(mRootView);
         //设置监听
         initEvent();
         //请求服务端接口数据
@@ -97,7 +97,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
     /**
      * 初始化view
      */
-    protected void initView(Bundle savedInstanceState) {
+    protected void initView(View mRootView) {
 
     }
 

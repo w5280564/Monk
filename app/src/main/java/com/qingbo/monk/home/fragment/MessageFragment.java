@@ -29,7 +29,7 @@ public class MessageFragment extends BaseFragment implements BaseQuickAdapter.On
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
+    protected void initView() {
         mMessageListAdapter = new MessageListAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);

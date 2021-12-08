@@ -53,7 +53,7 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
     }
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
+    protected void initView() {
         mHaveAdapter = new HaveAdapter();
         GridLayoutManager layoutManager = new GridLayoutManager(mActivity, 2);
         mRecyclerView.setLayoutManager(layoutManager);
