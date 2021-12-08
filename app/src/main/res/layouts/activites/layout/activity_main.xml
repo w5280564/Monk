@@ -44,7 +44,7 @@
         android:background="@color/dl_background">
 
 
-        <ScrollView
+          <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -286,6 +286,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
+                    android:id="@+id/quit_Tv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_44"
                     android:gravity="center"

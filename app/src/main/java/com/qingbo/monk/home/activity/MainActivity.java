@@ -3,6 +3,7 @@ package com.qingbo.monk.home.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,7 @@ import butterknife.BindView;
 /**
  * 主首页
  */
-public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     @BindView(R.id.mBottomNavigationView)
     BottomNavigationView mBottomNavigationView;
     private int fragmentId = R.id.act_main_fragment;
@@ -40,9 +41,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @BindView(R.id.nickName_Tv)
     TextView nickName_Tv;
     @BindView(R.id.followAndFans_Tv)
-    TextView  followAndFans_Tv;
+    TextView followAndFans_Tv;
     @BindView(R.id.head_Tv)
     ImageView head_Tv;
+    @BindView(R.id.quit_Tv)
+    TextView quit_Tv;
     private long clickTime;
 
 
@@ -70,6 +73,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initEvent() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+        quit_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -108,15 +112,14 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     protected void initLocalData() {
         super.initLocalData();
         String avatar = PrefUtil.getUser().getAvatar();
-        GlideUtils.loadCircleImage(mContext,head_Tv, avatar);
+        GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();
         nickName_Tv.setText(nickName);
-        String  fow = PrefUtil.getUser().getFollowNum();
-        String  fans = PrefUtil.getUser().getFansNum();
-        String fowAndFans = String.format("关注 %1$s      粉丝 %2$s",fow,fans);
+        String fow = PrefUtil.getUser().getFollowNum();
+        String fans = PrefUtil.getUser().getFansNum();
+        String fowAndFans = String.format("关注 %1$s      粉丝 %2$s", fow, fans);
         followAndFans_Tv.setText(fowAndFans);
     }
-
 
 
     @Override
@@ -126,6 +129,15 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             clickTime = System.currentTimeMillis();
         } else {
             closeApp();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.quit_Tv:
+
+                break;
         }
     }
 }

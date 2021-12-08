@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import androidx.core.util.Pools;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
+import com.xunda.lib.common.common.utils.L;
+
+public class NineGridLayoutManager extends RecyclerView.LayoutManager {
     private int gridSpacing;//gap
     private int mSpanCount = 3; //默认为3
     private int maxImageSize = 9;
@@ -42,6 +44,7 @@ public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
 
     /**
      * 测量RecyclerView控件的宽高
+     *
      * @param recycler
      * @param state
      * @param widthSpec
@@ -54,12 +57,15 @@ public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
             return;
         }
         int width = View.MeasureSpec.getSize(widthSpec);//不能直接用getWidth 可能获取 0
-        itemWidth = (width - getPaddingLeft() - getPaddingRight() - gridSpacing * (mSpanCount - 1)) / mSpanCount;
-        itemHeight = itemWidth;//高度没问题
         int childCount = getItemCount();
         if (childCount < 0) {
             return;
         }
+        if (childCount == 4) {
+            mSpanCount = 2;
+        }
+        itemWidth = (width - getPaddingLeft() - getPaddingRight() - gridSpacing * (mSpanCount - 1)) / mSpanCount;
+        itemHeight = itemWidth;//高度没问题
         int height = 0;
         if (childCount == 1) {
             height = singleImageHeight;
@@ -67,10 +73,10 @@ public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
             height = 1 * itemHeight;
         } else if (childCount > 3 && childCount <= 6) {
             height = 2 * itemHeight;
-        } else if (childCount >6 && childCount <= 9){
+        } else if (childCount > 6 && childCount <= 9) {
             height = 3 * itemHeight;
         }
-        height += getPaddingTop()+getPaddingBottom();//TODO:解决 Padding问题
+        height += getPaddingTop() + getPaddingBottom();//TODO:解决 Padding问题
         heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
@@ -153,7 +159,6 @@ public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
     }
 
 
-
     /**
      * 填充
      *
@@ -172,9 +177,6 @@ public class NineGridLayoutManager  extends RecyclerView.LayoutManager {
             layoutDecorated(scrap, frame.left, frame.top, frame.right, frame.bottom);
         }
     }
-
-
-
 
 
 }
