@@ -47,7 +47,7 @@ public class QuestionFragment extends BaseFragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //在这里可以设置选中状态下  tab字体显示样式
-                mViewPager.setCurrentItem(tab.getPosition());
+//                mViewPager.setCurrentItem(tab.getPosition());
                 View view = tab.getCustomView();
                 if (null != view) {
                     setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);

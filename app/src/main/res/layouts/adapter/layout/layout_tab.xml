@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/title_height">
 
-    <TextView android:id="@+id/tab_item_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:maxLines="1"/>
 
-    <View android:id="@+id/line"
+    <View
+        android:id="@+id/line"
         android:layout_width="@dimen/dp_69"
         android:layout_height="@dimen/dp_4"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/dp_3"
         android:background="@color/app_main_color"
-        android:layout_alignBottom="@id/tab_item_textview"
-        android:visibility="invisible"
-        >
-    </View>
+        android:visibility="invisible"/>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/tab_item_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="哈哈哈"
+        android:layout_gravity="center"
+        android:maxLines="1" />
+
+</FrameLayout>

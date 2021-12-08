@@ -22,6 +22,7 @@ import com.qingbo.monk.home.fragment.UniverseFragment;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.T;
 
 import butterknife.BindView;
 
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     TextView  followAndFans_Tv;
     @BindView(R.id.head_Tv)
     ImageView head_Tv;
+    private long clickTime;
 
 
     @Override
@@ -113,5 +115,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         String  fans = PrefUtil.getUser().getFansNum();
         String fowAndFans = String.format("关注 %1$s      粉丝 %2$s",fow,fans);
         followAndFans_Tv.setText(fowAndFans);
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - clickTime) > 2000) {
+            T.ss(getString(R.string.Home_press_again));
+            clickTime = System.currentTimeMillis();
+        } else {
+            closeApp();
+        }
     }
 }

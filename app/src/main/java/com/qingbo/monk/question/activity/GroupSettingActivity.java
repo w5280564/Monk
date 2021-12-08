@@ -8,23 +8,32 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.bean.MyGroupBean;
+import com.xunda.lib.common.bean.NameIdBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.EditGroupEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.EditStringDialog;
+import com.xunda.lib.common.dialog.GridDialog;
 import com.xunda.lib.common.view.RadiusImageWidget;
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 社群编辑
  */
-public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
+public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single implements GridDialog.OnSelectItemListener {
     @BindView(R.id.iv_header_group)
     RadiusImageWidget iv_header_group;
     @BindView(R.id.tv_group_tag)
@@ -33,9 +42,11 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
     TextView tv_group_name;
     @BindView(R.id.tv_group_des)
     TextView tv_group_des;
-    private String id;
-    private String group_header;
+    private String id,tag;
     private MyGroupBean sheQunBean;
+    private List<NameIdBean> tagList = new ArrayList<>();
+
+    private GridDialog mGridDialog;
 
 
     public static void actionStart(Context context, MyGroupBean sheQunBean) {
@@ -60,14 +71,14 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
         sheQunBean = (MyGroupBean) getIntent().getSerializableExtra("sheQunBean");
         if (sheQunBean!=null) {
             id = sheQunBean.getId();
-            tv_group_tag.setText(StringUtil.getStringValue(sheQunBean.getTags()));
+            tag = StringUtil.getStringValue(sheQunBean.getTags());
+            tv_group_tag.setText(tag);
             tv_group_des.setText(StringUtil.getStringValue(sheQunBean.getShequnDes()));
             tv_group_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
-            group_header = sheQunBean.getShequnImage();
-            if (StringUtil.isBlank(group_header)) {
+            if (StringUtil.isBlank(sheQunBean.getShequnImage())) {
                 iv_header_group.setImageResource(R.mipmap.bg_create_group);
             }else{
-                GlideUtils.loadImage(mContext,iv_header_group,group_header);
+                GlideUtils.loadImage(mContext,iv_header_group,sheQunBean.getShequnImage());
             }
         }
     }
@@ -92,7 +103,15 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-
+                            List<String> strings = StringUtil.stringToList(data);
+                            if (!ListUtils.isEmpty(strings)) {
+                                for (String item:strings) {
+                                    NameIdBean mNameIdBean = new NameIdBean();
+                                    mNameIdBean.setName(item);
+                                    mNameIdBean.setSelect(tag.equals(item));
+                                    tagList.add(mNameIdBean);
+                                }
+                            }
                         }
                     }
                 }, true);
@@ -100,16 +119,6 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
         sender.sendGet();
     }
 
-    private void handleData(MyGroupBean obj) {
-        if (obj != null) {
-//            String group_header = obj.getShequnImage();
-//            if (StringUtil.isBlank(group_header)) {
-//                iv_head_bag.setImageResource(R.mipmap.bg_group_top);
-//            }else{
-//                GlideUtils.loadImage(mContext,iv_head_bag,group_header);
-//            }
-        }
-    }
 
 
 
@@ -118,8 +127,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_group_tag:
-
-
+                showGridDialog();
                 break;
             case R.id.shangchuan:
                 checkGalleryPermission();
@@ -130,6 +138,18 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
             case R.id.ll_des:
                 editValue("社群介绍", tv_group_des, "请输入社群介绍", "des");
                 break;
+        }
+    }
+
+    private void showGridDialog() {
+        if (mGridDialog == null) {
+            mGridDialog = new GridDialog(this,tagList,this);
+        }else{
+            mGridDialog.resetList(tagList);
+        }
+
+        if (!mGridDialog.isShowing()) {
+            mGridDialog.show();
         }
     }
 
@@ -151,7 +171,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        editShequn("image",group_header);
+        editShequn("image",imageString);
     }
 
     @Override
@@ -179,14 +199,28 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single {
                             }else if("des".equals(key)){
                                 tv_group_des.setText(StringUtil.getStringValue(value));
                             }else if("image".equals(key)){
-                                group_header = value;
-                                GlideUtils.loadImage(mContext,iv_header_group,group_header);
+                                GlideUtils.loadImage(mContext,iv_header_group,value);
+                            }else if("tag".equals(key)){
+                                for (NameIdBean mNameIdBean:tagList) {
+                                    mNameIdBean.setSelect(false);
+                                }
+                                tagList.get(currentPosition).setSelect(true);
+                                tv_group_tag.setText(StringUtil.getStringValue(value));
                             }
+                            EventBus.getDefault().post(new EditGroupEvent(EditGroupEvent.EDIT_GROUP));
                         }
                     }
 
                 }, true);
         sender.setContext(mActivity);
         sender.sendPost();
+    }
+
+    private int currentPosition;
+    @Override
+    public void onSelectItem(int position) {
+        currentPosition = position;
+        String tag = tagList.get(currentPosition).getName();
+        editShequn("tag",tag);
     }
 }

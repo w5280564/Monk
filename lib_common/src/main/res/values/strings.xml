@@ -85,14 +85,11 @@
     <string name="Base_yzmyfs">验证码已发送</string>
     <string name="Register_resend">重新发送验证码</string>
     <string name="Register_second">s后可重新获取</string>
-    <string name="Home_press_again">再按一次退出程序</string>
+    <string name="Home_press_again">再滑一次退出程序</string>
 
     <string name="Loading_dialog_check">努力查询中...</string>
     <string name="HttpSender_FWQKXC">服务器开小差啦</string>
     <string name="HttpSender_FWQCS">请求服务器超时</string>
     <string name="HttpSender_FWQDW">无法连接到服务器,请检查网络连接</string>
     <string name="HttpSender_ERROR_404">服务维护中，请稍后再试...</string>
-
-
-    <string name="aite_ta">&#064;TA</string>
 </resources>

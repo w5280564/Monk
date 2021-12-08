@@ -2,6 +2,7 @@ package com.xunda.lib.common.common.eventbus;
 
 public class EditGroupEvent {
 
+    public final static int EDIT_GROUP = 1; //编辑社群
     public final static int EDIT_GROUP_NAME = 2; //编辑社群群名称
     public final static int EDIT_GROUP_HEADER = 3; //编辑社群群头像
 

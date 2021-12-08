@@ -18,12 +18,17 @@ import com.qingbo.monk.question.fragment.GroupFragment_All;
 import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.EditGroupEvent;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +69,14 @@ public class GroupDetailActivity extends BaseActivity {
     protected void initView() {
         setBar();
         initMenuData();
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onEditGroupEvent(EditGroupEvent event) {
+        if(event.type == EditGroupEvent.EDIT_GROUP){
+            getGroupDetail(false);
+        }
     }
 
 
@@ -75,7 +88,7 @@ public class GroupDetailActivity extends BaseActivity {
 
     @Override
     protected void getServerData() {
-        getGroupDetail();
+        getGroupDetail(true);
     }
 
     @Override
@@ -139,7 +152,7 @@ public class GroupDetailActivity extends BaseActivity {
     /**
      * 获取社群详情
      */
-    private void getGroupDetail() {
+    private void getGroupDetail(boolean isShowAnimal) {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("id", id);
         HttpSender sender = new HttpSender(HttpUrl.shequnInfo, "获取社群详情", map,
@@ -151,7 +164,7 @@ public class GroupDetailActivity extends BaseActivity {
                             handleData();
                         }
                     }
-                }, true);
+                }, isShowAnimal);
         sender.setContext(mActivity);
         sender.sendGet();
     }
