@@ -59,8 +59,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
         if (!TextUtils.isEmpty(item.getCreateTime())) {
-            String userDate = DateUtil.getUserDate(item.getCreateTime())+" "+item.getCompany_name();
-            time_Tv.setText(userDate);
+            time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
         }
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
@@ -89,6 +88,10 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             nickName_Tv.setVisibility(View.GONE);
             labelFlow(lable_Lin, mContext, item.getTagName());
             isFollow(item.getFollow_status(), follow_Tv, send_Mes);
+            if (!TextUtils.isEmpty(item.getCreateTime())) {
+                String userDate = DateUtil.getUserDate(item.getCreateTime())+" "+item.getCompany_name();
+                time_Tv.setText(userDate);
+            }
         }
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
 

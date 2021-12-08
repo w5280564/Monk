@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
@@ -48,6 +49,7 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
