@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.home.activity.HomeFocus_Activity;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpSender;
@@ -100,7 +103,7 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
     }
 
 
-    Follow_Adapter homeFollowAdapter;
+    Focus_Adapter homeFollowAdapter;
 
     public void initlist(final Context context) {
         LinearLayoutManager mMangaer = new LinearLayoutManager(context);
@@ -108,13 +111,13 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
         card_Recycler.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         card_Recycler.setHasFixedSize(true);
-        homeFollowAdapter = new Follow_Adapter();
-        homeFollowAdapter.setEmptyView(addEmptyView("暂无数据", 0));
+        homeFollowAdapter = new Focus_Adapter();
+        homeFollowAdapter.setEmptyView(addEmptyView("您还未关注用户", 0));
         homeFollowAdapter.setLoadMoreView(new CustomLoadMoreView());
         card_Recycler.setAdapter(homeFollowAdapter);
-//        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
-//
-//        });
+        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
+            skipAnotherActivity(HomeFocus_Activity.class);
+        });
 
     }
 
@@ -134,6 +137,7 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
                         break;
                     case R.id.follow_Img:
                         String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        L.d(likeId);
                         postLikedData(likeId, position);
                         break;
                 }
@@ -141,10 +145,9 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
         });
 
 
-        homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
+        homeFollowAdapter.setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
-                L.e("imgList>>>>" + GsonUtil.getInstance().toJson(strings));
                 jumpToPhotoShowActivity(position, strings);
             }
         });
@@ -163,6 +166,10 @@ public class HomeFocus_Fragment extends BaseFragment implements BaseQuickAdapter
                     TextView follow_Tv = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.send_Mes);
                     homeFollowAdapter.isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    if (followStateBena.getFollowStatus() == 0){
+                        homeFollowAdapter.getData().remove(position);
+                        homeFollowAdapter.notifyItemChanged(position);
+                    }
                 }
             }
         }, true);

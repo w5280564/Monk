@@ -124,33 +124,6 @@ public class HomeInsider_Fragment extends BaseFragment implements BaseQuickAdapt
 
     @Override
     protected void initEvent() {
-//        homeFollowAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (homeFllowBean == null) {
-//                    return;
-//                }
-//                switch (view.getId()) {
-//                    case R.id.follow_Tv:
-//                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
-//                        postFollowData(otherUserId, position);
-//                        break;
-//                    case R.id.follow_Img:
-//                        String likeId = homeFllowBean.getList().get(position).getArticleId();
-//                        postLikedData(likeId, position);
-//                        break;
-//                }
-//            }
-//        });
-
-
-//        homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
-//            @Override
-//            public void OnItemImgClickLister(int position, List<String> strings) {
-//                L.e("imgList>>>>" + GsonUtil.getInstance().toJson(strings));
-//                jumpToPhotoShowActivity(position, strings);
-//            }
-//        });
     }
 
 

@@ -1,18 +1,13 @@
 package com.qingbo.monk.home.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,10 +27,10 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.Arrays;
 import java.util.List;
 
-public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolder> {
+public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolder> {
 
-    public Follow_Adapter() {
-        super(R.layout.follow_adapter);
+    public Focus_Adapter() {
+        super(R.layout.foucs_adapter);
     }
 
 
@@ -46,8 +41,6 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView title_Tv = helper.getView(R.id.title_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         LinearLayout lable_Lin = helper.getView(R.id.lable_Lin);
-        ImageView personHead_Img = helper.getView(R.id.personHead_Img);
-        TextView nickName_Tv = helper.getView(R.id.nickName_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
@@ -69,27 +62,10 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         mes_Count.setText(item.getCommentNum());
 
         String action = item.getAction();//1是社群 2是兴趣圈 3是个人
-        if (TextUtils.equals(action, "1")) {
-            if (item.getShequn() != null) {
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
-                nickName_Tv.setText(item.getShequn().getShequnName());
-            }
-            String is_anonymous = item.getIsAnonymous();//1是匿名
-            if (TextUtils.equals(is_anonymous, "1")) {
-                nickName_Tv.setText("匿名");
-            }
-        } else if (TextUtils.equals(action, "2")) {
-            if (item.getGroup() != null) {
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
-                nickName_Tv.setText(item.getGroup().getGroupName());
-            }
-        } else if (TextUtils.equals(action, "3")) {
-            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-            personHead_Img.setVisibility(View.GONE);
-            nickName_Tv.setVisibility(View.GONE);
-            labelFlow(lable_Lin, mContext, item.getTagName());
-            isFollow(item.getFollow_status(), follow_Tv, send_Mes);
-        }
+        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+        labelFlow(lable_Lin, mContext, item.getTagName());
+        isFollow(item.getFollow_status(), follow_Tv, send_Mes);
+
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
 
         //多张图片

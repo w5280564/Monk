@@ -46,6 +46,7 @@ public class ChooseIndustryActivity extends BaseActivity {
     }
 
 
+
     /**
      * 获取行业列表
      */

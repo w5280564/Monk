@@ -28,6 +28,7 @@ import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.testBean;
+import com.qingbo.monk.home.activity.HomeFocus_Activity;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -49,17 +50,17 @@ import butterknife.BindView;
 /**
  * 首页滑动tab页--推荐
  */
-public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener {
+public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener {
     @BindView(R.id.card_Recycler)
     RecyclerView card_Recycler;
 
 
-    public static HomeFollowFragment newInstance(String type, String status, String isVip) {
+    public static HomeCommendFragment newInstance(String type, String status, String isVip) {
         Bundle args = new Bundle();
         args.putString("type", type);
         args.putString("status", status);
         args.putString("isVip", isVip);
-        HomeFollowFragment fragment = new HomeFollowFragment();
+        HomeCommendFragment fragment = new HomeCommendFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,7 +97,6 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
                         handleSplitListData(homeFllowBean, homeFollowAdapter, pageSize);
-
                     }
                 }
             }
@@ -124,9 +124,9 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         homeFollowAdapter.setEmptyView(addEmptyView("暂无数据", 0));
         homeFollowAdapter.setLoadMoreView(new CustomLoadMoreView());
         card_Recycler.setAdapter(homeFollowAdapter);
-//        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
-//
-//        });
+        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
+            skipAnotherActivity(HomeFocus_Activity.class);
+        });
 
     }
 
@@ -156,7 +156,6 @@ public class HomeFollowFragment extends BaseFragment implements BaseQuickAdapter
         homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
-                L.e("imgList>>>>" + GsonUtil.getInstance().toJson(strings));
                 jumpToPhotoShowActivity(position, strings);
             }
         });

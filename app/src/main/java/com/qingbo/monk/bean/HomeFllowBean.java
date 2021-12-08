@@ -50,6 +50,8 @@ public class HomeFllowBean {
     private int follow_status;
     @SerializedName("liked_status")
     private int liked_status;
+    @SerializedName("company_name")
+    private String company_name;
     @SerializedName("shequn")
     private ShequnDTO shequn;
     @SerializedName("group")

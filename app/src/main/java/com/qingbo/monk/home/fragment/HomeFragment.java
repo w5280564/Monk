@@ -202,7 +202,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 //            }
         }
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType, 0 + "", ""));
-        tabFragmentList.add(HomeFollowFragment.newInstance(titleType, 1 + "", ""));
+        tabFragmentList.add(HomeCommendFragment.newInstance(titleType, 1 + "", ""));
         tabFragmentList.add(HomeCardFragment.newInstance(titleType, 2 + "", ""));
         tabFragmentList.add(HomeInsider_Fragment.newInstance(titleType, 3 + "", ""));
         tabFragmentList.add(HomeCardFragment.newInstance(titleType, 4 + "", ""));
