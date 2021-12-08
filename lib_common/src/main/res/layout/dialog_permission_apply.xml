@@ -49,6 +49,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textStyle="bold"
+            android:text="@string/toast_ok"
             android:textColor="@color/text_color_6f6f6f"
             android:textSize="@dimen/sp_15" />
 
