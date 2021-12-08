@@ -1,6 +1,7 @@
 package com.qingbo.monk.base;
 
 import android.graphics.Typeface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,34 +25,22 @@ import butterknife.BindView;
 public class BaseTabLayoutActivity extends BaseActivity {
     protected List<Fragment> fragments = new ArrayList<>();
     protected List<AppMenuBean> menuList = new ArrayList<>();
-    @BindView(R.id.tabs)
     protected TabLayout mTabLayout;
-    @BindView(R.id.viewpager)
-    ViewPager mViewPager;
+    protected ViewPager mViewPager;
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_tablayout;
+        return 0;
     }
 
 
     @Override
     protected void initEvent() {
-        mTabLayout.addOnTabSelectedListener(new MyOnTabSelectedListener());
+        mTabLayout.addOnTabSelectedListener(new BaseTabLayoutActivity.MyOnTabSelectedListener());
     }
 
 
-
-    protected void initViewPager(int position) {
-        NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
-        //给ViewPager设置适配器
-        mViewPager.setAdapter(mFragmentAdapter);
-        mViewPager.setOffscreenPageLimit(menuList.size());
-        //将TabLayout和ViewPager关联起来。
-        mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setCurrentItem(position);
-    }
 
 
 
@@ -83,14 +72,52 @@ public class BaseTabLayoutActivity extends BaseActivity {
     }
 
 
+    protected void initViewPager(int position) {
+        NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
+        //给ViewPager设置适配器
+        mViewPager.setAdapter(mFragmentAdapter);
+        mViewPager.setOffscreenPageLimit(menuList.size());
+        //将TabLayout和ViewPager关联起来。
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setCurrentItem(position);
+
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(getTabView(i));
+            }
+        }
+
+        View view = mTabLayout.getTabAt(0).getCustomView();
+        if (null != view) {
+            setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+        }
+
+        mViewPager.setCurrentItem(0);
+    }
+
+
 
     private void setTextViewStyle(View view, int size, int color, Typeface textStyle,int visibility) {
-        TextView mTextView = view.findViewById(com.xunda.lib.common.R.id.tab_item_textview);
-        View line = view.findViewById(com.xunda.lib.common.R.id.line);
+        TextView mTextView = view.findViewById(R.id.tab_item_textview);
+        View line = view.findViewById(R.id.line);
         mTextView.setTextSize(size);
-        mTextView.setTextColor(ContextCompat.getColor(mActivity, color));
+        mTextView.setTextColor(ContextCompat.getColor(mContext, color));
         mTextView.setTypeface(textStyle);
         line.setVisibility(visibility);
+    }
+
+
+    /**
+     * 自定义Tab的View
+     * @param currentPosition
+     * @return
+     */
+    private View getTabView(int currentPosition) {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.layout_tab, null);
+        TextView textView = view.findViewById(R.id.tab_item_textview);
+        textView.setText(menuList.get(currentPosition).getName());
+        return view;
     }
 
 }

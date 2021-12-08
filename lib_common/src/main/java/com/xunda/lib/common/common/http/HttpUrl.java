@@ -116,5 +116,16 @@ public class HttpUrl {
     public static final String Topic_Like = "square/square/topic-like"; //点赞/取消点赞
     public static final String Insider_List = "index/index/insider-list"; //首页-内部人
 
+
+    /**
+     * 问答广场(全部)
+     */
+    public static final String getSquareListAll = "index/index/square-list";
+
+    /**
+     * 我的发布列表
+     */
+    public static final String getOwnPublishList = "square/detail/own-publish";
+
 }
 

@@ -48,11 +48,9 @@ public class BaseTabLayoutFragment extends BaseFragment {
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            //在这里可以设置选中状态下  tab字体显示样式
-//                mViewPager.setCurrentItem(tab.getPosition());
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 18, com.xunda.lib.common.R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+                setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
             }
         }
 
@@ -60,7 +58,7 @@ public class BaseTabLayoutFragment extends BaseFragment {
         public void onTabUnselected(TabLayout.Tab tab) {
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 15, com.xunda.lib.common.R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
+                setTextViewStyle(view, 15, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
             }
         }
 

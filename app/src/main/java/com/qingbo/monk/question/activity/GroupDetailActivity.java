@@ -6,16 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.question.fragment.GroupFragment_All;
-import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
@@ -25,30 +20,21 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 社群详情
  */
-public class GroupDetailActivity extends BaseActivity {
+public class GroupDetailActivity extends BaseTabLayoutActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
     @BindView(R.id.tv_shequn_name)
     TextView tv_shequn_name;
     @BindView(R.id.rl_title)
     RelativeLayout rl_title;
-    @BindView(R.id.tabs)
-    TabLayout tabs;
-    @BindView(R.id.viewpager)
-    ViewPager viewpager;
-    private List<Fragment> fragments = new ArrayList<>();
     private String id;
     private MyGroupBean sheQunBean;
 
@@ -66,6 +52,8 @@ public class GroupDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        mViewPager = findViewById(R.id.viewpager);
+        mTabLayout = findViewById(R.id.tabs);
         setBar();
         initMenuData();
         registerEventBus();
@@ -109,7 +97,6 @@ public class GroupDetailActivity extends BaseActivity {
      * 初始化4个频道
      */
     private void initMenuData() {
-        List<AppMenuBean> menuList = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
@@ -134,17 +121,9 @@ public class GroupDetailActivity extends BaseActivity {
 
             menuList.add(bean);
         }
-        initViewPager(menuList);
+        initViewPager(0);
     }
 
-    private void initViewPager(List<AppMenuBean> menuList) {
-        NormalFragmentAdapter mFragmentAdapterAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
-        //给ViewPager设置适配器
-        viewpager.setAdapter(mFragmentAdapterAdapter);
-        viewpager.setOffscreenPageLimit(1);
-        //将TabLayout和ViewPager关联起来。
-        tabs.setupWithViewPager(viewpager);
-    }
 
 
 

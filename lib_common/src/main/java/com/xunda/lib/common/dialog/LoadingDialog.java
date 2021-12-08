@@ -28,7 +28,7 @@ public class LoadingDialog extends AlertDialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_loading);
-		TextView tips_loading_msg = (TextView) findViewById(R.id.tips_loading_msg);
+		TextView tips_loading_msg = findViewById(R.id.tips_loading_msg);
 		tips_loading_msg.setText(StringUtil.isBlank(message)?context.getString(R.string.Common_loading):message);
 	}
 
