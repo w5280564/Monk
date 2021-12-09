@@ -194,7 +194,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         tabFragmentList.add(HomeCommendFragment.newInstance(titleType));
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
         tabFragmentList.add(HomeInsider_Fragment.newInstance(titleType));
-        tabFragmentList.add(HomeCardFragment.newInstance(titleType));
+        tabFragmentList.add(HomeCombination_Fragment.newInstance(titleType));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull

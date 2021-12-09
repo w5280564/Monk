@@ -133,6 +133,7 @@ public class HttpUrl {
      * 我的发布列表
      */
     public static final String getOwnPublishList = "square/detail/own-publish";
+    public static final String getPosition_List = "square/position/position-list";//首页-仓位组合列表
 
 
     /**
