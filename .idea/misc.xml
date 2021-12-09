@@ -15,6 +15,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_insider.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_mine.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_question.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_question_list.xml" value="0.30416666666666664" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_four_fragment_login.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_three_fragment_login.xml" value="0.2859375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment_login.xml" value="0.35052083333333334" />
@@ -30,6 +31,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/shape_background_white_radius12.xml" value="0.3458333333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_permission_apply.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_privacy_policy_again.xml" value="0.3296875" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_quit.xml" value="0.33" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue_with_title.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/layout_dialog_grid.xml" value="0.3296875" />

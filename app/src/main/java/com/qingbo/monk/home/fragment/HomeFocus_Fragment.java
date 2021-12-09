@@ -32,11 +32,9 @@ import java.util.List;
 public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
 
-    public static HomeFocus_Fragment newInstance(String type, String status, String isVip) {
+    public static HomeFocus_Fragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
-        args.putString("status", status);
-        args.putString("isVip", isVip);
         HomeFocus_Fragment fragment = new HomeFocus_Fragment();
         fragment.setArguments(args);
         return fragment;

@@ -1,5 +1,7 @@
 package com.qingbo.monk.home.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -8,22 +10,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
 import com.qingbo.monk.home.fragment.MineFragment;
 import com.qingbo.monk.home.fragment.QuestionFragment;
 import com.qingbo.monk.home.fragment.UniverseFragment;
+import com.qingbo.monk.login.activity.LoginActivity;
+import com.xunda.lib.common.base.BaseApplication;
+import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 
@@ -134,10 +147,47 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.quit_Tv:
-
+                new QuitDialog(mActivity, "退出登录/关闭", "关闭扫地僧", "退出登录", new QuitDialog.ConfirmListener() {
+                    @Override
+                    public void onClickClose() {
+                        closeApp();
+                    }
+                    @Override
+                    public void onClickQuit() {
+                        new TwoButtonDialogBlue(mActivity, "确定退出登录吗？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+                            @Override
+                            public void onClickRight() {
+                                getQuit();
+                            }
+                            @Override
+                            public void onClickLeft() {
+                            }
+                        }).show();
+                    }
+                }).show();
                 break;
         }
     }
+
+
+    private void getQuit() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        HttpSender httpSender = new HttpSender(HttpUrl.Login_Logout, "退出登录", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    PrefUtil.clearSharePrefInfo();
+                    BaseApplication.getInstance().clearActivity();
+                    skipAnotherActivity(LoginActivity.class);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+
 }

@@ -33,11 +33,9 @@ import java.util.List;
  */
 public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
 
-    public static HomeCommendFragment newInstance(String type, String status, String isVip) {
+    public static HomeCommendFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
-        args.putString("status", status);
-        args.putString("isVip", isVip);
         HomeCommendFragment fragment = new HomeCommendFragment();
         fragment.setArguments(args);
         return fragment;

@@ -3,11 +3,13 @@ package com.qingbo.monk.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.xunda.lib.common.R;
@@ -16,13 +18,12 @@ import com.xunda.lib.common.common.utils.AndroidUtil;
 /**
  * 退出或关闭弹窗
  */
-public class QuitDialog extends Dialog implements
-        View.OnClickListener {
+public class QuitDialog extends Dialog implements View.OnClickListener {
 
     private ConfirmListener listener;
     private String title, content, left, right;
     private Context mContext;
-    private TextView tv_content, tv_right, tv_left;
+    private TextView close_Tv, quit_Tv,content_Tv;
     private Integer leftColor, rightColor;
 
     public QuitDialog(Context context, String content, String left,
@@ -52,7 +53,7 @@ public class QuitDialog extends Dialog implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dialog_two_button_blue);
+        setContentView(R.layout.dialog_quit);
         setCanceledOnTouchOutside(true);
         initView();
         initEvent();
@@ -60,31 +61,32 @@ public class QuitDialog extends Dialog implements
     }
 
     private void initView() {
-        LinearLayout ll_parent = findViewById(R.id.ll_parent);
+        ConstraintLayout Con_parent = findViewById(R.id.Con_parent);
         int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
-        int parentWidth = (int) (screenWidth / 5f * 4);//弹出框的宽度
-        ViewGroup.LayoutParams layoutParams = ll_parent.getLayoutParams();
+        int parentWidth = screenWidth;//弹出框的宽度
+        ViewGroup.LayoutParams layoutParams = Con_parent.getLayoutParams();
         layoutParams.width = parentWidth;
-        ll_parent.setLayoutParams(layoutParams);
+        Con_parent.setLayoutParams(layoutParams);
+        getWindow().setGravity(Gravity.BOTTOM);// 弹出框在底部位置
 
-        tv_content = findViewById(R.id.tv_content);
-        tv_right = findViewById(R.id.tv_right);
-        tv_left = findViewById(R.id.tv_left);
+                content_Tv = findViewById(R.id.content_Tv);
+        close_Tv = findViewById(R.id.close_Tv);
+        quit_Tv = findViewById(R.id.quit_Tv);
 
-        tv_content.setText(content);
-        tv_right.setText(right);
+        content_Tv.setText(content);
+        quit_Tv.setText(right);
         if (rightColor != null) {
-            tv_right.setTextColor(ContextCompat.getColor(mContext, rightColor));
+            quit_Tv.setTextColor(ContextCompat.getColor(mContext, rightColor));
         }
-        tv_left.setText(left);
+        close_Tv.setText(left);
         if (rightColor != null) {
-            tv_left.setTextColor(ContextCompat.getColor(mContext, leftColor));
+            close_Tv.setTextColor(ContextCompat.getColor(mContext, leftColor));
         }
     }
 
     private void initEvent() {
-        tv_right.setOnClickListener(this);
-        tv_left.setOnClickListener(this);
+        quit_Tv.setOnClickListener(this);
+        close_Tv.setOnClickListener(this);
     }
 
     /**
@@ -93,20 +95,21 @@ public class QuitDialog extends Dialog implements
 
     public interface ConfirmListener {
 
-        void onClickRight();
+        void onClickClose();
 
-        void onClickLeft();
+        void onClickQuit();
     }
 
     @Override
     public void onClick(View arg0) {
         int id = arg0.getId();
-        if (id == R.id.tv_right) {
-            listener.onClickRight();
+        if (id == R.id.close_Tv) {
+            listener.onClickClose();
             dismiss();
-        } else if (id == R.id.tv_left) {
-            listener.onClickLeft();
+        } else if (id == R.id.quit_Tv) {
+            listener.onClickQuit();
             dismiss();
+
         }
     }
 }

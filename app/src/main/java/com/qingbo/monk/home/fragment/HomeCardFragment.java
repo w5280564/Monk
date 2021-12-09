@@ -26,11 +26,9 @@ public class HomeCardFragment extends BaseFragment {
     RecyclerView card_Recycler;
 
 
-    public static HomeCardFragment newInstance(String type, String status, String isVip) {
+    public static HomeCardFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
-        args.putString("status", status);
-        args.putString("isVip", isVip);
         HomeCardFragment fragment = new HomeCardFragment();
         fragment.setArguments(args);
         return fragment;
