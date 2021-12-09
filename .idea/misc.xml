@@ -84,6 +84,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login_with_code.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_main.xml" value="0.19635416666666666" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_nan_get_code.xml" value="0.3536458333333333" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_publisher_picture.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_shequn_detail.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_shequn_setting.xml" value="0.33" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_welcome.xml" value="0.3536458333333333" />
@@ -97,6 +98,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_chat_receiver.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_chat_receiver_little.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_chat_sender.xml" value="0.17198581560283688" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_choose_dynamic_image.xml" value="0.16489361702127658" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_code_list.xml" value="0.3390625" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_code_list_middle.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_code_list_small.xml" value="0.3536458333333333" />

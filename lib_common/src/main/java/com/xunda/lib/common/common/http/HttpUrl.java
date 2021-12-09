@@ -52,6 +52,12 @@ public class HttpUrl {
     public static final String uploadFile = "login/login/upload-file";
 
 
+    /**
+     * 多文件上传
+     */
+    public static final String uploadFiles = "login/login/upload-files";
+
+
 
     /**
      * 收获列表
@@ -127,6 +133,12 @@ public class HttpUrl {
      * 我的发布列表
      */
     public static final String getOwnPublishList = "square/detail/own-publish";
+
+
+    /**
+     * 创建话题或提问
+     */
+    public static final String createTopic = "square/square/create-topic";
 
 }
 

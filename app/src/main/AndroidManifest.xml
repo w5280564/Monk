@@ -95,6 +95,7 @@
         <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
         <activity android:name=".question.activity.AllGroupListActivity" />
         <activity android:name=".question.activity.GroupDetailActivity" />
+        <activity android:name=".question.activity.PublisherPictureActivity" />
         <activity android:name=".question.activity.GroupSettingActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity android:name=".base.PhotoShowActivity" />

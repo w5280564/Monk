@@ -198,12 +198,12 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
 
 
     /**
-     * 单文件上传
+     * 多文件上传
      */
     private void uploadImage(final File mFile) {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("file", "file");
-        HttpSender sender = new HttpSender(HttpUrl.uploadFile, "单文件上传", baseMap,
+        HttpSender sender = new HttpSender(HttpUrl.uploadFiles, "多文件上传", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override

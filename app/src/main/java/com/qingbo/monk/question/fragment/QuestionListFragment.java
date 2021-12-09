@@ -19,6 +19,7 @@ import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.QuestionBean;
+import com.qingbo.monk.question.activity.PublisherPictureActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -227,6 +228,6 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-
+        skipAnotherActivity(PublisherPictureActivity.class);
     }
 }
