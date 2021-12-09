@@ -123,10 +123,10 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
 
 
 
-    @OnClick({R.id.tv_group_tag,R.id.shangchuan,R.id.tv_group_name,R.id.ll_des})
+    @OnClick({R.id.ll_tag,R.id.shangchuan,R.id.tv_group_name,R.id.ll_des})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_group_tag:
+            case R.id.ll_tag:
                 showGridDialog();
                 break;
             case R.id.shangchuan:

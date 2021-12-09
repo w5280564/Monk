@@ -3,12 +3,13 @@ package com.xunda.lib.common.common.itemdecoration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.View;
-
 import androidx.annotation.ColorInt;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import android.view.View;
+
+import com.xunda.lib.common.common.utils.L;
 
 /**
  * 四周没有分割线的ItemDecoration
@@ -33,8 +34,6 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
 
 
 
-
-
         boolean isLastRow = isLastRow(parent, itemPosition, spanCount, childCount);
         boolean isLastColumn = isLastColumn(parent, itemPosition, spanCount, childCount);
 
@@ -47,6 +46,8 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
         left = itemPosition % spanCount * dl;
         right = eachWidth - left;
         bottom = mDividerWidth;
+        L.e("zzz", "itemPosition:" + itemPosition + " |left:" + left + " right:" + right + " bottom:" + bottom);
+        L.e("zzz", "spanCount:" + spanCount +"childCount:" + childCount );
         if (isLastRow) {
             bottom = 0;
         }

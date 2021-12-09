@@ -1,17 +1,17 @@
 package com.qingbo.monk.question.activity;
 
-import android.net.Uri;
-
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
-import com.qingbo.monk.bean.UploadPictureBean_Local;
-import com.qingbo.monk.question.adapter.DynamicImageAdapter;
+import com.qingbo.monk.bean.UploadPictureBean;
+import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -20,22 +20,28 @@ import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
- *广场问答发布页
+ * 广场问答发布页
  */
 public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More {
+    @BindView(R.id.tv_tag)
+    TextView tvTag;
+    @BindView(R.id.ll_tag)
+    LinearLayout llTag;
+    @BindView(R.id.et_title)
+    EditText et_title;
     @BindView(R.id.et_content)
     EditText et_content;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
-    private List<UploadPictureBean_Local> imageList = new ArrayList<>();
-    private DynamicImageAdapter mAdapter;
+    private List<UploadPictureBean> imageList = new ArrayList<>();
+    private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
     private boolean haveUploadPicture;
 
@@ -52,7 +58,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     }
 
     private void initData() {
-        UploadPictureBean_Local bean = new UploadPictureBean_Local();
+        UploadPictureBean bean = new UploadPictureBean();
         bean.setType(1);
         imageList.add(bean);
         initImageRecyclerViewAndAdapter();
@@ -61,10 +67,10 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(DisplayUtil.dip2px(mContext, 1), mContext.getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(DisplayUtil.dip2px(mContext,32), mContext.getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
-        mAdapter = new DynamicImageAdapter(imageList);
+        mAdapter = new ChooseImageAdapter(imageList);
         recycleView_image.setAdapter(mAdapter);
     }
 
@@ -81,12 +87,10 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                deleteImage(position);
+                deleteImageNew(position);
             }
         });
     }
-
-
 
 
     @Override
@@ -100,10 +104,8 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     }
 
 
-
-
     private void showBackDialog() {
-        if(haveUploadPicture){
+        if (haveUploadPicture) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
@@ -123,45 +125,64 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
             if (!mDialog.isShowing()) {
                 mDialog.show();
             }
-        }else{
+        } else {
             finish();
         }
 
     }
 
 
+    @OnClick(R.id.ll_tag)
+    public void onClick() {
+        String tag = (String) llTag.getTag();
+        if ("0".equals(tag)) {
+            tvTag.setText("匿名");
+            llTag.setTag("1");
+        }else{
+            tvTag.setText("公开");
+            llTag.setTag("0");
+        }
+    }
+
+
     @Override
     public void onRightClick() {
-        String mPictureContent  = StringUtil.getEditText(et_content);
+        String title = StringUtil.getEditText(et_title);
 
-        if (!haveUploadPicture) {
-            T.ss("请上传图片");
+        String mContent = StringUtil.getEditText(et_content);
+
+        if (StringUtil.isBlank(title)  && StringUtil.isBlank(title) && !haveUploadPicture) {
+            T.ss("标题、内容、图片必须填写一项");
             return;
         }
 
-        createTopic(mPictureContent);
+        createTopic(title, mContent);
     }
 
     /**
      * 创建话题或提问
      */
-    private void createTopic(String mPictureContent) {
+    private void createTopic(String title, String mPictureContent) {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("image_remarks", mPictureContent);
+        baseMap.put("type", "1");
+        baseMap.put("title", title);
+        baseMap.put("content", mPictureContent);
+        baseMap.put("is_anonymous", (String) llTag.getTag());
+        baseMap.put("action", "3");
+        baseMap.put("images", "3");
         HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建话题或提问", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
-                        if (status== Constants.REQUEST_SUCCESS_CODE) {
-                            showCommonToastDialog("发布成功！",1);
+                        if (status == Constants.REQUEST_SUCCESS_CODE) {
+                            showCommonToastDialog("发布成功！", 1);
                         }
                     }
-                },true);
+                }, true);
         sender.setContext(mActivity);
         sender.sendPost();
     }
-
 
 
     /**
@@ -169,7 +190,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
      */
     private void clickPhoto(int position) {
 
-        if (imageList.size() < 11) {
+        if (imageList.size() < 8) {
             if (position == imageList.size() - 1 && imageList.get(position).getType() == 1) {//添加照片
                 checkGalleryPermission(6);
             }
@@ -178,31 +199,25 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     }
 
 
-
-
     /**
-     * 展示本地选择的图片
+     * 展示选择的图片
      */
-    private void showLocalListImages(Uri uri) {
+    private void showImageListImages(String url) {
         if (imageList.size() < 2) {//第一次添加，把每次选择的图片添加到数组最后的位置
-            UploadPictureBean_Local obj = new UploadPictureBean_Local();
-            obj.setImageUri(uri);
+            UploadPictureBean obj = new UploadPictureBean();
+            obj.setImageUrl(url);
             imageList.add(imageList.size() - 1, obj);
         } else {//第二次添加，把每次选择的图片添加到index等于0的位置
-            UploadPictureBean_Local obj = new UploadPictureBean_Local();
-            obj.setImageUri(uri);
+            UploadPictureBean obj = new UploadPictureBean();
+            obj.setImageUrl(url);
             imageList.add(0, obj);
 
         }
-
         deleteLastOne();
         mAdapter.notifyDataSetChanged();
     }
 
 
-    /**
-     * 图片大于9张时，删除掉最后一张图片
-     */
     private void deleteLastOne() {
         if (imageList.size() > 6) {
             imageList.remove(imageList.size() - 1);
@@ -210,8 +225,18 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     }
 
 
-
-
+    private void deleteImageNew(int position) {
+        imageList.remove(position);
+        if (imageList.size() >= 2) {
+            UploadPictureBean bean = imageList.get(imageList.size() - 1);
+            if (bean.getType() != 1) {
+                UploadPictureBean addBean = new UploadPictureBean();
+                addBean.setType(1);
+                imageList.add(imageList.size(), addBean);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
 
     /**
@@ -252,11 +277,12 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     @Override
     protected void onUploadSuccess(String imageString) {
         haveUploadPicture = true;
-//        showLocalListImages(imageString);
+        showImageListImages(imageString);
     }
 
     @Override
     protected void onUploadFailure(String error_info) {
 
     }
+
 }

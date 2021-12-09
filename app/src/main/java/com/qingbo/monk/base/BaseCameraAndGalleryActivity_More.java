@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -181,8 +182,12 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
                         List<Uri> mSelected = Matisse.obtainResult(data);//图片集合
                         if (!ListUtils.isEmpty(mSelected)) {
                             try {
-                                File mFile = FileUtil.getTempFile(mActivity, mSelected.get(0));
-                                uploadImage(mFile);
+                                Map<String, File> files = new HashMap<>();
+                                for (int i = 0; i < mSelected.size(); i++) {
+                                    File mFile = FileUtil.getTempFile(mActivity, mSelected.get(i));
+                                    files.put(String.format("file[%s]",i),mFile);
+                                }
+                                uploadImage(files);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -200,7 +205,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
     /**
      * 多文件上传
      */
-    private void uploadImage(final File mFile) {
+    private void uploadImage( Map<String, File> files) {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("file", "file");
         HttpSender sender = new HttpSender(HttpUrl.uploadFiles, "多文件上传", baseMap,
@@ -209,15 +214,15 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            String image_url = GsonUtil.getInstance().getValue(data,"file");
-                            onUploadSuccess(image_url);
+//                            String image_url = GsonUtil.getInstance().getValue(data,"file");
+                            onUploadSuccess("http://dolphin.oss-cn-hangzhou.aliyuncs.com/h5-video/liangdian/images/202112031755536661167avatar-2021-12-03_17_55_53__61a9e9a967978.jpg");
                         }else{
                             onUploadFailure(description);
                         }
                     }
                 },true);
         sender.setContext(mActivity);
-        sender.sendPostImage(mFile);
+        sender.sendPostImages(files);
     }
 
 

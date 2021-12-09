@@ -95,7 +95,7 @@ public class HttpSender {
 
 
 	/**
-	 * POST请求（文件上传不加密）
+	 * 上传单个文件
 	 */
 	public void sendPostImage(File file) {
 		this.dialogMessage = "努力加载中...";
@@ -104,6 +104,13 @@ public class HttpSender {
 
 
 
+	/**
+	 * 上传多个文件
+	 */
+	public void sendPostImages(Map<String, File> files) {
+		this.dialogMessage = "努力上传中...";
+		requestPostFiles(files);
+	}
 
 
 
@@ -121,7 +128,7 @@ public class HttpSender {
 
 
 	/**
-	 * POST请求（不加密）
+	 * POST请求
 	 */
 	private void requestPost() {
 		setRequestData_POST();
@@ -170,6 +177,32 @@ public class HttpSender {
 				.addFile("file",file.getName(),file).build().execute(new StringDialogCallback(isShowLoadAnimal));
 	}
 
+
+	/**
+	 * POST 上传多个文件 调用此方法
+	 *
+	 * @param files
+	 */
+	private void requestPostFiles(Map<String, File> files) {
+		if (StringUtil.isBlank(requestUrl)) {
+			L.e(requestName + "POST请求 Url为空");
+			return;
+		}
+
+		for (String key : files.keySet()) {
+			File fileParams = files.get(key);
+			if(fileParams!=null){
+				L.i(key + " = " + fileParams.getName());
+			}
+		}
+
+		L.i("POST请求名称：" + requestName);
+		L.i("POST请求Url：" + requestUrl);
+
+		OkHttpUtils.post().url(requestUrl)
+				.headers(headerMap)
+				.files("file",files).build().execute(new StringDialogCallback(isShowLoadAnimal));
+	}
 
 
 
