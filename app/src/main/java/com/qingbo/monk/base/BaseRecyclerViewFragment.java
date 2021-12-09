@@ -5,11 +5,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
+import com.xunda.lib.common.view.CustomLoadMoreView;
 
 /**
- * 带分页的基类
+ * 带分页的基类Fragment
  */
-public class BaseRecyclerViewFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseRecyclerViewFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;
@@ -28,25 +29,33 @@ public class BaseRecyclerViewFragment extends BaseFragment implements BaseQuickA
         mSwipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    protected void initRecyclerViewAndSwipeRefreshLayout() {
+    protected void initSwipeRefreshLayoutAndAdapter(String emptyViewToast) {
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
         mSwipeRefreshLayout.setRefreshing(true);
+        mAdapter.setEmptyView(addEmptyView(emptyViewToast, 0));
+        mAdapter.setLoadMoreView(new CustomLoadMoreView());
     }
 
 
     @Override
     public void onLoadMoreRequested() {
-        onLoadMoreRequested();
+        onLoadMoreData();
     }
 
     @Override
     public void onRefresh() {
-        mSwipeRefreshLayout.setRefreshing(true);
-        onRefresh();
+        onRefreshData();
     }
 
-    public interface MySwipeRefreshLayoutAndLoadMoreListener{
-        void onRefresh();
-        void onLoadMoreRequested();
-    }
+
+    /**
+     * 下拉刷新
+     */
+    protected abstract void onRefreshData();
+
+
+    /**
+     * 上拉分页
+     */
+    protected abstract void onLoadMoreData();
 }

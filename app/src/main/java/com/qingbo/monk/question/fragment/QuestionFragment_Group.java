@@ -1,6 +1,5 @@
 package com.qingbo.monk.question.fragment;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -134,7 +133,7 @@ public class QuestionFragment_Group extends BaseFragment {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", "3");
-        HttpSender sender = new HttpSender(HttpUrl.allShequn, "全部社群", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {

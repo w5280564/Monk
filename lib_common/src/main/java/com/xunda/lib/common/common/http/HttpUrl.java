@@ -82,7 +82,7 @@ public class HttpUrl {
     /**
      * 	全部社群
      */
-    public static final String allShequn = "square/detail/allshequn";
+    public static final String allGroup = "square/detail/allshequn";
 
     /**
      * 	我的社群
