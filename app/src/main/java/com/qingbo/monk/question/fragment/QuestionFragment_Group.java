@@ -131,7 +131,7 @@ public class QuestionFragment_Group extends BaseFragment {
 
     private void getAllShequn() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", page + "");
+        requestMap.put("page", "1");
         requestMap.put("limit", "3");
         HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {

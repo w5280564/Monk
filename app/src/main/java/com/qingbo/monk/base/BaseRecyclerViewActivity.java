@@ -18,6 +18,8 @@ public abstract class BaseRecyclerViewActivity extends BaseActivity implements B
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;
+    protected int page = 1;
+    protected int limit = 16;
 
 
     @Override

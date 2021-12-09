@@ -41,9 +41,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
     protected Context mContext;
     protected BaseActivity mActivity;
     private Unbinder unbinder;
-    protected int page = 1;
-    protected int limit = 10;
-    protected String fileName;/* 图片上传图片名称 */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -263,50 +260,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
 
 
 
-    /**
-     * 全局处理分页的公共方法
-     * @param obj  具体的分页对象  列表适配器
-     * @param mAdapter
-     */
-    protected void handleSplitListData(BaseSplitIndexBean obj, BaseQuickAdapter mAdapter, int mPageSize) {
-        if(obj!=null){
-            int allCount = StringUtil.isBlank(obj.getCount())?0:Integer.parseInt(obj.getCount());
-            int bigPage = 0;//最大页
-            if(allCount%mPageSize!=0){
-                bigPage=allCount/mPageSize+1;
-            }else{
-                bigPage=allCount/mPageSize;
-            }
-            if(page==bigPage){
-                mAdapter.loadMoreEnd();//显示“没有更多数据”
-            }
 
-            boolean isRefresh = page==1?true:false;
-            if(!ListUtils.isEmpty(obj.getList())){
-                int size = obj.getList().size();
-
-                if (isRefresh) {
-                    mAdapter.setNewData(obj.getList());
-                } else {
-                    mAdapter.addData(obj.getList());
-                }
-
-
-                if (size < mPageSize) {
-                    mAdapter.loadMoreEnd(isRefresh);//第一页的话隐藏“没有更多数据”，否则显示“没有更多数据”
-                } else {
-                    mAdapter.loadMoreComplete();
-                }
-            }else{
-
-                if (isRefresh) {
-                    mAdapter.setNewData(null);//刷新列表
-                } else {
-                    mAdapter.loadMoreEnd(false);//显示“没有更多数据”
-                }
-            }
-        }
-    }
 
 
 

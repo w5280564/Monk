@@ -1,6 +1,5 @@
 package com.qingbo.monk.home.fragment;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.base.BaseRecyclerViewFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -25,7 +24,6 @@ import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.view.CustomLoadMoreView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +33,7 @@ import butterknife.BindView;
 /**
  * 首页滑动tab页--推荐
  */
-public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener {
+public class HomeCommendFragment extends BaseRecyclerViewFragment{
     @BindView(R.id.card_Recycler)
     RecyclerView card_Recycler;
 
@@ -57,8 +55,10 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
     }
 
     @Override
-    protected void initView() {
-        initlist(mContext);
+    protected void initView(View mView) {
+        mRecyclerView = mView.findViewById(R.id.card_Recycler);
+        initRecyclerView();
+        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题",false);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
-                        handleSplitListData(homeFllowBean, homeFollowAdapter, limit);
+                        handleSplitListData(homeFllowBean, mAdapter, limit);
                     }
                 }
             }
@@ -87,26 +87,28 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
         httpSender.sendGet();
     }
 
+
     @Override
-    public void onLoadMoreRequested() {
+    protected void onRefreshData() {
+
+    }
+
+    @Override
+    protected void onLoadMoreData() {
         page++;
         getListData(false);
     }
 
 
-    Follow_Adapter homeFollowAdapter;
-
-    public void initlist(final Context context) {
-        LinearLayoutManager mMangaer = new LinearLayoutManager(context);
+    public void initRecyclerView() {
+        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         card_Recycler.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         card_Recycler.setHasFixedSize(true);
-        homeFollowAdapter = new Follow_Adapter();
-        homeFollowAdapter.setEmptyView(addEmptyView("暂无数据", 0));
-        homeFollowAdapter.setLoadMoreView(new CustomLoadMoreView());
-        card_Recycler.setAdapter(homeFollowAdapter);
-        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
+        mAdapter = new Follow_Adapter();
+        card_Recycler.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
             skipAnotherActivity(HomeFocus_Activity.class);
         });
 
@@ -115,8 +117,7 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
 
     @Override
     protected void initEvent() {
-        homeFollowAdapter.setOnLoadMoreListener(this,card_Recycler);
-        homeFollowAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 if (homeFllowBean == null) {
@@ -136,7 +137,7 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
         });
 
 
-        homeFollowAdapter.setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
+        ((Follow_Adapter)mAdapter).setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -154,9 +155,9 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.send_Mes);
-                    homeFollowAdapter.isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Tv);
+                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.send_Mes);
+                    ((Follow_Adapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
 
                 }
             }
@@ -175,8 +176,8 @@ public class HomeCommendFragment extends BaseFragment implements BaseQuickAdapte
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
-                    ImageView follow_Img = (ImageView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) homeFollowAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Count);
+                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Img);
+                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Count);
                     if (likedStateBena != null) {
                         //0取消点赞成功，1点赞成功
                         int nowLike;

@@ -53,8 +53,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     protected BaseActivity mActivity;
     protected CustomTitleBar titleBar;
     protected String title;
-    protected int page = 1;
-    protected int pageSize = 16;
+
 
 
     @Override

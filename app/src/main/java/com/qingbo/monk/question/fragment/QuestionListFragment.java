@@ -71,7 +71,7 @@ public class QuestionListFragment extends BaseRecyclerViewFragment{
         mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题");
+        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题",true);
     }
 
 
@@ -123,7 +123,6 @@ public class QuestionListFragment extends BaseRecyclerViewFragment{
 
     @Override
     protected void initEvent() {
-        super.initEvent();
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

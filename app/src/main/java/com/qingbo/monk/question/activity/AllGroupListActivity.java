@@ -20,9 +20,6 @@ import butterknife.BindView;
  * 更多社群问答
  */
 public class AllGroupListActivity extends BaseRecyclerViewActivity {
-    @BindView(R.id.mRecyclerView)
-    RecyclerView mRecyclerView;
-    private QuestionGroupAdapter mQuestionGroupAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -32,21 +29,22 @@ public class AllGroupListActivity extends BaseRecyclerViewActivity {
 
     @Override
     protected void initView() {
+        mRecyclerView = findViewById(R.id.mRecyclerView);
+        mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         initRecyclerView();
+        initSwipeRefreshLayoutAndAdapter("暂无数据");
     }
 
     @Override
     protected void initEvent() {
-        mQuestionGroupAdapter.setOnLoadMoreListener(this,mRecyclerView);
+        super.initEvent();//一定要写
     }
 
     private void initRecyclerView() {
-        mQuestionGroupAdapter = new QuestionGroupAdapter();
-        mQuestionGroupAdapter.setEmptyView(addEmptyView("暂无数据", 0));
-        mQuestionGroupAdapter.setLoadMoreView(new CustomLoadMoreView());
+        mAdapter = new QuestionGroupAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mQuestionGroupAdapter);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
 
@@ -59,7 +57,7 @@ public class AllGroupListActivity extends BaseRecyclerViewActivity {
     private void getAllGroup(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
-        requestMap.put("limit", pageSize+"");
+        requestMap.put("limit", limit+"");
         HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -69,7 +67,7 @@ public class AllGroupListActivity extends BaseRecyclerViewActivity {
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
-                            handleSplitListData(obj,mQuestionGroupAdapter,pageSize);
+                            handleSplitListData(obj,mAdapter,limit);
                         }
                     }
 
