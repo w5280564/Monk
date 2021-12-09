@@ -1,10 +1,9 @@
 package com.qingbo.monk.question.activity;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewActivity;
+import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -12,14 +11,13 @@ import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.view.CustomLoadMoreView;
+
 import java.util.HashMap;
-import butterknife.BindView;
 
 /**
  * 更多社群问答
  */
-public class AllGroupListActivity extends BaseRecyclerViewActivity {
+public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected int getLayoutId() {

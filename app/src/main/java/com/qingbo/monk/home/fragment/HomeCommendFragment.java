@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -28,15 +28,10 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * 首页滑动tab页--推荐
  */
-public class HomeCommendFragment extends BaseRecyclerViewFragment{
-    @BindView(R.id.card_Recycler)
-    RecyclerView card_Recycler;
-
+public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
 
     public static HomeCommendFragment newInstance(String type, String status, String isVip) {
         Bundle args = new Bundle();
@@ -58,7 +53,7 @@ public class HomeCommendFragment extends BaseRecyclerViewFragment{
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题",false);
+        initSwipeRefreshLayoutAndAdapter("暂无推荐数据",false);
     }
 
     @Override
@@ -103,11 +98,11 @@ public class HomeCommendFragment extends BaseRecyclerViewFragment{
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
-        card_Recycler.setLayoutManager(mMangaer);
+        mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        card_Recycler.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(true);
         mAdapter = new Follow_Adapter();
-        card_Recycler.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             skipAnotherActivity(HomeFocus_Activity.class);
         });
@@ -155,8 +150,8 @@ public class HomeCommendFragment extends BaseRecyclerViewFragment{
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.send_Mes);
+                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
                     ((Follow_Adapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
 
                 }
@@ -176,8 +171,8 @@ public class HomeCommendFragment extends BaseRecyclerViewFragment{
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
-                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(card_Recycler, position, R.id.follow_Count);
+                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
                     if (likedStateBena != null) {
                         //0取消点赞成功，1点赞成功
                         int nowLike;

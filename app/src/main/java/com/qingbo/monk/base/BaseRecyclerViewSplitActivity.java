@@ -14,12 +14,12 @@ import com.xunda.lib.common.view.CustomLoadMoreView;
 /**
  * 带分页的基类Activity
  */
-public abstract class BaseRecyclerViewActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
+public abstract class BaseRecyclerViewSplitActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener{
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;
     protected int page = 1;
-    protected int limit = 16;
+    protected int limit = 12;
 
 
     @Override

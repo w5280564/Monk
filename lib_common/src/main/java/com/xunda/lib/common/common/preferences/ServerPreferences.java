@@ -21,14 +21,18 @@ public interface ServerPreferences {
 	void removeCartNumber();
 
 
-	/**
-	 * 本地配置信息
-	 * @param configBean
-	 */
 
-	@Apply
-	void setAppConfigBean(AppConfigBean configBean);
-	AppConfigBean getAppConfigBean();
+
+
+	/**
+	 * 用户昵称
+	 */
+	void setUserNickName(String nickName);
+	String getUserNickName();
+	@Remove
+	void removeUserNickName();
+
+
 
 
 }

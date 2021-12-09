@@ -1,7 +1,9 @@
 package com.xunda.lib.common.common.preferences;
 
+import com.baoyz.treasure.Apply;
 import com.baoyz.treasure.Preferences;
 import com.baoyz.treasure.Remove;
+import com.xunda.lib.common.bean.AppConfigBean;
 
 @Preferences
 public interface LocalPreferences {
@@ -31,18 +33,14 @@ public interface LocalPreferences {
 
 
 
-
-
     /**
-     * 用户昵称
+     * 本地配置信息
+     * @param configBean
      */
-    void setUserNickName(String nickName);
-    String getUserNickName();
-    @Remove
-    void removeUserNickName();
 
-
-
+    @Apply
+    void setAppConfigBean(AppConfigBean configBean);
+    AppConfigBean getAppConfigBean();
 
 
 

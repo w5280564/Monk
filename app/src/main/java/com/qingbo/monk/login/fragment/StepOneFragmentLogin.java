@@ -205,7 +205,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                     e.printStackTrace();
                 }
 
-                SharePref.local().setUserNickName(nickname);
+                SharePref.server().setUserNickName(nickname);
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,avatar,nickname,city,county,work,industryName));
                 break;
 

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -22,7 +22,6 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +29,7 @@ import java.util.List;
 /**
  * 问答列表
  */
-public class QuestionListFragment extends BaseRecyclerViewFragment{
+public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
     private int type;//1 全部 2 我的
     private String requestUrlList;
 

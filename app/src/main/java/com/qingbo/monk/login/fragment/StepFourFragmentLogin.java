@@ -46,7 +46,7 @@ public class StepFourFragmentLogin extends BaseFragment {
     public void onResume() {
         super.onResume();
         String userHeadUrl = SharePref.user().getUserHead();
-        String nickName = SharePref.local().getUserNickName();
+        String nickName = SharePref.server().getUserNickName();
         tv_nickName.setText(StringUtil.getStringValue(nickName));
         GlideUtils.loadCircleImage(mActivity,iv_header,userHeadUrl);
     }
