@@ -6,9 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -25,6 +27,8 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.OnClick;
 
 /**
  * 问答列表
@@ -49,11 +53,11 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
 
     private void getDataFromArguments() {
         Bundle b = getArguments();
-        if (b!=null) {
+        if (b != null) {
             type = b.getInt("type", 1);
-            if (type==2) {
+            if (type == 2) {
                 requestUrlList = HttpUrl.getOwnPublishList;
-            }else{
+            } else {
                 requestUrlList = HttpUrl.getSquareListAll;
             }
         }
@@ -70,7 +74,7 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题",true);
+        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题", true);
     }
 
 
@@ -84,19 +88,19 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        if (type==2){
+        if (type == 2) {
             requestMap.put("action", "3");
         }
         HttpSender httpSender = new HttpSender(requestUrlList, "问答广场", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (page==1&&mSwipeRefreshLayout.isRefreshing()) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     BaseQuestionBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseQuestionBean.class);
-                    handleSplitListData(obj,mAdapter,limit);
+                    handleSplitListData(obj, mAdapter, limit);
                 }
             }
         }, isShowAnimal);
@@ -144,17 +148,13 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((QuestionListAdapter)mAdapter).setOnItemImgClickLister(new QuestionListAdapter.OnItemImgClickLister() {
+        ((QuestionListAdapter) mAdapter).setOnItemImgClickLister(new QuestionListAdapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
     }
-
-
-
-
 
 
     private void postFollowData(String otherUserId, int position) {
@@ -168,8 +168,8 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((QuestionListAdapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0){
+                    ((QuestionListAdapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    if (followStateBena.getFollowStatus() == 0) {
                         mAdapter.getData().remove(position);
                         mAdapter.notifyItemChanged(position);
                     }
@@ -182,7 +182,7 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", likeId+ "");
+        requestMap.put("id", likeId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -212,9 +212,6 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-
-
-
     @Override
     protected void onRefreshData() {
         page = 1;
@@ -228,5 +225,8 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
     }
 
 
+    @OnClick(R.id.iv_bianji)
+    public void onClick() {
 
+    }
 }

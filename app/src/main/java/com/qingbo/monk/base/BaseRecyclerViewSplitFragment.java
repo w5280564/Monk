@@ -34,7 +34,6 @@ public abstract class BaseRecyclerViewSplitFragment extends BaseFragment impleme
         mAdapter.setOnLoadMoreListener(this,mRecyclerView);
         if (isHaveRefresh && mSwipeRefreshLayout!=null) {
             mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
-            mSwipeRefreshLayout.setRefreshing(true);
             mSwipeRefreshLayout.setOnRefreshListener(this);
         }
     }

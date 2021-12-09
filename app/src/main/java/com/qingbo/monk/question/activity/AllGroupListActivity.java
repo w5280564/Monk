@@ -28,9 +28,8 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void initView() {
         mRecyclerView = findViewById(R.id.mRecyclerView);
-        mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据");
+        initSwipeRefreshLayoutAndAdapter("暂无数据",true);
     }
 
     @Override
@@ -60,9 +59,6 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (page==1&&mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
                             handleSplitListData(obj,mAdapter,limit);
@@ -79,8 +75,7 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void onRefreshData() {
-        page = 1;
-        getAllGroup(false);
+
     }
 
     @Override

@@ -29,17 +29,15 @@ public abstract class BaseRecyclerViewSplitActivity extends BaseActivity impleme
 
 
 
-    @Override
-    protected void initEvent() {
-        mAdapter.setOnLoadMoreListener(this,mRecyclerView);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-    }
 
-    protected void initSwipeRefreshLayoutAndAdapter(String emptyViewToast) {
-        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
-        mSwipeRefreshLayout.setRefreshing(true);
+    protected void initSwipeRefreshLayoutAndAdapter(String emptyViewToast,boolean isHaveRefresh) {
         mAdapter.setEmptyView(addEmptyView(emptyViewToast, 0));
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
+        mAdapter.setOnLoadMoreListener(this,mRecyclerView);
+        if (isHaveRefresh && mSwipeRefreshLayout!=null) {
+            mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
+            mSwipeRefreshLayout.setOnRefreshListener(this);
+        }
     }
 
 

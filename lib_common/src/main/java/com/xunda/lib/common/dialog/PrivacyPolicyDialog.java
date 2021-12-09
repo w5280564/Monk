@@ -75,7 +75,7 @@ public class PrivacyPolicyDialog extends Dialog implements View.OnClickListener 
 		int startIndex_agreement = content.indexOf(matcherAgreement);
 		int endIndex_agreement = startIndex_agreement+matcherAgreement.length();
 		//可单独文本前景色
-		builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.app_main_color)), startIndex_agreement,endIndex_agreement, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+		builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.animal_color)), startIndex_agreement,endIndex_agreement, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 		//设置文本点击事件
 		builder.setSpan(new PrivacyPolicyDialogClickSpannable(new View.OnClickListener() {
 			@Override
@@ -90,7 +90,7 @@ public class PrivacyPolicyDialog extends Dialog implements View.OnClickListener 
 		int startIndex_private_policy = content.indexOf(matcherPrivatePolicy);
 		int endIndex_private_policy = startIndex_private_policy+matcherPrivatePolicy.length();
 		//可单独文本前景色
-		builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.app_main_color)), startIndex_private_policy,endIndex_private_policy, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+		builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.animal_color)), startIndex_private_policy,endIndex_private_policy, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
 		//设置文本点击事件
 		builder.setSpan(new PrivacyPolicyDialogClickSpannable(new View.OnClickListener() {
 			@Override
