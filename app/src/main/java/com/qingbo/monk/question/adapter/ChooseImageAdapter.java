@@ -4,18 +4,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.UploadPictureBean;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.glide.RoundedCornersTransform;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.DisplayUtil;
-import com.xunda.lib.common.view.RadiusImageWidget;
 import java.util.List;
 
 public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, BaseViewHolder> {
@@ -35,7 +31,7 @@ public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, Base
         LinearLayout ll_layout = helper.getView(R.id.ll_layout);
 
         int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
-        int parentWith = (screenWidth- DisplayUtil.dip2px(mContext,94))/3;//dp要转成px
+        int parentWith = (screenWidth - 64-DisplayUtil.dip2px(mContext,30))/3;//dp要转成px
         ViewGroup.LayoutParams llParams = ll_layout.getLayoutParams();
         llParams.width = parentWith;
         ll_layout.setLayoutParams(llParams);

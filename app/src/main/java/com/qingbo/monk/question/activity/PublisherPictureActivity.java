@@ -67,7 +67,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(DisplayUtil.dip2px(mContext,32), mContext.getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(32, mContext.getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);
