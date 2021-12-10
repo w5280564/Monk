@@ -48,6 +48,4 @@ public class QuestionBeanMy {
     private String likecount;
     @SerializedName("commentcount")
     private String commentcount;
-    @SerializedName("liked_status")
-    private Integer likedStatus;
 }

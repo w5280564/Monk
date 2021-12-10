@@ -1,7 +1,6 @@
 package com.qingbo.monk.question.fragment;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +18,7 @@ import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.QuestionBean;
-import com.qingbo.monk.question.activity.PublisherPictureActivity;
+import com.qingbo.monk.question.activity.PublisherActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterAll;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -199,6 +198,6 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-        skipAnotherActivity(PublisherPictureActivity.class);
+        skipAnotherActivity(PublisherActivity.class);
     }
 }

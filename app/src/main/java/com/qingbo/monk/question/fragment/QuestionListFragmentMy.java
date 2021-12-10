@@ -1,7 +1,6 @@
 package com.qingbo.monk.question.fragment;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,15 +15,17 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBeanMy;
-import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.QuestionBean;
-import com.qingbo.monk.question.activity.PublisherPictureActivity;
+import com.qingbo.monk.question.activity.PublisherActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +49,16 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("您还未发布任何话题", true);
+        registerEventBus();
     }
 
+    @Subscribe
+    public void onPublishSuccessEvent(FinishEvent event) {
+        if(event.type == FinishEvent.PUBLISH_QUESTION){
+            page = 1;
+            getSquareList(false);
+        }
+    }
 
     @Override
     protected void getServerData() {
@@ -172,6 +181,6 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-        skipAnotherActivity(PublisherPictureActivity.class);
+        skipAnotherActivity(PublisherActivity.class);
     }
 }

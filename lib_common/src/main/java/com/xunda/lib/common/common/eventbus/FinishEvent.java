@@ -3,6 +3,7 @@ package com.xunda.lib.common.common.eventbus;
 public class FinishEvent {
 
     public final static int CREATE_GROUP = 1; //创建完社群
+    public final static int PUBLISH_QUESTION = 2; //发布完问答
 
 
     //操作所属的模块类型(业务线)

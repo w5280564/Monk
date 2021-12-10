@@ -62,7 +62,7 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
 
         group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
         labelFlow(lable_Lin, mContext, item.getTagName());
-//        isLike(item.getLikedStatus(), item.getLikecount(), follow_Img, follow_Count);
+        isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
 
         //多张图片
         if (!TextUtils.isEmpty(item.getImages())) {

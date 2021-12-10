@@ -13,12 +13,17 @@ import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +33,7 @@ import butterknife.OnClick;
 /**
  * 广场问答发布页
  */
-public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More {
+public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.ll_tag)
@@ -47,7 +52,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_publisher_picture;
+        return R.layout.activity_publisher;
     }
 
     @Override
@@ -189,12 +194,24 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            showCommonToastDialog("发布成功！", 1);
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
+                            showToastDialog("发布成功！");
                         }
                     }
                 }, true);
         sender.setContext(mActivity);
         sender.sendPost();
+    }
+
+
+    private void showToastDialog(String description) {//1 点击确定会返回， 0 只是弹窗消失
+        ToastDialog mDialog = new ToastDialog(this, getString(R.string.toast_warm_prompt), description, getString(R.string.Sure), new ToastDialog.DialogConfirmListener() {
+            @Override
+            public void onConfirmClick() {
+                back();
+            }
+        });
+        mDialog.show();
     }
 
 
