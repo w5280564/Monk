@@ -52,24 +52,39 @@ public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseV
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
 
-        title_Tv.setText(item.getTitle());
-        content_Tv.setText(item.getContent());
-        if (!TextUtils.isEmpty(item.getCreateTime())) {
-            String userDate = DateUtil.getUserDate(item.getCreateTime())+" "+item.getCompanyName();
-            time_Tv.setText(userDate);
+        String is_anonymous = item.getIsAnonymous();//1是匿名
+        if (TextUtils.equals(is_anonymous, "1")) {
+            group_Name.setText("匿名用户");
+            group_Img.setEnabled(false);
+            group_Img.setImageResource(R.mipmap.icon_logo_round);
+        } else {
+            GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
+            group_Name.setText(item.getNickname());
+            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+            labelFlow(lable_Lin, mContext, item.getTagName());
+            isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
         }
 
-        GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
-        group_Name.setText(item.getTitle());
+        if (!StringUtil.isBlank(item.getTitle())) {
+            title_Tv.setVisibility(View.VISIBLE);
+            title_Tv.setText(item.getTitle());
+        }else{
+            title_Tv.setVisibility(View.GONE);
+        }
+
+        if (!StringUtil.isBlank(item.getContent())) {
+            content_Tv.setVisibility(View.VISIBLE);
+            content_Tv.setText(item.getContent());
+        }else{
+            content_Tv.setVisibility(View.GONE);
+        }
+
+        String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompanyName();
+        time_Tv.setText(userDate);
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
-
-        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-        labelFlow(lable_Lin, mContext, item.getTagName());
-        isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
-
         isLike(item.getLikedStatus(), item.getLikedNum(), follow_Img, follow_Count);
 
         //多张图片

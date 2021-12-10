@@ -48,4 +48,6 @@ public class QuestionBeanMy {
     private String likecount;
     @SerializedName("commentcount")
     private String commentcount;
+    @SerializedName("is_anonymous")
+    private String isAnonymous;
 }

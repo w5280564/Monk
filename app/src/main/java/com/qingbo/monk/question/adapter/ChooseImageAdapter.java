@@ -52,6 +52,7 @@ public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, Base
             transform.setNeedCorner(true, true, true, true);
             Glide.with(mContext).load(item.getImageUrl()).placeholder(R.mipmap.img_pic_none_square).transforms(transform).into(iv_image);
             ll_delete.setVisibility(View.VISIBLE);
+            iv_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 
