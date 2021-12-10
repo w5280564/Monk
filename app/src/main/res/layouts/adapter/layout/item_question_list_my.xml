@@ -50,7 +50,7 @@
 
 
     <TextView
-        android:id="@+id/follow_Tv"
+        android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_22"
         android:layout_marginEnd="@dimen/dp_20"
@@ -61,26 +61,9 @@
         android:text="关注"
         android:textColor="@color/text_color_444444"
         android:textSize="12sp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/group_Img" />
 
-    <TextView
-        android:id="@+id/send_Mes"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_22"
-        android:layout_marginEnd="@dimen/dp_8"
-        android:background="@drawable/interest_lable"
-        android:gravity="center"
-        android:paddingStart="@dimen/dp_8"
-        android:paddingEnd="@dimen/dp_8"
-        android:text="私信"
-        android:textColor="@color/text_color_a1a1a1"
-        android:textSize="10sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/follow_Tv"
-        app:layout_constraintEnd_toStartOf="@+id/follow_Tv"
-        app:layout_constraintTop_toTopOf="@+id/follow_Tv" />
 
 
     <TextView

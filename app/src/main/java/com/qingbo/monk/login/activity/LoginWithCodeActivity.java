@@ -90,7 +90,7 @@ public class LoginWithCodeActivity extends BaseActivity implements CompoundButto
                 GetPhoneCodeStepTwoActivity.actionStart(mActivity,area_code,phoneNumber);
                 break;
             case R.id.iv_wechat:
-
+                wechatThirdLogin();
                 break;
 
         }

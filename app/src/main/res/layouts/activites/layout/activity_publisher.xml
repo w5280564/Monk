@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:text="公开"
                         android:drawablePadding="@dimen/dp_5"
-                        android:drawableRight="@mipmap/gongkai"
+                        android:drawableLeft="@mipmap/gongkai"
                         android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"/>
 

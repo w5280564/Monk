@@ -19,7 +19,7 @@ public class QuestionBeanMy {
     @SerializedName("shequn_id")
     private String shequnId;
     @SerializedName("status")
-    private String status;
+    private String status;//状态(0待审核 1通过 2未通过 3保存草稿)
     @SerializedName("title")
     private String title;
     @SerializedName("content")

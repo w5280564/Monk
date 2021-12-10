@@ -6,7 +6,7 @@
     android:layout_gravity="center|center_vertical"
     android:background="@drawable/layout_shape_dialog"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp_30">
+    android:paddingTop="@dimen/dp_37">
 
 
     <TextView
@@ -19,13 +19,13 @@
         android:maxLines="3"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:textColor="@color/text_color_6f6f6f"
-        android:textSize="@dimen/sp_12" />
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/sp_16" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_35"
         android:background="@color/new_star_bag_ji" />
 
     <LinearLayout
@@ -39,9 +39,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textColor="@color/text_color_6f6f6f"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_16" />
 
         <View
             android:id="@+id/view_null"
@@ -55,9 +54,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textColor="@color/text_color_2391F3"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_16" />
     </LinearLayout>
 
 </LinearLayout>

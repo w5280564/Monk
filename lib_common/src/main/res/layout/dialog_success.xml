@@ -42,7 +42,7 @@
         android:paddingBottom="10dp"
         android:gravity="center"
         android:text="@string/Sure"
-        android:textColor="@color/app_main_color"
+        android:textColor="@color/animal_color"
         android:textSize="15sp" />
 
 </LinearLayout>

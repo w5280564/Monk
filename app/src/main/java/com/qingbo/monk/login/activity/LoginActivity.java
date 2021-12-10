@@ -8,6 +8,9 @@ import java.util.HashMap;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
@@ -52,7 +55,8 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
                     return;
                 }
 
-//                thirdLogin();
+                wechatThirdLogin();
+
                 break;
             case R.id.ll_phone_login:
 
@@ -70,47 +74,6 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
     }
 
 
-    private void thirdLogin() {
-        HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("osType", "2");//1苹果2安卓
-        baseMap.put("equipmentName", android.os.Build.BRAND + "" + android.os.Build.MODEL);
-        baseMap.put("meid", StringUtil.getIMEI());
-        baseMap.put("version", android.os.Build.VERSION.RELEASE);
-        HttpSender sender = new HttpSender(HttpUrl.mobileLogin, "第三方登录", baseMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            T.ss("登录成功");
-                            BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
-                            saveUserInfo(obj);
-                        }
-                    }
-
-                }, true);
-
-        sender.setContext(mActivity);
-        sender.sendPost();
-    }
-
-
-    /**
-     * 保存用户信息
-     *
-     * @param baseUserBean 用户对象
-     */
-    private void saveUserInfo(BaseUserBean baseUserBean) {
-        if (baseUserBean != null) {
-            UserBean userObj = baseUserBean.getInfo();
-            if (userObj == null) {
-                return;
-            }
-
-            PrefUtil.saveUser(userObj, baseUserBean.getAccessToken());
-            skipAnotherActivity(WelcomeActivity.class);
-        }
-
-    }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {

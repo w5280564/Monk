@@ -1,5 +1,6 @@
 package com.qingbo.monk.question.activity;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,7 +48,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String images;
+    private String mTitle,mContent,images;
 
 
     @Override
@@ -109,19 +110,21 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
 
 
     private void showBackDialog() {
-        if (!StringUtil.isBlank(images)) {
+        getPramsValue();
+
+        if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
 
                             @Override
                             public void onClickRight() {
-                                finish();
+                                createOrSaveTopic("1");
                             }
 
                             @Override
                             public void onClickLeft() {
-
+                                finish();
                             }
                         });
             }
@@ -141,24 +144,44 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
         String tag = (String) llTag.getTag();
         if ("0".equals(tag)) {
             tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
             llTag.setTag("1");
         }else{
             tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
             llTag.setTag("0");
         }
+    }
+
+    private void setDrawableLeft(int mipmap) {
+        Drawable drawableLeft = getResources().getDrawable(
+                mipmap);
+        tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                null, null, null);
     }
 
 
     @Override
     public void onRightClick() {
-        String title = StringUtil.getEditText(et_title);
+        getPramsValue();
 
-        String mContent = StringUtil.getEditText(et_content);
+        if (StringUtil.isBlank(mTitle)  && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+            T.ss("标题、内容、图片必须填写一项");
+            return;
+        }
+
+        createOrSaveTopic("0");
+    }
+
+    private void getPramsValue() {
+        mTitle = StringUtil.getEditText(et_title);
+
+        mContent = StringUtil.getEditText(et_content);
 
         StringBuilder result = new StringBuilder();
         boolean flag = false;
-        for (UploadPictureBean mImageObj:imageList) {
-            if (mImageObj.getType()!=1) {
+        for (UploadPictureBean mImageObj : imageList) {
+            if (mImageObj.getType() != 1) {
                 if (flag) {
                     result.append(",");
                 } else {
@@ -168,34 +191,32 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
             }
         }
         images = result.toString();
-
-        if (StringUtil.isBlank(title)  && StringUtil.isBlank(title) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
-            return;
-        }
-
-        createTopic(title, mContent);
     }
 
     /**
-     * 创建话题或提问
+     * 发布话题或提问，或保存至草稿
      */
-    private void createTopic(String title, String mPictureContent) {
+    private void createOrSaveTopic(String optype) {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("type", "1");
-        baseMap.put("title", title);
-        baseMap.put("content", mPictureContent);
+        baseMap.put("title", mTitle);
+        baseMap.put("content", mContent);
         baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("action", "3");
         baseMap.put("images", images);
+        baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建话题或提问", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
-                            showToastDialog("发布成功！");
+                            if ("0".equals(optype)) {
+                                EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
+                                showToastDialog("发布成功！");
+                            }else{
+                                showToastDialog("已保存至草稿箱！");
+                            }
                         }
                     }
                 }, true);
@@ -271,39 +292,6 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     }
 
 
-    /**
-     * 删除动态图片
-     */
-    private void deleteImage(final int position) {
-//        HashMap<String, String> baseMap = new HashMap<String, String>();
-//        baseMap.put("index", position + "");
-//        HttpSender sender = new HttpSender(HttpUrl.deleteImage_dynamic, "删除动态图片", baseMap,
-//                new MyOnHttpResListener() {
-//
-//                    @Override
-//                    public void onComplete(String json, int status, String description, String data) {
-//                        if (status == Constants.REQUEST_SUCCESS_STATUS) {//成功
-//                            T.ss("删除成功");
-//                            imageList.remove(position);
-//                            if (imageList.size() >= 2) {
-//                                UploadPictureBean_Local bean = imageList.get(imageList.size() - 1);
-//                                if (bean.getType() != 1) {
-//                                    UploadPictureBean_Local addBean = new UploadPictureBean_Local();
-//                                    addBean.setType(1);
-//                                    imageList.add(imageList.size(), addBean);
-//                                }
-//                            }
-//                            mAdapter.notifyDataSetChanged();
-//                        } else {
-//                            T.ss(description);
-//                        }
-//
-//                    }
-//                }, true);
-//        sender.setContext(mActivity);
-//        sender.sendPost();
-
-    }
 
 
     @Override

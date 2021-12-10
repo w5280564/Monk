@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
@@ -396,7 +399,16 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     }
 
 
-
+    /**
+     * 调用第三方登录
+     */
+    protected void wechatThirdLogin() {
+        IWXAPI api = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APPID,false);
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+//        req.state = "wechat_sdk_demo_test";
+        api.sendReq(req);
+    }
 
 
 }
