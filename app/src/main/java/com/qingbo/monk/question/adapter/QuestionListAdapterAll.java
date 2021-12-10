@@ -63,7 +63,6 @@ public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseV
         } else {
             GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
             group_Name.setText(item.getNickname());
-            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
             labelFlow(lable_Lin, mContext, item.getTagName());
             isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
         }

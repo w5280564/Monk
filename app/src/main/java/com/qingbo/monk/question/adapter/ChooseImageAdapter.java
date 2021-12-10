@@ -10,7 +10,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.UploadPictureBean;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.glide.RoundedCornersTransform;
+import com.xunda.lib.common.common.imgloader.ImgLoader;
 import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import java.util.List;
@@ -48,11 +50,8 @@ public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, Base
             iv_image.setImageResource(R.mipmap.tianjia);
             ll_delete.setVisibility(View.GONE);
         }else {//网络图片
-            RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtil.dip2px(mContext, 8));
-            transform.setNeedCorner(true, true, true, true);
-            Glide.with(mContext).load(item.getImageUrl()).placeholder(R.mipmap.img_pic_none_square).transforms(transform).into(iv_image);
+            ImgLoader.getInstance().displayCrop(mContext,iv_image,item.getImageUrl(),R.mipmap.img_pic_none_square);
             ll_delete.setVisibility(View.VISIBLE);
-            iv_image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }
     }
 
