@@ -6,14 +6,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.HomeFocus_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
@@ -23,6 +26,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +54,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户",false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", false);
     }
 
     @Override
@@ -84,7 +88,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-        
+
     }
 
     @Override
@@ -92,7 +96,6 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         page++;
         getListData(false);
     }
-
 
 
     public void initRecyclerView() {
@@ -104,7 +107,11 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter = new Focus_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            skipAnotherActivity(HomeFocus_Activity.class);
+//            skipAnotherActivity(HomeFocus_Activity.class);
+            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+            String articleId = item.getArticleId();
+            HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
         });
 
     }
@@ -133,7 +140,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((Focus_Adapter)mAdapter).setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
+        ((Focus_Adapter) mAdapter).setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -153,8 +160,8 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((Focus_Adapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0){
+                    ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    if (followStateBena.getFollowStatus() == 0) {
                         mAdapter.getData().remove(position);
                         mAdapter.notifyItemChanged(position);
                     }
@@ -167,7 +174,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", likeId+ "");
+        requestMap.put("id", likeId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

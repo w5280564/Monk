@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
@@ -56,6 +57,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     TabLayout card_Tab;
     @BindView(R.id.card_ViewPager)
     ViewPager card_ViewPager;
+    @BindView(R.id.appLayout)
+    AppBarLayout appLayout;
+    @BindView(R.id.icon_Img)
+    ImageView icon_Img;
+
     int page = 1;
 
     @Override
@@ -67,6 +73,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void initView() {
         super.initView();
         initTab();
+
     }
 
     @Override
@@ -74,6 +81,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.initEvent();
         btn_drawer_left.setOnClickListener(new btn_drawer_leftClick());
         change_Tv.setOnClickListener(this);
+
+        icon_Img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appLayout.setExpanded(false);
+            }
+        });
     }
 
     @Override

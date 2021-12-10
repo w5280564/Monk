@@ -141,6 +141,7 @@ public class HttpUrl {
      */
     public static final String createTopic = "square/square/create-topic";
     public static final String combination_Topic_Like = "square/position/topic-like";//首页-仓位组合点赞
+    public static final String User_Article_Detail = "user/user/article-detail";//首页-个人文章详情
 
 }
 

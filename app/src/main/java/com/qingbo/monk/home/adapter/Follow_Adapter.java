@@ -56,7 +56,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
@@ -64,39 +64,49 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
         }
 
-        GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
-        group_Name.setText(item.getTitle());
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
 
+        String is_anonymous = item.getIsAnonymous();//1是匿名
         String action = item.getAction();//1是社群 2是兴趣圈 3是个人
-        if (TextUtils.equals(action, "1")) {
-            if (item.getShequn() != null) {
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
-                nickName_Tv.setText(item.getShequn().getShequnName());
+        if (TextUtils.equals(is_anonymous, "1")) {
+            if (TextUtils.equals(action, "3")) {
+                personHead_Img.setVisibility(View.GONE);
+                nickName_Tv.setVisibility(View.GONE);
+                group_Name.setText("匿名用户");
+            }else {
+                nickName_Tv.setText("匿名用户");
+                group_Name.setText(item.getTitle());
+                GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
             }
-            String is_anonymous = item.getIsAnonymous();//1是匿名
-            if (TextUtils.equals(is_anonymous, "1")) {
-                nickName_Tv.setText("匿名");
-            }
-        } else if (TextUtils.equals(action, "2")) {
-            if (item.getGroup() != null) {
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
-                nickName_Tv.setText(item.getGroup().getGroupName());
-            }
-        } else if (TextUtils.equals(action, "3")) {
-            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-            personHead_Img.setVisibility(View.GONE);
-            nickName_Tv.setVisibility(View.GONE);
-            labelFlow(lable_Lin, mContext, item.getTagName());
-            isFollow(item.getFollow_status(), follow_Tv, send_Mes);
-            if (!TextUtils.isEmpty(item.getCreateTime())) {
-                String userDate = DateUtil.getUserDate(item.getCreateTime())+" "+item.getCompany_name();
-                time_Tv.setText(userDate);
+        } else {
+            group_Name.setText(item.getTitle());
+            GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
+            if (TextUtils.equals(action, "1")) {
+                if (item.getShequn() != null) {
+                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
+                    nickName_Tv.setText(item.getShequn().getShequnName());
+                }
+            } else if (TextUtils.equals(action, "2")) {
+                if (item.getGroup() != null) {
+                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
+                    nickName_Tv.setText(item.getGroup().getGroupName());
+                }
+            } else if (TextUtils.equals(action, "3")) {
+                group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+                personHead_Img.setVisibility(View.GONE);
+                nickName_Tv.setVisibility(View.GONE);
+                labelFlow(lable_Lin, mContext, item.getTagName());
+                isFollow(item.getFollow_status(), follow_Tv, send_Mes);
+                if (!TextUtils.isEmpty(item.getCreateTime())) {
+                    String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
+                    time_Tv.setText(userDate);
+                }
             }
         }
-        isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
 
+
+        isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
         //多张图片
         if (!TextUtils.isEmpty(item.getImages())) {
             String[] imgS = item.getImages().split(",");

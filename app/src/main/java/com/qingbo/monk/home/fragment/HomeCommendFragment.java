@@ -16,6 +16,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.HomeFocus_Activity;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
@@ -102,7 +103,13 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         mAdapter = new Follow_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            skipAnotherActivity(HomeFocus_Activity.class);
+            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+            String articleId = item.getArticleId();
+            if (TextUtils.equals(action, "3")) {
+                HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
+            }
+
         });
 
     }

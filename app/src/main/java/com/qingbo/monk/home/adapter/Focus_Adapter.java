@@ -49,25 +49,26 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
+
+        String is_anonymous = item.getIsAnonymous();//1是匿名
+        if (TextUtils.equals(is_anonymous, "1")) {
+            group_Name.setText("匿名用户");
+            group_Img.setEnabled(false);
+        } else {
+            GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
+            group_Name.setText(item.getTitle());
+            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+            labelFlow(lable_Lin, mContext, item.getTagName());
+            isFollow(item.getFollow_status(), follow_Tv, send_Mes);
+        }
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
-        if (!TextUtils.isEmpty(item.getCreateTime())) {
-            String userDate = DateUtil.getUserDate(item.getCreateTime())+" "+item.getCompany_name();
-            time_Tv.setText(userDate);
-        }
-
-        GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
-        group_Name.setText(item.getTitle());
+        String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
+        time_Tv.setText(userDate);
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
-
-        String action = item.getAction();//1是社群 2是兴趣圈 3是个人
-        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-        labelFlow(lable_Lin, mContext, item.getTagName());
-        isFollow(item.getFollow_status(), follow_Tv, send_Mes);
-
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
 
         //多张图片
