@@ -17,9 +17,18 @@ import com.xunda.lib.common.common.utils.L;
 public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Paint mPaint;
     private int mDividerWidth;
+    private boolean hasHeader;
 
     public GridDividerItemDecoration(int height, @ColorInt int color) {
         mDividerWidth = height;
+        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setColor(color);
+        mPaint.setStyle(Paint.Style.FILL);
+    }
+
+    public GridDividerItemDecoration(boolean header, int height, @ColorInt int color) {
+        mDividerWidth = height;
+        hasHeader = header;
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(color);
         mPaint.setStyle(Paint.Style.FILL);
@@ -32,7 +41,14 @@ public class GridDividerItemDecoration extends RecyclerView.ItemDecoration {
         int spanCount = getSpanCount(parent);
         int childCount = parent.getAdapter().getItemCount();
 
-
+        if(hasHeader) {
+            if(itemPosition == 0) {
+                outRect.set(0, 0, 0, 0);
+                return;
+            } else {
+                itemPosition = itemPosition - 1;
+            }
+        }
 
         boolean isLastRow = isLastRow(parent, itemPosition, spanCount, childCount);
         boolean isLastColumn = isLastColumn(parent, itemPosition, spanCount, childCount);

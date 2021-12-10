@@ -2,6 +2,7 @@ package com.qingbo.monk.question.adapter;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
@@ -28,18 +29,17 @@ public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, Base
     protected void convert(BaseViewHolder helper, UploadPictureBean item) {
         ImageView iv_image = helper.getView(R.id.iv_image);
         LinearLayout ll_delete = helper.getView(R.id.ll_delete);
-        LinearLayout ll_layout = helper.getView(R.id.ll_layout);
+        FrameLayout fl_layout = helper.getView(R.id.fl_layout);
+
 
         int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
-        int parentWith = (screenWidth - 64-DisplayUtil.dip2px(mContext,30))/3;//dp要转成px
-        ViewGroup.LayoutParams llParams = ll_layout.getLayoutParams();
+        int parentWith = (screenWidth - DisplayUtil.dip2px(mContext, 94))/3;//dp要转成px
+        ViewGroup.LayoutParams llParams = fl_layout.getLayoutParams();
         llParams.width = parentWith;
-        ll_layout.setLayoutParams(llParams);
-
+        fl_layout.setLayoutParams(llParams);
 
         ViewGroup.LayoutParams imageParams = iv_image.getLayoutParams();
         imageParams.height = parentWith;
-        imageParams.width = parentWith;
         iv_image.setLayoutParams(imageParams);
 
         helper.addOnClickListener(R.id.ll_delete);

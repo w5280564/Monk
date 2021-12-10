@@ -15,12 +15,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseQuestionBean;
+import com.qingbo.monk.bean.BaseQuestionBeanMy;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.question.activity.PublisherPictureActivity;
-import com.qingbo.monk.question.adapter.QuestionListAdapter;
+import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -32,37 +32,9 @@ import java.util.List;
 import butterknife.OnClick;
 
 /**
- * 问答列表
+ * 问答列表(我的)
  */
-public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
-    private int type;//1 全部 2 我的
-    private String requestUrlList;
-
-
-    public static QuestionListFragment NewInstance(int type) {
-        QuestionListFragment mFragment = new QuestionListFragment();
-        Bundle mBundle = new Bundle();
-        mBundle.putInt("type", type);
-        mFragment.setArguments(mBundle);
-        return mFragment;
-    }
-
-    @Override
-    protected void initLocalData() {
-        getDataFromArguments();
-    }
-
-    private void getDataFromArguments() {
-        Bundle b = getArguments();
-        if (b != null) {
-            type = b.getInt("type", 1);
-            if (type == 2) {
-                requestUrlList = HttpUrl.getOwnPublishList;
-            } else {
-                requestUrlList = HttpUrl.getSquareListAll;
-            }
-        }
-    }
+public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
 
 
     @Override
@@ -89,10 +61,9 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        if (type == 2) {
-            requestMap.put("action", "3");
-        }
-        HttpSender httpSender = new HttpSender(requestUrlList, "问答广场", requestMap, new MyOnHttpResListener() {
+        requestMap.put("action", "3");
+
+        HttpSender httpSender = new HttpSender(HttpUrl.getOwnPublishList, "问答广场（我的）", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -100,7 +71,7 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    BaseQuestionBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseQuestionBean.class);
+                    BaseQuestionBeanMy obj = GsonUtil.getInstance().json2Bean(json_data, BaseQuestionBeanMy.class);
                     handleSplitListData(obj, mAdapter, limit);
                 }
             }
@@ -116,7 +87,7 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new QuestionListAdapter();
+        mAdapter = new QuestionListAdapterMy();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 
@@ -136,10 +107,6 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
                     return;
                 }
                 switch (view.getId()) {
-                    case R.id.follow_Tv:
-                        String otherUserId = mQuestionBean.getAuthorId();
-                        postFollowData(otherUserId, position);
-                        break;
                     case R.id.follow_Img:
                         String likeId = mQuestionBean.getArticleId();
                         postLikedData(likeId, position);
@@ -149,7 +116,7 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((QuestionListAdapter) mAdapter).setOnItemImgClickLister(new QuestionListAdapter.OnItemImgClickLister() {
+        ((QuestionListAdapterMy) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -157,29 +124,6 @@ public class QuestionListFragment extends BaseRecyclerViewSplitFragment {
         });
     }
 
-
-    private void postFollowData(String otherUserId, int position) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("otherUserId", otherUserId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((QuestionListAdapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.getData().remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();

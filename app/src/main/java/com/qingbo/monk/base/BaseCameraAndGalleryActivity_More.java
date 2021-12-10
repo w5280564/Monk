@@ -9,6 +9,7 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 
 import com.qingbo.monk.R;
+import com.qingbo.monk.bean.UploadImageFileBean;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -207,15 +208,16 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
      */
     private void uploadImage( Map<String, File> files) {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("file", "file");
         HttpSender sender = new HttpSender(HttpUrl.uploadFiles, "多文件上传", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-//                            String image_url = GsonUtil.getInstance().getValue(data,"file");
-                            onUploadSuccess("http://dolphin.oss-cn-hangzhou.aliyuncs.com/h5-video/liangdian/images/202112031755536661167avatar-2021-12-03_17_55_53__61a9e9a967978.jpg");
+                            UploadImageFileBean mUploadImageFileBean = GsonUtil.getInstance().json2Bean(data, UploadImageFileBean.class);
+                            if (mUploadImageFileBean!=null) {
+                                onUploadSuccess(mUploadImageFileBean.getUrlList());
+                            }
                         }else{
                             onUploadFailure(description);
                         }
@@ -231,7 +233,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
     /**
      * 上传图片成功的回调
      */
-    protected abstract void onUploadSuccess(String imageString);
+    protected abstract void onUploadSuccess(List<String> urlList);
 
 
     /**

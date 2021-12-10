@@ -182,7 +182,6 @@ public class HttpSender {
 	 * @param files
 	 */
 	private void requestPostFiles(Map<String, File> files) {
-		HashMap<String, String> upLoadMap = new HashMap<String, String>();
 		if (StringUtil.isBlank(requestUrl)) {
 			L.e(requestName + "POST请求 Url为空");
 			return;
@@ -191,7 +190,6 @@ public class HttpSender {
 		for (String key : files.keySet()) {
 			File fileParams = files.get(key);
 			if(fileParams!=null){
-				upLoadMap.put(key,fileParams.getName());
 				L.i(key + " = " + fileParams.getName());
 			}
 		}
@@ -200,9 +198,8 @@ public class HttpSender {
 		L.i("POST请求Url：" + requestUrl);
 
 		OkHttpUtils.post().url(requestUrl)
-//				.params(upLoadMap)
 				.headers(headerMap)
-				.files("file",files).build().execute(new StringDialogCallback(isShowLoadAnimal));
+				.files("file[]",files).build().execute(new StringDialogCallback(isShowLoadAnimal));
 	}
 
 

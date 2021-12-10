@@ -16,7 +16,6 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
-import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
@@ -43,7 +42,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private boolean haveUploadPicture;
+    private String images;
 
 
     @Override
@@ -67,7 +66,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(32, mContext.getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false,32,getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);
@@ -105,7 +104,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
 
     private void showBackDialog() {
-        if (haveUploadPicture) {
+        if (!StringUtil.isBlank(images)) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
@@ -151,7 +150,21 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
         String mContent = StringUtil.getEditText(et_content);
 
-        if (StringUtil.isBlank(title)  && StringUtil.isBlank(title) && !haveUploadPicture) {
+        StringBuilder result = new StringBuilder();
+        boolean flag = false;
+        for (UploadPictureBean mImageObj:imageList) {
+            if (mImageObj.getType()!=1) {
+                if (flag) {
+                    result.append(",");
+                } else {
+                    flag = true;
+                }
+                result.append(mImageObj.getImageUrl());
+            }
+        }
+        images = result.toString();
+
+        if (StringUtil.isBlank(title)  && StringUtil.isBlank(title) && StringUtil.isBlank(images)) {
             T.ss("标题、内容、图片必须填写一项");
             return;
         }
@@ -169,7 +182,7 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
         baseMap.put("content", mPictureContent);
         baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("action", "3");
-        baseMap.put("images", "3");
+        baseMap.put("images", images);
         HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建话题或提问", baseMap,
                 new MyOnHttpResListener() {
 
@@ -189,12 +202,11 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
      * 点击图片
      */
     private void clickPhoto(int position) {
-
-        if (imageList.size() < 8) {
-            if (position == imageList.size() - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(6);
+        int all_size = imageList.size();
+        if (all_size < 8) {
+            if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
+                checkGalleryPermission(7-all_size);
             }
-
         }
     }
 
@@ -202,16 +214,19 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
     /**
      * 展示选择的图片
      */
-    private void showImageListImages(String url) {
+    private void showImageListImages(List<String> urlList) {
         if (imageList.size() < 2) {//第一次添加，把每次选择的图片添加到数组最后的位置
-            UploadPictureBean obj = new UploadPictureBean();
-            obj.setImageUrl(url);
-            imageList.add(imageList.size() - 1, obj);
+            for (int i = 0; i < urlList.size(); i++) {
+                UploadPictureBean obj = new UploadPictureBean();
+                obj.setImageUrl(urlList.get(i));
+                imageList.add(imageList.size() - 1, obj);
+            }
         } else {//第二次添加，把每次选择的图片添加到index等于0的位置
-            UploadPictureBean obj = new UploadPictureBean();
-            obj.setImageUrl(url);
-            imageList.add(0, obj);
-
+            for (int i = 0; i < urlList.size(); i++) {
+                UploadPictureBean obj = new UploadPictureBean();
+                obj.setImageUrl(urlList.get(i));
+                imageList.add(0, obj);
+            }
         }
         deleteLastOne();
         mAdapter.notifyDataSetChanged();
@@ -275,9 +290,8 @@ public class PublisherPictureActivity extends BaseCameraAndGalleryActivity_More 
 
 
     @Override
-    protected void onUploadSuccess(String imageString) {
-        haveUploadPicture = true;
-        showImageListImages(imageString);
+    protected void onUploadSuccess(List<String> urlList) {
+        showImageListImages(urlList);
     }
 
     @Override

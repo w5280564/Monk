@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/ll_layout"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content">
-
-<FrameLayout
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fl_layout"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -23,11 +19,10 @@ android:layout_height="wrap_content">
         android:paddingRight="@dimen/dp_10">
 
         <ImageView
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:src="@mipmap/chacha_send" />
+            android:layout_width="@dimen/dp_15"
+            android:layout_height="@dimen/dp_15"
+            android:src="@mipmap/appitem_del_btn_pressed" />
 
     </LinearLayout>
-</FrameLayout>
 
-</LinearLayout>
+</FrameLayout>

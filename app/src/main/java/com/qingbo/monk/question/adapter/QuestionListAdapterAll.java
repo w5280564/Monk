@@ -18,7 +18,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
@@ -30,12 +29,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 问答广场
+ * 问答广场(全部问答)
  */
-public class QuestionListAdapter extends BaseQuickAdapter<QuestionBean, BaseViewHolder> {
+public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseViewHolder> {
 
-    public QuestionListAdapter() {
-        super(R.layout.item_question_list);
+    public QuestionListAdapterAll() {
+        super(R.layout.item_question_list_all);
     }
 
 

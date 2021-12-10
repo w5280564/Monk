@@ -32,8 +32,8 @@ public class QuestionFragment_Square extends BaseFragmentWithSon implements Radi
 
     @Override
     protected void initView() {
-        addFragment(QuestionListFragment.NewInstance(1));
-        addFragment(QuestionListFragment.NewInstance(2));
+        addFragment(new QuestionListFragmentAll());
+        addFragment(new QuestionListFragmentMy());
         showFragment(0, fragmentId);
     }
 
