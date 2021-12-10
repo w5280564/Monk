@@ -120,7 +120,6 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                     case R.id.follow_Img:
                         HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
                         String likeId = item.getId();
-//                        String likeId = homeFllowBean.getList().get(position).getArticleId();
                         postLikedData(likeId, position);
                         break;
                 }
@@ -131,7 +130,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", likeId+ "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.combination_Topic_Like, "首页-仓位组合点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

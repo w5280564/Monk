@@ -47,14 +47,12 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {
-        int nowLike;
-        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
         if (isLike == 0) {
             follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
         } else if (isLike == 1) {
             follow_Img.setBackgroundResource(R.mipmap.dianzan);
         }
-        follow_Count.setText(nowLike + "");
+        follow_Count.setText(likes + "");
     }
 
     /**

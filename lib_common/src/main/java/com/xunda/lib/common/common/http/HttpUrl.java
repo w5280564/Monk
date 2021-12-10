@@ -140,6 +140,7 @@ public class HttpUrl {
      * 创建话题或提问
      */
     public static final String createTopic = "square/square/create-topic";
+    public static final String combination_Topic_Like = "square/position/topic-like";//首页-仓位组合点赞
 
 }
 
