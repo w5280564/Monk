@@ -137,22 +137,26 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
                      homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-                        title_Tv.setText(detailData.getTitle());
-                        content_Tv.setText(detailData.getContent());
+                        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+                        String is_anonymous = detailData.getIsAnonymous();//1是匿名
+                        if (TextUtils.equals(is_anonymous, "0")) {
+                            group_Name.setText("匿名用户");
+                            group_Img.setEnabled(false);
+                        }else {
+                            GlideUtils.loadCircleImage(mContext, group_Img, detailData.getAvatar());
+                            group_Name.setText(detailData.getTitle());
+                            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+                            labelFlow(lable_Lin, mContext, detailData.getTagName());
+                            isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
+                        }
+//                        title_Tv.setText(detailData.getTitle());
+//                        content_Tv.setText(detailData.getContent());
 //                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompany_name();
 //                        time_Tv.setText(userDate);
 
-                        GlideUtils.loadCircleImage(mContext, group_Img, detailData.getAvatar());
-                        group_Name.setText(detailData.getTitle());
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
-                        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-                        labelFlow(lable_Lin, mContext, detailData.getTagName());
-                        isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
-
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
-
-
                     }
                 }
             }

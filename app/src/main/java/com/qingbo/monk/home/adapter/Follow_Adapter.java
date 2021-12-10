@@ -60,10 +60,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
-        if (!TextUtils.isEmpty(item.getCreateTime())) {
-            time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
-        }
-
+        time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
 
@@ -74,34 +71,33 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
                 personHead_Img.setVisibility(View.GONE);
                 nickName_Tv.setVisibility(View.GONE);
                 group_Name.setText("匿名用户");
-            }else {
+                group_Img.setBackgroundResource(R.mipmap.icon_logo);
+            } else {
                 nickName_Tv.setText("匿名用户");
                 group_Name.setText(item.getTitle());
                 GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
             }
         } else {
-            group_Name.setText(item.getTitle());
-            GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
             if (TextUtils.equals(action, "1")) {
-                if (item.getShequn() != null) {
-                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
-                    nickName_Tv.setText(item.getShequn().getShequnName());
-                }
+                GlideUtils.loadCircleImage(mContext, group_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
+                group_Name.setText(item.getShequn().getShequnName());
+                nickName_Tv.setText(item.getAuthorName());
+                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
             } else if (TextUtils.equals(action, "2")) {
-                if (item.getGroup() != null) {
-                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
-                    nickName_Tv.setText(item.getGroup().getGroupName());
-                }
+                GlideUtils.loadCircleImage(mContext, group_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
+                group_Name.setText(item.getGroup().getGroupName());
+                nickName_Tv.setText(item.getAuthorName());
+                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
             } else if (TextUtils.equals(action, "3")) {
+                GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
                 group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+                group_Name.setText(item.getAuthorName());
                 personHead_Img.setVisibility(View.GONE);
                 nickName_Tv.setVisibility(View.GONE);
                 labelFlow(lable_Lin, mContext, item.getTagName());
                 isFollow(item.getFollow_status(), follow_Tv, send_Mes);
-                if (!TextUtils.isEmpty(item.getCreateTime())) {
-                    String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
-                    time_Tv.setText(userDate);
-                }
+                String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
+                time_Tv.setText(userDate);
             }
         }
 
@@ -115,7 +111,6 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             NineGridAdapter nineGridAdapter = new NineGridAdapter();
             mNineView.setAdapter(nineGridAdapter);
             nineGridAdapter.setNewData(strings);
-
             nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {

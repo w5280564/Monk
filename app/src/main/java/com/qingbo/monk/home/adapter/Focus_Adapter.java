@@ -50,17 +50,29 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
+        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
             group_Name.setText("匿名用户");
+            group_Img.setBackgroundResource(R.mipmap.icon_logo);
             group_Img.setEnabled(false);
         } else {
             GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
-            group_Name.setText(item.getTitle());
-            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+            group_Name.setText(item.getAuthorName());
             labelFlow(lable_Lin, mContext, item.getTagName());
             isFollow(item.getFollow_status(), follow_Tv, send_Mes);
+        }
+        if (TextUtils.isEmpty(item.getTitle())) {
+            title_Tv.setVisibility(View.GONE);
+        } else {
+            title_Tv.setVisibility(View.VISIBLE);
+        }
+        if (TextUtils.isEmpty(item.getContent())) {
+            content_Tv.setVisibility(View.GONE);
+        } else {
+            content_Tv.setVisibility(View.VISIBLE);
         }
 
         title_Tv.setText(item.getTitle());
@@ -79,7 +91,6 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
             NineGridAdapter nineGridAdapter = new NineGridAdapter();
             mNineView.setAdapter(nineGridAdapter);
             nineGridAdapter.setNewData(strings);
-
             nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
