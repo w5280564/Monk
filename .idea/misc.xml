@@ -139,7 +139,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_nine_grid.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_all.xml" value="0.33" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.17198581560283688" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.33" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/layout_tab.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_all_group.xml" value="0.317481884057971" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_industry.xml" value="0.3536458333333333" />
@@ -228,10 +228,12 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/fragment_img.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/item_go_to_choose_group.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/item_screen_grid.xml" value="0.16489361702127658" />
+        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/item_type_menu_pop.xml" value="0.2351851851851852" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/layout_dialog_grid.xml" value="0.16489361702127658" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/layout_tab.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/my_arrowitemview.xml" value="0.3532608695652174" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/picker_single_layout.xml" value="0.11214087117701575" />
+        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/popupwindow_layout.xml" value="0.2351851851851852" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/title_layout.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/view_load_more.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/webview_layout.xml" value="0.3536458333333333" />

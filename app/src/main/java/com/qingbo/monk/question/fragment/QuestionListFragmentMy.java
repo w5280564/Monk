@@ -17,6 +17,7 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBeanMy;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.QuestionBean;
+import com.qingbo.monk.bean.QuestionBeanMy;
 import com.qingbo.monk.question.activity.PublisherActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
@@ -24,9 +25,11 @@ import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.dialog.MyPopWindow;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -110,7 +113,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                QuestionBean mQuestionBean = (QuestionBean) adapter.getItem(position);
+                QuestionBeanMy mQuestionBean = (QuestionBeanMy) adapter.getItem(position);
 
                 if (mQuestionBean == null) {
                     return;
@@ -119,6 +122,10 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                     case R.id.follow_Img:
                         String likeId = mQuestionBean.getArticleId();
                         postLikedData(likeId, position);
+                        break;
+                    case R.id.more_Img:
+                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                        showPopMenu(more_Img);
                         break;
                 }
             }
@@ -131,6 +138,26 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+    }
+
+
+    private void showPopMenu(ImageView more_Img){
+        List<String> mMenuList = new ArrayList<>();
+        mMenuList.add("编辑");
+        mMenuList.add("删除");
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, mMenuList, new MyPopWindow.OnPopWindowClickListener() {
+            @Override
+            public void onClickEdit() {
+
+            }
+
+            @Override
+            public void onClickDelete() {
+
+            }
+
+        });
+        morePopWindow.showPopupWindow(more_Img);
     }
 
 

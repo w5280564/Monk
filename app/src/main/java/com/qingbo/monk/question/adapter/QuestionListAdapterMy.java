@@ -23,6 +23,8 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -87,21 +89,23 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
         mes_Count.setText(item.getCommentcount());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
 
+        NineGridAdapter nineGridAdapter = new NineGridAdapter();
+        List<String> strings = new ArrayList<>();
+        mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
+        mNineView.setAdapter(nineGridAdapter);
         //多张图片
         if (!TextUtils.isEmpty(item.getImages())) {
             String[] imgS = item.getImages().split(",");
-            List<String> strings = Arrays.asList(imgS);
-            mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
-            NineGridAdapter nineGridAdapter = new NineGridAdapter();
-            mNineView.setAdapter(nineGridAdapter);
+            strings.addAll(Arrays.asList(imgS));
             nineGridAdapter.setNewData(strings);
-
             nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     onItemImgClickLister.OnItemImgClickLister(position, strings);
                 }
             });
+        }else{
+            nineGridAdapter.setNewData(null);
         }
 
         String status = item.getStatus();//0待审核 1通过 2未通过
@@ -122,6 +126,7 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.more_Img);
     }
 
 

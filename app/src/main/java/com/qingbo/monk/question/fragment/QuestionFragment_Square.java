@@ -47,16 +47,12 @@ public class QuestionFragment_Square extends BaseFragmentWithSon implements Radi
     public void onCheckedChanged(RadioGroup radioGroup, int view_id) {
         switch (view_id){
             case R.id.rb_all:
-                rb_all.setTextSize(15);
                 rb_all.setTypeface(Typeface.DEFAULT_BOLD);
-                rb_me.setTextSize(14);
                 rb_me.setTypeface(Typeface.DEFAULT);
                 showFragment(0, fragmentId);
                 break;
             case R.id.rb_me:
-                rb_me.setTextSize(15);
                 rb_me.setTypeface(Typeface.DEFAULT_BOLD);
-                rb_all.setTextSize(14);
                 rb_all.setTypeface(Typeface.DEFAULT);
                 showFragment(1, fragmentId);
                 break;

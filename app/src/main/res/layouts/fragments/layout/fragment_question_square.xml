@@ -43,7 +43,7 @@
             android:background="@drawable/selector_radio_button_square"
             android:text="我的问答 "
             android:textColor="@drawable/selector_text_square"
-            android:textSize="@dimen/sp_14"/>
+            android:textSize="@dimen/sp_15"/>
 
 
     </RadioGroup>
