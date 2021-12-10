@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
@@ -25,6 +26,8 @@ import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.Topic_Bean;
+import com.qingbo.monk.home.NineGrid.NineGridAdapter;
+import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -35,7 +38,9 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -43,10 +48,10 @@ import butterknife.BindView;
  * 个人文章详情
  */
 public class HomeFocus_Activity extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.group_Img)
-    ImageView group_Img;
-    @BindView(R.id.group_Name)
-    TextView group_Name;
+    @BindView(R.id.person_Img)
+    ImageView person_Img;
+    @BindView(R.id.person_Name)
+    TextView person_Name;
     @BindView(R.id.time_Tv)
     TextView time_Tv;
     @BindView(R.id.lable_Lin)
@@ -60,7 +65,7 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
     @BindView(R.id.content_Tv)
     TextView content_Tv;
     @BindView(R.id.nine_grid)
-    RecyclerView nine_grid;
+    RecyclerView mNineView;
     @BindView(R.id.follow_Img)
     ImageView follow_Img;
     @BindView(R.id.follow_Count)
@@ -128,7 +133,7 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
     HomeFoucsDetail_Bean homeFoucsDetail_bean;
     private void getUserDetail() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId);
+        requestMap.put("articleId", "2");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -137,26 +142,42 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
                      homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-                        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
                         String is_anonymous = detailData.getIsAnonymous();//1是匿名
-                        if (TextUtils.equals(is_anonymous, "0")) {
-                            group_Name.setText("匿名用户");
-                            group_Img.setEnabled(false);
+                        if (TextUtils.equals(is_anonymous, "1")) {
+                            person_Name.setText("匿名用户");
+                            person_Img.setEnabled(false);
                         }else {
-                            GlideUtils.loadCircleImage(mContext, group_Img, detailData.getAvatar());
-                            group_Name.setText(detailData.getTitle());
-                            group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+                            GlideUtils.loadCircleImage(mContext, person_Img, detailData.getAvatar());
+                            person_Name.setText(detailData.getTitle());
+                            person_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
                             labelFlow(lable_Lin, mContext, detailData.getTagName());
                             isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
                         }
-//                        title_Tv.setText(detailData.getTitle());
-//                        content_Tv.setText(detailData.getContent());
-//                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompany_name();
-//                        time_Tv.setText(userDate);
+                        title_Tv.setText(detailData.getTitle());
+                        content_Tv.setText(detailData.getContent());
+                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompanyName();
+                        time_Tv.setText(userDate);
+                        //多张图片
+                        if (!TextUtils.isEmpty(detailData.getImages())) {
+                            String[] imgS = detailData.getImages().split(",");
+                            List<String> strings = Arrays.asList(imgS);
+                            mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
+                            NineGridAdapter nineGridAdapter = new NineGridAdapter();
+                            mNineView.setAdapter(nineGridAdapter);
+                            nineGridAdapter.setNewData(strings);
+                            nineGridAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                    jumpToPhotoShowActivity(position, strings);
+                                }
+                            });
+                        }
 
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
+
+
                     }
                 }
             }

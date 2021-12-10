@@ -85,6 +85,7 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
 
         //多张图片
         if (!TextUtils.isEmpty(item.getImages())) {
+            mNineView.setVisibility(View.VISIBLE);
             String[] imgS = item.getImages().split(",");
             List<String> strings = Arrays.asList(imgS);
             mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
@@ -97,6 +98,8 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
                     onItemImgClickLister.OnItemImgClickLister(position, strings);
                 }
             });
+        }else {
+          mNineView.setVisibility(View.GONE);
         }
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);

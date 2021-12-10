@@ -79,15 +79,19 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             }
         } else {
             if (TextUtils.equals(action, "1")) {
-                GlideUtils.loadCircleImage(mContext, group_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
-                group_Name.setText(item.getShequn().getShequnName());
-                nickName_Tv.setText(item.getAuthorName());
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
+                if (item.getShequn() != null) {
+                    GlideUtils.loadCircleImage(mContext, group_Img, item.getShequn().getUserAvatar(), R.mipmap.icon_logo);
+                    group_Name.setText(item.getShequn().getShequnName());
+                    nickName_Tv.setText(item.getAuthorName());
+                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
+                }
             } else if (TextUtils.equals(action, "2")) {
-                GlideUtils.loadCircleImage(mContext, group_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
-                group_Name.setText(item.getGroup().getGroupName());
-                nickName_Tv.setText(item.getAuthorName());
-                GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
+                if (item.getGroup() != null) {
+                    GlideUtils.loadCircleImage(mContext, group_Img, item.getGroup().getUserAvatar(), R.mipmap.icon_logo);
+                    group_Name.setText(item.getGroup().getGroupName());
+                    nickName_Tv.setText(item.getAuthorName());
+                    GlideUtils.loadCircleImage(mContext, personHead_Img, item.getAvatar(), R.mipmap.icon_logo);
+                }
             } else if (TextUtils.equals(action, "3")) {
                 GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
                 group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
@@ -105,6 +109,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
         //多张图片
         if (!TextUtils.isEmpty(item.getImages())) {
+            mNineView.setVisibility(View.VISIBLE);
             String[] imgS = item.getImages().split(",");
             List<String> strings = Arrays.asList(imgS);
             mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
@@ -117,7 +122,10 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
                     onItemImgClickLister.OnItemImgClickLister(position, strings);
                 }
             });
+        } else {
+            mNineView.setVisibility(View.GONE);
         }
+
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
     }

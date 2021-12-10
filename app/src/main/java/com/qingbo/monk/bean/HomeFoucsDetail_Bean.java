@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class HomeFoucsDetail_Bean {
+
     @SerializedName("code")
     private Integer code;
     @SerializedName("msg")
@@ -28,6 +29,8 @@ public class HomeFoucsDetail_Bean {
             private String articleId;
             @SerializedName("title")
             private String title;
+            @SerializedName("type")
+            private String type;
             @SerializedName("content")
             private String content;
             @SerializedName("images")
@@ -36,6 +39,8 @@ public class HomeFoucsDetail_Bean {
             private String authorId;
             @SerializedName("author_name")
             private String authorName;
+            @SerializedName("company_name")
+            private String companyName;
             @SerializedName("avatar")
             private String avatar;
             @SerializedName("create_time")
@@ -48,10 +53,33 @@ public class HomeFoucsDetail_Bean {
             private String likedNum;
             @SerializedName("comment_num")
             private String commentNum;
+            @SerializedName("action")
+            private String action;
+            @SerializedName("extra")
+            private ExtraDTO extra;
+            @SerializedName("is_join")
+            private String isJoin;
             @SerializedName("follow_status")
             private Integer followStatus;
             @SerializedName("liked_status")
             private Integer likedStatus;
+
+            @NoArgsConstructor
+            @Data
+            public static class ExtraDTO {
+                @SerializedName("id")
+                private String id;
+                @SerializedName("name")
+                private String name;
+                @SerializedName("image")
+                private String image;
+                @SerializedName("des")
+                private String des;
+                @SerializedName("user_avatar")
+                private String userAvatar;
+                @SerializedName("is_join")
+                private String isJoin;
+            }
         }
     }
 }

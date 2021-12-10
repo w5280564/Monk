@@ -174,6 +174,7 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
             myFlow.addView(view);
             label_Name.setOnClickListener(v -> {
             });
+
         }
     }
 
