@@ -53,6 +53,21 @@
 
 
     <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="@dimen/sp_10"
+        android:textStyle="bold"
+        android:drawableRight="@mipmap/weitongguo"
+        android:text="未通过"
+        android:drawablePadding="@dimen/dp_7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/group_Img"/>
+
+
+    <TextView
         android:id="@+id/follow_Tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_22"
