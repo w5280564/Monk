@@ -52,6 +52,8 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        ImageView more_Img = helper.getView(R.id.more_Img);
+        viewTouchDelegate.expandViewTouchDelegate(more_Img,100);
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {

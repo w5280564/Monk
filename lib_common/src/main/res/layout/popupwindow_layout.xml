@@ -6,10 +6,9 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/recycleView"
         android:layout_width="@dimen/dp_40"
         android:layout_height="wrap_content"
-        android:background="@color/text_color_444444"
+        android:background="@drawable/background_popwindow"
         android:orientation="vertical"
 
         >
