@@ -142,6 +142,7 @@ public class HttpUrl {
     public static final String createTopic = "square/square/create-topic";
     public static final String combination_Topic_Like = "square/position/topic-like";//首页-仓位组合点赞
     public static final String User_Article_Detail = "user/user/article-detail";//首页-个人文章详情
+    public static final String Join_SheQun = "square/square/join-shequn";//加入社群
 
     /**
      * 删除话题
@@ -153,6 +154,7 @@ public class HttpUrl {
      * 编辑话题
      */
     public static final String editQuestion = "square/detail/up-publish";
+    public static final String Article_CommentList = "comment/comment/article-comment-list";//获取文章评论
 
 }
 

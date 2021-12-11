@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingConstraints">
+
+    <ImageView
+        android:id="@+id/head_Img"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_15"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nickName_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:text="沧桑离月沧桑离月沧桑离月"
+        android:textColor="@color/text_color_444444"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/head_Img"
+        app:layout_constraintTop_toTopOf="@+id/head_Img" />
+
+
+    <TextView
+        android:id="@+id/content_Tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="老师您好，我是某券商网金部的工作人员，根据我们最近对您的观点和研究觉得您在财经投教领域非常专......"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/nickName_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/nickName_Tv" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentChildren_List"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:background="@drawable/interest_lable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/content_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+
+    <TextView
+        android:id="@+id/time_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="18:30"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="10sp"
+        android:layout_marginTop="@dimen/dp_12"
+        app:layout_constraintStart_toStartOf="@+id/commentChildren_List"
+        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+    <TextView
+        android:id="@+id/mes_Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="111"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_12"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+    <ImageView
+        android:id="@+id/mes_Img"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_19"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:background="@mipmap/icon_pinglun"
+        app:layout_constraintEnd_toStartOf="@+id/mes_Count"
+        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+
+    <TextView
+        android:id="@+id/follow_Count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="10sp"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_26"
+        app:layout_constraintEnd_toStartOf="@+id/mes_Img"
+        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+    <ImageView
+        android:id="@+id/follow_Img"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_19"
+        android:background="@mipmap/icon_dainzan"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toStartOf="@+id/follow_Count"
+        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

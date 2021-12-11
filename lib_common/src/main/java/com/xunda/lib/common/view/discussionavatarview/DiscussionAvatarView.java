@@ -18,6 +18,7 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by HARRY on 2019/1/18 0018.
@@ -164,7 +165,7 @@ public class DiscussionAvatarView extends ViewGroup {
      *
      * @param list
      */
-    public void initDatas(ArrayList<String> list) {
+    public void initDatas(List<String> list) {
         if (list == null) {
             return;
         }

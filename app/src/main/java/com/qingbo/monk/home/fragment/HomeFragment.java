@@ -1,5 +1,7 @@
 package com.qingbo.monk.home.fragment;
 
+import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
+
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -231,7 +233,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         //设置TabLayout和ViewPager联动
         card_Tab.setupWithViewPager(card_ViewPager, false);
         card_ViewPager.setCurrentItem(1);
-
     }
 
     private void getJoin(String ID) {
@@ -264,10 +265,5 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         view.startAnimation(animation);
     }
 
-    //修改shape背景颜色
-    public static void changeShapColor(View v, int color) {
-        GradientDrawable da = (GradientDrawable) v.getBackground();
-        da.setColor(color);
-    }
 
 }

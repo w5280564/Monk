@@ -107,24 +107,9 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
 
 
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
-        //多张图片
-        if (!TextUtils.isEmpty(item.getImages())) {
-            mNineView.setVisibility(View.VISIBLE);
-            String[] imgS = item.getImages().split(",");
-            List<String> strings = Arrays.asList(imgS);
-            mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
-            NineGridAdapter nineGridAdapter = new NineGridAdapter();
-            mNineView.setAdapter(nineGridAdapter);
-            nineGridAdapter.setNewData(strings);
-            nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    onItemImgClickLister.OnItemImgClickLister(position, strings);
-                }
-            });
-        } else {
-            mNineView.setVisibility(View.GONE);
-        }
+
+        showNineView(item.getImages(), mNineView);//多张图片
+
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
@@ -199,6 +184,33 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             });
         }
     }
+
+
+    /**
+     * 加载多图适配器
+     *
+     * @param imgString
+     */
+    private void showNineView(String imgString, RecyclerView mNineView) {
+        if (!TextUtils.isEmpty(imgString)) {
+            mNineView.setVisibility(View.VISIBLE);
+            String[] imgS = imgString.split(",");
+            List<String> strings = Arrays.asList(imgS);
+            mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
+            NineGridAdapter nineGridAdapter = new NineGridAdapter();
+            mNineView.setAdapter(nineGridAdapter);
+            nineGridAdapter.setNewData(strings);
+            nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    onItemImgClickLister.OnItemImgClickLister(position, strings);
+                }
+            });
+        } else {
+            mNineView.setVisibility(View.GONE);
+        }
+    }
+
 
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {

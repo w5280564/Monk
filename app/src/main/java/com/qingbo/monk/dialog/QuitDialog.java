@@ -3,9 +3,12 @@ package com.qingbo.monk.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,12 +26,12 @@ public class QuitDialog extends Dialog implements View.OnClickListener {
     private ConfirmListener listener;
     private String title, content, left, right;
     private Context mContext;
-    private TextView close_Tv, quit_Tv,content_Tv;
+    private TextView close_Tv, quit_Tv, content_Tv;
     private Integer leftColor, rightColor;
 
     public QuitDialog(Context context, String content, String left,
                       String right, ConfirmListener confirmListener) {
-        super(context, R.style.CenterDialogStyle);
+        super(context, R.style.bottomrDialogStyle);
         this.listener = confirmListener;
         this.content = content;
         this.left = left;
@@ -39,7 +42,7 @@ public class QuitDialog extends Dialog implements View.OnClickListener {
     public QuitDialog(Context context, String content, String left,
                       String right, int leftColor,
                       int rightColor, ConfirmListener confirmListener) {
-        super(context, R.style.CenterDialogStyle);
+        super(context, R.style.bottomrDialogStyle);
         this.listener = confirmListener;
         this.content = content;
         this.left = left;
@@ -61,15 +64,10 @@ public class QuitDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initView() {
-        ConstraintLayout Con_parent = findViewById(R.id.Con_parent);
-        int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
-        int parentWidth = screenWidth;//弹出框的宽度
-        ViewGroup.LayoutParams layoutParams = Con_parent.getLayoutParams();
-        layoutParams.width = parentWidth;
-        Con_parent.setLayoutParams(layoutParams);
+        getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         getWindow().setGravity(Gravity.BOTTOM);// 弹出框在底部位置
 
-                content_Tv = findViewById(R.id.content_Tv);
+        content_Tv = findViewById(R.id.content_Tv);
         close_Tv = findViewById(R.id.close_Tv);
         quit_Tv = findViewById(R.id.quit_Tv);
 

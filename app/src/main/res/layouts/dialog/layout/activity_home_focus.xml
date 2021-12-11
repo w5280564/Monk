@@ -44,7 +44,6 @@
                     android:layout_height="@dimen/dp_36"
                     android:layout_marginStart="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:background="@mipmap/icon_logo"
                     android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -125,6 +124,7 @@
                     android:layout_marginTop="@dimen/dp_14"
                     android:layout_marginEnd="@dimen/dp_27"
                     android:maxLines="2"
+                    android:maxLength="40"
                     android:textColor="@color/text_color_444444"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -138,9 +138,9 @@
                     android:layout_marginStart="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_7"
                     android:layout_marginEnd="@dimen/dp_15"
-                    android:maxLines="3"
                     android:textColor="@color/text_color_6f6f6f"
                     android:textSize="14sp"
+                    android:maxLength="2000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title_Tv" />
@@ -164,41 +164,40 @@
                     android:layout_marginStart="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_18"
                     android:layout_marginEnd="@dimen/dp_15"
+                    android:background="@drawable/base_gradual"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/nine_grid"
                     app:layout_constraintTop_toBottomOf="@+id/nine_grid">
 
                     <ImageView
-                        android:id="@+id/group_Img"
+                        android:id="@+id/groupHead_Img"
                         android:layout_width="@dimen/dp_36"
                         android:layout_height="@dimen/dp_36"
                         android:layout_marginStart="@dimen/dp_15"
-                        android:background="@mipmap/icon_logo"
                         android:scaleType="centerCrop"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/groupName_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_9"
-                        android:text="动漫群"
                         android:textColor="@color/text_color_6f6f6f"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/group_Img"
-                        app:layout_constraintTop_toTopOf="@+id/group_Img" />
+                        app:layout_constraintStart_toEndOf="@+id/groupHead_Img"
+                        app:layout_constraintTop_toTopOf="@+id/groupHead_Img" />
 
 
                     <TextView
+                        android:id="@+id/groupDes_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="快来加入我们，大佬带你玩转资本。"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="10sp"
-                        app:layout_constraintStart_toStartOf="@+id/textView5"
-                        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                        app:layout_constraintStart_toStartOf="@+id/groupName_Tv"
+                        app:layout_constraintTop_toBottomOf="@+id/groupName_Tv" />
 
                     <TextView
                         android:id="@+id/join_Tv"
@@ -213,6 +212,19 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView
+                        android:id="@+id/headListView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_16"
+                        app:isLastComplete="true"
+                        app:isShowAnimation="true"
+                        app:layout_constraintBottom_toBottomOf="@+id/join_Tv"
+                        app:layout_constraintEnd_toStartOf="@+id/join_Tv"
+                        app:layout_constraintTop_toTopOf="@+id/join_Tv"
+                        app:radius="9"
+                        app:space="0.8" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -259,11 +271,18 @@
                     app:layout_constraintTop_toTopOf="@+id/mes_Img" />
 
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_10"
+                    android:background="@color/text_color_EFEFEF"
+                    app:layout_constraintTop_toBottomOf="@id/follow_Img"
+                    android:layout_marginTop="@dimen/dp_13"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/card_Tab"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_33"
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
                 app:tabTextColor="@color/text_color_6f6f6f" />
