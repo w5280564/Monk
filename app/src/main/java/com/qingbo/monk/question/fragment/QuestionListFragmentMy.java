@@ -142,10 +142,12 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
 
 
     private void showPopMenu(ImageView more_Img,QuestionBeanMy mQuestionBean,int position){
-        List<String> mMenuList = new ArrayList<>();
-        mMenuList.add("编辑");
-        mMenuList.add("删除");
-        MyPopWindow morePopWindow = new MyPopWindow(mActivity, mMenuList, new MyPopWindow.OnPopWindowClickListener() {
+        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+        boolean haveEdit = false;
+        if(TextUtils.equals(status, "2")){//审核未通过才能删除
+            haveEdit = true;
+        }
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
                 PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);

@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/recycleView"
         android:layout_width="@dimen/dp_40"
-        android:layout_height="@dimen/dp_60"
+        android:layout_height="wrap_content"
         android:background="@color/text_color_444444"
         android:orientation="vertical"
 
@@ -17,8 +17,7 @@
         <TextView
             android:id="@+id/tv_edit"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/dp_30"
             android:gravity="center"
             android:maxLines="1"
             android:ellipsize="end"
@@ -29,8 +28,7 @@
         <TextView
             android:id="@+id/tv_delete"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/dp_30"
             android:text="删除"
             android:gravity="center"
             android:maxLines="1"

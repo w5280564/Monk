@@ -22,6 +22,7 @@ import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
+import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
@@ -128,7 +129,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false,32,getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false, DisplayUtil.sp2px(mContext,32),getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);

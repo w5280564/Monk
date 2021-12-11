@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class MyPopWindow extends PopupWindow implements View.OnClickListener {
     private OnPopWindowClickListener mListener;
-    private List<String> mList;
+    private boolean haveEdit;//是否能编辑
 
-    public MyPopWindow(Activity context, List<String> mList, OnPopWindowClickListener mListener) {
+    public MyPopWindow(Activity context, boolean haveEdit, OnPopWindowClickListener mListener) {
         this.mListener = mListener;
-        this.mList = mList;
+        this.haveEdit = haveEdit;
         init(context);
     }
 
@@ -51,12 +51,13 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
         // 设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.AnimationPreview);
 
-        initView(content,context);
+        initView(content);
     }
 
-    private void initView(View content_view,Activity context) {
+    private void initView(View content_view) {
         TextView tv_edit = content_view.findViewById(R.id.tv_edit);
         TextView tv_delete = content_view.findViewById(R.id.tv_delete);
+        tv_edit.setVisibility(haveEdit?View.VISIBLE:View.GONE);
         tv_edit.setOnClickListener(this);
         tv_delete.setOnClickListener(this);
     }
@@ -68,6 +69,7 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
         }else if(view.getId()==R.id.tv_delete){
             mListener.onClickDelete();
         }
+        dismiss();
     }
 
 
@@ -82,11 +84,11 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
      * @param parent
      */
     public void showPopupWindow(View parent) {
-        if (!this.isShowing()) {
+        if (!isShowing()) {
             // 以下拉方式显示popupwindow
-            this.showAsDropDown(parent, 0, 0);
+            showAsDropDown(parent, 30, 0);
         } else {
-            this.dismiss();
+            dismiss();
         }
     }
 
