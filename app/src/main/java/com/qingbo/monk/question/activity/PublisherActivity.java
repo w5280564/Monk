@@ -46,6 +46,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
     private List<UploadPictureBean> imageList = new ArrayList<>();
+    private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
     private String mTitle,mContent,images;
@@ -244,6 +245,8 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
         if (all_size < 8) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
                 checkGalleryPermission(7-all_size);
+            }else{
+                jumpToPhotoShowActivity(position,imageStringList);
             }
         }
     }
@@ -253,18 +256,10 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
      * 展示选择的图片
      */
     private void showImageListImages(List<String> urlList) {
-        if (imageList.size() < 2) {//第一次添加，把每次选择的图片添加到数组最后的位置
-            for (int i = 0; i < urlList.size(); i++) {
-                UploadPictureBean obj = new UploadPictureBean();
-                obj.setImageUrl(urlList.get(i));
-                imageList.add(imageList.size() - 1, obj);
-            }
-        } else {//第二次添加，把每次选择的图片添加到index等于0的位置
-            for (int i = 0; i < urlList.size(); i++) {
-                UploadPictureBean obj = new UploadPictureBean();
-                obj.setImageUrl(urlList.get(i));
-                imageList.add(0, obj);
-            }
+        for (int i = 0; i < urlList.size(); i++) {
+            UploadPictureBean obj = new UploadPictureBean();
+            obj.setImageUrl(urlList.get(i));
+            imageList.add(imageList.size()-1, obj);
         }
         deleteLastOne();
         mAdapter.notifyDataSetChanged();
@@ -279,6 +274,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
 
 
     private void deleteImageNew(int position) {
+        imageStringList.remove(position);
         imageList.remove(position);
         if (imageList.size() >= 2) {
             UploadPictureBean bean = imageList.get(imageList.size() - 1);
@@ -296,6 +292,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
 
     @Override
     protected void onUploadSuccess(List<String> urlList) {
+        imageStringList.addAll(urlList);
         showImageListImages(urlList);
     }
 
