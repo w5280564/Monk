@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MyGroupBean;
-import com.qingbo.monk.question.fragment.GroupFragment_All;
+import com.qingbo.monk.question.fragment.GroupDetailFragment_All;
+import com.qingbo.monk.question.fragment.GroupDetailFragment_What;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
@@ -78,6 +80,16 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
         getGroupDetail(true);
     }
 
+//    @Override
+//    protected void setStatusBar() {
+//        ImmersionBar.with(this)
+//                .fitsSystemWindows(true)
+//                .statusBarColor(R.color.transparent)     //状态栏颜色，不写默认透明色
+//                .statusBarDarkFont(true)
+//                .init();
+//    }
+
+
     @Override
     protected void setStatusBar() {
 
@@ -87,6 +99,11 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
      * 设置状态栏
      */
     private void setBar() {
+//        ImmersionBar.with(this)
+//                .fitsSystemWindows(true)
+//                .statusBarColor(R.color.transparent)     //状态栏颜色，不写默认透明色
+//                .statusBarDarkFont(true)
+//                .init();
         ImmersionBar.with(this).titleBar(rl_title)
                 .statusBarDarkFont(false)
                 .init();
@@ -101,22 +118,22 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
                 bean.setName("全部");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_All());
             } else if (i == 1) {
                 bean.setName("等你回答");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_All());
             } else if (i == 2) {
                 bean.setName("去提问");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_What());
             } else if (i == 3) {
                 bean.setName("我的发布");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_All());
             } else if (i == 4) {
                 bean.setName("审核");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_All());
             } else {
                 bean.setName("预览");
-                fragments.add(new GroupFragment_All());
+                fragments.add(new GroupDetailFragment_All());
             }
 
             menuList.add(bean);
@@ -163,6 +180,14 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
 
 
 
+    @Override
+    public void onRightClick() {
+        GroupSettingActivity.actionStart(mActivity,sheQunBean);
+    }
+
+
+
+
     @OnClick({R.id.ll_back,R.id.ll_menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -174,8 +199,5 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 break;
         }
     }
-
-
-
 
 }

@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/tv_shequn"
-                tools:listitem="@layout/item_group_shequn" />
+                tools:listitem="@layout/item_group_all" />
 
             <TextView
                 android:id="@+id/tv_more"

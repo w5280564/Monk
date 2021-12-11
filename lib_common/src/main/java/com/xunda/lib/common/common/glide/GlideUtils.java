@@ -165,8 +165,8 @@ public class GlideUtils {
     public static void loadCircleImage(Context context, ImageView iv, String url) {
         Glide.with(context)
                 .load(url)
-                .error(R.mipmap.img_pic_none_square)
-                .placeholder(R.mipmap.img_pic_none_square)
+                .error(R.mipmap.icon_logo_round)
+                .placeholder(R.mipmap.icon_logo_round)
                 .transform(new CircleCrop()).into(iv);
 
     }

@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class QuestionGroupAdapter extends BaseQuickAdapter<GroupBean, BaseViewHolder> {
     public QuestionGroupAdapter() {
-        super(R.layout.item_group_shequn);
+        super(R.layout.item_group_all);
     }
 
     @Override

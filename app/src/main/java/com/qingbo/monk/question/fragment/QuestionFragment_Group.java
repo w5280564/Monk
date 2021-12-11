@@ -15,6 +15,7 @@ import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.qingbo.monk.question.activity.MyGroupListActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -62,7 +63,7 @@ public class QuestionFragment_Group extends BaseFragment {
     @Subscribe
     public void onFinishEvent(FinishEvent event) {
         if(event.type == FinishEvent.CREATE_GROUP){
-            getMyShequn();
+            getMyGroup();
         }
     }
 
@@ -78,7 +79,7 @@ public class QuestionFragment_Group extends BaseFragment {
         img_top_banner.setOnItemClickL(new BaseBanner.OnItemClickL() {
             @Override
             public void onItemClick(int position) {
-                GroupDetailActivity.actionStart(mActivity, bannerList.get(position).getId());
+                skipAnotherActivity(MyGroupListActivity.class);
             }
         });
     }
@@ -88,9 +89,9 @@ public class QuestionFragment_Group extends BaseFragment {
         getAllShequn();
     }
 
-    private void getMyShequn() {
+    private void getMyGroup() {
         HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender sender = new HttpSender(HttpUrl.myShequn, "我的社群", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.myGroup, "我的社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -132,7 +133,7 @@ public class QuestionFragment_Group extends BaseFragment {
     private void getAllShequn() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", "1");
-        requestMap.put("limit", "3");
+        requestMap.put("limit", "4");
         HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -144,7 +145,7 @@ public class QuestionFragment_Group extends BaseFragment {
                                 mQuestionGroupAdapter.setNewData(list);
                             }
                         }
-                        getMyShequn();
+                        getMyGroup();
                     }
 
                 }, true);

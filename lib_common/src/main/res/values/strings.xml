@@ -68,7 +68,7 @@
     <string name="Common_loading">努力加载中...</string>
     <string name="brvah_loading">努力加载中...</string>
     <string name="brvah_load_failed">加载失败，请点我重试</string>
-    <string name="brvah_load_end">没有更多数据</string>
+    <string name="brvah_load_end">没有更多内容了~</string>
 
     <string name="permission_apply">权限申请</string>
     <string name="toast_ok">知道了</string>

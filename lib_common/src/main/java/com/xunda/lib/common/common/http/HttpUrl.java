@@ -93,7 +93,7 @@ public class HttpUrl {
     /**
      * 	我的社群
      */
-    public static final String myShequn = "square/detail/my-shequns";
+    public static final String myGroup = "square/detail/my-shequns";
 
 
     /**

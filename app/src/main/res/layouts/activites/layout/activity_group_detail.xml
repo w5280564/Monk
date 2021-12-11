@@ -1,22 +1,72 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    >
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/iv_head_bag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="@dimen/dp_170"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_height"
+            android:background="@color/transparent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_back"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_back_white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_menu"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/gongenneg" />
+
+            </LinearLayout>
+        </RelativeLayout>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/app_background"
+                android:background="@drawable/background_group_bottom_transparent"
                 app:elevation="0dp">
 
 
@@ -26,38 +76,27 @@
                     android:orientation="vertical"
                     app:layout_scrollFlags="scroll|enterAlways">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/iv_head_bag"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp_170"
-                            android:scaleType="centerCrop" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="154dp"
+                        android:layout_marginTop="76dp"
                         android:background="@drawable/background_group_bottom2"
                         android:orientation="vertical"
-                        android:paddingTop="@dimen/dp_30"
                         android:paddingLeft="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/dp_30"
                         android:paddingRight="@dimen/activity_horizontal_margin">
 
                         <TextView
                             android:id="@+id/tv_shequn_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="2"
                             android:ellipsize="end"
-                            android:textStyle="bold"
+                            android:maxLines="2"
                             android:textColor="@color/text_color_444444"
-                            android:textSize="@dimen/sp_16"/>
+                            android:textSize="@dimen/sp_16"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
-
-                    </FrameLayout>
 
                 </LinearLayout>
 
@@ -84,57 +123,13 @@
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/rl_title"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_height"
-                android:background="@color/transparent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/ll_back"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+    </LinearLayout>
 
 
-                    <ImageView
-                        android:id="@+id/iv_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/icon_back_white" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_menu"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/iv_menu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/gongenneg" />
-
-                </LinearLayout>
-            </RelativeLayout>
-        </LinearLayout>
-
-    </FrameLayout>
-</LinearLayout>
+</FrameLayout>
