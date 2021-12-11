@@ -1,6 +1,9 @@
 package com.qingbo.monk.question.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -11,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
+import com.qingbo.monk.bean.QuestionBeanMy;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -34,7 +38,7 @@ import butterknife.OnClick;
 /**
  * 广场问答发布页
  */
-public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
+public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.ll_tag)
@@ -49,25 +53,76 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String mTitle,mContent,images;
+    private String mTitle,mContent,images,questionId;
+    private String submitRequestUrl;
+    private boolean isEdit;
+
+
+    public static void actionStart(Context context, QuestionBeanMy mQuestionBeanMy,boolean isEdit) {
+        Intent intent = new Intent(context, PublisherQuestionActivity.class);
+        intent.putExtra("questionBean",mQuestionBeanMy);
+        intent.putExtra("isEdit",isEdit);
+        context.startActivity(intent);
+    }
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_publisher;
+        return R.layout.activity_publisher_question;
     }
 
     @Override
     protected void initLocalData() {
-        initData();
+        initFirstAddData();
         initImageRecyclerViewAndAdapter();
+
+        isEdit = getIntent().getBooleanExtra("isEdit",false);
+        if (isEdit) {//编辑
+            submitRequestUrl = HttpUrl.editQuestion;
+            QuestionBeanMy mQuestionBeanMy = (QuestionBeanMy) getIntent().getSerializableExtra("questionBean");
+            if (mQuestionBeanMy!=null) {
+                questionId = mQuestionBeanMy.getId();
+                handleEditOtherData(mQuestionBeanMy);
+                handleEditImageData(mQuestionBeanMy);
+            }
+        }else{
+            submitRequestUrl = HttpUrl.createTopic;
+        }
+
     }
 
-    private void initData() {
+    private void handleEditOtherData(QuestionBeanMy mQuestionBeanMy) {
+        et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
+        et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+        String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
+        if (TextUtils.equals(is_anonymous, "1")) {
+            tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
+            llTag.setTag("1");
+        } else {
+            tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
+            llTag.setTag("0");
+        }
+    }
+
+    private void handleEditImageData(QuestionBeanMy mQuestionBeanMy) {
+        String images = mQuestionBeanMy.getImages();
+        if (!StringUtil.isBlank(images)) {
+            List<String> urlList = StringUtil.stringToList(images);
+            imageStringList.addAll(urlList);
+            showImageListImages(urlList);
+        }
+    }
+
+
+    /**
+     * 添加添加图片这个对象
+     */
+    private void initFirstAddData() {
         UploadPictureBean bean = new UploadPictureBean();
         bean.setType(1);
         imageList.add(bean);
-        initImageRecyclerViewAndAdapter();
     }
 
 
@@ -120,7 +175,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
 
                             @Override
                             public void onClickRight() {
-                                createOrSaveTopic("1");
+                                createOrEditSaveQuestion("1");
                             }
 
                             @Override
@@ -171,7 +226,7 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
             return;
         }
 
-        createOrSaveTopic("0");
+        createOrEditSaveQuestion("0");
     }
 
     private void getPramsValue() {
@@ -195,18 +250,23 @@ public class PublisherActivity extends BaseCameraAndGalleryActivity_More {
     }
 
     /**
-     * 发布话题或提问，或保存至草稿
+     * 创建或编辑话题或提问，或保存至草稿
      */
-    private void createOrSaveTopic(String optype) {
+    private void createOrEditSaveQuestion(String optype) {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("type", "1");
         baseMap.put("title", mTitle);
         baseMap.put("content", mContent);
         baseMap.put("is_anonymous", (String) llTag.getTag());
-        baseMap.put("action", "3");
         baseMap.put("images", images);
-        baseMap.put("optype", optype);//默认是0,0是发布,1是保存
-        HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建话题或提问", baseMap,
+        if (isEdit) {//编辑
+            baseMap.put("id", questionId);
+        }else{
+            baseMap.put("type", "1");
+            baseMap.put("action", "3");
+            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
+        }
+
+        HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题或提问，或保存至草稿", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override

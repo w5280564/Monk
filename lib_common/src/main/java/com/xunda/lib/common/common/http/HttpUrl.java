@@ -143,5 +143,16 @@ public class HttpUrl {
     public static final String combination_Topic_Like = "square/position/topic-like";//首页-仓位组合点赞
     public static final String User_Article_Detail = "user/user/article-detail";//首页-个人文章详情
 
+    /**
+     * 删除话题
+     */
+    public static final String deleteTopic = "square/detail/delete-topic";
+
+
+    /**
+     * 编辑话题
+     */
+    public static final String editQuestion = "square/detail/up-publish";
+
 }
 

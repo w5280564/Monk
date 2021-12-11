@@ -120,6 +120,8 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
             tv_status.setVisibility(View.VISIBLE);
             setDrawableLeft(R.mipmap.weitongguo,tv_status);
             tv_status.setText("未通过");
+        } else{
+            tv_status.setVisibility(View.GONE);
         }
 
 

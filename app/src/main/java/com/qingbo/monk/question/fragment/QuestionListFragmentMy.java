@@ -16,9 +16,8 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBeanMy;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.bean.QuestionBeanMy;
-import com.qingbo.monk.question.activity.PublisherActivity;
+import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -26,6 +25,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.MyPopWindow;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -125,7 +125,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.more_Img:
                         ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                        showPopMenu(more_Img);
+                        showPopMenu(more_Img,mQuestionBean,position);
                         break;
                 }
             }
@@ -141,23 +141,61 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
     }
 
 
-    private void showPopMenu(ImageView more_Img){
+    private void showPopMenu(ImageView more_Img,QuestionBeanMy mQuestionBean,int position){
         List<String> mMenuList = new ArrayList<>();
         mMenuList.add("编辑");
         mMenuList.add("删除");
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, mMenuList, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-
+                PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);
             }
 
             @Override
             public void onClickDelete() {
-
+                showDeleteDialog(mQuestionBean.getId(),position);
             }
 
         });
         morePopWindow.showPopupWindow(more_Img);
+    }
+
+    private void showDeleteDialog(String mQuestionId,int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity, "确定删除此问答？", "取消", "确定",
+                new TwoButtonDialogBlue.ConfirmListener() {
+
+                    @Override
+                    public void onClickRight() {
+                        deleteQuestion(mQuestionId,position);
+                    }
+
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+                });
+
+        mDialog.show();
+    }
+
+    /**
+     * 删除话题
+     * @param mQuestionId
+     */
+    private void deleteQuestion(String mQuestionId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", mQuestionId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.deleteTopic, "删除话题", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    mAdapter.remove(position);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 
@@ -208,6 +246,6 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-        skipAnotherActivity(PublisherActivity.class);
+        skipAnotherActivity(PublisherQuestionActivity.class);
     }
 }

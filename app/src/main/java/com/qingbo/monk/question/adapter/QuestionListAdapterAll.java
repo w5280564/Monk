@@ -1,6 +1,7 @@
 package com.qingbo.monk.question.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -70,6 +71,14 @@ public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseV
         if (!StringUtil.isBlank(item.getTitle())) {
             title_Tv.setVisibility(View.VISIBLE);
             title_Tv.setText(item.getTitle());
+            if (TextUtils.equals(item.getIsHot(), "1")) {
+                Drawable drawableLeft = mContext.getResources().getDrawable(R.mipmap.hot);
+                title_Tv.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                        null, null, null);
+            }else{
+                title_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                        null, null, null);
+            }
         }else{
             title_Tv.setVisibility(View.GONE);
         }

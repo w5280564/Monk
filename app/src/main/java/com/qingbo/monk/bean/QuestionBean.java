@@ -38,4 +38,6 @@ public class QuestionBean {
         private Integer followStatus;
         @SerializedName("liked_status")
         private Integer likedStatus;
+        @SerializedName("is_hot")
+        private String isHot;
 }
