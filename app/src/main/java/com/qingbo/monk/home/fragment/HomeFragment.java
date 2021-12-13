@@ -3,7 +3,6 @@ package com.qingbo.monk.home.fragment;
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +63,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.icon_Img)
     ImageView icon_Img;
 
-    int page = 1;
 
     @Override
     protected int getLayoutId() {
@@ -75,7 +73,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     protected void initView() {
         super.initView();
         initTab();
-
     }
 
     @Override

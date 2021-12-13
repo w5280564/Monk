@@ -1,5 +1,6 @@
 package com.qingbo.monk.base;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +73,9 @@ public class BaseTabLayoutActivity extends BaseActivity {
     }
 
 
+    @SuppressLint("WrongConstant")
     protected void initViewPager(int position) {
+        mTabLayout.setTabMode(TabLayout.MODE_AUTO);
         NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
         //给ViewPager设置适配器
         mViewPager.setAdapter(mFragmentAdapter);
@@ -90,7 +93,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
 
         View view = mTabLayout.getTabAt(0).getCustomView();
         if (null != view) {
-            setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+            setTextViewStyle(view, 16, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
 
         mViewPager.setCurrentItem(0);

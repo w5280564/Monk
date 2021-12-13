@@ -73,10 +73,10 @@
         android:id="@+id/follow_Img"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
-        android:background="@mipmap/icon_dainzan"
         android:layout_marginTop="@dimen/dp_19"
-        android:layout_marginStart="@dimen/dp_24"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+        android:background="@mipmap/icon_dainzan"
+        android:layout_marginStart="@dimen/dp_15"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView

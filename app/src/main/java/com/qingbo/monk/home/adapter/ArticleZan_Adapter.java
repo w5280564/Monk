@@ -16,13 +16,14 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
+import com.qingbo.monk.bean.ArticleLikedBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.List;
 
-public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleCommentBean, BaseViewHolder> {
+public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseViewHolder> {
 
     public ArticleZan_Adapter() {
         super(R.layout.articlezan_adapter);
@@ -30,7 +31,7 @@ public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleCommentBean, Bas
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, ArticleCommentBean item) {
+    protected void convert(@NonNull BaseViewHolder helper, ArticleLikedBean item) {
         ImageView head_Img = helper.getView(R.id.head_Img);
         TextView nickName_Tv = helper.getView(R.id.nickName_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
@@ -39,22 +40,11 @@ public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleCommentBean, Bas
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
 
-        String is_anonymous = item.getIsAnonymous();//1是匿名
-        if (TextUtils.equals(is_anonymous, "1")) {
-            nickName_Tv.setText("匿名用户");
-            head_Img.setBackgroundResource(R.mipmap.icon_logo);
-            head_Img.setEnabled(false);
-        } else {
-            GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
-            nickName_Tv.setText(item.getAuthorName());
-//            isFollow(item.getFollow_status(), follow_Tv, send_Mes);
-        }
-        if (TextUtils.isEmpty(item.getComment())) {
-            content_Tv.setVisibility(View.GONE);
-        } else {
-            content_Tv.setVisibility(View.VISIBLE);
-        }
-        content_Tv.setText(item.getComment());
+        GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
+        nickName_Tv.setText(item.getNickname());
+        isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
+        String format = String.format("发布%1$s条，粉丝%2$s人，关注%3$s人", item.getArticleNum(), item.getFansNum(), item.getFollowerNum());
+        content_Tv.setText(format);
 
         helper.addOnClickListener(R.id.follow_Tv);
     }
@@ -89,9 +79,6 @@ public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleCommentBean, Bas
             send_Mes.setVisibility(View.VISIBLE);
         }
     }
-
-
-
 
 
     @Override

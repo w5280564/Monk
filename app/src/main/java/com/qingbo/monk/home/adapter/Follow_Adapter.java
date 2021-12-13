@@ -58,6 +58,18 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
 
+        if (TextUtils.isEmpty(item.getTitle())) {
+            title_Tv.setVisibility(View.GONE);
+        } else {
+            title_Tv.setVisibility(View.VISIBLE);
+        }
+        if (TextUtils.isEmpty(item.getContent())) {
+            content_Tv.setVisibility(View.GONE);
+        } else {
+            content_Tv.setVisibility(View.VISIBLE);
+        }
+
+
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));

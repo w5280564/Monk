@@ -2,16 +2,6 @@ package com.qingbo.monk.home.activity;
 
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +13,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.appbar.AppBarLayout;
@@ -55,9 +54,9 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 个人文章详情
+ * 首页—社群详情
  */
-public class HomeFocus_Activity extends BaseActivity implements View.OnClickListener {
+public class HomeGroup_Activity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.person_Img)
     ImageView person_Img;
     @BindView(R.id.person_Name)
@@ -100,8 +99,6 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
     ViewPager card_ViewPager;
     @BindView(R.id.appLayout)
     AppBarLayout appLayout;
-    @BindView(R.id.group_Con)
-    ConstraintLayout group_Con;
 
 
     private String articleId;
@@ -113,7 +110,7 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
     public static void startActivity(Context context, String articleId, String isShowTop) {
-        Intent intent = new Intent(context, HomeFocus_Activity.class);
+        Intent intent = new Intent(context, HomeGroup_Activity.class);
         intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
         context.startActivity(intent);
@@ -199,6 +196,7 @@ public class HomeFocus_Activity extends BaseActivity implements View.OnClickList
         String type = homeFoucsDetail_bean.getData().getDetail().getType();
         tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId,type));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId,type));
+//        tabFragmentList.add(HomeCommendFragment.newInstance(articleId,type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull

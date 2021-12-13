@@ -155,6 +155,7 @@ public class HttpUrl {
      */
     public static final String editQuestion = "square/detail/up-publish";
     public static final String Article_CommentList = "comment/comment/article-comment-list";//获取文章评论
+    public static final String Article_LikedList = "comment/article/liked-list";//文章点赞列表
 
 }
 

@@ -12,17 +12,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
+import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ import java.util.List;
  */
 public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragment {
     private String articleId, type;
+    TabLayout tab;
 
     public static ArticleDetail_Comment_Fragment newInstance(String articleId, String type) {
         Bundle args = new Bundle();
@@ -50,6 +54,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void initView(View mView) {
+        tab = requireActivity().findViewById(R.id.card_Tab);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无评论", false);
@@ -68,6 +73,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
     ArticleCommentListBean articleCommentListBean;
+
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", 1 + "");
@@ -77,9 +83,11 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
+                    articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
                     if (articleCommentListBean != null) {
                         handleSplitListData(articleCommentListBean, mAdapter, limit);
+                        String count = String.format("评论(%1$s)", articleCommentListBean.getCount());
+                        tab.getTabAt(0).setText(count);
                     }
                 }
             }
@@ -121,49 +129,43 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.follow_Img:
-                        String likeId = item.getAuthorId();
-                        postLikedData(likeId, position);
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.follow_Img:
+                    String likeId = item.getId();
+                    postLikedData(likeId, position);
+                    break;
+                case R.id.commentMore_Tv:
+                    T.s("点击查看更多回复", 1000);
+                    break;
             }
         });
 
 
-        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister(new ArticleComment_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister((position, strings) -> jumpToPhotoShowActivity(position, strings));
     }
-
 
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", likeId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
+        requestMap.put("commentId", likeId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Mes_Like, "评论 点赞/取消点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
+                    CommendLikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, CommendLikedStateBena.class);
                     ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
                     TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
                     if (likedStateBena != null) {
                         //0取消点赞成功，1点赞成功
                         int nowLike;
                         nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLiked_status() == 0) {
+                        if (likedStateBena.getLike_status() == 0) {
                             nowLike -= 1;
                             follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLiked_status() == 1) {
+                        } else if (likedStateBena.getLike_status() == 1) {
                             follow_Img.setBackgroundResource(R.mipmap.dianzan);
                             nowLike += 1;
                         }

@@ -11,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -24,6 +26,8 @@ import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
+import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.Arrays;
@@ -45,7 +49,9 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        ConstraintLayout children_Comment = helper.getView(R.id.children_Comment);
         RecyclerView commentChildren_List = helper.getView(R.id.commentChildren_List);
+        TextView commentMore_Tv = helper.getView(R.id.commentMore_Tv);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
@@ -72,8 +78,21 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         mes_Count.setText(item.getChildrenNum());
         isLike(item.getLikedStatus(), item.getLikedNum(), follow_Img, follow_Count);
 
+        if (ListUtils.isEmpty(item.getChildrens())) {//是否有二级评论
+            children_Comment.setVisibility(View.GONE);
+        } else {
+            children_Comment.setVisibility(View.VISIBLE);
+            showNineView(commentChildren_List,item.getChildrens());
+            if (item.getChildrens().size() > 3) {//二级评论超过三条
+                commentMore_Tv.setVisibility(View.VISIBLE);
+                String format = String.format("查看全部%1$s条回复", item.getChildrenNum());
+                commentMore_Tv.setText(format);
+            }
+        }
+
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.commentMore_Tv);
     }
 
 
@@ -89,8 +108,6 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
     }
 
 
-
-
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
         super.setOnItemClickListener(listener);
@@ -104,6 +121,25 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
 
     public void setOnItemImgClickLister(OnItemImgClickLister ItemListener) {
         onItemImgClickLister = ItemListener;
+    }
+
+    /**
+     * 加载二级评论
+     *
+     */
+    private void showNineView(RecyclerView mNineView, List<ArticleCommentBean.ChildrensDTO> data) {
+        LinearLayoutManager layout = new LinearLayoutManager(mContext);
+        layout.setOrientation(LinearLayoutManager.VERTICAL);
+        mNineView.setLayoutManager(layout);
+        ArticleComment_Childrens_Adapter childrens_adapter = new ArticleComment_Childrens_Adapter();
+        mNineView.setAdapter(childrens_adapter);
+        childrens_adapter.setNewData(data);
+        childrens_adapter.setOnItemClickListener(new ArticleComment_Childrens_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
     }
 
 

@@ -46,39 +46,68 @@
         app:layout_constraintTop_toBottomOf="@+id/nickName_Tv" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentChildren_List"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/children_Comment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
         android:background="@drawable/interest_lable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/content_Tv"
-        app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+        app:layout_constraintTop_toBottomOf="@+id/content_Tv">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentChildren_List"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/commentMore_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginTop="3dp"
+            android:drawableRight="@mipmap/gengduo"
+            android:drawablePadding="@dimen/dp_10"
+            android:text="查看全部18条回复 "
+            android:visibility="gone"
+            android:textColor="@color/text_color_1F8FE5"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/time_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
         android:text="18:30"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
-        android:layout_marginTop="@dimen/dp_12"
-        app:layout_constraintStart_toStartOf="@+id/commentChildren_List"
-        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+        app:layout_constraintStart_toStartOf="@+id/children_Comment"
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
     <TextView
         android:id="@+id/mes_Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="111"
-        android:layout_marginEnd="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_18"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
     <ImageView
         android:id="@+id/mes_Img"
@@ -88,29 +117,28 @@
         android:layout_marginEnd="@dimen/dp_4"
         android:background="@mipmap/icon_pinglun"
         app:layout_constraintEnd_toStartOf="@+id/mes_Count"
-        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
 
     <TextView
         android:id="@+id/follow_Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="11"
-        android:textColor="@color/text_color_6f6f6f"
-        android:textSize="10sp"
         android:layout_marginTop="@dimen/dp_12"
         android:layout_marginEnd="@dimen/dp_26"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="10sp"
         app:layout_constraintEnd_toStartOf="@+id/mes_Img"
-        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
     <ImageView
         android:id="@+id/follow_Img"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_19"
-        android:background="@mipmap/icon_dainzan"
         android:layout_marginEnd="1dp"
+        android:background="@mipmap/icon_dainzan"
         app:layout_constraintEnd_toStartOf="@+id/follow_Count"
-        app:layout_constraintTop_toBottomOf="@+id/commentChildren_List" />
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

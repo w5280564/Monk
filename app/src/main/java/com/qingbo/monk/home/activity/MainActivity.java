@@ -35,6 +35,7 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+import com.xunda.lib.common.view.MyArrowItemView;
 
 import java.util.HashMap;
 
@@ -59,8 +60,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     ImageView head_Tv;
     @BindView(R.id.quit_Tv)
     TextView quit_Tv;
-    private long clickTime;
+    @BindView(R.id.Insider_MyView)
+    MyArrowItemView Insider_MyView;
 
+    private long clickTime;
 
     @Override
     protected int getLayoutId() {
@@ -87,6 +90,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     protected void initEvent() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         quit_Tv.setOnClickListener(this);
+        Insider_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -154,6 +158,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                     public void onClickClose() {
                         closeApp();
                     }
+
                     @Override
                     public void onClickQuit() {
                         new TwoButtonDialogBlue(mActivity, "确定退出登录吗？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
@@ -161,12 +166,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                             public void onClickRight() {
                                 getQuit();
                             }
+
                             @Override
                             public void onClickLeft() {
                             }
                         }).show();
                     }
                 }).show();
+                break;
+            case R.id.Insider_MyView:
+                SideslipInsider_Activity.startActivity(this,"","");
+                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
                 break;
         }
     }

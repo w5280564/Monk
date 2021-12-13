@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.qingbo.monk">
+    package="com.qingbo.monk"
+    tools:ignore="ProtectedPermissions">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -59,6 +60,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".home.activity.SideslipInsider_Activity"
+            android:exported="false" />
+        <activity
             android:name=".home.activity.HomeFocus_Activity"
             android:exported="false" />
 
@@ -97,19 +101,18 @@
         <activity android:name=".question.activity.GroupDetailActivity" />
         <activity android:name=".question.activity.PublisherQuestionActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
-        <activity android:name=".question.activity.GroupSettingActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+        <activity
+            android:name=".question.activity.GroupSettingActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".base.PhotoShowActivity" />
-
-
+        <activity android:name=".home.activity.HomeGroup_Activity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:taskAffinity="net.sourceforge.simcpux"
-            android:launchMode="singleTask">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

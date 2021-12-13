@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ArticleCommentBean {
+
     @SerializedName("id")
     private String id;
     @SerializedName("comment")
@@ -28,8 +29,33 @@ public class ArticleCommentBean {
     private String childrenNum;
     @SerializedName("avatar")
     private String avatar;
+    @SerializedName("childrens")
+    private List<ChildrensDTO> childrens;
     @SerializedName("liked_num")
     private String likedNum;
     @SerializedName("liked_status")
     private Integer likedStatus;
+
+    @NoArgsConstructor
+    @Data
+    public static class ChildrensDTO {
+        @SerializedName("parent_id")
+        private String parentId;
+        @SerializedName("comment_id")
+        private String commentId;
+        @SerializedName("comment")
+        private String comment;
+        @SerializedName("author_id")
+        private String authorId;
+        @SerializedName("author_name")
+        private String authorName;
+        @SerializedName("replyer_id")
+        private String replyerId;
+        @SerializedName("replyer_name")
+        private String replyerName;
+        @SerializedName("audit_status")
+        private String auditStatus;
+        @SerializedName("create_time")
+        private String createTime;
+    }
 }

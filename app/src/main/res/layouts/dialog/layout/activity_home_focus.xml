@@ -7,23 +7,12 @@
     tools:context=".home.activity.HomeFocus_Activity"
     tools:ignore="MissingConstraints">
 
-    <com.xunda.lib.common.common.titlebar.CustomTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/title_height"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarRightImg="@mipmap/icon_sousuo"
-        app:titleBarRightShowFlag="VISIBLE"
-        app:titleBarRightShowType="IMG"
-        app:titleBarShowBottomLine="false"
-        app:titleBarTitle="详情" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -32,253 +21,275 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="false">
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
-
-                <ImageView
-                    android:id="@+id/person_Img"
-                    android:layout_width="@dimen/dp_36"
-                    android:layout_height="@dimen/dp_36"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/person_Name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:maxLength="10"
-                    android:text=""
-                    android:textColor="@color/text_color_444444"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toEndOf="@+id/person_Img"
-                    app:layout_constraintTop_toTopOf="@+id/person_Img" />
-
-                <LinearLayout
-                    android:id="@+id/lable_Lin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="@+id/person_Name"
-                    app:layout_constraintStart_toEndOf="@+id/person_Name"
-                    app:layout_constraintTop_toTopOf="@+id/person_Name" />
-
-
-                <TextView
-                    android:id="@+id/time_Tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_6"
-                    android:text=""
-                    android:textColor="@color/text_color_a1a1a1"
-                    android:textSize="10sp"
-                    app:layout_constraintStart_toStartOf="@+id/person_Name"
-                    app:layout_constraintTop_toBottomOf="@+id/person_Name" />
-
-
-                <TextView
-                    android:id="@+id/follow_Tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_22"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:background="@drawable/interest_lable"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/dp_11"
-                    android:paddingEnd="@dimen/dp_11"
-                    android:text="关注"
-                    android:textColor="@color/text_color_444444"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/person_Img" />
-
-                <TextView
-                    android:id="@+id/send_Mes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_22"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:background="@drawable/interest_lable"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/dp_8"
-                    android:paddingEnd="@dimen/dp_8"
-                    android:text="私信"
-                    android:textColor="@color/text_color_a1a1a1"
-                    android:textSize="10sp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/follow_Tv"
-                    app:layout_constraintStart_toStartOf="@+id/follow_Tv"
-                    app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
-
-
-                <TextView
-                    android:id="@+id/title_Tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_16"
-                    android:layout_marginTop="@dimen/dp_14"
-                    android:layout_marginEnd="@dimen/dp_27"
-                    android:maxLines="2"
-                    android:maxLength="40"
-                    android:textColor="@color/text_color_444444"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/person_Img" />
-
-                <TextView
-                    android:id="@+id/content_Tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_7"
-                    android:layout_marginEnd="@dimen/dp_15"
-                    android:textColor="@color/text_color_6f6f6f"
-                    android:textSize="14sp"
-                    android:maxLength="2000"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title_Tv" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/nine_grid"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginEnd="@dimen/dp_15"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+                app:expandedTitleMarginEnd="48dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/group_Con"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_62"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:layout_marginTop="@dimen/dp_18"
-                    android:layout_marginEnd="@dimen/dp_15"
-                    android:background="@drawable/base_gradual"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/nine_grid"
-                    app:layout_constraintTop_toBottomOf="@+id/nine_grid">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_33"
+                    app:layout_scrollFlags="scroll|enterAlways">
 
                     <ImageView
-                        android:id="@+id/groupHead_Img"
+                        android:id="@+id/person_Img"
                         android:layout_width="@dimen/dp_36"
                         android:layout_height="@dimen/dp_36"
                         android:layout_marginStart="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_10"
                         android:scaleType="centerCrop"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/groupName_Tv"
+                        android:id="@+id/person_Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:maxLength="10"
+                        android:text=""
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@+id/person_Img"
+                        app:layout_constraintTop_toTopOf="@+id/person_Img" />
+
+                    <LinearLayout
+                        android:id="@+id/lable_Lin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/person_Name"
+                        app:layout_constraintStart_toEndOf="@+id/person_Name"
+                        app:layout_constraintTop_toTopOf="@+id/person_Name" />
+
+
+                    <TextView
+                        android:id="@+id/time_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_6"
+                        android:text=""
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="@+id/person_Name"
+                        app:layout_constraintTop_toBottomOf="@+id/person_Name" />
+
+
+                    <TextView
+                        android:id="@+id/follow_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:background="@drawable/interest_lable"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/dp_11"
+                        android:paddingEnd="@dimen/dp_11"
+                        android:text="关注"
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/person_Img" />
+
+                    <TextView
+                        android:id="@+id/send_Mes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dp_22"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:background="@drawable/interest_lable"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/dp_8"
+                        android:paddingEnd="@dimen/dp_8"
+                        android:text="私信"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="10sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="@+id/follow_Tv"
+                        app:layout_constraintStart_toStartOf="@+id/follow_Tv"
+                        app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
+
+
+                    <TextView
+                        android:id="@+id/title_Tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:layout_marginTop="@dimen/dp_14"
+                        android:layout_marginEnd="@dimen/dp_27"
+                        android:maxLength="40"
+                        android:maxLines="2"
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/person_Img" />
+
+                    <TextView
+                        android:id="@+id/content_Tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_7"
+                        android:layout_marginEnd="@dimen/dp_15"
+                        android:maxLength="2000"
+                        android:textColor="@color/text_color_6f6f6f"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title_Tv" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/nine_grid"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_15"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/group_Con"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_62"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_18"
+                        android:layout_marginEnd="@dimen/dp_15"
+                        android:background="@drawable/base_gradual"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/nine_grid"
+                        app:layout_constraintTop_toBottomOf="@+id/nine_grid">
+
+                        <ImageView
+                            android:id="@+id/groupHead_Img"
+                            android:layout_width="@dimen/dp_36"
+                            android:layout_height="@dimen/dp_36"
+                            android:layout_marginStart="@dimen/dp_15"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/groupName_Tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_9"
+                            android:textColor="@color/text_color_6f6f6f"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toEndOf="@+id/groupHead_Img"
+                            app:layout_constraintTop_toTopOf="@+id/groupHead_Img" />
+
+
+                        <TextView
+                            android:id="@+id/groupDes_Tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_color_a1a1a1"
+                            android:textSize="10sp"
+                            app:layout_constraintStart_toStartOf="@+id/groupName_Tv"
+                            app:layout_constraintTop_toBottomOf="@+id/groupName_Tv" />
+
+                        <TextView
+                            android:id="@+id/join_Tv"
+                            android:layout_width="@dimen/dp_46"
+                            android:layout_height="@dimen/dp_22"
+                            android:layout_marginEnd="@dimen/dp_7"
+                            android:background="@drawable/interest_lable"
+                            android:gravity="center"
+                            android:text="加入"
+                            android:textColor="@color/text_color_444444"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView
+                            android:id="@+id/headListView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_16"
+                            app:isLastComplete="true"
+                            app:isShowAnimation="true"
+                            app:layout_constraintBottom_toBottomOf="@+id/join_Tv"
+                            app:layout_constraintEnd_toStartOf="@+id/join_Tv"
+                            app:layout_constraintTop_toTopOf="@+id/join_Tv"
+                            app:radius="9"
+                            app:space="0.8" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/follow_Img"
+                        android:layout_width="@dimen/dp_18"
+                        android:layout_height="@dimen/dp_18"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:background="@mipmap/icon_dainzan"
+                        app:layout_constraintStart_toStartOf="@+id/group_Con"
+                        app:layout_constraintTop_toBottomOf="@+id/group_Con" />
+
+                    <TextView
+                        android:id="@+id/follow_Count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_9"
-                        android:textColor="@color/text_color_6f6f6f"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/groupHead_Img"
-                        app:layout_constraintTop_toTopOf="@+id/groupHead_Img" />
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/follow_Img"
+                        app:layout_constraintStart_toEndOf="@+id/follow_Img"
+                        app:layout_constraintTop_toTopOf="@+id/follow_Img" />
 
+                    <ImageView
+                        android:id="@+id/mes_Img"
+                        android:layout_width="@dimen/dp_18"
+                        android:layout_height="@dimen/dp_18"
+                        android:layout_marginStart="@dimen/dp_40"
+                        android:background="@mipmap/icon_pinglun"
+                        app:layout_constraintBottom_toBottomOf="@+id/follow_Count"
+                        app:layout_constraintStart_toEndOf="@+id/follow_Count"
+                        app:layout_constraintTop_toTopOf="@+id/follow_Count" />
 
                     <TextView
-                        android:id="@+id/groupDes_Tv"
+                        android:id="@+id/mes_Count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_8"
                         android:textColor="@color/text_color_a1a1a1"
-                        android:textSize="10sp"
-                        app:layout_constraintStart_toStartOf="@+id/groupName_Tv"
-                        app:layout_constraintTop_toBottomOf="@+id/groupName_Tv" />
-
-                    <TextView
-                        android:id="@+id/join_Tv"
-                        android:layout_width="@dimen/dp_46"
-                        android:layout_height="@dimen/dp_22"
-                        android:layout_marginEnd="@dimen/dp_7"
-                        android:background="@drawable/interest_lable"
-                        android:gravity="center"
-                        android:text="加入"
-                        android:textColor="@color/text_color_444444"
                         android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="@+id/mes_Img"
+                        app:layout_constraintStart_toEndOf="@+id/mes_Img"
+                        app:layout_constraintTop_toTopOf="@+id/mes_Img" />
 
-                    <com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView
-                        android:id="@+id/headListView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_16"
-                        app:isLastComplete="true"
-                        app:isShowAnimation="true"
-                        app:layout_constraintBottom_toBottomOf="@+id/join_Tv"
-                        app:layout_constraintEnd_toStartOf="@+id/join_Tv"
-                        app:layout_constraintTop_toTopOf="@+id/join_Tv"
-                        app:radius="9"
-                        app:space="0.8" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_13"
+                        android:background="@color/text_color_EFEFEF"
+                        app:layout_constraintTop_toBottomOf="@id/follow_Img" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageView
-                    android:id="@+id/follow_Img"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_18"
-                    android:layout_marginTop="@dimen/dp_15"
-                    android:background="@mipmap/icon_dainzan"
-                    app:layout_constraintStart_toStartOf="@+id/group_Con"
-                    app:layout_constraintTop_toBottomOf="@+id/group_Con" />
-
-                <TextView
-                    android:id="@+id/follow_Count"
+                <com.xunda.lib.common.common.titlebar.CustomTitleBar
+                    android:id="@+id/title_bar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_9"
-                    android:textColor="@color/text_color_a1a1a1"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/follow_Img"
-                    app:layout_constraintStart_toEndOf="@+id/follow_Img"
-                    app:layout_constraintTop_toTopOf="@+id/follow_Img" />
-
-                <ImageView
-                    android:id="@+id/mes_Img"
-                    android:layout_width="@dimen/dp_18"
-                    android:layout_height="@dimen/dp_18"
-                    android:layout_marginStart="@dimen/dp_40"
-                    android:background="@mipmap/icon_pinglun"
-                    app:layout_constraintBottom_toBottomOf="@+id/follow_Count"
-                    app:layout_constraintStart_toEndOf="@+id/follow_Count"
-                    app:layout_constraintTop_toTopOf="@+id/follow_Count" />
-
-                <TextView
-                    android:id="@+id/mes_Count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_8"
-                    android:textColor="@color/text_color_a1a1a1"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/mes_Img"
-                    app:layout_constraintStart_toEndOf="@+id/mes_Img"
-                    app:layout_constraintTop_toTopOf="@+id/mes_Img" />
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_10"
-                    android:background="@color/text_color_EFEFEF"
-                    app:layout_constraintTop_toBottomOf="@id/follow_Img"
-                    android:layout_marginTop="@dimen/dp_13"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:titleBarLeftImg="@mipmap/icon_back"
+                    app:titleBarRightImg="@mipmap/icon_sousuo"
+                    app:titleBarRightShowFlag="VISIBLE"
+                    app:titleBarRightShowType="IMG"
+                    app:titleBarShowBottomLine="false"
+                    app:titleBarTitle="详情" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/card_Tab"

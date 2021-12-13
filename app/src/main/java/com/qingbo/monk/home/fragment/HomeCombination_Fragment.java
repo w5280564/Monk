@@ -30,7 +30,7 @@ import com.xunda.lib.common.common.utils.L;
 import java.util.HashMap;
 
 /**
- * 首页滑动tab页--内部人
+ * 首页滑动tab页--仓位组合
  */
 public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
 

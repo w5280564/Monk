@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
+import com.qingbo.monk.bean.ArticleLikedBean;
+import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
@@ -34,6 +37,7 @@ import java.util.List;
  */
 public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     private String articleId, type;
+    private TabLayout tab;
 
     public static ArticleDetail_Zan_Fragment newInstance(String articleId, String type) {
         Bundle args = new Bundle();
@@ -52,6 +56,7 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        tab = requireActivity().findViewById(R.id.card_Tab);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无评论", false);
@@ -69,19 +74,21 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    ArticleCommentListBean articleCommentListBean;
+    ArticleLikedListBean articleLikedListBean;
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", 1 + "");
         requestMap.put("type", type);
-        HttpSender httpSender = new HttpSender(HttpUrl.Article_CommentList, "获取文章评论", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Article_LikedList, "文章点赞列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
-                    if (articleCommentListBean != null) {
-                        handleSplitListData(articleCommentListBean, mAdapter, limit);
+                     articleLikedListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleLikedListBean.class);
+                    if (articleLikedListBean != null) {
+                        handleSplitListData(articleLikedListBean, mAdapter, limit);
+                        String count = String.format("赞(%1$s)", articleLikedListBean.getCount());
+                        tab.getTabAt(1).setText(count);
                     }
                 }
             }
@@ -124,14 +131,13 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemChildClickListener(new ArticleZan_Adapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+                ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-//                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
-                        String likeId = item.getAuthorId();
+                        String likeId = item.getId();
                         postFollowData(likeId, position);
                         break;
                 }
@@ -159,10 +165,6 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
                     ((ArticleZan_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.getData().remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
                 }
             }
         }, true);
