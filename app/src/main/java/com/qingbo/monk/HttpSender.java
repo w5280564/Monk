@@ -34,7 +34,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 
 /**
- * Created by ouyang on 2017/1/6 0006.
+ * Created by ouyang
  */
 
 public class HttpSender {
