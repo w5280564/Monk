@@ -3,12 +3,10 @@ package com.qingbo.monk.base;
 import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
-import com.xunda.lib.common.common.eventbus.ClickImageFinishEvent;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.qingbo.monk.R;
 import com.xunda.lib.common.view.ViewPagerPhoto;
 import com.gyf.barlibrary.ImmersionBar;
-import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -16,7 +14,7 @@ import butterknife.BindView;
 /**
  * 查看图片的公共页面
  */
-public class PhotoShowActivity extends BaseActivity {
+public class PhotoShowActivity extends BaseActivity implements PhotoFragment.FragmentCallBack {
     @BindView(R.id.viewpager)
     ViewPagerPhoto viewPager;
     @BindView(R.id.tv_num)
@@ -31,25 +29,13 @@ public class PhotoShowActivity extends BaseActivity {
         return R.layout.activity_photo_show;
     }
 
-    @Subscribe
-    public void onFinishEvent(ClickImageFinishEvent event) {
-        if(event.type == ClickImageFinishEvent.CLICK_IMAGE){
-            back();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        }
-
-    }
 
 
-        @Override
+    @Override
     protected void setStatusBar() {
         ImmersionBar.with(this).init();
     }
 
-    @Override
-    protected void initView() {
-        registerEventBus();
-    }
 
     @Override
     protected void initLocalData() {
@@ -90,4 +76,9 @@ public class PhotoShowActivity extends BaseActivity {
 
 
 
+    @Override
+    public void onViewClick() {
+        back();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 }
