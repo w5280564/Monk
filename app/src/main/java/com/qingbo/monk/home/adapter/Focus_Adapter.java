@@ -49,7 +49,9 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        ImageView mes_Img = helper.getView(R.id.mes_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
+        viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
         group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
 
@@ -77,8 +79,10 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
-        String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
-        time_Tv.setText(userDate);
+        if (!TextUtils.isEmpty(item.getCreateTime())) {
+            String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
+            time_Tv.setText(userDate);
+        }
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
@@ -87,6 +91,7 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.mes_Img);
     }
 
     /**

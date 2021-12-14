@@ -56,8 +56,9 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         TextView send_Mes = helper.getView(R.id.send_Mes);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        ImageView mes_Img = helper.getView(R.id.mes_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
-
+        viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
         if (TextUtils.isEmpty(item.getTitle())) {
             title_Tv.setVisibility(View.GONE);
         } else {
@@ -72,7 +73,9 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
 
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
-        time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
+        if (!TextUtils.isEmpty(item.getCreateTime())) {
+            time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
+        }
         follow_Count.setText(item.getLikedNum());
         mes_Count.setText(item.getCommentNum());
 
@@ -116,15 +119,12 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
                 time_Tv.setText(userDate);
             }
         }
-
-
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
-
         showNineView(item.getImages(), mNineView);//多张图片
-
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.mes_Img);
     }
 
     /**

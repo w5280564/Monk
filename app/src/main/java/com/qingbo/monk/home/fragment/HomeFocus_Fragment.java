@@ -18,7 +18,7 @@ import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.home.activity.HomeFocus_Activity;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
@@ -107,11 +107,12 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter = new Focus_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(HomeFocus_Activity.class);
+//            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String action = item.getAction();//1是社群 2是兴趣圈 3是个人
             String articleId = item.getArticleId();
-            HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
+            String type = item.getType();
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
         });
 
     }
@@ -134,6 +135,12 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                         String likeId = homeFllowBean.getList().get(position).getArticleId();
                         L.d(likeId);
                         postLikedData(likeId, position);
+                        break;
+                    case R.id.mes_Img:
+                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                        String articleId = item.getArticleId();
+                        String type = item.getType();
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
                         break;
                 }
             }

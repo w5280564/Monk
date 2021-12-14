@@ -51,6 +51,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/ab_back_material_white.xml" value="0.3614583333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/background_begin.xml" value="0.3614583333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/background_white_shape.xml" value="0.3614583333333333" />
+        <entry key="..\:/Monk/lib_common/src/main/res/drawable/bg_f5f5f5.xml" value="0.36354166666666665" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/btn_background_dialog.xml" value="0.3614583333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/btn_shape_gray_round.xml" value="0.3614583333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/interest_lable.xml" value="0.37916666666666665" />
@@ -70,6 +71,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/shape_bag_line.xml" value="0.3614583333333333" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/text_topleft_shape.xml" value="0.27447916666666666" />
         <entry key="..\:/Monk/lib_common/src/main/res/drawable/text_topright_shape.xml" value="0.27447916666666666" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/custom_titlebar_layout.xml" value="0.3307291666666667" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_permission_apply.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_privacy_policy_again.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_quit.xml" value="0.35052083333333334" />

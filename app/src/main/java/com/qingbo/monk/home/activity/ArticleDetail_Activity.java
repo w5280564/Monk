@@ -2,6 +2,16 @@ package com.qingbo.monk.home.activity;
 
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -9,25 +19,21 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
@@ -42,6 +48,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
@@ -50,13 +57,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
 /**
- * 首页—社群详情
+ * 个人文章详情
  */
-public class HomeGroup_Activity extends BaseActivity implements View.OnClickListener {
+public class ArticleDetail_Activity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.person_Img)
     ImageView person_Img;
     @BindView(R.id.person_Name)
@@ -99,20 +108,38 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
     ViewPager card_ViewPager;
     @BindView(R.id.appLayout)
     AppBarLayout appLayout;
+    @BindView(R.id.group_Con)
+    ConstraintLayout group_Con;
+    @BindView(R.id.title_Img)
+    ImageView title_Img;
+    @BindView(R.id.titleNickName_Tv)
+    TextView titleNickName_Tv;
+    @BindView(R.id.center_Tv)
+    TextView center_Tv;
+    @BindView(R.id.titleFollow_Tv)
+    TextView titleFollow_Tv;
+    @BindView(R.id.titleSend_Mes)
+    TextView titleSend_Mes;
+    @BindView(R.id.titleSeek_Img)
+    ImageView titleSeek_Img;
+    @BindView(R.id.sendComment_Et)
+    EditText sendComment_Et;
 
 
     private String articleId;
     private String isShowTop;
+    private String type;
 
     /**
      * @param context
      * @param articleId
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String articleId, String isShowTop) {
-        Intent intent = new Intent(context, HomeGroup_Activity.class);
+    public static void startActivity(Context context, String articleId, String isShowTop,String type) {
+        Intent intent = new Intent(context, ArticleDetail_Activity.class);
         intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 
@@ -127,11 +154,12 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
     protected void initLocalData() {
         articleId = getIntent().getStringExtra("articleId");
         isShowTop = getIntent().getStringExtra("isShowTop");
+        type = getIntent().getStringExtra("type");
     }
 
     @Override
     protected void initView() {
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
     }
 
     @Override
@@ -139,6 +167,10 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         follow_Tv.setOnClickListener(this);
         follow_Img.setOnClickListener(this);
         join_Tv.setOnClickListener(this);
+        titleFollow_Tv.setOnClickListener(this);
+        appLayout.addOnOffsetChangedListener(new appLayoutListener());
+
+//        appLayout.setExpanded(true);
     }
 
     @Override
@@ -154,7 +186,7 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.follow_Tv:
                 String authorId = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                postFollowData(authorId);
+                postFollowData(authorId,follow_Tv,send_Mes);
                 break;
             case R.id.follow_Img:
                 String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
@@ -168,10 +200,15 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
                 String id = homeFoucsDetail_bean.getData().getDetail().getExtra().getId();
                 if (TextUtils.equals(action, "1")) {
                     getJoinSheQun(id);
-                }else if (TextUtils.equals(action, "2")){
+                } else if (TextUtils.equals(action, "2")) {
                     getJoinGroup(id);
                 }
                 break;
+            case R.id.titleFollow_Tv:
+                String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
+                postFollowData(authorId1,titleFollow_Tv,titleSend_Mes);
+                break;
+
         }
     }
 
@@ -194,9 +231,8 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         }
         String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
         String type = homeFoucsDetail_bean.getData().getDetail().getType();
-        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId,type));
-        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId,type));
-//        tabFragmentList.add(HomeCommendFragment.newInstance(articleId,type));
+        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type));
+        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
@@ -222,9 +258,10 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
 
 
     HomeFoucsDetail_Bean homeFoucsDetail_bean;
+
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", "1");
+        requestMap.put("articleId", articleId);
         HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -235,16 +272,24 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
                         String is_anonymous = detailData.getIsAnonymous();//1是匿名
                         if (TextUtils.equals(is_anonymous, "1")) {
+                            titleNickName_Tv.setText("匿名用户");
+                            title_Img.setBackgroundResource(R.mipmap.icon_logo);
+
                             person_Name.setText("匿名用户");
                             person_Img.setEnabled(false);
+                            person_Img.setBackgroundResource(R.mipmap.icon_logo);
                         } else {
+                            GlideUtils.loadCircleImage(mContext, title_Img, detailData.getAvatar(), R.mipmap.icon_logo);
+                            titleNickName_Tv.setText(detailData.getAuthorName());
+
                             GlideUtils.loadCircleImage(mContext, person_Img, detailData.getAvatar(), R.mipmap.icon_logo);
-                            person_Name.setText(detailData.getTitle());
+                            person_Name.setText(detailData.getAuthorName());
                             person_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
                             labelFlow(lable_Lin, mContext, detailData.getTagName());
-                            isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
+                            isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes, is_anonymous);
                         }
                         title_Tv.setText(detailData.getTitle());
+                        center_Tv.setText(detailData.getTitle());
                         content_Tv.setText(detailData.getContent());
                         String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompanyName();
                         time_Tv.setText(userDate);
@@ -256,14 +301,21 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
 
-                        if (detailData.getExtra() != null) {
-                            GlideUtils.loadCircleImage(mContext, groupHead_Img, detailData.getExtra().getImage(), R.mipmap.icon_logo);
-                            groupName_Tv.setText(detailData.getExtra().getName());
-                            groupDes_Tv.setText(detailData.getExtra().getDes());
-                            groupHead(detailData.getExtra().getUserAvatar());
-                            isJoinGroup(detailData.getExtra().getIsJoin());
+                        String action = detailData.getAction();
+                        if (TextUtils.equals(action,"3")){//3是个人文章 1是社群 2是兴趣圈
+                            group_Con.setVisibility(View.GONE);
+                        }else {
+                            group_Con.setVisibility(View.VISIBLE);
+                            if (detailData.getExtra() != null) {
+                                GlideUtils.loadCircleImage(mContext, groupHead_Img, detailData.getExtra().getImage(), R.mipmap.icon_logo);
+                                groupName_Tv.setText(detailData.getExtra().getName());
+                                groupDes_Tv.setText(detailData.getExtra().getDes());
+                                groupHead(detailData.getExtra().getUserAvatar());
+                                isJoinGroup(detailData.getExtra().getIsJoin());
+                            }
                         }
                         initTab();
+                        isChangeFold();
                     }
                 }
             }
@@ -272,7 +324,7 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         httpSender.sendGet();
     }
 
-    private void postFollowData(String otherUserId) {
+    private void postFollowData(String otherUserId, TextView followView, View sendView) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
@@ -281,7 +333,13 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    if (homeFoucsDetail_bean != null) {
+                        Integer followStatus = followStateBena.getFollowStatus();
+                        homeFoucsDetail_bean.getData().getDetail().setFollowStatus(followStatus);
+                        String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();
+                        isFollow(followStatus, follow_Tv,send_Mes, isAnonymous);
+                        isFollow(followStatus, titleFollow_Tv,titleSend_Mes, isAnonymous);
+                    }
                 }
             }
         }, true);
@@ -335,6 +393,7 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
     private void getJoinGroup(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
@@ -353,35 +412,60 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         httpSender.sendPost();
     }
 
+    private void addComment(String ID) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId);
+//        requestMap.put("type", type);
+//        requestMap.put("comment", comment);
+//        requestMap.put("isAnonymous", isAnonymous);
+        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "添加评论", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    String isJoin = homeFoucsDetail_bean.getData().getDetail().getIsJoin();
+                    changeJoinGroup(isJoin);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
 
     /**
      * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
      * @param follow_Tv
      * @param send_Mes
+     * @param is_anonymous  是否匿名 1是匿名
      */
-    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
-        String s = String.valueOf(follow_status);
-        if (TextUtils.equals(s, "0")) {
-            follow_Tv.setVisibility(View.VISIBLE);
-            follow_Tv.setText("关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
-            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
-            send_Mes.setVisibility(View.GONE);
-        } else if (TextUtils.equals(s, "1")) {
-            follow_Tv.setVisibility(View.GONE);
-            send_Mes.setVisibility(View.GONE);
-        } else if (TextUtils.equals(s, "2")) {
-            follow_Tv.setVisibility(View.VISIBLE);
-            follow_Tv.setText("已关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
-            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
-            send_Mes.setVisibility(View.GONE);
-        } else if (TextUtils.equals(s, "4")) {
-            follow_Tv.setVisibility(View.GONE);
-            follow_Tv.setText("互相关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
-            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
-            send_Mes.setVisibility(View.VISIBLE);
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes, String is_anonymous) {
+        if (TextUtils.equals(is_anonymous, "0")) {
+            String s = String.valueOf(follow_status);
+            if (TextUtils.equals(s, "0")) {
+                follow_Tv.setVisibility(View.VISIBLE);
+                follow_Tv.setText("关注");
+                follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+                changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+                send_Mes.setVisibility(View.GONE);
+            } else if (TextUtils.equals(s, "1")) {
+                follow_Tv.setVisibility(View.GONE);
+                send_Mes.setVisibility(View.GONE);
+            } else if (TextUtils.equals(s, "2")) {
+                follow_Tv.setVisibility(View.VISIBLE);
+                follow_Tv.setText("已关注");
+                follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+                changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+                send_Mes.setVisibility(View.GONE);
+            } else if (TextUtils.equals(s, "4")) {
+                follow_Tv.setVisibility(View.GONE);
+                follow_Tv.setText("互相关注");
+                follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+                changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+                send_Mes.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -497,6 +581,85 @@ public class HomeGroup_Activity extends BaseActivity implements View.OnClickList
         }
         isJoinGroup(homeFoucsDetail_bean.getData().getDetail().getIsJoin());
     }
+
+    /**
+     * 处理详情折叠状态
+     */
+    private class appLayoutListener extends AppBarStateChangeListener {
+        @Override
+        public void onStateChanged(AppBarLayout appBarLayout, State state) {
+            if (state == State.EXPANDED) {
+                //展开状态
+                title_Img.setVisibility(View.GONE);
+                titleNickName_Tv.setVisibility(View.GONE);
+                center_Tv.setVisibility(View.VISIBLE);
+                titleFollow_Tv.setVisibility(View.GONE);
+                titleSend_Mes.setVisibility(View.GONE);
+                titleSeek_Img.setVisibility(View.VISIBLE);
+            } else if (state == State.COLLAPSED) {
+                //折叠状态
+                title_Img.setVisibility(View.VISIBLE);
+                titleNickName_Tv.setVisibility(View.VISIBLE);
+                center_Tv.setVisibility(View.GONE);
+                titleSeek_Img.setVisibility(View.GONE);
+                if (homeFoucsDetail_bean != null) {
+                    Integer followStatus = homeFoucsDetail_bean.getData().getDetail().getFollowStatus();
+                    String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();
+                    isFollow(followStatus, titleFollow_Tv, titleSend_Mes, isAnonymous);
+                }
+            } else {
+                //中间状态
+            }
+        }
+    }
+
+    /**
+     * 收起整个折叠页
+     */
+    private void isChangeFold(){
+        if (TextUtils.equals(isShowTop,"1")){
+            appLayout.setExpanded(false);
+        }
+    }
+
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    v.clearFocus();
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = {0, 0};
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right && event.getY() > top && event.getY() < bottom) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 }

@@ -86,7 +86,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
                     if (articleCommentListBean != null) {
                         handleSplitListData(articleCommentListBean, mAdapter, limit);
-                        String count = String.format("评论(%1$s)", articleCommentListBean.getCount());
+                        String count = String.format("评论(%1$s)", articleCommentListBean.getComment_total());
                         tab.getTabAt(0).setText(count);
                     }
                 }
@@ -118,10 +118,10 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         mAdapter = new ArticleComment_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(HomeFocus_Activity.class);
+//            skipAnotherActivity(ArticleDetail_Activity.class);
 //            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
 //            String articleId = item.getArticleId();
-//            HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
+//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0");
         });
 
     }

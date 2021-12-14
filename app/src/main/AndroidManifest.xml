@@ -63,8 +63,8 @@
             android:name=".home.activity.SideslipInsider_Activity"
             android:exported="false" />
         <activity
-            android:name=".home.activity.HomeFocus_Activity"
-            android:exported="false" />
+            android:name=".home.activity.ArticleDetail_Activity"
+            android:exported="false"/>
 
         <meta-data
             android:name="design_width_in_dp"
@@ -105,7 +105,6 @@
             android:name=".question.activity.GroupSettingActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity android:name=".base.PhotoShowActivity" />
-        <activity android:name=".home.activity.HomeGroup_Activity" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"

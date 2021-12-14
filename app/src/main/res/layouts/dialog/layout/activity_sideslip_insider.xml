@@ -12,20 +12,20 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/title_height"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="内部人"
-        app:titleBarBackgroundColor="@color/app_main_color"/>
+        app:titleBarTitle="内部人" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/card_Tab"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_39"
-        app:tabBackground="@color/transparent"
-        app:tabIndicatorColor="@color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:tabBackground="@color/transparent"
+        app:tabIndicatorColor="@color/transparent"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_6f6f6f" />
 
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/app_line"
-        app:layout_constraintTop_toBottomOf="@id/card_Tab"/>
+        app:layout_constraintTop_toBottomOf="@id/card_Tab" />
 
 
     <androidx.viewpager.widget.ViewPager
@@ -44,6 +44,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_Tab" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,13 +80,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.initEvent();
         btn_drawer_left.setOnClickListener(new btn_drawer_leftClick());
         change_Tv.setOnClickListener(this);
-
-        icon_Img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                appLayout.setExpanded(false);
-            }
-        });
     }
 
     @Override

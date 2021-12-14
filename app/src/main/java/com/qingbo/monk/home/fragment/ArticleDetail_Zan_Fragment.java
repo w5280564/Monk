@@ -120,10 +120,10 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(HomeFocus_Activity.class);
+//            skipAnotherActivity(ArticleDetail_Activity.class);
 //            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
 //            String articleId = item.getArticleId();
-//            HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
+//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0");
         });
 
     }

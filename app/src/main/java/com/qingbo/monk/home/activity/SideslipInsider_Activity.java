@@ -4,6 +4,7 @@ package com.qingbo.monk.home.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.view.WindowManager;
 
 import androidx.viewpager.widget.ViewPager;
 

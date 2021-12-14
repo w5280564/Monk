@@ -18,8 +18,7 @@ import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.home.activity.HomeFocus_Activity;
-import com.qingbo.monk.home.activity.HomeGroup_Activity;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
@@ -107,12 +106,8 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String action = item.getAction();//1是社群 2是兴趣圈 3是个人
             String articleId = item.getArticleId();
-//            if (TextUtils.equals(action, "1")){
-//                HomeGroup_Activity.startActivity(requireActivity(),articleId,"0");
-//            }else
-//            if (TextUtils.equals(action, "3")) {
-                HomeFocus_Activity.startActivity(requireActivity(), articleId, "0");
-//            }
+            String type = item.getType();
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
 
         });
 
@@ -135,6 +130,12 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                     case R.id.follow_Img:
                         String likeId = homeFllowBean.getList().get(position).getArticleId();
                         postLikedData(likeId, position);
+                        break;
+                    case R.id.mes_Img:
+                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                        String articleId = item.getArticleId();
+                        String type = item.getType();
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
                         break;
                 }
             }
