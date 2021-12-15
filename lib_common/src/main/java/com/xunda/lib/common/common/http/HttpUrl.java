@@ -157,6 +157,7 @@ public class HttpUrl {
     public static final String Article_CommentList = "comment/comment/article-comment-list";//获取文章评论
     public static final String Article_LikedList = "comment/article/liked-list";//文章点赞列表
     public static final String AddComment_Post = "comment/comment/post-comment";//添加评论
+    public static final String Insider_Detail = "index/index/insider-detail";//内部人详情页
 
 }
 

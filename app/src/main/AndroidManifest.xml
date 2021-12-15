@@ -60,11 +60,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
-            android:name=".home.activity.SideslipInsider_Activity"
+            android:name=".Slides.activity.SidesliFollow_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Slides.activity.SideslipInsider_Activity"
             android:exported="false" />
         <activity
             android:name=".home.activity.ArticleDetail_Activity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <meta-data
             android:name="design_width_in_dp"
@@ -101,6 +104,7 @@
         <activity android:name=".question.activity.GroupDetailActivity" />
         <activity android:name=".question.activity.PublisherQuestionActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
+        <activity android:name=".Slides.activity.AAndHKDetail_Activity" />
         <activity
             android:name=".question.activity.GroupSettingActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
@@ -111,7 +115,7 @@
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:taskAffinity="net.sourceforge.simcpux"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

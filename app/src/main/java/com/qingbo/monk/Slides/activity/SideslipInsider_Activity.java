@@ -1,23 +1,16 @@
-package com.qingbo.monk.home.activity;
+package com.qingbo.monk.Slides.activity;
 
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.view.WindowManager;
 
-import androidx.viewpager.widget.ViewPager;
-
-import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
+import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
 import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
-import com.qingbo.monk.question.fragment.QuestionFragment_Group;
-import com.qingbo.monk.question.fragment.QuestionFragment_Square;
 import com.xunda.lib.common.bean.AppMenuBean;
-
-import butterknife.BindView;
 
 /**
  * 侧边栏 内部人列表
@@ -78,7 +71,7 @@ public class SideslipInsider_Activity extends BaseTabLayoutActivity {
                 fragments.add(HomeInsider_Fragment.newInstance("1"));
                 bean.setName("A股");
             } else {
-                fragments.add(HomeInsider_Fragment.newInstance("1"));
+                fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
                 bean.setName("港股");
             }
             menuList.add(bean);

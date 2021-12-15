@@ -1,9 +1,7 @@
 package com.qingbo.monk.home.activity;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +12,11 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SidesliFollow_Activity;
+import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
@@ -32,7 +31,6 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.view.MyArrowItemView;
@@ -60,8 +58,12 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     ImageView head_Tv;
     @BindView(R.id.quit_Tv)
     TextView quit_Tv;
+    @BindView(R.id.focus_MyView)
+    MyArrowItemView focus_MyView;
     @BindView(R.id.Insider_MyView)
     MyArrowItemView Insider_MyView;
+    @BindView(R.id.recomm_MyView)
+    MyArrowItemView recomm_MyView;
 
     private long clickTime;
 
@@ -76,9 +78,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
     }
-
+    HomeFragment homeFragment;
     private void initFragment() {
-        addFragment(new HomeFragment());
+        homeFragment = new HomeFragment();
+        addFragment(homeFragment);
         addFragment(new QuestionFragment());
         addFragment(new UniverseFragment());
         addFragment(new MessageFragment());
@@ -91,6 +94,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         quit_Tv.setOnClickListener(this);
         Insider_MyView.setOnClickListener(this);
+        recomm_MyView.setOnClickListener(this);
+        focus_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -175,9 +180,18 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 }).show();
                 break;
             case R.id.Insider_MyView:
-                SideslipInsider_Activity.startActivity(this,"","");
+                SideslipInsider_Activity.startActivity(this, "", "");
                 dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
                 break;
+            case R.id.recomm_MyView:
+                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
+                homeFragment.changePager(1);
+                break;
+            case R.id.focus_MyView:
+                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
+                skipAnotherActivity(SidesliFollow_Activity.class);
+                break;
+
         }
     }
 

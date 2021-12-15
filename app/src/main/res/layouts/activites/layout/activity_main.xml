@@ -100,7 +100,7 @@
                         app:arrowItemAvatarHeight="@dimen/dp_12"
                         app:arrowItemAvatarSrc="@mipmap/guanzhu"
                         app:arrowItemShowAvatar="true"
-                        app:arrowItemTitle="我的卡券"
+                        app:arrowItemTitle="关注"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView

@@ -82,7 +82,6 @@ public class BaseTabLayoutActivity extends BaseActivity {
         mViewPager.setOffscreenPageLimit(menuList.size());
         //将TabLayout和ViewPager关联起来。
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setCurrentItem(position);
 
         for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
@@ -91,12 +90,11 @@ public class BaseTabLayoutActivity extends BaseActivity {
             }
         }
 
-        View view = mTabLayout.getTabAt(0).getCustomView();
+        View view = mTabLayout.getTabAt(position).getCustomView();
         if (null != view) {
             setTextViewStyle(view, 16, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
-
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(position);
     }
 
 

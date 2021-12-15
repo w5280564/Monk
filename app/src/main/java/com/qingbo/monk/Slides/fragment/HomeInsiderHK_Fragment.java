@@ -1,45 +1,41 @@
-package com.qingbo.monk.home.fragment;
+package com.qingbo.monk.Slides.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.HomeInsiderBean;
 import com.qingbo.monk.bean.HomeInsiderHKBean;
-import com.qingbo.monk.bean.InsiderListBean;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
+import com.qingbo.monk.bean.InsiderHKListBean;
+import com.qingbo.monk.Slides.adapter.InsiderHK_Adapter;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.xunda.lib.common.common.Constants;
-import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
 import java.util.HashMap;
-import butterknife.BindView;
 
 /**
- * 首页滑动tab页--内部人
+ * 侧边栏-内部人-港股
  */
-public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
+public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
 
 
     private String type;
 
-    /**
-     *
-     * @param type 1是A股2是港股
-     * @return
-     */
-    public static HomeInsider_Fragment newInstance(String type) {
+    public static HomeInsiderHK_Fragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString("type", type);
-        HomeInsider_Fragment fragment = new HomeInsider_Fragment();
+        HomeInsiderHK_Fragment fragment = new HomeInsiderHK_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,21 +65,21 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    InsiderListBean insiderListBean;
+    InsiderHKListBean insiderHKListBean;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
         requestMap.put("type", type);
-        HttpSender httpSender = new HttpSender(HttpUrl.Insider_List, "首页-内部人", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Insider_List, "内部人-港股", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     insiderListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderListBean.class);
-                    if (insiderListBean != null) {
-                        handleSplitListData(insiderListBean, mAdapter, limit);
+                     insiderHKListBean =  GsonUtil.getInstance().json2Bean(json_data, InsiderHKListBean.class);
+                    if (insiderHKListBean != null) {
+                        handleSplitListData(insiderHKListBean, mAdapter, limit);
                     }
                 }
             }
@@ -111,17 +107,17 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Insider_Adapter();
+        mAdapter = new InsiderHK_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
+                HomeInsiderHKBean item = (HomeInsiderHKBean) adapter.getItem(position);
                 String newsUuid = item.getNewsUuid();
                 AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
             }
         });
+
     }
 
 

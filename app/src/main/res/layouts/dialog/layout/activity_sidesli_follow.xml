@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Slides.activity.SideslipInsider_Activity"
+    tools:context=".Slides.activity.SidesliFollow_Activity"
     tools:ignore="MissingConstraints">
 
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
         android:id="@+id/title_bar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightImg="@mipmap/icon_sousuo"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="内部人" />
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarTitle="关注" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/card_Tab"
@@ -29,12 +30,6 @@
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_6f6f6f" />
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/app_line"
-        app:layout_constraintTop_toBottomOf="@id/card_Tab" />
 
 
     <androidx.viewpager.widget.ViewPager

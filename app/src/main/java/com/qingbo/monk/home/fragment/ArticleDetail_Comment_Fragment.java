@@ -1,9 +1,11 @@
 package com.qingbo.monk.home.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -33,9 +36,11 @@ import java.util.List;
 /**
  * 文章详情-评论
  */
-public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragment {
+public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragment implements View.OnClickListener {
     private String articleId, type;
     TabLayout tab;
+    private EditText sendComment_Et;
+    private View release_Tv;
 
     public static ArticleDetail_Comment_Fragment newInstance(String articleId, String type) {
         Bundle args = new Bundle();
@@ -55,6 +60,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     @Override
     protected void initView(View mView) {
         tab = requireActivity().findViewById(R.id.card_Tab);
+        sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
+        release_Tv = requireActivity().findViewById(R.id.release_Tv);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无评论", false);
@@ -76,7 +83,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", 1 + "");
+        requestMap.put("articleId", articleId + "");
         requestMap.put("type", type);
         HttpSender httpSender = new HttpSender(HttpUrl.Article_CommentList, "获取文章评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -127,8 +134,10 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void initEvent() {
+        release_Tv.setOnClickListener(this);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
             switch (view.getId()) {
@@ -139,11 +148,47 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                 case R.id.commentMore_Tv:
                     T.s("点击查看更多回复", 1000);
                     break;
+                case R.id.mes_Img:
+//                    ((ArticleDetail_Activity)requireActivity()).showInput(sendComment_Et);
+//                    setHint(item,sendComment_Et);
+
+                    break;
+
             }
         });
 
 
-        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister((position, strings) -> jumpToPhotoShowActivity(position, strings));
+        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister(this::jumpToPhotoShowActivity);
+    }
+
+    /**
+     * 回复谁的评论
+     * @param item
+     * @param view
+     */
+    private void setHint(ArticleCommentBean item,EditText view){
+        String s = TextUtils.equals(item.getIsAnonymous(), "0") ? item.getAuthorName() : "匿名用户";
+        String format = String.format("回复：%1$s", s);
+        view.setHint(format);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+//            case R.id.release_Tv:
+//                String s = sendComment_Et.getText().toString();
+//                if (TextUtils.isEmpty(s)) {
+//                    T.s("评论不能为空", 2000);
+//                    return;
+//                }
+//                if (TextUtils.isEmpty(articleId)|| TextUtils.isEmpty(type)){
+//                    T.s("文章ID是空", 2000);
+//                    return;
+//                }
+//                addComment(articleId,type,s);
+//                break;
+        }
     }
 
 
@@ -177,5 +222,30 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+
+    public void addComment(String articleId, String type, String comment) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId);
+        requestMap.put("type", type);
+        requestMap.put("comment", comment);
+        requestMap.put("isAnonymous", "0");
+//        requestMap.put("commentId", );
+//        requestMap.put("replyerId", );
+//        requestMap.put("replyerName", );
+        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-回复评论", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
 
 }

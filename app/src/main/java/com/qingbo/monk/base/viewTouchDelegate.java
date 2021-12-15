@@ -8,7 +8,7 @@ import android.view.TouchDelegate;
 import android.view.View;
 
 /**
- * Created by waylen on 2017/9/29.
+ * 扩大点击区域
  */
 
 public class viewTouchDelegate {

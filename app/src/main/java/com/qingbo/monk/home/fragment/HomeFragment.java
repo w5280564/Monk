@@ -199,7 +199,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
         tabFragmentList.add(HomeCommendFragment.newInstance(titleType));
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
-        tabFragmentList.add(HomeInsider_Fragment.newInstance(titleType));
+        tabFragmentList.add(HomeInsider_Fragment.newInstance("1"));
         tabFragmentList.add(HomeCombination_Fragment.newInstance(titleType));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -222,7 +222,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         });
         //设置TabLayout和ViewPager联动
         card_Tab.setupWithViewPager(card_ViewPager, false);
-        card_ViewPager.setCurrentItem(1);
+        changePager(1);
     }
 
     private void getJoin(String ID) {
@@ -253,6 +253,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         animation.setInterpolator(new LinearInterpolator());
         animation.setDuration(animateTime);
         view.startAnimation(animation);
+    }
+
+    /**
+     * 修改导航页数
+     * @param index
+     */
+    public void changePager(int index){
+        card_ViewPager.setCurrentItem(index);
     }
 
 

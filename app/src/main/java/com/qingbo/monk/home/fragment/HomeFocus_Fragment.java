@@ -133,7 +133,6 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.follow_Img:
                         String likeId = homeFllowBean.getList().get(position).getArticleId();
-                        L.d(likeId);
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
@@ -169,7 +168,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
                     ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
                     if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.getData().remove(position);
+                        mAdapter.remove(position);
                         mAdapter.notifyItemChanged(position);
                     }
                 }

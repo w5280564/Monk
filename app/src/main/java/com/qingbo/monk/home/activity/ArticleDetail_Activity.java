@@ -35,6 +35,8 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -124,6 +126,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     ImageView titleSeek_Img;
     @BindView(R.id.sendComment_Et)
     EditText sendComment_Et;
+    @BindView(R.id.release_Tv)
+    TextView release_Tv;
 
 
     private String articleId;
@@ -135,7 +139,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
      * @param articleId
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String articleId, String isShowTop,String type) {
+    public static void startActivity(Context context, String articleId, String isShowTop, String type) {
         Intent intent = new Intent(context, ArticleDetail_Activity.class);
         intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
@@ -159,7 +163,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initView() {
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
+        viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
+        HideIMEUtil.wrap(this,sendComment_Et);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
     }
 
     @Override
@@ -169,8 +176,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         join_Tv.setOnClickListener(this);
         titleFollow_Tv.setOnClickListener(this);
         appLayout.addOnOffsetChangedListener(new appLayoutListener());
-
-//        appLayout.setExpanded(true);
+        mes_Img.setOnClickListener(this);
+        release_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -186,7 +193,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         switch (v.getId()) {
             case R.id.follow_Tv:
                 String authorId = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                postFollowData(authorId,follow_Tv,send_Mes);
+                postFollowData(authorId, follow_Tv, send_Mes);
                 break;
             case R.id.follow_Img:
                 String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
@@ -206,10 +213,36 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 break;
             case R.id.titleFollow_Tv:
                 String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                postFollowData(authorId1,titleFollow_Tv,titleSend_Mes);
+                postFollowData(authorId1, titleFollow_Tv, titleSend_Mes);
                 break;
-
+            case R.id.mes_Img:
+                showInput(sendComment_Et);
+                sendComment_Et.setHint("");
+                break;
+            case R.id.release_Tv:
+                String s = sendComment_Et.getText().toString();
+                if (TextUtils.isEmpty(s)) {
+                    T.s("评论不能为空", 2000);
+                    return;
+                }
+                if (TextUtils.isEmpty(articleId)|| TextUtils.isEmpty(type)){
+                    T.s("文章ID是空", 2000);
+                    return;
+                }
+                addComment(articleId,type,s);
+                sendComment_Et.setText("");
+                break;
         }
+    }
+
+    /**
+     * 点击弹出键盘
+     * @param editView
+     */
+    public void showInput(View editView) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
     }
 
     private List<Object> tabFragmentList = new ArrayList<>();
@@ -289,7 +322,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                             isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes, is_anonymous);
                         }
                         title_Tv.setText(detailData.getTitle());
-                        center_Tv.setText(detailData.getTitle());
+//                        center_Tv.setText(detailData.getTitle());
                         content_Tv.setText(detailData.getContent());
                         String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompanyName();
                         time_Tv.setText(userDate);
@@ -302,9 +335,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
 
                         String action = detailData.getAction();
-                        if (TextUtils.equals(action,"3")){//3是个人文章 1是社群 2是兴趣圈
+                        if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣圈
                             group_Con.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             group_Con.setVisibility(View.VISIBLE);
                             if (detailData.getExtra() != null) {
                                 GlideUtils.loadCircleImage(mContext, groupHead_Img, detailData.getExtra().getImage(), R.mipmap.icon_logo);
@@ -337,8 +370,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         Integer followStatus = followStateBena.getFollowStatus();
                         homeFoucsDetail_bean.getData().getDetail().setFollowStatus(followStatus);
                         String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();
-                        isFollow(followStatus, follow_Tv,send_Mes, isAnonymous);
-                        isFollow(followStatus, titleFollow_Tv,titleSend_Mes, isAnonymous);
+                        isFollow(followStatus, follow_Tv, send_Mes, isAnonymous);
+                        isFollow(followStatus, titleFollow_Tv, titleSend_Mes, isAnonymous);
                     }
                 }
             }
@@ -412,27 +445,24 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.sendPost();
     }
 
-    private void addComment(String ID) {
+    public void addComment(String articleId, String type, String comment) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId);
-//        requestMap.put("type", type);
-//        requestMap.put("comment", comment);
-//        requestMap.put("isAnonymous", isAnonymous);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "添加评论", requestMap, new MyOnHttpResListener() {
+        requestMap.put("type", type);
+        requestMap.put("comment", comment);
+        requestMap.put("isAnonymous", "0");
+        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-添加评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
-                    String isJoin = homeFoucsDetail_bean.getData().getDetail().getIsJoin();
-                    changeJoinGroup(isJoin);
                 }
             }
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
-
 
 
     /**
@@ -616,50 +646,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     /**
      * 收起整个折叠页
      */
-    private void isChangeFold(){
-        if (TextUtils.equals(isShowTop,"1")){
+    private void isChangeFold() {
+        if (TextUtils.equals(isShowTop, "1")) {
             appLayout.setExpanded(false);
         }
     }
-
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (isShouldHideInput(v, ev)) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    v.clearFocus();
-                }
-            }
-            return super.dispatchTouchEvent(ev);
-        }
-        // 必不可少，否则所有的组件都不会有TouchEvent了
-        if (getWindow().superDispatchTouchEvent(ev)) {
-            return true;
-        }
-        return onTouchEvent(ev);
-    }
-
-    public boolean isShouldHideInput(View v, MotionEvent event) {
-        if (v != null && (v instanceof EditText)) {
-            int[] leftTop = {0, 0};
-            v.getLocationInWindow(leftTop);
-            int left = leftTop[0];
-            int top = leftTop[1];
-            int bottom = top + v.getHeight();
-            int right = left + v.getWidth();
-            if (event.getX() > left && event.getX() < right && event.getY() > top && event.getY() < bottom) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
 
 
 }

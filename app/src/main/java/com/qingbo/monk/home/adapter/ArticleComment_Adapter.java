@@ -49,10 +49,12 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        ImageView mes_Img = helper.getView(R.id.mes_Img);
         ConstraintLayout children_Comment = helper.getView(R.id.children_Comment);
         RecyclerView commentChildren_List = helper.getView(R.id.commentChildren_List);
         TextView commentMore_Tv = helper.getView(R.id.commentMore_Tv);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
+        viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
 
@@ -93,6 +95,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.commentMore_Tv);
+        helper.addOnClickListener(R.id.mes_Img);
     }
 
 
