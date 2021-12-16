@@ -67,13 +67,9 @@ public class RoundImageView extends ImageView {
 		mBitmapPaint = new Paint();
 		mBitmapPaint.setAntiAlias(true);
 
-		TypedArray a = context.obtainStyledAttributes(attrs,
-				R.styleable.RoundImageView);
+		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.RoundImageView);
 
-		mBorderRadius = a.getDimensionPixelSize(
-				R.styleable.RoundImageView_borderRadius, (int) TypedValue
-						.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-								BODER_RADIUS_DEFAULT, getResources()
+		mBorderRadius = a.getDimensionPixelSize(R.styleable.RoundImageView_borderRadius, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,BODER_RADIUS_DEFAULT, getResources()
 										.getDisplayMetrics()));// 默认为10dp
 		type = a.getInt(R.styleable.RoundImageView_type, TYPE_CIRCLE);// 默认为圆形
 

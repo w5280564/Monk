@@ -60,7 +60,7 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
-            android:name=".Slides.activity.SidesliFollow_Activity"
+            android:name=".Slides.activity.SideslipFollow_Activity"
             android:exported="false" />
         <activity
             android:name=".Slides.activity.SideslipInsider_Activity"

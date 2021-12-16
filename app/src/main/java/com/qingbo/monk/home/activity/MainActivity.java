@@ -15,7 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.SidesliFollow_Activity;
+import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 break;
             case R.id.focus_MyView:
                 dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
-                skipAnotherActivity(SidesliFollow_Activity.class);
+                skipAnotherActivity(SideslipFollow_Activity.class);
                 break;
 
         }

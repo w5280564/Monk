@@ -3,13 +3,15 @@ package com.qingbo.monk.Slides.activity;
 import android.annotation.SuppressLint;
 
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
+import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
-import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 
-public class SidesliFollow_Activity extends BaseTabLayoutActivity {
+/**
+ * 侧滑-关注
+ */
+public class SideslipFollow_Activity extends BaseTabLayoutActivity {
 
     @Override
     protected int getLayoutId() {
@@ -28,7 +30,7 @@ public class SidesliFollow_Activity extends BaseTabLayoutActivity {
         for (int i = 0; i < 2; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
-                fragments.add(HomeInsider_Fragment.newInstance("1"));
+                fragments.add(SideslipFind_Card_Fragment.newInstance("1"));
                 bean.setName("发现");
             } else {
 //                fragments.add(HomeInsiderHK_Fragment.newInstance("2"));

@@ -24,4 +24,9 @@
     </declare-styleable>
 
 
+    <declare-styleable name="RoundImage">
+        <attr name="round_radius" format="reference|dimension" />
+    </declare-styleable>
+
+
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Slides.activity.SidesliFollow_Activity"
+    tools:context=".Slides.activity.SideslipFollow_Activity"
     tools:ignore="MissingConstraints">
 
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
