@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class FindBean {
 
+
     @SerializedName("id")
     private String id;
     @SerializedName("nickname")
@@ -23,6 +24,10 @@ public class FindBean {
     private String tagName;
     @SerializedName("article_num")
     private String articleNum;
+    @SerializedName("city")
+    private String city;
+    @SerializedName("description")
+    private String description;
     @SerializedName("follow_num")
     private String followNum;
     @SerializedName("fans_num")

@@ -131,6 +131,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void lableList(Context context, LinearLayout myFlex, InterestBean.DataDTO model) {
         if (myFlex != null) {
             myFlex.removeAllViews();
+        }else {
+            return;
         }
         int size = model.getList().size();
         for (int i = 0; i < size; i++) {

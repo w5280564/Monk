@@ -9,6 +9,8 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -16,38 +18,42 @@ import androidx.annotation.RequiresApi;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.widget.StackCardsView;
-import com.qingbo.monk.Slides.widget.adapter.BaseCardItem;
-import com.qingbo.monk.Slides.widget.adapter.CardAdapter;
-import com.qingbo.monk.Slides.widget.adapter.ImageCardItem;
-import com.qingbo.monk.Slides.widget.adapter.ImageUrls;
+import com.qingbo.monk.Slides.widget.carditem.BaseCardItem;
+import com.qingbo.monk.Slides.widget.carditem.CardAdapter;
+import com.qingbo.monk.Slides.widget.carditem.ImageCardItem;
 import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.bean.FindBean;
 import com.qingbo.monk.bean.FindListBean;
+import com.qingbo.monk.bean.FollowStateBena;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * 侧滑-关注-发现
  */
-public class SideslipFind_Card_Fragment extends BaseFragment implements StackCardsView.OnCardSwipedListener, Handler.Callback {
+public class SideslipFind_Card_Fragment extends BaseFragment implements StackCardsView.OnCardSwipedListener, View.OnClickListener {
     private String type;
     private int page = 1;
     private StackCardsView mCardsView;
-    private Handler mMainHandler;
 
-    private static final int MSG_START_LOAD_DATA = 1;
-    private static final int MSG_DATA_LOAD_DONE = 2;
-    private HandlerThread mWorkThread;
-    private Handler mWorkHandler;
     private CardAdapter mAdapter;
     private volatile int mStartIndex;
     private static final int PAGE_COUNT = 10;
+
+    @BindView(R.id.cha_Img)
+    ImageView cha_Img;
+    @BindView(R.id.love_Img)
+    ImageView love_Img;
 
     /**
      * @return
@@ -74,17 +80,22 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
 
     @Override
     protected void initView(View mView) {
-//        initRecyclerView();
-//        initSwipeRefreshLayoutAndAdapter("暂无数据",false);
         mCardsView = mView.findViewById(R.id.cards);
         mCardsView.addOnCardSwipedListener(this);
         mAdapter = new CardAdapter();
         mCardsView.setAdapter(mAdapter);
-//        mMainHandler = new Handler(this);
-//        mWorkThread = new HandlerThread("data_loader");
-//        mWorkThread.start();
-//        mWorkHandler = new Handler(mWorkThread.getLooper(), this);
-//        mWorkHandler.obtainMessage(MSG_START_LOAD_DATA).sendToTarget();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getListData(true);
+    }
+
+    @Override
+    protected void initEvent() {
+        cha_Img.setOnClickListener(this);
+        love_Img.setOnClickListener(this);
     }
 
     @Override
@@ -106,8 +117,6 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     findListBean = GsonUtil.getInstance().json2Bean(json_data, FindListBean.class);
                     if (findListBean != null) {
-//                        handleSplitListData(findListBean, mAdapter, limit);
-//                        addCardViw();
                         loadData(mStartIndex);
                     }
                 }
@@ -117,32 +126,10 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         httpSender.sendGet();
     }
 
-
-    public void initRecyclerView() {
-//        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
-//        mMangaer.setOrientation(RecyclerView.VERTICAL);
-//        mRecyclerView.setLayoutManager(mMangaer);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-//        mRecyclerView.setHasFixedSize(true);
-//        mAdapter = new Find_Adapter();
-//        mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-//                String newsUuid = item.getNewsUuid();
-//                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
-//            }
-//        });
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mCardsView.removeOnCardSwipedListener(this);
-//        mWorkThread.quit();
-//        mWorkHandler.removeMessages(MSG_START_LOAD_DATA);
-//        mMainHandler.removeMessages(MSG_DATA_LOAD_DONE);
         mStartIndex = 0;
     }
 
@@ -150,15 +137,10 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
     public void onCardDismiss(int direction) {
         mAdapter.remove(0);
         if (mAdapter.getCount() < 3) {
-//            if (!mWorkHandler.hasMessages(MSG_START_LOAD_DATA)) {
-//                mWorkHandler.obtainMessage(MSG_START_LOAD_DATA).sendToTarget();
-//            }
             page++;
             getServerData();
         }
-        if (mAdapter.getCount() == 5){
-            mAdapter.notifyDataSetChanged();
-        }
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -203,24 +185,6 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         }
     }
 
-    @Override
-    public boolean handleMessage(@NonNull Message msg) {
-        switch (msg.what) {
-            case MSG_START_LOAD_DATA: {
-                List<BaseCardItem> data = loadData(mStartIndex);
-                mMainHandler.obtainMessage(MSG_DATA_LOAD_DONE, data).sendToTarget();
-                break;
-            }
-            case MSG_DATA_LOAD_DONE: {
-                List<BaseCardItem> data = (List<BaseCardItem>) msg.obj;
-                mAdapter.appendItems(data);
-                mStartIndex += sizeOfImage(data);
-                break;
-            }
-        }
-        return true;
-    }
-
     private int sizeOfImage(List<BaseCardItem> items) {
         if (items == null) {
             return 0;
@@ -234,33 +198,69 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         return size;
     }
 
+    /**
+     * 加载卡片数据
+     *
+     * @param startIndex
+     * @return
+     */
     private List<BaseCardItem> loadData(int startIndex) {
-//        if (startIndex < ImageUrls.images.length) {
         int size = findListBean.getList().size();
-        final int endIndex = Math.min(mStartIndex + PAGE_COUNT, size);
-        L.d(startIndex + "");
-        L.d(endIndex + "");
-
         List<BaseCardItem> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            String avatar = findListBean.getList().get(i).getAvatar();
-            String nickname = findListBean.getList().get(i).getNickname();
-//
-//                ImageCardItem item = new ImageCardItem(getActivity(), ImageUrls.images[i], ImageUrls.labels[i]);
-            ImageCardItem item = new ImageCardItem(getActivity(), avatar, nickname);
+            FindBean findBean = findListBean.getList().get(i);
+            ImageCardItem item = new ImageCardItem(getActivity(),findBean);
             item.dismissDir = StackCardsView.SWIPE_ALL;
             item.fastDismissAllowed = true;
             result.add(item);
         }
-        mAdapter.appendItems(result);
-        mStartIndex += sizeOfImage(result);
-//            if (startIndex == 0) {
-//                ScrollCardItem item = new ScrollCardItem(getActivity());
-//                result.add(result.size() / 2, item);
-//            }
+        addMore(result);
         return result;
-//        }
-//        return null;
+    }
+
+    /**
+     * 加载更多
+     *
+     * @param data
+     */
+    private void addMore(List<BaseCardItem> data) {
+        mAdapter.appendItems(data);
+        mStartIndex += sizeOfImage(data);
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.cha_Img:
+                mCardsView.removeCover(StackCardsView.SWIPE_LEFT);
+                break;
+            case R.id.love_Img:
+                mCardsView.removeCover(StackCardsView.SWIPE_RIGHT);
+                List<BaseCardItem> baseCardItems = mAdapter.getmItems();
+                ImageCardItem baseCardItem1 = (ImageCardItem) baseCardItems.get(0);
+                String id = baseCardItem1.getFindBean().getId();
+                postFollowData(id);
+                break;
+        }
+    }
+
+    private void postFollowData(String otherUserId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("otherUserId", otherUserId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                    if (followStateBena != null){
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 

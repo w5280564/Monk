@@ -17,6 +17,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
+import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
@@ -64,6 +65,9 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     MyArrowItemView Insider_MyView;
     @BindView(R.id.recomm_MyView)
     MyArrowItemView recomm_MyView;
+    @BindView(R.id.mogul_MyView)
+    MyArrowItemView mogul_MyView;
+
 
     private long clickTime;
 
@@ -96,6 +100,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         Insider_MyView.setOnClickListener(this);
         recomm_MyView.setOnClickListener(this);
         focus_MyView.setOnClickListener(this);
+        mogul_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -181,20 +186,28 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 break;
             case R.id.Insider_MyView:
                 SideslipInsider_Activity.startActivity(this, "", "");
-                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
+                closeLeft();
                 break;
             case R.id.recomm_MyView:
-                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
+                closeLeft();
                 homeFragment.changePager(1);
                 break;
             case R.id.focus_MyView:
-                dl_layout.closeDrawer(lv_drawer_left);// 关闭左侧抽屉
+                closeLeft();
                 skipAnotherActivity(SideslipFollow_Activity.class);
+                break;
+            case R.id.mogul_MyView:
+                closeLeft();
+                skipAnotherActivity(SideslipMogul_Activity.class);
                 break;
 
         }
     }
 
+    // 关闭左侧抽屉
+    private void closeLeft(){
+        dl_layout.closeDrawer(lv_drawer_left);
+    }
 
     private void getQuit() {
         HashMap<String, String> requestMap = new HashMap<>();

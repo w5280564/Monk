@@ -159,6 +159,8 @@ public class HttpUrl {
     public static final String AddComment_Post = "comment/comment/post-comment";//添加评论
     public static final String Insider_Detail = "index/index/insider-detail";//内部人详情页
     public static final String Recommend_Follow = "user/user/recommend-follow";//关注发现-推荐关注
+    public static final String Leader_TagList = "index/index/leader-tag-list";//侧滑—大佬标签列表
+    public static final String Leader_List = "index/index/leader-list";//侧滑—大佬tab页面
 
 }
 

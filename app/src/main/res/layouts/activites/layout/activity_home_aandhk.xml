@@ -14,7 +14,7 @@
         app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="公告详情" />
+        app:titleBarTitle="详情" />
 
 
     <ImageView

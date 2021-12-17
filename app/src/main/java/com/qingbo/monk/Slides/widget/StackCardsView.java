@@ -153,6 +153,9 @@ public class StackCardsView extends FrameLayout {
         mDismissAlpha = a.getFloat(R.styleable.StackCardsView_dismissAlpha, DISMISS_ALPHA);
         mDragSensitivity = a.getFloat(R.styleable.StackCardsView_dragSensitivity, DRAG_SENSITIVITY);
         a.recycle();
+        if (mTouchHelper == null) {
+            mTouchHelper = new SwipeTouchHelper(this);
+        }
     }
 
     public static float dp2px(Context context, float dp) {
@@ -428,6 +431,10 @@ public class StackCardsView extends FrameLayout {
         initChildren();
     }
 
+    /**
+     * 滑动方向
+     * @param direction
+     */
     public void removeCover(int direction) {
         if (mTouchHelper != null) {
             mTouchHelper.removeCover(direction);
@@ -482,6 +489,8 @@ public class StackCardsView extends FrameLayout {
     public boolean onTouchEvent(MotionEvent ev) {
         return mTouchHelper.onTouchEvent(ev);
     }
+
+
 
     public static class LayoutParams extends FrameLayout.LayoutParams {
 
@@ -589,7 +598,6 @@ public class StackCardsView extends FrameLayout {
         public void notifyItemInserted(int position) {
             for (int i = mObservers.size() - 1; i >= 0; i--) {
                 mObservers.get(i).onItemInserted(position);
-//                mObservers.get(i).onDataSetChanged();
             }
         }
 
@@ -604,5 +612,9 @@ public class StackCardsView extends FrameLayout {
         if (StackCardsView.DEBUG) {
             Log.d(tag, msg);
         }
+    }
+
+    public Adapter getmAdapter() {
+        return mAdapter;
     }
 }

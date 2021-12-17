@@ -66,6 +66,9 @@
             android:name=".Slides.activity.SideslipInsider_Activity"
             android:exported="false" />
         <activity
+            android:name=".Slides.activity.SideslipMogul_Activity"
+            android:exported="false" />
+        <activity
             android:name=".home.activity.ArticleDetail_Activity"
             android:exported="false" />
 

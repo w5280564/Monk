@@ -1,4 +1,4 @@
-package com.qingbo.monk.Slides.widget.adapter;
+package com.qingbo.monk.Slides.widget.carditem;
 
 import android.content.Context;
 import android.view.View;
@@ -13,7 +13,7 @@ import com.qingbo.monk.Slides.widget.StackCardsView;
 public abstract class BaseCardItem {
 
     public boolean fastDismissAllowed = true;
-    int swipeDir = StackCardsView.SWIPE_ALL;
+    public  int swipeDir = StackCardsView.SWIPE_ALL;
     public int dismissDir = StackCardsView.SWIPE_ALL;
     int maxRotation = 8;
 

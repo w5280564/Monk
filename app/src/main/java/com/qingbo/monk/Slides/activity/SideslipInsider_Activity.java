@@ -16,11 +16,6 @@ import com.xunda.lib.common.bean.AppMenuBean;
  * 侧边栏 内部人列表
  */
 public class SideslipInsider_Activity extends BaseTabLayoutActivity {
-//    @BindView(R.id.card_Tab)
-//    TabLayout mTabLayout;
-//    @BindView(R.id.card_ViewPager)
-//    ViewPager mViewPager;
-
     /**
      * @param context
      * @param articleId

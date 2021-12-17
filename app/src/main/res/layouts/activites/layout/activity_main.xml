@@ -144,7 +144,7 @@
                         app:arrowItemAvatarSrc="@mipmap/zhuanjia"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="专家"
-                        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+                        app:arrowItemTitleColor="   @color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/Insider_MyView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

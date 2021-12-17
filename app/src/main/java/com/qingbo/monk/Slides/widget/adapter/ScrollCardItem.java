@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.widget.StackCardsView;
+import com.qingbo.monk.Slides.widget.carditem.BaseCardItem;
 
 /**
  * Created by wensefu .
