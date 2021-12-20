@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:ignore="MissingConstraints">
+
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightImg="@mipmap/icon_sousuo"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowType="IMG"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="专家" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mRecyclerView"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        android:layout_height="0dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

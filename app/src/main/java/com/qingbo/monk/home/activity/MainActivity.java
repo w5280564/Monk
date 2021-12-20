@@ -15,9 +15,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipExpert_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
+import com.qingbo.monk.Slides.activity.SideslipFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
+import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
@@ -67,6 +70,12 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     MyArrowItemView recomm_MyView;
     @BindView(R.id.mogul_MyView)
     MyArrowItemView mogul_MyView;
+    @BindView(R.id.zhuan_MyView)
+    MyArrowItemView zhuan_MyView;
+    @BindView(R.id.gu_MyView)
+    MyArrowItemView gu_MyView;
+    @BindView(R.id.fund_MyView)
+    MyArrowItemView fund_MyView;
 
 
     private long clickTime;
@@ -101,6 +110,9 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         recomm_MyView.setOnClickListener(this);
         focus_MyView.setOnClickListener(this);
         mogul_MyView.setOnClickListener(this);
+        zhuan_MyView.setOnClickListener(this);
+        gu_MyView.setOnClickListener(this);
+        fund_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -199,6 +211,18 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             case R.id.mogul_MyView:
                 closeLeft();
                 skipAnotherActivity(SideslipMogul_Activity.class);
+                break;
+            case R.id.zhuan_MyView:
+                closeLeft();
+                skipAnotherActivity(SideslipExpert_Activity.class);
+                break;
+            case R.id.gu_MyView:
+                closeLeft();
+                skipAnotherActivity(SideslipStock_Activity.class);
+                break;
+            case R.id.fund_MyView:
+                closeLeft();
+                skipAnotherActivity(SideslipFund_Activity.class);
                 break;
 
         }

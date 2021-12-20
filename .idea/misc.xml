@@ -19,6 +19,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_home_focus.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_login_more_info.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_main.xml" value="0.38969310943833235" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_sideslip_insider.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_sideslip_mogulr.xml" value="0.32564102564102565" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/item_recyclerview_v.xml" value="0.3388888888888889" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/item_scrollcard.xml" value="0.3388888888888889" />
@@ -35,7 +36,9 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_shares.xml" value="0.30104166666666665" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_home_focus.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sidesli_follow.xml" value="0.34512820512820513" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_expert.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_insider.xml" value="0.34512820512820513" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_stock.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/find_card.xml" value="0.33076923076923076" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_group_all.xml" value="0.35052083333333334" />

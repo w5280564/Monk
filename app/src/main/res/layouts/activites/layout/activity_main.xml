@@ -178,7 +178,7 @@
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
-                        android:id="@+id/jin_MyView"
+                        android:id="@+id/fund_MyView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_43"
                         app:arrowItemAvatarHeight="@dimen/dp_12"
@@ -197,7 +197,7 @@
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="仓位组合"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
-                        app:layout_constraintTop_toBottomOf="@+id/jin_MyView" />
+                        app:layout_constraintTop_toBottomOf="@+id/fund_MyView" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
                         android:id="@+id/person_MyView"

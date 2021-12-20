@@ -161,6 +161,10 @@ public class HttpUrl {
     public static final String Recommend_Follow = "user/user/recommend-follow";//关注发现-推荐关注
     public static final String Leader_TagList = "index/index/leader-tag-list";//侧滑—大佬标签列表
     public static final String Leader_List = "index/index/leader-list";//侧滑—大佬tab页面
+    public static final String Expert_List = "index/index/expert-list";//侧滑—专家
+    public static final String StockOrFund_Message = "fund/stock/get-zixun";//个股/基金--资讯
+    public static final String StockOrFund_Question = "fund/stock/question-list";//个股/基金--问答
+    public static final String Fund_Notice = "fund/fund/notice";//基金公告
 
 }
 

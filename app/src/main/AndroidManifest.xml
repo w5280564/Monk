@@ -60,6 +60,14 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".Slides.activity.SideslipFund_Activity"
+            android:exported="false" />        <activity
+            android:name=".Slides.activity.SideslipStock_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Slides.activity.SideslipExpert_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Slides.activity.SideslipFollow_Activity"
             android:exported="false" />
         <activity
