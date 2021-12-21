@@ -9,50 +9,38 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.HomeInsiderBean;
-import com.qingbo.monk.bean.InsiderListBean;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
-import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
+import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.adapter.FundCombination_Adapter;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.FundCombinationListBean;
+import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
 
 /**
- * 侧边栏 基金--公告
+ * 侧边栏 股票—十大股东/十大流通股东/基金持股
  */
-public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
+public class Stockthigh_Fragment extends BaseRecyclerViewSplitFragment {
 
+    private String news_digest;
     @BindView(R.id.dingTop_Img)
     ImageView dingTop_Img;
-    private String news_digest;
 
-    /**
-     *
-     * @param
-     * @return
-     */
-    public static FundNitice_Fragment newInstance(String news_digest) {
+    public static Stockthigh_Fragment newInstance(String news_digest,String type) {
         Bundle args = new Bundle();
         args.putString("news_digest", news_digest);
-        FundNitice_Fragment fragment = new FundNitice_Fragment();
+        args.putString("type", type);
+        Stockthigh_Fragment fragment = new Stockthigh_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-
-    @Override
-    protected void initLocalData() {
-        super.initLocalData();
-        news_digest = getArguments().getString("news_digest");
-    }
 
     @Override
     protected int getLayoutId() {
@@ -63,7 +51,12 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无公告",false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", false);
+    }
+
+    @Override
+    protected void initLocalData() {
+        news_digest = getArguments().getString("news_digest");
     }
 
     @Override
@@ -72,22 +65,22 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    InsiderListBean insiderListBean;
+    FundCombinationListBean fundCombinationListBean;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
         requestMap.put("news_digest", news_digest);
-        HttpSender httpSender = new HttpSender(HttpUrl.Fund_Notice, "基金公告", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Fund_Thigh, "股票—十大股东/十大流通股东/基金持股", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     insiderListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderListBean.class);
-                    if (insiderListBean != null) {
-                        handleSplitListData(insiderListBean, mAdapter, limit);
-                    }
+//                    fundCombinationListBean = GsonUtil.getInstance().json2Bean(json_data, FundCombinationListBean.class);
+//                    if (fundCombinationListBean != null) {
+//                        handleSplitListData(fundCombinationListBean, mAdapter, limit);
+//                    }
                 }
             }
         }, isShow);
@@ -114,20 +107,21 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Insider_Adapter();
+        mAdapter = new FundCombination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+//        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
+//
+//        });
 
         onBackTop(dingTop_Img);
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-                String newsUuid = item.getNewsUuid();
-                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
-            }
-        });
     }
+
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+    }
+
 
 
 

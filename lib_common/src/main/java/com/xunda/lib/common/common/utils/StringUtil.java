@@ -715,7 +715,7 @@ public class StringUtil {
      * @param str
      * @return
      */
-    private static boolean isNumeric(String str) {
+    public static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
         if (isNum.matches()) {
@@ -724,6 +724,20 @@ public class StringUtil {
             return false;
         }
     }
+
+    /**
+     * 判断String是否是数字 含有负数
+     * @param str
+     * @return
+     */
+    public static boolean isNumber(String str){
+        if (TextUtils.isEmpty(str)){
+            return false;
+        }
+        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+        return pattern.matcher(str).matches();
+    }
+
 
 
     /**
@@ -825,6 +839,7 @@ public class StringUtil {
         GradientDrawable da = (GradientDrawable) v.getBackground();
         da.setColor(color);
     }
+
 
 
 

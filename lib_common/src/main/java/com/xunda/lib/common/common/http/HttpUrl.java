@@ -165,6 +165,9 @@ public class HttpUrl {
     public static final String StockOrFund_Message = "fund/stock/get-zixun";//个股/基金--资讯
     public static final String StockOrFund_Question = "fund/stock/question-list";//个股/基金--问答
     public static final String Fund_Notice = "fund/fund/notice";//基金公告
+    public static final String Fund_Position = "fund/fund/fund-position";//基金持仓
+    public static final String Fund_Manager = "fund/fund/fund-manager";//基金经理
+    public static final String Fund_Thigh = "fund/fund/thigh";//十大股东/十大流通股东/基金持股
 
 }
 

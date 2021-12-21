@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_32"
+    android:layout_marginTop="@dimen/dp_6"
+    android:layout_marginBottom="@dimen/dp_6"
+    tools:ignore="MissingConstraints">
+
+
+    <TextView
+        android:id="@+id/shareName_Tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_32"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="香港中央 结算公司"
+        android:textColor="@color/text_color_6F6F6F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/cgs_Tv"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/cgs_Tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_32"
+        android:gravity="center"
+        android:text="1968.00"
+        android:textColor="@color/text_color_6F6F6F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/jzbl_Tv"
+        app:layout_constraintStart_toEndOf="@id/shareName_Tv" />
+
+    <TextView
+        android:id="@+id/jzbl_Tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_32"
+        android:gravity="center"
+        android:text="18.00%"
+        android:textColor="@color/text_color_6F6F6F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/change_Tv"
+        app:layout_constraintStart_toEndOf="@+id/cgs_Tv" />
+
+    <TextView
+        android:id="@+id/change_Tv"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_32"
+        android:gravity="center"
+        android:text="不变"
+        android:textColor="@color/text_color_6F6F6F"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/jzbl_Tv" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

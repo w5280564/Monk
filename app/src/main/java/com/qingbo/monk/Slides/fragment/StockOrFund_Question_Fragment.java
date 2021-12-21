@@ -30,10 +30,9 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 侧边栏 个股/基金--资讯
+ * 侧边栏 个股/基金--问答
  */
 public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment {
-
 
     private String name,code;
 
@@ -56,7 +55,7 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", false);
+        initSwipeRefreshLayoutAndAdapter("暂无资讯", false);
     }
 
     @Override
@@ -84,10 +83,10 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
-                    if (homeFllowBean != null) {
-                        handleSplitListData(homeFllowBean, mAdapter, limit);
-                    }
+//                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
+//                    if (homeFllowBean != null) {
+//                        handleSplitListData(homeFllowBean, mAdapter, limit);
+//                    }
                 }
             }
         }, isShow);

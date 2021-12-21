@@ -56,7 +56,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", false);
+        initSwipeRefreshLayoutAndAdapter("暂无资讯", false);
     }
 
     @Override

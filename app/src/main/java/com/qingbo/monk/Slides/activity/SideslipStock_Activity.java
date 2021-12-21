@@ -11,21 +11,28 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
+import com.qingbo.monk.Slides.fragment.StockAFragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MogulTagListBean;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import butterknife.BindView;
 
 /**
  * 侧滑——个股
  */
 public class SideslipStock_Activity extends BaseTabLayoutActivity {
 
+    @BindView(R.id.title_bar)
+    CustomTitleBar title_bar;
     /**
      * @param context
      * @param articleId
@@ -61,52 +68,31 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity {
     }
 
 
-
     @Override
     protected void initView() {
         mViewPager = findViewById(R.id.card_ViewPager);
         mTabLayout = findViewById(R.id.card_Tab);
+        title_bar = findViewById(R.id.title_bar);
+        title_bar.setTitle("股票");
         initMenuData();
     }
 
 
     @SuppressLint("WrongConstant")
     private void initMenuData() {
-        if (mogulTagListBean != null) {
-            int size = mogulTagListBean.getTagList().size();
-//            for (int i = 0; i < size; i++) {
-//                AppMenuBean bean = new AppMenuBean();
-//                bean.setName(mogulTagListBean.getTagList().get(i).getTagName());
-//                String id = mogulTagListBean.getTagList().get(i).getId();
-//                fragments.add(SideslipMogul_Fragment.newInstance(id));
-//                menuList.add(bean);
-//            }
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("A股");
+        tabName.add("港股");
+        for (int i = 0; i < tabName.size(); i++) {
             AppMenuBean bean = new AppMenuBean();
-            bean.setName("A股");
-            bean.setName("港股股");
-            fragments.add(SideslipMogul_Fragment.newInstance("1"));
-            fragments.add(SideslipMogul_Fragment.newInstance("1"));
-            initViewPager(0);
+            bean.setName(tabName.get(i));
+            menuList.add(bean);
         }
+        fragments.add(StockAFragment.newInstance("1"));
+        fragments.add(SideslipMogul_Fragment.newInstance("1"));
+        initViewPager(0);
     }
 
-    MogulTagListBean mogulTagListBean;
-
-    private void getTagListData(boolean isShow) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender httpSender = new HttpSender(HttpUrl.Leader_TagList, "侧滑—大佬标签列表", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    mogulTagListBean = GsonUtil.getInstance().json2Bean(json_data, MogulTagListBean.class);
-
-                }
-            }
-        }, isShow);
-        httpSender.setContext(mActivity);
-        httpSender.sendGet();
-    }
 
 
 }

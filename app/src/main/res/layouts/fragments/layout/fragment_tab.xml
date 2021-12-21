@@ -13,5 +13,16 @@
         android:layout_height="match_parent" />
 
 
+    <ImageView
+        android:id="@+id/dingTop_Img"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="@dimen/dp_36"
+        android:layout_marginBottom="@dimen/dp_42"
+        android:layout_marginEnd="@dimen/dp_27"
+        android:visibility="gone"
+        android:background="@mipmap/icon_zhiding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
