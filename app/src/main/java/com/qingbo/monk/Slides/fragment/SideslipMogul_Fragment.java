@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 侧边栏 大佬列表-tab页面
+ * 首页/侧边栏  大佬列表-tab页面
  */
 public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
 

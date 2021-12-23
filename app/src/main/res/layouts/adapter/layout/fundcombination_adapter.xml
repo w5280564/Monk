@@ -17,7 +17,6 @@
         android:drawableStart="@mipmap/icon_jiantou"
         android:drawablePadding="@dimen/dp_3"
         android:gravity="bottom"
-        android:text="2021-中报"
         android:textColor="@color/text_color_444444"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"

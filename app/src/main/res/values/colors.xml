@@ -68,6 +68,8 @@
 
     <!-- 侧滑页面背景颜色 -->
     <color name="dl_background">#f5f5f5</color>
+    <!-- 背景色 -->
+    <color name="fragment_background">#f8f8f8</color>
 
 
     <!--    字体颜色-->

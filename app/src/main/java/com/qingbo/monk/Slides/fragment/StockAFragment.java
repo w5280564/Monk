@@ -42,10 +42,6 @@ public class StockAFragment extends BaseTabLayoutFragment {
         mViewPager = mRootView.findViewById(R.id.viewpager);
         mTabLayout = mRootView.findViewById(R.id.tabs);
         initMenuData();
-        CustomTitleBar viewById = requireActivity().findViewById(R.id.title_bar);
-        if (!TextUtils.isEmpty(name)){
-            viewById.setTitle(name);
-        }
     }
 
     @Override

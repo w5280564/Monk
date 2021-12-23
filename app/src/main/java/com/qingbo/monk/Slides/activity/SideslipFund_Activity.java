@@ -27,16 +27,18 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
 
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
+    private String name;
+    private String code;
 
     /**
      * @param context
-     * @param articleId
-     * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
+     * @param name
+     * @param  code
      */
-    public static void startActivity(Context context, String articleId, String isShowTop) {
+    public static void startActivity(Context context, String name, String code) {
         Intent intent = new Intent(context, SideslipFund_Activity.class);
-        intent.putExtra("articleId", articleId);
-        intent.putExtra("isShowTop", isShowTop);
+        intent.putExtra("name", name);
+        intent.putExtra("code", code);
         context.startActivity(intent);
     }
 
@@ -56,6 +58,12 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
         setBar();
     }
 
+    @Override
+    protected void initLocalData() {
+         name = getIntent().getStringExtra("name");
+         code = getIntent().getStringExtra("code");
+    }
+
 
     @Override
     protected int getLayoutId() {
@@ -68,7 +76,7 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
         mViewPager = findViewById(R.id.card_ViewPager);
         mTabLayout = findViewById(R.id.card_Tab);
         title_bar = findViewById(R.id.title_bar);
-        title_bar.setTitle("基金");
+        title_bar.setTitle(name);
         initMenuData();
     }
 
@@ -89,14 +97,16 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        String name = "国泰中证动漫游戏ETF";
-        String code = "516010";
+
         fragments.add(StockOrFund_Mess_Fragment.newInstance(name, code));
         fragments.add(StockOrFund_Question_Fragment.newInstance(name, code));
         fragments.add(FundNitice_Fragment.newInstance(code));
-        fragments.add(FundCombination_Fragment.newInstance("160613"));
-        fragments.add(FundManager_Fragment.newInstance("159001"));
+        fragments.add(FundCombination_Fragment.newInstance(code));//"160613"
+        fragments.add(FundManager_Fragment.newInstance(code));//"159001"
         initViewPager(0);
+
+
+
     }
 
 

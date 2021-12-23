@@ -1,87 +1,85 @@
-package com.qingbo.monk.home.fragment;
+package com.qingbo.monk.Slides.activity;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.CombinationListBean;
+import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
-import com.qingbo.monk.bean.InsiderListBean;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 
 import java.util.HashMap;
 
+import butterknife.BindView;
+
 /**
- * 首页滑动tab页--仓位组合
+ * 侧滑 -仓位组合
  */
-public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
-
-    public static HomeCombination_Fragment newInstance(String type) {
-        Bundle args = new Bundle();
-        args.putString("type", type);
-        HomeCombination_Fragment fragment = new HomeCombination_Fragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
+public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity {
 
 
+    @BindView(R.id.title_bar)
+    CustomTitleBar title_bar;
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_tab;
+        return R.layout.activity_sideslip_combination;
     }
 
     @Override
-    protected void initView(View mView) {
-        mRecyclerView = mView.findViewById(R.id.card_Recycler);
+    protected void initView() {
+        mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", true);
+        title_bar.setTitle("仓位组合");
+        title_bar.showTitle();
+        title_bar.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
+    }
+
+
+    /**
+     * 设置状态栏
+     */
+    private void setBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(true)
+                .statusBarColor(R.color.app_main_color)     //状态栏颜色，不写默认透明色
+                .statusBarDarkFont(true)
+                .init();
     }
 
     @Override
-    protected void loadData() {
+    protected void setStatusBar() {
+        setBar();
+    }
+
+
+    @Override
+    protected void getServerData() {
         getListData(true);
     }
-
-    CombinationListBean combinationListBean;
-
-    private void getListData(boolean isShow) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", page + "");
-        requestMap.put("limit", limit + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.getPosition_List, "首页-仓位组合", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
-                    if (combinationListBean != null) {
-                        handleSplitListData(combinationListBean, mAdapter, limit);
-                    }
-                }
-            }
-        }, isShow);
-        httpSender.setContext(mActivity);
-        httpSender.sendGet();
-    }
-
 
     @Override
     protected void onRefreshData() {
@@ -94,6 +92,29 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(false);
     }
 
+    CombinationListBean combinationListBean;
+
+    private void getListData(boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.getPosition_List, "侧滑-仓位组合", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
+                    if (combinationListBean != null) {
+                        handleSplitListData(combinationListBean, mAdapter, limit);
+                    }
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+
 
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
@@ -103,6 +124,12 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+//            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+//            String articleId = item.getArticleId();
+//            String type = item.getType();
+//            ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+        });
     }
 
     @Override
@@ -125,7 +152,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", likeId+ "");
-        HttpSender httpSender = new HttpSender(HttpUrl.combination_Topic_Like, "首页-仓位组合点赞", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.combination_Topic_Like, "侧滑-仓位组合点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -152,6 +179,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
 
 
 

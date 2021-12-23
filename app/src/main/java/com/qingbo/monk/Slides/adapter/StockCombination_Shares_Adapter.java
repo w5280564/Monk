@@ -30,7 +30,7 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
         TextView change_Tv = helper.getView(R.id.change_Tv);
 
 
-        shareName_Tv.setText(item.getGdmc());
+        shareName_Tv.setText(item.getHolderName());
         cgs_Tv.setText(item.getHeldNum() + "");
         jzbl_Tv.setText(item.getHeldRatio() + "");
 

@@ -1,5 +1,6 @@
 package com.qingbo.monk.home.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,11 +16,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipCombination_Activity;
 import com.qingbo.monk.Slides.activity.SideslipExpert_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPerson_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
@@ -76,6 +79,13 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     MyArrowItemView gu_MyView;
     @BindView(R.id.fund_MyView)
     MyArrowItemView fund_MyView;
+    @BindView(R.id.cang_MyView)
+    MyArrowItemView cang_MyView;
+    @BindView(R.id.person_MyView)
+    MyArrowItemView person_MyView;
+
+    @BindView(R.id.wen_MyView)
+    MyArrowItemView wen_MyView;
 
 
     private long clickTime;
@@ -91,7 +101,9 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
     }
+
     HomeFragment homeFragment;
+
     private void initFragment() {
         homeFragment = new HomeFragment();
         addFragment(homeFragment);
@@ -113,6 +125,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         zhuan_MyView.setOnClickListener(this);
         gu_MyView.setOnClickListener(this);
         fund_MyView.setOnClickListener(this);
+        cang_MyView.setOnClickListener(this);
+        person_MyView.setOnClickListener(this);
+
+        wen_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -171,8 +187,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onClick(View v) {
+        String name;
+        String code;
         switch (v.getId()) {
             case R.id.quit_Tv:
                 new QuitDialog(mActivity, "退出登录/关闭", "关闭扫地僧", "退出登录", new QuitDialog.ConfirmListener() {
@@ -218,18 +237,37 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 break;
             case R.id.gu_MyView:
                 closeLeft();
-                skipAnotherActivity(SideslipStock_Activity.class);
+                name = "紫金银行";
+                code = "601860";
+                SideslipStock_Activity.startActivity(mActivity, name, code);
                 break;
             case R.id.fund_MyView:
                 closeLeft();
-                skipAnotherActivity(SideslipFund_Activity.class);
+                name = "国泰中证动漫游戏ETF";
+                code = "516010";
+                SideslipFund_Activity.startActivity(mActivity, name, code);
+                break;
+            case R.id.cang_MyView:
+                closeLeft();
+              skipAnotherActivity(SideslipCombination_Activity.class);
+                break;
+            case R.id.person_MyView:
+                closeLeft();
+                String s = "Seth Klarman";
+                SideslipPerson_Activity.startActivity(mActivity,s,"0");
                 break;
 
+
+
+            case R.id.wen_MyView:
+                closeLeft();
+                mBottomNavigationView.setSelectedItemId(mBottomNavigationView.getMenu().getItem(1).getItemId());
+                break;
         }
     }
 
     // 关闭左侧抽屉
-    private void closeLeft(){
+    private void closeLeft() {
         dl_layout.closeDrawer(lv_drawer_left);
     }
 

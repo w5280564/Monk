@@ -3,6 +3,8 @@ package com.qingbo.monk.home.fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +30,8 @@ import butterknife.BindView;
  */
 public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
 
-
+    @BindView(R.id.dingTop_Img)
+    ImageView dingTop_Img;
     private String type;
 
     /**
@@ -121,6 +124,8 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
                 AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
             }
         });
+
+        onBackTop(dingTop_Img);
     }
 
 

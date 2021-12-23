@@ -16,7 +16,7 @@ import com.qingbo.monk.bean.StockCombinationBean;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
 
 /**
- * 侧边栏 个股-股票持股 item
+ * 侧边栏 股票—十大股东/十大流通股东 item
  */
 public class StockCombination_Adapter extends BaseQuickAdapter<StockCombinationBean, BaseViewHolder> {
     public StockCombination_Adapter() {
@@ -38,17 +38,7 @@ public class StockCombination_Adapter extends BaseQuickAdapter<StockCombinationB
     }
 
 
-    /**
-     * 获取分割线
-     *
-     * @param drawableId 分割线id
-     * @return
-     */
-    public RecyclerView.ItemDecoration getRecyclerViewDivider(@DrawableRes int drawableId) {
-        CustomDecoration itemDecoration = new CustomDecoration(mContext, LinearLayoutManager.VERTICAL, false);
-        itemDecoration.setDrawable(ContextCompat.getDrawable(mContext, drawableId));
-        return itemDecoration;
-    }
+
 
 
 }

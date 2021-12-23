@@ -26,6 +26,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.home.activity.MainActivity;
@@ -200,7 +201,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
         tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
         tabFragmentList.add(HomeCommendFragment.newInstance(titleType));
-        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
+//        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
+        tabFragmentList.add(SideslipMogul_Fragment.newInstance(""));
         tabFragmentList.add(HomeInsider_Fragment.newInstance("1"));
         tabFragmentList.add(HomeCombination_Fragment.newInstance(titleType));
 

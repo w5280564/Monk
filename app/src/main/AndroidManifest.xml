@@ -60,8 +60,15 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".Slides.activity.SideslipPerson_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Slides.activity.SideslipCombination_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Slides.activity.SideslipFund_Activity"
-            android:exported="false" />        <activity
+            android:exported="false" />
+        <activity
             android:name=".Slides.activity.SideslipStock_Activity"
             android:exported="false" />
         <activity

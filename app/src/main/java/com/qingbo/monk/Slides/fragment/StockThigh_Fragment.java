@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.adapter.FundCombination_Adapter;
 import com.qingbo.monk.Slides.adapter.StockCombination_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.FundCombinationListBean;
 import com.qingbo.monk.bean.StockCombinationListBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -30,17 +28,16 @@ import butterknife.BindView;
  */
 public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
 
-    private String news_digest,type;
+    private String news_digest, type;
     @BindView(R.id.dingTop_Img)
     ImageView dingTop_Img;
 
     /**
-     *
      * @param news_digest 股票代码
-     * @param type 1-十大股东 2-十大流通股东 3-基金持股
+     * @param type        1-十大股东 2-十大流通股东 3-基金持股 type 3的时候数据模型不一样
      * @return
      */
-    public static StockThigh_Fragment newInstance(String news_digest,String type) {
+    public static StockThigh_Fragment newInstance(String news_digest, String type) {
         Bundle args = new Bundle();
         args.putString("news_digest", news_digest);
         args.putString("type", type);
@@ -73,7 +70,6 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    StockCombinationListBean stockCombinationListBean;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -86,7 +82,7 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     stockCombinationListBean = GsonUtil.getInstance().json2Bean(json_data, StockCombinationListBean.class);
+                    StockCombinationListBean stockCombinationListBean = GsonUtil.getInstance().json2Bean(json_data, StockCombinationListBean.class);
                     if (stockCombinationListBean != null) {
                         handleSplitListData(stockCombinationListBean, mAdapter, limit);
                     }
@@ -118,9 +114,7 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new StockCombination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-//        homeFollowAdapter.setOnItemClickListener((adapter, view, position) -> {
-//
-//        });
+
 
         onBackTop(dingTop_Img);
 
@@ -130,8 +124,6 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initEvent() {
         super.initEvent();
     }
-
-
 
 
 }

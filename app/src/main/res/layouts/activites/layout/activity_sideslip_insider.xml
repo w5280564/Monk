@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Slides.activity.SideslipInsider_Activity"
+    android:id="@+id/sideslip_Con"
     tools:ignore="MissingConstraints">
 
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
@@ -26,6 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:tabBackground="@color/transparent"
         app:tabIndicatorColor="@color/transparent"
+        app:tabIndicatorHeight="@dimen/dp_0"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_6f6f6f" />
 
@@ -44,7 +45,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_Tab" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

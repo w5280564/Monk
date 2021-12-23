@@ -48,10 +48,6 @@ public class StockHKFragment extends BaseTabLayoutFragment {
         mViewPager = mRootView.findViewById(R.id.viewpager);
         mTabLayout = mRootView.findViewById(R.id.tabs);
         initMenuData();
-        CustomTitleBar viewById = requireActivity().findViewById(R.id.title_bar);
-        if (!TextUtils.isEmpty(name)) {
-            viewById.setTitle(name);
-        }
     }
 
 
@@ -66,8 +62,8 @@ public class StockHKFragment extends BaseTabLayoutFragment {
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        name = "凤祥股份";
-        code = "156154";
+//        name = "凤祥股份";
+//        code = "156154";
         fragments.add(StockOrFund_Mess_Fragment.newInstance(name, code));
         fragments.add(StockOrFund_Question_Fragment.newInstance(name, code));
         fragments.add(StockNitice_Fragment.newInstance("2", code));
