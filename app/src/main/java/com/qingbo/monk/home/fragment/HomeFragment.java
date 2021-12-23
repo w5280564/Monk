@@ -222,8 +222,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 return tabsList.get(position);
             }
         });
+        card_ViewPager.setOffscreenPageLimit(tabFragmentList.size());
         //设置TabLayout和ViewPager联动
-        card_Tab.setupWithViewPager(card_ViewPager, false);
+        card_Tab.setupWithViewPager(card_ViewPager);
         changePager(1);
     }
 
