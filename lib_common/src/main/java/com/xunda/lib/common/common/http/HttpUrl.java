@@ -169,6 +169,8 @@ public class HttpUrl {
     public static final String Fund_Manager = "fund/fund/fund-manager";//基金经理
     public static final String Fund_Thigh = "fund/fund/thigh";//十大股东/十大流通股东/基金持股
     public static final String FundStock_MesLike = "fund/stock/zixun-like";//资讯点赞
+    public static final String bandLogin = "login/login/band-login";//绑定手机号并登录
+    public static final String bandAccount = "user/user/band";//绑定第三方账号
 
 }
 

@@ -75,7 +75,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
 
     @Override
-    protected void getServerData() {
+    protected void loadData() {
         getListData(true);
     }
 

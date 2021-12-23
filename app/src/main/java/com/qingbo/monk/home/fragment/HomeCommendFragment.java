@@ -56,7 +56,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
     }
 
     @Override
-    protected void getServerData() {
+    protected void loadData() {
         getListData(true);
     }
 

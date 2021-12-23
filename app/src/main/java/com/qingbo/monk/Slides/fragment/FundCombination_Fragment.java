@@ -67,9 +67,9 @@ public class FundCombination_Fragment extends BaseRecyclerViewSplitFragment {
         news_digest = getArguments().getString("news_digest");
     }
 
+
     @Override
-    protected void getServerData() {
-        super.getServerData();
+    protected void loadData() {
         getListData(true);
     }
 
@@ -129,7 +129,6 @@ public class FundCombination_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initEvent() {
         super.initEvent();
     }
-
 
 
 

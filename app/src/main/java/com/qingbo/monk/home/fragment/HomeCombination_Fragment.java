@@ -56,8 +56,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
     @Override
-    protected void getServerData() {
-        super.getServerData();
+    protected void loadData() {
         getListData(true);
     }
 

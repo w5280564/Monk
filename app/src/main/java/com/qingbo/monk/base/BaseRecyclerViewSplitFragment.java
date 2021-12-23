@@ -18,7 +18,7 @@ import com.xunda.lib.common.view.CustomLoadMoreView;
 /**
  * 带分页的基类Fragment
  */
-public abstract class BaseRecyclerViewSplitFragment extends BaseFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseRecyclerViewSplitFragment extends BaseLazyFragment implements BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected RecyclerView mRecyclerView;
     protected BaseQuickAdapter mAdapter;

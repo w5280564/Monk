@@ -150,13 +150,12 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 	 */
 	private void wechatAuthLogin(String code) {
 		HashMap<String, String> baseMap = new HashMap<>();
-//		baseMap.put("type", "type");
+		baseMap.put("type", "weixinApp");
 		baseMap.put("code", code);
 		HttpSender sender = new HttpSender(HttpUrl.authLogin, "微信第三方登录", baseMap,
 				new MyOnHttpResListener() {
 					@Override
 					public void onComplete(String json_root, int code, String msg, String json_data) {
-						L.e("msg>>"+msg);
 						if (code == Constants.REQUEST_SUCCESS_CODE) {
 							T.ss("登录成功");
 							Message mMessage = Message.obtain();

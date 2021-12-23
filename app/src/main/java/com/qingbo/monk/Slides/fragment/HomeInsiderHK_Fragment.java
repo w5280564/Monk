@@ -60,8 +60,7 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
     @Override
-    protected void getServerData() {
-        super.getServerData();
+    protected void loadData() {
         getListData(true);
     }
 

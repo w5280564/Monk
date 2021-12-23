@@ -70,7 +70,7 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
 
     @Override
-    protected void getServerData() {
+    protected void loadData() {
         getListData(true);
     }
 

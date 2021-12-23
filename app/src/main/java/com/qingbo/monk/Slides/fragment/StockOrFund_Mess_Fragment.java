@@ -67,8 +67,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
     @Override
-    protected void getServerData() {
-        super.getServerData();
+    protected void loadData() {
         getListData(true);
     }
 

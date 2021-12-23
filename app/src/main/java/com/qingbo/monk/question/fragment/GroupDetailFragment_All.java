@@ -73,4 +73,8 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
 
     }
 
+    @Override
+    protected void loadData() {
+
+    }
 }

@@ -53,7 +53,7 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
 
 
     @Override
-    protected void getServerData() {
+    protected void loadData() {
         getSquareList(true);
     }
 
