@@ -9,6 +9,8 @@ import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.base.BaseLazyFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
@@ -37,7 +39,7 @@ import butterknife.OnClick;
 /**
  * 社群问答
  */
-public class QuestionFragment_Group extends BaseFragment {
+public class QuestionFragment_Group extends BaseLazyFragment {
 
     @BindView(R.id.img_top_banner)
     QuestionGroupBanner img_top_banner;
@@ -52,6 +54,7 @@ public class QuestionFragment_Group extends BaseFragment {
     protected int getLayoutId() {
         return R.layout.fragment_question_group;
     }
+
 
 
     @Override
@@ -85,9 +88,35 @@ public class QuestionFragment_Group extends BaseFragment {
     }
 
     @Override
-    protected void getServerData() {
+    protected void loadData() {
         getAllShequn();
     }
+
+    private void getAllShequn() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", "1");
+        requestMap.put("limit", "4");
+        HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
+                            if (obj != null) {
+                                List<GroupBean> list = obj.getList();
+                                mQuestionGroupAdapter.setNewData(list);
+                            }
+                        }
+                        getMyGroup();
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
 
     private void getMyGroup() {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -130,29 +159,6 @@ public class QuestionFragment_Group extends BaseFragment {
     }
 
 
-    private void getAllShequn() {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", "1");
-        requestMap.put("limit", "4");
-        HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseGroupBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseGroupBean.class);
-                            if (obj != null) {
-                                List<GroupBean> list = obj.getList();
-                                mQuestionGroupAdapter.setNewData(list);
-                            }
-                        }
-                        getMyGroup();
-                    }
-
-                }, true);
-
-        sender.setContext(mActivity);
-        sender.sendGet();
-    }
 
 
     @Override
@@ -166,6 +172,8 @@ public class QuestionFragment_Group extends BaseFragment {
         super.onResume();
         img_top_banner.goOnScroll();
     }
+
+
 
     @OnClick({R.id.tv_create, R.id.tv_more})
     public void onClick(View view) {

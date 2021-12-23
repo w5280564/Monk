@@ -2,17 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     android:opacity="opaque">
     <item
-        android:drawable="@color/app_begin_color_bag"/>
+        android:drawable="@color/white"/>
 
 
-    <item android:top="200dip">
-        <bitmap android:src="@drawable/begin_logo"
+    <item android:top="153dip">
+        <bitmap android:src="@drawable/app_logo"
             android:gravity="center_horizontal|top"/>
     </item>
 
-    <item android:bottom="60dip">
-        <bitmap android:src="@drawable/begin_logo_bottom"
-            android:gravity="center_horizontal|bottom"/>
-    </item>
 
 </layer-list>
