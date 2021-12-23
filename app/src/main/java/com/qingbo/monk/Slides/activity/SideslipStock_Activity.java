@@ -12,6 +12,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.Slides.fragment.StockAFragment;
+import com.qingbo.monk.Slides.fragment.StockHKFragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MogulTagListBean;
 import com.xunda.lib.common.bean.AppMenuBean;
@@ -33,6 +34,9 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity {
 
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
+    private String name;
+    private String code;
+
     /**
      * @param context
      * @param articleId
@@ -88,8 +92,12 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity {
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        fragments.add(StockAFragment.newInstance("1"));
-        fragments.add(SideslipMogul_Fragment.newInstance("1"));
+         name = "紫金银行";
+         code = "601860";
+        fragments.add(StockAFragment.newInstance(name,code));
+//         name = "凤祥股份";
+//         code = "156154";
+        fragments.add(StockHKFragment.newInstance(name,code));
         initViewPager(0);
     }
 

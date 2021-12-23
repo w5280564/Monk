@@ -12,27 +12,29 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.FundCombinationBean;
+import com.qingbo.monk.bean.StockCombinationBean;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
+
 /**
- * 侧边栏 基金-基金持股 item
+ * 侧边栏 个股-股票持股 item
  */
-public class FundCombination_Adapter extends BaseQuickAdapter<FundCombinationBean, BaseViewHolder> {
-    public FundCombination_Adapter() {
+public class StockCombination_Adapter extends BaseQuickAdapter<StockCombinationBean, BaseViewHolder> {
+    public StockCombination_Adapter() {
         super(R.layout.fundcombination_adapter);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, FundCombinationBean item) {
+    protected void convert(@NonNull BaseViewHolder helper, StockCombinationBean item) {
         TextView fundTime_Tv = helper.getView(R.id.fundTime_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
 
-        fundTime_Tv.setText(item.getNewsTitle());
+        fundTime_Tv.setText(item.getNewsDigest());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mNineView.setLayoutManager(linearLayoutManager);
-        FundCombination_Shares_Adapter fundCombination_shares_adapter = new FundCombination_Shares_Adapter();
-        mNineView.setAdapter(fundCombination_shares_adapter);
-        fundCombination_shares_adapter.setNewData(item.getExtra().getItems());
+        StockCombination_Shares_Adapter stockCombination_shares_adapter = new StockCombination_Shares_Adapter();
+        mNineView.setAdapter(stockCombination_shares_adapter);
+        stockCombination_shares_adapter.setNewData(item.getData().getItems());
     }
 
 

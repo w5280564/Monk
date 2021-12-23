@@ -168,6 +168,7 @@ public class HttpUrl {
     public static final String Fund_Position = "fund/fund/fund-position";//基金持仓
     public static final String Fund_Manager = "fund/fund/fund-manager";//基金经理
     public static final String Fund_Thigh = "fund/fund/thigh";//十大股东/十大流通股东/基金持股
+    public static final String FundStock_MesLike = "fund/stock/zixun-like";//资讯点赞
 
 }
 

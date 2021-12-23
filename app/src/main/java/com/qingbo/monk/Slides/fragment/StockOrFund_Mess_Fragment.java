@@ -15,12 +15,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.StockFundMes_Bean;
+import com.qingbo.monk.bean.StockFundMes_ListBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.home.adapter.StockFund_Mess_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -35,7 +36,7 @@ import java.util.List;
 public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
 
 
-    private String name,code;
+    private String name, code;
 
     public static StockOrFund_Mess_Fragment newInstance(String name, String code) {
         Bundle args = new Bundle();
@@ -71,7 +72,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    FollowListBean homeFllowBean;
+    StockFundMes_ListBean stockFundMes_listBean;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -84,10 +85,10 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-//                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
-//                    if (homeFllowBean != null) {
-//                        handleSplitListData(homeFllowBean, mAdapter, limit);
-//                    }
+                    stockFundMes_listBean = GsonUtil.getInstance().json2Bean(json_data, StockFundMes_ListBean.class);
+                    if (stockFundMes_listBean != null) {
+                        handleSplitListData(stockFundMes_listBean, mAdapter, limit);
+                    }
                 }
             }
         }, isShow);
@@ -114,16 +115,8 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Focus_Adapter();
+        mAdapter = new StockFund_Mess_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(ArticleDetail_Activity.class);
-            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
-            String articleId = item.getArticleId();
-            String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
-        });
 
     }
 
@@ -133,30 +126,19 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (homeFllowBean == null) {
+                if (stockFundMes_listBean == null) {
                     return;
                 }
                 switch (view.getId()) {
-                    case R.id.follow_Tv:
-                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
-                        postFollowData(otherUserId, position);
-                        break;
                     case R.id.follow_Img:
-                        String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        String likeId = stockFundMes_listBean.getList().get(position).getId();
                         postLikedData(likeId, position);
-                        break;
-                    case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-                        String articleId = item.getArticleId();
-                        String type = item.getType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
                         break;
                 }
             }
         });
 
-
-        ((Focus_Adapter) mAdapter).setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
+        ((StockFund_Mess_Adapter) mAdapter).setOnItemImgClickLister(new StockFund_Mess_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -165,33 +147,12 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-    private void postFollowData(String otherUserId, int position) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("otherUserId", otherUserId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
+
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", likeId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.FundStock_MesLike, "资讯点赞/取消点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

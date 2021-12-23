@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -77,25 +78,47 @@ public class BaseTabLayoutFragment extends BaseFragment {
         //将TabLayout和ViewPager关联起来。
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setCurrentItem(position);
-
         for (int i = 0; i < mTabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
             if (tab != null) {
                 tab.setCustomView(getTabView(i));
             }
         }
-
         View view = mTabLayout.getTabAt(0).getCustomView();
         if (null != view) {
             setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
+        mViewPager.setCurrentItem(0);
+    }
 
+    /**
+     *
+     * @param position 页面下标
+     * @param manager getChildFragmentManager 父容器是fragment碎片管理器
+     */
+    protected void initViewPager(int position, FragmentManager manager) {
+        NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getChildFragmentManager(), fragments, menuList);
+        //给ViewPager设置适配器
+        mViewPager.setAdapter(mFragmentAdapter);
+        mViewPager.setOffscreenPageLimit(menuList.size());
+        //将TabLayout和ViewPager关联起来。
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setCurrentItem(position);
+        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(getTabView(i));
+            }
+        }
+        View view = mTabLayout.getTabAt(0).getCustomView();
+        if (null != view) {
+            setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+        }
         mViewPager.setCurrentItem(0);
     }
 
 
-
-    private void setTextViewStyle(View view, int size, int color, Typeface textStyle,int visibility) {
+    protected void setTextViewStyle(View view, int size, int color, Typeface textStyle, int visibility) {
         TextView mTextView = view.findViewById(R.id.tab_item_textview);
         View line = view.findViewById(R.id.line);
         mTextView.setTextSize(size);
@@ -110,7 +133,7 @@ public class BaseTabLayoutFragment extends BaseFragment {
      * @param currentPosition
      * @return
      */
-    private View getTabView(int currentPosition) {
+    public View getTabView(int currentPosition) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_tab, null);
         TextView textView = view.findViewById(R.id.tab_item_textview);
         textView.setText(menuList.get(currentPosition).getName());
