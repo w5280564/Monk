@@ -1,6 +1,8 @@
 package com.qingbo.monk.home.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ import com.qingbo.monk.home.fragment.MessageFragment;
 import com.qingbo.monk.home.fragment.MineFragment;
 import com.qingbo.monk.home.fragment.QuestionFragment;
 import com.qingbo.monk.home.fragment.UniverseFragment;
+import com.qingbo.monk.login.activity.GetPhoneCodeStepTwoActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
@@ -40,6 +43,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.view.MyArrowItemView;
 
 import java.util.HashMap;
@@ -94,6 +98,14 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
+
+
+    public static void actionStart(Context context, String isBindWechat) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("isBindWechat",isBindWechat);
+        context.startActivity(intent);
+    }
+
 
 
     @Override
@@ -166,6 +178,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initLocalData() {
         super.initLocalData();
+        String isBindWechat = getIntent().getStringExtra("isBindWechat");
+        if ("0".equals(isBindWechat)) {
+            showBindDialog();
+        }
         String avatar = PrefUtil.getUser().getAvatar();
         GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();
@@ -174,6 +190,21 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         String fans = PrefUtil.getUser().getFansNum();
         String fowAndFans = String.format("关注 %1$s      粉丝 %2$s", fow, fans);
         followAndFans_Tv.setText(fowAndFans);
+    }
+
+    private void showBindDialog() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请先绑定微信号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+
+            }
+
+            @Override
+            public void onClickLeft() {
+
+            }
+        });
+        mDialog.show();
     }
 
 

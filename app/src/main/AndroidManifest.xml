@@ -108,6 +108,7 @@
         <activity android:name=".home.activity.MainActivity" />
         <activity android:name=".login.activity.LoginActivity" />
         <activity android:name=".login.activity.LoginWithCodeActivity" />
+        <activity android:name=".login.activity.BindPhoneNumberActivity" />
         <activity android:name=".login.activity.GetPhoneCodeStepTwoActivity" />
         <activity android:name=".login.activity.WelcomeActivity" />
         <activity android:name=".login.activity.LoginMoreInfoActivity" />

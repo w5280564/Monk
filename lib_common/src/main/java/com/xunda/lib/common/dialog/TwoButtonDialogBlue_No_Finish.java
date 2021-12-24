@@ -35,18 +35,6 @@ public class TwoButtonDialogBlue_No_Finish extends Dialog implements
         this.mContext = context;
     }
 
-    public TwoButtonDialogBlue_No_Finish(Context context, String content, String left,
-                                         String right, int leftColor,
-                                         int rightColor, ConfirmListener confirmListener) {
-        super(context, R.style.CenterDialogStyle);
-        this.listener = confirmListener;
-        this.content = content;
-        this.left = left;
-        this.right = right;
-        this.leftColor = leftColor;
-        this.rightColor = rightColor;
-        this.mContext = context;
-    }
 
 
     @Override
