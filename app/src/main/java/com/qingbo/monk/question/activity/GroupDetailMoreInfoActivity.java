@@ -29,8 +29,6 @@ import butterknife.OnClick;
 public class GroupDetailMoreInfoActivity extends BaseActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
-    @BindView(R.id.tv_shequn_name)
-    TextView tv_shequn_name;
     @BindView(R.id.ll_back)
     LinearLayout ll_back;
     private String id;
@@ -116,7 +114,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
             }else{
                 GlideUtils.loadImage(mContext,iv_head_bag,group_header);
             }
-            tv_shequn_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
+//            tv_shequn_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
         }
     }
 

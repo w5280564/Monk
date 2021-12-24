@@ -1,6 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/iv_head_bag"
@@ -9,20 +10,172 @@
         android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:id="@+id/ll_back"
-        android:layout_width="50dp"
-        android:layout_height="@dimen/title_height"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:id="@+id/ll_back"
+            android:layout_width="50dp"
+            android:layout_height="@dimen/title_height"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/icon_back_white" />
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_back_white" />
+
+        </LinearLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/iv_head"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56" />
+
+                <TextView
+                    android:id="@+id/tv_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="群ID：95690721"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"/>
+
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_2"
+                    android:text="篮球火讨论社群"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_16"/>
+
+
+                <TextView
+                    android:id="@+id/tv_share"
+                    android:layout_width="93dp"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginTop="@dimen/dp_48"
+                    android:background="@drawable/background_bg_share"
+                    android:gravity="center"
+                    android:text="分享"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_16"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_bg_hui_radius_top9"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/dp_11"
+                    android:paddingLeft="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_15"
+                    android:paddingBottom="@dimen/dp_15">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_background_white_radius9_all"
+                        android:padding="@dimen/dp_10">
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTip="篮球火讨论社群"
+                            app:arrowItemTitle="编辑资料" />
+
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTip="223"
+                            app:arrowItemTitle="群成员" />
+
+
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_manager"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTitle="群管理" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_background_white_radius9_all"
+                        android:padding="@dimen/dp_15">
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_invite_partner"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTitle="邀请合伙人" />
+
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_invite_member"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTip="223"
+                            app:arrowItemTitle="邀请成员" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_11"
+                        android:orientation="vertical"
+                        android:background="@drawable/shape_background_white_radius9_all"
+                        android:padding="@dimen/dp_10">
+
+                        <com.xunda.lib.common.view.MyArrowItemView
+                            android:id="@+id/arrowItemView_apply_exit"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_47"
+                            app:arrowItemShowDivider="false"
+                            app:arrowItemShowTip="true"
+                            app:arrowItemTitle="申请退款" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
     </LinearLayout>
+
+
 
 
 </FrameLayout>

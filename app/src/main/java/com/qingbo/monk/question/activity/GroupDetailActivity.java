@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -169,7 +168,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
 
     @Override
     public void onRightClick() {
-        GroupSettingActivity.actionStart(mActivity,sheQunBean);
+        GroupDetailMoreInfoActivity.actionStart(mActivity,id);
     }
 
 

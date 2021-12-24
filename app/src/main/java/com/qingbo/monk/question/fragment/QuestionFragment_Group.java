@@ -4,19 +4,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.BaseLazyFragment;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
-import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.qingbo.monk.question.activity.MyGroupListActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
@@ -29,7 +25,6 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
