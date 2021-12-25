@@ -24,7 +24,8 @@ import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPerson_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.dialog.QuitDialog;
@@ -280,14 +281,15 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 break;
             case R.id.cang_MyView:
                 closeLeft();
-              skipAnotherActivity(SideslipCombination_Activity.class);
+                skipAnotherActivity(SideslipCombination_Activity.class);
                 break;
             case R.id.person_MyView:
                 closeLeft();
-                String s = "Seth Klarman";
-                SideslipPerson_Activity.startActivity(mActivity,s,"0");
+//                String s = "David Gardner";
+//                String s1 = "706";
+//                SideslipPersonDetail_Activity.startActivity(mActivity, s,s1, "0");
+                SideslipPersonList_Activity.startActivity(mActivity);
                 break;
-
 
 
             case R.id.wen_MyView:

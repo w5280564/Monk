@@ -1,6 +1,5 @@
 package com.qingbo.monk.home.adapter;
 
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +12,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.HomeInsiderBean;
 import com.xunda.lib.common.common.utils.StringUtil;
-
-import java.util.List;
 
 public class Insider_Adapter extends BaseQuickAdapter<HomeInsiderBean, BaseViewHolder> {
     public Insider_Adapter() {

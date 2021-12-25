@@ -60,7 +60,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
-            android:name=".Slides.activity.SideslipPerson_Activity"
+            android:name=".Slides.activity.SideslipPersonList_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Slides.activity.SideslipPersonDetail_Activity"
             android:exported="false" />
         <activity
             android:name=".Slides.activity.SideslipCombination_Activity"

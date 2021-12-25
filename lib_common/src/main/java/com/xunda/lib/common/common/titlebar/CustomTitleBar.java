@@ -47,7 +47,7 @@ public class CustomTitleBar extends FrameLayout implements OnClickListener {
     private LinearLayout ll_title_bar;
     private TextView leftBtnView;
     private RelativeLayout centerClickLayout;
-    private MarqueeTextView centerTxtView;
+    private TextView centerTxtView;
     private RelativeLayout rightClickLayout;
     private TextView rightBtnView;
     private ImageView rightImgView;

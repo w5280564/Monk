@@ -474,7 +474,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes, String is_anonymous) {
         if (TextUtils.equals(is_anonymous, "0")) {
             String s = String.valueOf(follow_status);
-            if (TextUtils.equals(s, "0")) {
+            if (TextUtils.equals(s, "0")|| TextUtils.equals(s, "3")) {
                 follow_Tv.setVisibility(View.VISIBLE);
                 follow_Tv.setText("关注");
                 follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));

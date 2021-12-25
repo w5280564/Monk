@@ -117,7 +117,6 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleZan_Adapter();
-
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);

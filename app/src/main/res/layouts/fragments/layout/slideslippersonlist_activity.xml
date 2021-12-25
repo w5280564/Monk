@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    tools:ignore="MissingConstraints,MissingDefaultResource">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightShowType="IMG"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="人物" />
+
+
+    <com.xunda.lib.common.view.SearchEditText
+        android:id="@+id/query_Edit"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/search_bg_radius9"
+        android:drawableStart="@mipmap/icon_sousuo"
+        android:hint="搜索扫地僧"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/text_color_CCCCCC"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/title_bar" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/card_Recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/query_Edit" />
+
+
+    <ImageView
+        android:id="@+id/dingTop_Img"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="@dimen/dp_36"
+        android:layout_marginBottom="@dimen/dp_42"
+        android:layout_marginEnd="@dimen/dp_27"
+        android:visibility="gone"
+        android:background="@mipmap/icon_zhiding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

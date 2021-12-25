@@ -97,6 +97,7 @@ android {
         implementation 'org.jetbrains:annotations:15.0'
 
         implementation 'com.tencent.mm.opensdk:wechat-sdk-android:+'
+        implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//折线图 饼状图
     }
 
 

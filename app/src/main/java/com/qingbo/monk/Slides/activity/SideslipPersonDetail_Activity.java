@@ -22,21 +22,23 @@ import butterknife.BindView;
 /**
  * 侧边栏 人物
  */
-public class SideslipPerson_Activity extends BaseTabLayoutActivity {
-    private String nickname;
+public class SideslipPersonDetail_Activity extends BaseTabLayoutActivity {
+    private String nickname, id;
 
     @BindView(R.id.sideslip_Con)
     ConstraintLayout sideslip_Con;
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
+
     /**
      * @param context
      * @param nickname
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String nickname, String isShowTop) {
-        Intent intent = new Intent(context, SideslipPerson_Activity.class);
+    public static void startActivity(Context context, String nickname, String id, String isShowTop) {
+        Intent intent = new Intent(context, SideslipPersonDetail_Activity.class);
         intent.putExtra("nickname", nickname);
+        intent.putExtra("id", id);
         intent.putExtra("isShowTop", isShowTop);
         context.startActivity(intent);
     }
@@ -66,12 +68,13 @@ public class SideslipPerson_Activity extends BaseTabLayoutActivity {
 
     @Override
     protected void initLocalData() {
-         nickname = getIntent().getStringExtra("nickname");
+        id = getIntent().getStringExtra("id");
+        nickname = getIntent().getStringExtra("nickname");
     }
 
     @Override
     protected void initView() {
-        sideslip_Con.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.fragment_background));
+        sideslip_Con.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.fragment_background));
         title_bar.setTitle(nickname);
         mViewPager = findViewById(R.id.card_ViewPager);
         mTabLayout = findViewById(R.id.card_Tab);
@@ -83,7 +86,7 @@ public class SideslipPerson_Activity extends BaseTabLayoutActivity {
         for (int i = 0; i < 2; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
-                fragments.add(PersonDetail_Fragment.newInstance(nickname));
+                fragments.add(PersonDetail_Fragment.newInstance(nickname, id));
                 bean.setName("个人信息");
             } else {
                 fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
