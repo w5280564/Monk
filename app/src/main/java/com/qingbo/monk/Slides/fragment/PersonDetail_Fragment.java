@@ -1,5 +1,6 @@
 package com.qingbo.monk.Slides.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -13,9 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -50,7 +55,7 @@ import butterknife.BindView;
 /**
  * 人物详情
  */
-public class PersonDetail_Fragment extends BaseFragment {
+public class PersonDetail_Fragment extends BaseFragment implements View.OnClickListener {
     private String nickname, id;
     @BindView(R.id.head_Img)
     ImageView head_Img;
@@ -66,6 +71,10 @@ public class PersonDetail_Fragment extends BaseFragment {
     PieChart chart;
     @BindView(R.id.nine_grid)
     RecyclerView mNineView;
+    @BindView(R.id.fundTime_Tv)
+    TextView fundTime_Tv;
+    @BindView(R.id.stock_Con)
+    ConstraintLayout stock_Con;
 
     /**
      * @param
@@ -98,9 +107,18 @@ public class PersonDetail_Fragment extends BaseFragment {
     }
 
     @Override
+    protected void initEvent() {
+        fundTime_Tv.setOnClickListener(this);
+    }
+
+    @Override
     protected void getServerData() {
         getListData(true);
     }
+
+
+    CharacterDetail_Bean.DataDTO.ListDTO listDTO;
+    PersomCombination_Shares_Adapter persomCombination_shares_adapter;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -115,29 +133,33 @@ public class PersonDetail_Fragment extends BaseFragment {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     CharacterDetail_Bean characterDetail_bean1 = GsonUtil.getInstance().json2Bean(json_root, CharacterDetail_Bean.class);
                     if (characterDetail_bean1 != null && !ListUtils.isEmpty(characterDetail_bean1.getData().getList())) {
-                        CharacterDetail_Bean.DataDTO.ListDTO characterDetail_bean = characterDetail_bean1.getData().getList().get(0);
-                        String avatar = characterDetail_bean.getAvatar();
+                        listDTO = characterDetail_bean1.getData().getList().get(0);
+                        String avatar = listDTO.getAvatar();
                         GlideUtils.loadCircleImage(mActivity, head_Img, avatar, R.mipmap.icon_logo);
 
-                        nickName_Tv.setText(characterDetail_bean.getNickname());
-                        company_Tv.setText(characterDetail_bean.getCompanyName());
-                        brief_Tv.setText(characterDetail_bean.getDescription());
-                        labelFlow(lable_Flow, mActivity, characterDetail_bean.getTagName());
+                        nickName_Tv.setText(listDTO.getNickname());
+                        company_Tv.setText(listDTO.getCompanyName());
+                        brief_Tv.setText(listDTO.getDescription());
+                        labelFlow(lable_Flow, mActivity, listDTO.getTagName());
 
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         mNineView.setLayoutManager(linearLayoutManager);
-                        PersomCombination_Shares_Adapter persomCombination_shares_adapter = new PersomCombination_Shares_Adapter();
+                        persomCombination_shares_adapter = new PersomCombination_Shares_Adapter();
                         mNineView.setAdapter(persomCombination_shares_adapter);
-                        if (!ListUtils.isEmpty(characterDetail_bean.getInfo())) {
-                            List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(0).getList();
+                        if (!ListUtils.isEmpty(listDTO.getInfo())) {
+                            stock_Con.setVisibility(View.VISIBLE);
+                            chart.setVisibility(View.VISIBLE);
+                            List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = listDTO.getInfo().get(0).getList();
+                            String quarters = listDTO.getInfo().get(0).getQuarters();
+                            fundTime_Tv.setText(quarters);
                             persomCombination_shares_adapter.setNewData(list);
-                            setData(10, 100, characterDetail_bean);
+                            setData(0, listDTO);
+                        }else {
+                            stock_Con.setVisibility(View.GONE);
+                            chart.setVisibility(View.GONE);
                         }
-
-
                     }
-
                 }
             }
         }, isShow);
@@ -169,6 +191,28 @@ public class PersonDetail_Fragment extends BaseFragment {
         }
     }
 
+
+    //选中展示时间 只设置一组数据就好
+    private void setTime(CharacterDetail_Bean.DataDTO.ListDTO characterDetail_bean) {
+        if (ListUtils.isEmpty(characterDetail_bean.getInfo())) {
+            return;
+        }
+        final List<String> mOptionsItems = new ArrayList<>();
+        for (CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO name : characterDetail_bean.getInfo()) {
+            mOptionsItems.add(name.getQuarters());
+        }
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(requireActivity(), (options1, option2, options3, v) -> {
+            fundTime_Tv.setText(mOptionsItems.get(options1));
+            List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(options1).getList();
+            persomCombination_shares_adapter.setNewData(list);
+            setData(options1, characterDetail_bean);
+
+        }).build();
+        pvOptions.setPicker(mOptionsItems);
+        pvOptions.show();
+    }
+
+
     /**
      * 设置饼形图属性
      */
@@ -195,7 +239,6 @@ public class PersonDetail_Fragment extends BaseFragment {
         chart.setHighlightPerTapEnabled(true);//点击是否放大
 //       chart.setDrawEntryLabels(false);//数据圈内文字是否显示
         chart.setEntryLabelColor(R.color.text_color_6f6f6f);
-
         // chart.setUnit(" €");
         // chart.setDrawUnitsInChart(true);
         // add a selection listener
@@ -212,12 +255,6 @@ public class PersonDetail_Fragment extends BaseFragment {
 
     }
 
-    protected final String[] parties = new String[]{
-            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
-            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
-            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
-            "Party Y", "Party Z"
-    };
     //固定设置饼状图颜色
     int[] colorStr = {
             Color.rgb(234, 116, 159), Color.rgb(210, 141, 198), Color.rgb(54, 186, 206),
@@ -225,14 +262,21 @@ public class PersonDetail_Fragment extends BaseFragment {
             Color.rgb(95, 255, 110), Color.rgb(193, 47, 229), Color.rgb(59, 217, 204)};
 
     //       int[] colorStr = {R.color.text_color_ea749f , R.color.text_color_d28dc6, R.color.text_color_36bace, R.color.text_color_ff5f90, R.color.text_color_fea63a, R.color.text_color_c9d93b, R.color.text_color_5fff6e, R.color.text_color_c12fe5, R.color.text_color_3bd9cc};
-    private void setData(int count, float range, CharacterDetail_Bean.DataDTO.ListDTO characterDetail_bean) {
-        ArrayList<PieEntry> entries = new ArrayList<>();
+
+    /**
+     * 饼状图加载数据
+     *
+     * @param index                默认0 弹窗选中下表
+     * @param characterDetail_bean 渲染数据
+     */
+    private void setData(int index, CharacterDetail_Bean.DataDTO.ListDTO characterDetail_bean) {
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        int size = characterDetail_bean.getInfo().get(0).getPieData().getData().size();
+        ArrayList<PieEntry> entries = new ArrayList<>();
+        int size = characterDetail_bean.getInfo().get(index).getPieData().getData().size();
         for (int i = 0; i < size; i++) {
-            String name = characterDetail_bean.getInfo().get(0).getPieData().getData().get(i).getName();
-            Integer value = characterDetail_bean.getInfo().get(0).getPieData().getData().get(i).getValue();
+            String name = characterDetail_bean.getInfo().get(index).getPieData().getData().get(i).getName();
+            Integer value = characterDetail_bean.getInfo().get(index).getPieData().getData().get(i).getValue();
             entries.add(new PieEntry(value, name));
 //            entries.add(new PieEntry((float) (Math.random() * range) + range / 5, parties[i % parties.length]));
         }
@@ -269,4 +313,12 @@ public class PersonDetail_Fragment extends BaseFragment {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fundTime_Tv:
+                setTime(listDTO);
+        }
+    }
 }

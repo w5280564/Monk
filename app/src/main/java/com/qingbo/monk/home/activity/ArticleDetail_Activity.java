@@ -490,7 +490,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
                 send_Mes.setVisibility(View.GONE);
             } else if (TextUtils.equals(s, "4")) {
-                follow_Tv.setVisibility(View.GONE);
+                follow_Tv.setVisibility(View.VISIBLE);
                 follow_Tv.setText("互相关注");
                 follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
                 changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
