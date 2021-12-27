@@ -80,7 +80,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				if(StringUtil.isBlank(interested)) {//首次登陆
 					WelcomeActivity.actionStart(WXEntryActivity.this,"",1);
 				}else{
-					MainActivity.actionStart(WXEntryActivity.this,"");
+					MainActivity.actionStart(WXEntryActivity.this,"",1);
 				}
 			}
 

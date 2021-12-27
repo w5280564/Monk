@@ -37,12 +37,14 @@ import com.qingbo.monk.home.fragment.UniverseFragment;
 import com.qingbo.monk.login.activity.BindPhoneNumberActivity;
 import com.qingbo.monk.login.activity.GetPhoneCodeStepTwoActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
+import com.qingbo.monk.login.activity.WelcomeActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
@@ -101,9 +103,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         return R.layout.activity_main;
     }
 
-    public static void actionStart(Context context,String openid) {
+    public static void actionStart(Context context,String openid,int isFromType) {
         Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("isFromType",isFromType);
         intent.putExtra("openid",openid);
+        context.startActivity(intent);
+    }
+
+    public static void actionStart(Context context,int band_wx,int isFromType) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("isFromType",isFromType);
+        intent.putExtra("band_wx",band_wx);
         context.startActivity(intent);
     }
 
@@ -177,6 +187,28 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initLocalData() {
         super.initLocalData();
+        int isFromType = getIntent().getIntExtra("isFromType",0);//1来自绑定微信  2来自绑定手机号  0从启动页进来
+        if (isFromType==1) {
+            String openid = getIntent().getStringExtra("openid");
+            if (!StringUtil.isBlank(openid)) {
+                showBindPhoneNumberDialog(openid);
+            }
+        }else if(isFromType==2){
+            int band_wx = getIntent().getIntExtra("band_wx",0);
+            if (band_wx==0) {
+                showBindWechatDialog();
+            }
+        }else{
+            if (PrefUtil.getUser()!=null) {
+                int isBindWechat = PrefUtil.getUser().getBand_wx();
+                if (isBindWechat==0) {
+                    showBindWechatDialog();
+                }
+            }
+
+        }
+
+
         String avatar = PrefUtil.getUser().getAvatar();
         GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();
@@ -187,11 +219,26 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         followAndFans_Tv.setText(fowAndFans);
     }
 
-    private void showBindDialog(String openid) {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请先绑定微信号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+    private void showBindPhoneNumberDialog(String openid) {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定手机号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
                 BindPhoneNumberActivity.actionStart(mActivity,openid);
+            }
+
+            @Override
+            public void onClickLeft() {
+                getQuit();
+            }
+        });
+        mDialog.show();
+    }
+
+    private void showBindWechatDialog() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定微信。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                wechatThirdLogin();
             }
 
             @Override
