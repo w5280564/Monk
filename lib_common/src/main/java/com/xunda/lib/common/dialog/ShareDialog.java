@@ -75,7 +75,7 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         setCanceledOnTouchOutside(true);
 
         appId = Constants.WECHAT_APPID; // 填应用AppId
-        api = WXAPIFactory.createWXAPI(context, appId);
+        api = WXAPIFactory.createWXAPI(context, appId,false);
 
         initPlatformList();
         initEventAndView();
@@ -156,7 +156,7 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
      * @return
      */
     private Bitmap getDefaultBitmap() {
-        return BitmapFactory.decodeResource(context.getResources(), R.drawable.app_logo);
+        return BitmapFactory.decodeResource(context.getResources(), R.mipmap.logo_share);
     }
 
 
