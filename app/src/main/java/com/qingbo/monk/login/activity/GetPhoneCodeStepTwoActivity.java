@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.home.activity.MainActivity;
+import com.qingbo.monk.wxapi.WXEntryActivity;
 import com.tuo.customview.VerificationCodeView;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
@@ -131,12 +132,17 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
                 return;
             }
 
-            PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
-            String interested = userObj.getInterested();
-            if(StringUtil.isBlank(interested)) {//首次登陆
-                skipAnotherActivity(WelcomeActivity.class);
+            int band_wx = userObj.getBand_wx();
+            if (band_wx==0) {//未绑定微信
+                wechatThirdLogin();
             }else{
-                skipAnotherActivity(MainActivity.class);
+                PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
+                String interested = userObj.getInterested();
+                if(StringUtil.isBlank(interested)) {//首次登陆
+                    WelcomeActivity.actionStart(mActivity,"",false);
+                }else{
+                    MainActivity.actionStart(mActivity,"");
+                }
             }
         }
 

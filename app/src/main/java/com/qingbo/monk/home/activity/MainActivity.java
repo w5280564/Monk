@@ -177,14 +177,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initLocalData() {
         super.initLocalData();
-        String openid = getIntent().getStringExtra("openid");
-        if (PrefUtil.getUser()!=null) {
-            int isBindWechat = PrefUtil.getUser().getBand_wx();
-            if (isBindWechat==0) {
-                showBindDialog(openid);
-            }
-        }
-
         String avatar = PrefUtil.getUser().getAvatar();
         GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();

@@ -406,7 +406,6 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
         IWXAPI api = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APPID,false);
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
-//        req.state = "wechat_sdk_demo_test";
         api.sendReq(req);
     }
 
