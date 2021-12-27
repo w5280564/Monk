@@ -12,6 +12,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
 import com.qingbo.monk.Slides.fragment.PersonDetail_Fragment;
+import com.qingbo.monk.Slides.fragment.StockOrFund_Question_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
@@ -89,7 +90,7 @@ public class SideslipPersonDetail_Activity extends BaseTabLayoutActivity {
                 fragments.add(PersonDetail_Fragment.newInstance(nickname, id));
                 bean.setName("个人信息");
             } else {
-                fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
+                fragments.add(StockOrFund_Question_Fragment.newInstance(nickname, ""));
                 bean.setName("问答");
             }
             menuList.add(bean);

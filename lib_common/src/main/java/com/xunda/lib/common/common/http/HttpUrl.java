@@ -182,6 +182,7 @@ public class HttpUrl {
     public static final String bandAccount = "user/user/band";//绑定第三方账号
     public static final String Fund_Postion = "fund/fund/character-position";//人物
     public static final String Character_List = "fund/fund/character-list";//人物列表
+    public static final String CommentChildren_List = "comment/comment/comment-children-list";//回复评论列表-获取评论回复
 
 }
 

@@ -2,6 +2,7 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class ArticleCommentBean {
+public class ArticleCommentBean implements Serializable {
 
     @SerializedName("id")
     private String id;
@@ -38,7 +39,7 @@ public class ArticleCommentBean {
 
     @NoArgsConstructor
     @Data
-    public static class ChildrensDTO {
+    public static class ChildrensDTO implements Serializable{
         @SerializedName("parent_id")
         private String parentId;
         @SerializedName("comment_id")

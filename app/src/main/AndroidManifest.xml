@@ -60,6 +60,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".home.activity.ArticleDetali_CommentList_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Slides.activity.SideslipPersonList_Activity"
             android:exported="false" />
         <activity

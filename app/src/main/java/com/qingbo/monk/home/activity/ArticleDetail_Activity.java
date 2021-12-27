@@ -37,6 +37,7 @@ import com.qingbo.monk.base.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -127,12 +128,15 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     @BindView(R.id.sendComment_Et)
     EditText sendComment_Et;
     @BindView(R.id.release_Tv)
-    TextView release_Tv;
+    public TextView release_Tv;
+    @BindView(R.id.back_Tv)
+    TextView back_Tv;
 
 
     private String articleId;
     private String isShowTop;
     private String type;
+    boolean isReply = false;
 
     /**
      * @param context
@@ -165,7 +169,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     protected void initView() {
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
-        HideIMEUtil.wrap(this,sendComment_Et);
+        HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
     }
 
@@ -178,6 +182,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         appLayout.addOnOffsetChangedListener(new appLayoutListener());
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
+        back_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -191,6 +196,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             return;
         }
         switch (v.getId()) {
+            case R.id.back_Tv:
+                finish();
+                break;
             case R.id.follow_Tv:
                 String authorId = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
                 postFollowData(authorId, follow_Tv, send_Mes);
@@ -216,7 +224,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 postFollowData(authorId1, titleFollow_Tv, titleSend_Mes);
                 break;
             case R.id.mes_Img:
-                showInput(sendComment_Et);
+                showInput(sendComment_Et, false);
                 sendComment_Et.setHint("");
                 break;
             case R.id.release_Tv:
@@ -225,11 +233,16 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     T.s("评论不能为空", 2000);
                     return;
                 }
-                if (TextUtils.isEmpty(articleId)|| TextUtils.isEmpty(type)){
+                if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
                     T.s("文章ID是空", 2000);
                     return;
                 }
-                addComment(articleId,type,s);
+                if (isReply) {
+                    ArticleDetail_Comment_Fragment o = (ArticleDetail_Comment_Fragment) tabFragmentList.get(0);
+                    o.onClick(release_Tv);
+                } else {
+                    addComment(articleId, type, s);
+                }
                 sendComment_Et.setText("");
                 break;
         }
@@ -237,9 +250,12 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     /**
      * 点击弹出键盘
+     *
      * @param editView
+     * @param editView 是否回复评论  true是对评论回复
      */
-    public void showInput(View editView) {
+    public void showInput(View editView, boolean isReply) {
+        this.isReply = isReply;
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
@@ -474,7 +490,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes, String is_anonymous) {
         if (TextUtils.equals(is_anonymous, "0")) {
             String s = String.valueOf(follow_status);
-            if (TextUtils.equals(s, "0")|| TextUtils.equals(s, "3")) {
+            if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
                 follow_Tv.setVisibility(View.VISIBLE);
                 follow_Tv.setText("关注");
                 follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
