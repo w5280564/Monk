@@ -56,7 +56,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 					break;
 				case LOGIN_FAILURE:
 					String openid = (String) msg.obj;
-					WelcomeActivity.actionStart(WXEntryActivity.this,openid,true);
+					WelcomeActivity.actionStart(WXEntryActivity.this,openid,1);
 					break;
 
 			}
@@ -78,7 +78,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
 				String interested = userObj.getInterested();
 				if(StringUtil.isBlank(interested)) {//首次登陆
-					WelcomeActivity.actionStart(WXEntryActivity.this,"",true);
+					WelcomeActivity.actionStart(WXEntryActivity.this,"",1);
 				}else{
 					MainActivity.actionStart(WXEntryActivity.this,"");
 				}

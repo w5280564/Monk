@@ -133,16 +133,12 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             }
 
             int band_wx = userObj.getBand_wx();
-            if (band_wx==0) {//未绑定微信
-                wechatThirdLogin();
+            PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
+            String interested = userObj.getInterested();
+            if(StringUtil.isBlank(interested)) {//首次登陆
+                WelcomeActivity.actionStart(mActivity,band_wx,2);
             }else{
-                PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
-                String interested = userObj.getInterested();
-                if(StringUtil.isBlank(interested)) {//首次登陆
-                    WelcomeActivity.actionStart(mActivity,"",false);
-                }else{
-                    MainActivity.actionStart(mActivity,"");
-                }
+                MainActivity.actionStart(mActivity,"");
             }
         }
 
