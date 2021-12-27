@@ -29,6 +29,15 @@ public class HttpUrl {
 
 
     /**
+     * 绑定手机号并登录
+     */
+    public static final String mobileBandLogin = "login/login/band-login";
+
+
+
+
+
+    /**
      * 行业列表
      */
     public static final String industryList = "login/login/industry-list";

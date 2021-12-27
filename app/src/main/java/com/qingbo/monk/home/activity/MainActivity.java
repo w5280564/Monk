@@ -34,6 +34,7 @@ import com.qingbo.monk.home.fragment.MessageFragment;
 import com.qingbo.monk.home.fragment.MineFragment;
 import com.qingbo.monk.home.fragment.QuestionFragment;
 import com.qingbo.monk.home.fragment.UniverseFragment;
+import com.qingbo.monk.login.activity.BindPhoneNumberActivity;
 import com.qingbo.monk.login.activity.GetPhoneCodeStepTwoActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
@@ -100,13 +101,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         return R.layout.activity_main;
     }
 
-
-    public static void actionStart(Context context, String isBindWechat) {
+    public static void actionStart(Context context,String openid) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("isBindWechat",isBindWechat);
+        intent.putExtra("openid",openid);
         context.startActivity(intent);
     }
-
 
 
     @Override
@@ -148,7 +147,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.em_main_home:
-                invalidateOptionsMenu();
                 showFragment(0, fragmentId);
                 break;
             case R.id.em_main_questions:
@@ -179,10 +177,14 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initLocalData() {
         super.initLocalData();
-        String isBindWechat = getIntent().getStringExtra("isBindWechat");
-        if ("0".equals(isBindWechat)) {
-            showBindDialog();
+        String openid = getIntent().getStringExtra("openid");
+        if (PrefUtil.getUser()!=null) {
+            int isBindWechat = PrefUtil.getUser().getBand_wx();
+            if (isBindWechat==0) {
+                showBindDialog(openid);
+            }
         }
+
         String avatar = PrefUtil.getUser().getAvatar();
         GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();
@@ -193,16 +195,16 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         followAndFans_Tv.setText(fowAndFans);
     }
 
-    private void showBindDialog() {
+    private void showBindDialog(String openid) {
         TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请先绑定微信号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
-
+                BindPhoneNumberActivity.actionStart(mActivity,openid);
             }
 
             @Override
             public void onClickLeft() {
-
+                getQuit();
             }
         });
         mDialog.show();

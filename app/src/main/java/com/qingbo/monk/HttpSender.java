@@ -383,7 +383,7 @@ public class HttpSender {
 					mListener.onComplete(json, code, msg, StringUtil.isBlank(data)?"":data);
 				}
 				dismissDialog();
-				if (code != Constants.REQUEST_SUCCESS_CODE) {//异常提示错误信息
+				if (code != Constants.REQUEST_SUCCESS_CODE && code != -10086) {//异常提示错误信息
 					T.ss(msg);
 				}
 			}

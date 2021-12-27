@@ -100,11 +100,12 @@
                     android:ellipsize="end"
                     android:gravity="left|center_vertical"
                     android:hint="短信验证码"
-                    android:inputType="none"
+                    android:inputType="number"
+                    android:maxLength="6"
                     android:singleLine="true"
                     android:textSize="@dimen/sp_14" />
 
-                <TextView
+                <com.xunda.lib.common.view.CountDownTextView
                     android:id="@+id/tv_send_code"
                     android:layout_width="82dp"
                     android:layout_height="@dimen/dp_28"

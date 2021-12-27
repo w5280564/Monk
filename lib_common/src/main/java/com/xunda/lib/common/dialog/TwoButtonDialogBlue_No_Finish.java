@@ -41,7 +41,7 @@ public class TwoButtonDialogBlue_No_Finish extends Dialog implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_two_button_blue);
-        setCanceledOnTouchOutside(true);
+        setCanceledOnTouchOutside(false);
         initView();
         initEvent();
 
@@ -91,7 +91,6 @@ public class TwoButtonDialogBlue_No_Finish extends Dialog implements
         int id = arg0.getId();
         if (id == R.id.tv_right) {
             listener.onClickRight();
-            dismiss();
         } else if (id == R.id.tv_left) {
             listener.onClickLeft();
             dismiss();

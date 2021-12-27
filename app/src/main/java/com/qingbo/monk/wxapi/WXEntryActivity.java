@@ -31,7 +31,8 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
-	public static final int GET_TOKEN = 1;
+	public static final int LOGIN_SUCCESS = 1;
+	public static final int LOGIN_FAILURE = 2;
 
 	private IWXAPI api;
 	private MyHandler handler;
@@ -45,14 +46,19 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 
 		@Override
 		public void handleMessage(Message msg) {
-			int tag = msg.what;
-			switch (tag) {
-				case GET_TOKEN: {
+			int what = msg.what;
+			switch (what) {
+				case LOGIN_SUCCESS:
 					Bundle data = msg.getData();
 					String json_data = data.getString("result");
 					BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
 					saveUserInfo(obj);
-				}
+					break;
+				case LOGIN_FAILURE:
+					String openid = (String) msg.obj;
+					WelcomeActivity.actionStart(WXEntryActivity.this,openid,true);
+					break;
+
 			}
 		}
 
@@ -72,21 +78,14 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
 				String interested = userObj.getInterested();
 				if(StringUtil.isBlank(interested)) {//首次登陆
-					skipAnotherActivity(WelcomeActivity.class);
+					WelcomeActivity.actionStart(WXEntryActivity.this,"",true);
 				}else{
-					skipAnotherActivity(MainActivity.class);
+					MainActivity.actionStart(WXEntryActivity.this,"");
 				}
 			}
 
 		}
 
-
-
-		private void skipAnotherActivity(Class targetActivity) {
-			Intent intent = new Intent(wxEntryActivityWeakReference.get(), targetActivity);
-			wxEntryActivityWeakReference.get().startActivity(intent);
-			WXEntryActivity.this.finish();
-		}
 	}
 
 	@Override
@@ -156,15 +155,19 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				new MyOnHttpResListener() {
 					@Override
 					public void onComplete(String json_root, int code, String msg, String json_data) {
+						Message mMessage = Message.obtain();
 						if (code == Constants.REQUEST_SUCCESS_CODE) {
 							T.ss("登录成功");
-							Message mMessage = Message.obtain();
-							mMessage.what = GET_TOKEN;
 							Bundle data = new Bundle();
 							data.putString("result", json_data);
+							mMessage.what = LOGIN_SUCCESS;
 							mMessage.setData(data);
 							handler.sendMessage(mMessage);
-
+						}else if(code == -10086){
+							mMessage.what = LOGIN_FAILURE;
+							String openid = GsonUtil.getInstance().getValue(json_data,"openid");
+							mMessage.obj = openid;
+							handler.sendMessage(mMessage);
 						}else{
 							T.ss(msg);
 							finish();

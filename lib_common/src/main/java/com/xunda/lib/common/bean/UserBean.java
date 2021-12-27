@@ -5,6 +5,32 @@ import com.google.gson.annotations.SerializedName;
 
 
 public class UserBean {
+
+
+    private String id;
+    private String avatar;
+    private String tagName;
+    private String nickname;
+    private String description;
+    private String country;
+    private String city;
+    private String county;
+    private String email;
+    private String industry;
+    private String work;
+    private String interested;
+    private String domain;
+    private String resource;
+    private String achievement;
+    private String research;
+    private String getResource;
+    private String isOriginator;
+    private String visitor_num;
+    private String follow_num;
+    private String fans_num;
+    private int band_wx;
+
+
     public String getId() {
         return id;
     }
@@ -89,26 +115,7 @@ public class UserBean {
         return fans_num;
     }
 
-    private String id;
-    private String avatar;
-    private String tagName;
-    private String nickname;
-    private String description;
-    private String country;
-    private String city;
-    private String county;
-    private String email;
-    private String industry;
-    private String work;
-    private String interested;
-    private String domain;
-    private String resource;
-    private String achievement;
-    private String research;
-    private String getResource;
-    private String isOriginator;
-    private String visitor_num;
-    private String follow_num;
-    private String fans_num;
-
+    public int getBand_wx() {
+        return band_wx;
+    }
 }

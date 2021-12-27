@@ -40,14 +40,16 @@ public interface UserPreferences {
 	String getUserHead();
 
 
-
+	/**
+	 * 是否绑定微信
+	 */
+	void setUserBandWX(int bandWX);
+	int getUserBandWX();
 
 
 	/**
 	 * token
 	 */
-
-
 	void setToken(String token);
 	@Default("")//必需要写在get方法上面
 	String getToken();
