@@ -13,6 +13,7 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.modelmsg.ShowMessageFromWX;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -93,6 +94,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 		super.onCreate(savedInstanceState);
 
 		api = WXAPIFactory.createWXAPI(this, Constants.WECHAT_APPID, false);
+		api.registerApp(Constants.WECHAT_APPID);
+
 		handler = new MyHandler(this);
 		try {
 			Intent intent = getIntent();
@@ -113,8 +116,15 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 
 	@Override
 	public void onReq(BaseReq baseReq) {
+		switch (baseReq.getType()) {
+			case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
 
+				break;
+			default:
+				break;
+		}
 	}
+
 
 	@Override
 	public void onResp(BaseResp resp) {
@@ -139,9 +149,22 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 					finish();
 					break;
 			}
+		}else if (resp.getType() == ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX) {
+			switch (resp.errCode) {
+				case BaseResp.ErrCode.ERR_OK:
+                    T.ss("分享成功");
+					break;
+				case BaseResp.ErrCode.ERR_USER_CANCEL://分享取消
+                    T.ss("分享失败");
+					break;
+				case BaseResp.ErrCode.ERR_AUTH_DENIED://分享被拒绝
+                    T.ss("分享取消");
+					break;
+			}
 		}
 
 	}
+
 
 	/**
 	 * 微信第三方登录

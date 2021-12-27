@@ -130,6 +130,7 @@
         <activity android:name=".question.activity.GroupDetailMoreInfoActivity" />
         <activity android:name=".question.activity.PublisherQuestionActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
+        <activity android:name=".question.activity.ApplyExitGroupOrMoneyActivity" />
         <activity android:name=".Slides.activity.AAndHKDetail_Activity" />
         <activity
             android:name=".question.activity.GroupSettingActivity"

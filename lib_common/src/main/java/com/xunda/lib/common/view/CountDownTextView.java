@@ -44,6 +44,8 @@ public class CountDownTextView extends TextView {
      */
     private int unusableColorId = R.color.text_color_CCCCCC;
 
+    private String resendString = "s后可重新获取";
+
     private Context mContext;
 
 
@@ -103,10 +105,20 @@ public class CountDownTextView extends TextView {
                 setClickable(usable);
                 setTextColor(getResources().getColor(unusableColorId));
             }
-            setText(mLastMillis / 1000 + mContext.getString(R.string.Register_second));
+            setText(mLastMillis / 1000 + resendString);
         }
 
     }
+
+    /**
+     * 设置重发提示语
+     * @param resendString 重发提示语
+     */
+    public void setResendString(String resendString) {
+        this.resendString = resendString;
+    }
+
+
 
     /**
      * 设置倒计时颜色

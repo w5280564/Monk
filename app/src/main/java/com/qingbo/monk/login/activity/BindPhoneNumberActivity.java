@@ -3,16 +3,12 @@ package com.qingbo.monk.login.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
@@ -27,9 +23,7 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.CountDownTextView;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -69,6 +63,7 @@ public class BindPhoneNumberActivity extends BaseActivity{
 
     @Override
     protected void initView() {
+        tv_send_code.setResendString("s");
         tv_number_before.setText("+"+area_code);
         mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override

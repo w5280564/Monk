@@ -83,8 +83,7 @@
     <string name="Dialog_XZQY">请选择区域</string>
     <string name="toast_warm_prompt">温馨提示</string>
     <string name="Base_yzmyfs">验证码已发送</string>
-    <string name="Register_resend">重新发送验证码</string>
-    <string name="Register_second">s后可重新获取</string>
+    <string name="Register_resend">重新发送</string>
     <string name="Home_press_again">再滑一次退出程序</string>
 
     <string name="Loading_dialog_check">努力查询中...</string>

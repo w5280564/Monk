@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
+import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.xunda.lib.common.bean.NameIdBean;
 import com.xunda.lib.common.common.Constants;
@@ -43,13 +44,13 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     @BindView(R.id.tv_group_des)
     TextView tv_group_des;
     private String id,tag;
-    private MyGroupBean sheQunBean;
+    private GroupMoreInfoBean sheQunBean;
     private List<NameIdBean> tagList = new ArrayList<>();
 
     private GridDialog mGridDialog;
 
 
-    public static void actionStart(Context context, MyGroupBean sheQunBean) {
+    public static void actionStart(Context context, GroupMoreInfoBean sheQunBean) {
         Intent intent = new Intent(context, GroupSettingActivity.class);
         intent.putExtra("sheQunBean",sheQunBean);
         context.startActivity(intent);
@@ -68,9 +69,9 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
 
     @Override
     protected void initLocalData() {
-        sheQunBean = (MyGroupBean) getIntent().getSerializableExtra("sheQunBean");
+        sheQunBean = (GroupMoreInfoBean) getIntent().getSerializableExtra("sheQunBean");
         if (sheQunBean!=null) {
-            id = sheQunBean.getId();
+            id = sheQunBean.getSqId();
             tag = StringUtil.getStringValue(sheQunBean.getTags());
             tv_group_tag.setText(tag);
             tv_group_des.setText(StringUtil.getStringValue(sheQunBean.getShequnDes()));

@@ -166,12 +166,6 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
 
 
 
-    @Override
-    public void onRightClick() {
-        GroupDetailMoreInfoActivity.actionStart(mActivity,id);
-    }
-
-
 
 
     @OnClick({R.id.ll_back,R.id.ll_menu})
@@ -181,7 +175,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 back();
                 break;
             case R.id.ll_menu:
-                GroupSettingActivity.actionStart(mActivity,sheQunBean);
+                GroupDetailMoreInfoActivity.actionStart(mActivity,id);
                 break;
         }
     }
