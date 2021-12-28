@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarShowBottomLine="false" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15">
+
+                <TextView
+                    android:id="@+id/tv_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="鳗鱼和他的朋友们"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_18"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_group_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:text="群ID：47283471"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@id/tv_group_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_group_name" />
+
+                <TextView
+                    android:id="@+id/tv_tag1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:background="@drawable/background_bg_gray_5"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingRight="@dimen/dp_4"
+                    android:text="生活"
+                    android:textColor="@color/text_color_a1a1a1"
+                    android:textSize="@dimen/sp_10"
+                    app:layout_constraintStart_toStartOf="@id/tv_group_id"
+                    app:layout_constraintTop_toBottomOf="@id/tv_group_id" />
+
+                <TextView
+                    android:id="@+id/tv_tag2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/background_bg_gray_5"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingRight="@dimen/dp_4"
+                    android:text="科技"
+                    android:textColor="@color/text_color_a1a1a1"
+                    android:textSize="@dimen/sp_10"
+                    app:layout_constraintStart_toEndOf="@id/tv_tag1"
+                    app:layout_constraintTop_toTopOf="@id/tv_tag1" />
+
+                <ImageView
+                    android:id="@+id/iv_header"
+                    android:layout_width="@dimen/dp_56"
+                    android:layout_height="@dimen/dp_56"
+                    android:src="@mipmap/logo_share"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_group_name" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                style="@style/app_line"
+                android:layout_marginTop="@dimen/dp_21" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/dp_9">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9.3K+"
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="主题"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9.3K+"
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="主题"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="@dimen/dp_0"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:orientation="vertical"
+                    android:paddingRight="@dimen/dp_9">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9.3K+"
+                        android:textColor="@color/text_color_444444"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="主题"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_10"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                style="@style/app_line"
+                android:layout_marginTop="@dimen/dp_8" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_13">
+
+                <TextView
+                    android:id="@+id/tv_jieshao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="社群介绍"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:lineSpacingExtra="@dimen/dp_2"
+                    android:text="本社群专门聚集牛人、研究牛人、提供修炼成牛人的方向、动力和技巧。不定期邀请牛人驻场交流。目前已经有35期牛人分享和400篇文章。"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintStart_toStartOf="@id/tv_jieshao"
+                    app:layout_constraintTop_toBottomOf="@id/tv_jieshao" />
+
+                <ImageView
+                    android:id="@+id/iv_header_host"
+                    android:layout_width="@dimen/dp_36"
+                    android:layout_height="@dimen/dp_36"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:src="@mipmap/logo_share"
+                    app:layout_constraintStart_toStartOf="@id/tv_des"
+                    app:layout_constraintTop_toBottomOf="@id/tv_des" />
+
+                <TextView
+                    android:id="@+id/tv_group_host_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_13"
+                    android:text="群主：何佳燕"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_15"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/iv_header_host"
+                    app:layout_constraintTop_toTopOf="@id/iv_header_host" />
+
+                <TextView
+                    android:id="@+id/tv_create_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="创建940天，今天活跃过"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="@dimen/sp_10"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_header_host"
+                    app:layout_constraintStart_toStartOf="@id/tv_group_host_name" />
+
+                <TextView
+                    android:id="@+id/tv_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:text="付费须知"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintStart_toStartOf="@id/iv_header_host"
+                    app:layout_constraintTop_toBottomOf="@id/iv_header_host" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="￥568.00"
+                    android:textColor="@color/text_color_FC0000"
+                    android:textSize="@dimen/sp_15"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_label" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                style="@style/app_line"
+                android:layout_marginTop="@dimen/dp_8" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15"
+                android:lineSpacingExtra="@dimen/dp_2"
+                android:text="1.付费后，你可以使用当前付款的微信账号在有效期内通过网站、APP阅读内容、参与互动。\n
+2.加入社群后，三天内可申请退款，超过三天后如果产生退款，需协商参见《用户协议》。\n
+3.本社群由群主自行创建，付费前请确认风险，扫地僧平台不提供相关保证。若发现违法，请勿加入。"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:text="部分主题预览"
+                android:textColor="@color/text_color_444444"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                style="@style/app_line"
+                android:layout_marginTop="@dimen/dp_7" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View style="@style/app_line" />
+
+    <RelativeLayout
+        android:id="@+id/ll_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_63"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="免费"
+            android:textColor="@color/text_color_1F8FE5" />
+
+        <TextView
+            android:id="@+id/tv_join"
+            android:layout_width="128dp"
+            android:layout_height="@dimen/dp_44"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_btn_rectangle"
+            android:gravity="center"
+            android:text="立即加入"
+            android:textColor="@color/text_color_444444"
+            android:textSize="@dimen/sp_16" />
+    </RelativeLayout>
+
+</LinearLayout>

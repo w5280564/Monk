@@ -136,6 +136,7 @@
         <activity android:name=".question.activity.GroupManagerSetCostActivity" />
         <activity android:name=".question.activity.GroupManagerOrPartnerListActivity" />
         <activity android:name=".question.activity.SetGroupManagerOrPartnerListActivity" />
+        <activity android:name=".question.activity.PreviewGroupDetailActivity" />
         <activity android:name=".question.activity.PublisherQuestionActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
         <activity android:name=".question.activity.ApplyExitGroupOrMoneyActivity" />

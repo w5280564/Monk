@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
@@ -14,6 +16,7 @@ import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.activity.MyGroupListActivity;
+import com.qingbo.monk.question.activity.PreviewGroupDetailActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -78,6 +81,17 @@ public class QuestionFragment_Group extends BaseLazyFragment {
             @Override
             public void onItemClick(int position) {
                 skipAnotherActivity(MyGroupListActivity.class);
+            }
+        });
+
+        mQuestionGroupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                GroupBean mGroupBean = (GroupBean) adapter.getItem(position);
+                if (mGroupBean==null) {
+                    return;
+                }
+                PreviewGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
             }
         });
     }

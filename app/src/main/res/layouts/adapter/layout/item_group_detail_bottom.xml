@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/iv_header_host"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_16"
+        android:src="@mipmap/logo_share"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_group_host_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_13"
+        android:text="群主：何佳燕"
+        android:textColor="@color/text_color_1F8FE5"
+        android:textSize="@dimen/sp_12"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/iv_header_host"
+        app:layout_constraintTop_toTopOf="@id/iv_header_host" />
+
+    <TextView
+        android:id="@+id/tv_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_2"
+        android:text="创建940天，今天活跃过"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="@id/iv_header_host"
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name" />
+
+    <TextView
+        android:id="@+id/tv_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="我一向待人实诚、厚道，但为何到40多岁了，却没有做出什么成就来?而我看社会上很多成功的人士，为人并不真诚，也不厚道，却比我混得好的多。那我这样做是不是错了?是不是也应该像他们那样才对呢?我想说的是......"
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/sp_14"
+        app:layout_constraintTop_toBottomOf="@id/iv_header_host"
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name" />
+
+    <View style="@style/app_line"
+        app:layout_constraintTop_toBottomOf="@id/tv_des"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/dp_15"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
