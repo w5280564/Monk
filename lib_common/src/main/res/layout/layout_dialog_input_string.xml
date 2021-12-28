@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_background_white_radius9_all"
+    android:padding="@dimen/dp_24"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置金额"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_18"
+        android:textColor="@color/text_color_444444"/>
+
+    <EditText
+        android:id="@+id/et_content"
+        style="@style/Widget.EditViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="￥"
+        android:layout_marginTop="@dimen/dp_27"
+        android:textSize="@dimen/sp_16"
+        android:inputType="number"
+        android:maxLength="4"
+        android:background="@null"/>
+
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp_2"
+        android:background="@color/text_color_EFEFEF"/>
+
+    <TextView
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:gravity="center"
+        android:background="@drawable/selector_btn_rectangle"
+        android:layout_marginTop="@dimen/dp_54"
+        android:text="确定"
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/button_text_size"/>
+
+
+</LinearLayout>

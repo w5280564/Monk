@@ -418,6 +418,16 @@
         <attr name="arrowItemTip" format="string|reference" />
     </declare-styleable>
 
+    <declare-styleable name="SwitchItemView">
+        <attr name="switchItemTitle" format="string|reference"/>
+        <attr name="switchItemTitleColor" format="color|reference"/>
+        <attr name="switchItemTitleSize" format="dimension|reference"/>
+        <attr name="switchItemShowDivider" format="boolean"/>
+        <attr name="switchItemHint" format="string|reference"/>
+        <attr name="switchItemCheckEnable" format="boolean"/>
+        <attr name="switchItemClickable" format="boolean"/>
+    </declare-styleable>
+
     <style name="main_bottom_view_normal">
         <item name="android:textColor">@color/text_color_a1a1a1</item>
         <item name="android:textSize">12sp</item>

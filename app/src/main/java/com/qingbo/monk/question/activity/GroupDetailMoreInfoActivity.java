@@ -21,9 +21,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -196,11 +194,13 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 if ("0".equals(role)){
                     return;
                 }
-
+                skipAnotherActivity(GroupMemberListActivity.class);
                 break;
             case R.id.arrowItemView_manager:
+                skipAnotherActivity(GroupManagerActivity.class);
                 break;
             case R.id.arrowItemView_invite_partner:
+
                 break;
             case R.id.arrowItemView_invite_member:
                 break;
