@@ -22,6 +22,7 @@ import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
@@ -125,10 +126,9 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-//            String articleId = item.getArticleId();
-//            String type = item.getType();
-//            ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+            HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+            String id = item.getId();
+            CombinationDetail_Activity.startActivity(this,"","","",id);
         });
     }
 

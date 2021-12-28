@@ -190,4 +190,17 @@ public class GlideUtils {
                 .fitCenter()
                 .into(iv);
     }
+
+    /**
+     * RoundedCornersTransform 加载图片圆角
+     * @param context
+     * @param iv
+     * @param url
+     * @param radius
+     */
+    public static void addRadius(Context context, ImageView iv, String url,int radius){
+        RoundedCornersTransform transform = new RoundedCornersTransform(context, DisplayUtil.dip2px(context, radius));
+        transform.setNeedCorner(true, true, true, true);
+        Glide.with(context).load(url).placeholder(R.mipmap.img_pic_none_square).transforms(transform).into(iv);
+    }
 }

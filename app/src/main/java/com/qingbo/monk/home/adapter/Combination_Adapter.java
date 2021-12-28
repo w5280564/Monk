@@ -5,6 +5,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +22,8 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
     public Combination_Adapter() {
         super(R.layout.combination_adapter);
     }
+
+
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HomeCombinationBean item) {
@@ -66,4 +69,8 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
         return itemDecoration;
     }
 
+    @Override
+    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
+        super.setOnItemClickListener(listener);
+    }
 }
