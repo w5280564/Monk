@@ -37,7 +37,6 @@
         android:layout_marginTop="@dimen/dp_7"
         android:layout_marginEnd="@dimen/dp_15"
         android:ellipsize="end"
-        android:maxLines="2"
         android:text="老师您好，我是某券商网金部的工作人员，根据我们最近对您的观点和研究觉得您在财经投教领域非常专......"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="12sp"

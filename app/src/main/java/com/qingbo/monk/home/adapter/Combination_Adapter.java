@@ -1,6 +1,5 @@
 package com.qingbo.monk.home.adapter;
 
-import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 

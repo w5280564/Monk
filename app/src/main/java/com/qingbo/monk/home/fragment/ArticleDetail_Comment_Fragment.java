@@ -38,7 +38,7 @@ import java.util.List;
  * 文章详情-评论
  */
 public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragment implements View.OnClickListener {
-    private String articleId, type;
+    public String articleId, type;
     TabLayout tab;
     private EditText sendComment_Et;
 //    private View release_Tv;
@@ -123,7 +123,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ArticleComment_Adapter();
+        mAdapter = new ArticleComment_Adapter(articleId,type);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
@@ -141,18 +141,19 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     protected void initEvent() {
 //        release_Tv.setOnClickListener(this);
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-             item = (ArticleCommentBean) adapter.getItem(position);
+            item = (ArticleCommentBean) adapter.getItem(position);
             switch (view.getId()) {
                 case R.id.follow_Img:
                     String likeId = item.getId();
                     postLikedData(likeId, position);
                     break;
                 case R.id.commentMore_Tv:
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(),item);
+                    String id = item.getId();
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
                     break;
                 case R.id.mes_Img:
-                    ((ArticleDetail_Activity)requireActivity()).showInput(sendComment_Et,true);
-                    setHint(item,sendComment_Et);
+                    ((ArticleDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
+                    setHint(item, sendComment_Et);
 //                    ((ArticleDetail_Activity)requireActivity()).addComment();
                     break;
             }
@@ -163,10 +164,11 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     /**
      * 回复谁的评论
+     *
      * @param item
      * @param view
      */
-    private void setHint(ArticleCommentBean item,EditText view){
+    private void setHint(ArticleCommentBean item, EditText view) {
         String s = TextUtils.equals(item.getIsAnonymous(), "0") ? item.getAuthorName() : "匿名用户";
         String format = String.format("回复：%1$s", s);
         view.setHint(format);
@@ -175,19 +177,18 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.release_Tv:
                 String s = sendComment_Et.getText().toString();
                 if (TextUtils.isEmpty(s)) {
                     T.s("评论不能为空", 2000);
                     return;
                 }
-                if (TextUtils.isEmpty(articleId)|| TextUtils.isEmpty(type)){
+                if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
                     T.s("文章ID是空", 2000);
                     return;
                 }
-                addComment(articleId,type,s,item);
-                sendComment_Et.setText("");
+                addComment(articleId, type, s, item);
                 break;
         }
     }
@@ -202,21 +203,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     CommendLikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, CommendLikedStateBena.class);
-                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
-                    if (likedStateBena != null) {
-                        //0取消点赞成功，1点赞成功
-                        int nowLike;
-                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLike_status() == 0) {
-                            nowLike -= 1;
-                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLike_status() == 1) {
-                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
-                            nowLike += 1;
-                        }
-                        follow_Count.setText(nowLike + "");
-                    }
+                    changeLike(likedStateBena, position);
                 }
             }
         }, true);
@@ -225,7 +212,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
     public void addComment(String articleId, String type, String comment, ArticleCommentBean item) {
-        if (item == null){
+        if (item == null) {
             return;
         }
         HashMap<String, String> requestMap = new HashMap<>();
@@ -242,6 +229,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
+                    sendComment_Et.setText("");
+                    sendComment_Et.setHint("");
                 }
             }
         }, true);
@@ -249,7 +238,28 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         httpSender.sendPost();
     }
 
-
+    /**
+     *   修改点赞状态
+     * @param likedStateBena
+     * @param position
+     */
+    private void changeLike(CommendLikedStateBena likedStateBena, int position) {
+        ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+        TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLike_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLike_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            follow_Count.setText(nowLike + "");
+        }
+    }
 
 
 }

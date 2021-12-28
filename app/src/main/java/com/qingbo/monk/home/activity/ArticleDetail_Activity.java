@@ -243,7 +243,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 } else {
                     addComment(articleId, type, s);
                 }
-                sendComment_Et.setText("");
                 break;
         }
     }
@@ -473,6 +472,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
+                    sendComment_Et.setText("");
+                    sendComment_Et.setHint("");
                 }
             }
         }, true);
@@ -604,10 +605,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     /**
      * 是否加入群或圈
      *
-     * @param isJoin
+     * @param isJoin 1已加入，其它都是未加入
      */
     private void isJoinGroup(String isJoin) {
-        if (TextUtils.equals(isJoin, "0")) {
+        if (TextUtils.equals(isJoin, "1")) {
             join_Tv.setText("已加入");
             join_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
             changeShapColor(join_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
@@ -620,10 +621,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
 
     private void changeJoinGroup(String isJoin) {
-        if (TextUtils.equals(isJoin, "0")) {
-            homeFoucsDetail_bean.getData().getDetail().setIsJoin("1");
-        } else {
+        if (TextUtils.equals(isJoin, "1")) {
             homeFoucsDetail_bean.getData().getDetail().setIsJoin("0");
+        } else {
+            homeFoucsDetail_bean.getData().getDetail().setIsJoin("1");
         }
         isJoinGroup(homeFoucsDetail_bean.getData().getDetail().getIsJoin());
     }

@@ -1,14 +1,16 @@
 package com.qingbo.monk.home.adapter;
 
-import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +20,9 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CommentBean;
-import com.qingbo.monk.bean.CommentListBean;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.List;
 
@@ -57,34 +57,30 @@ public class CommentDetail_Adapter extends BaseQuickAdapter<CommentBean, BaseVie
             nickName_Tv.setText(item.getAuthorName());
         }
         if (TextUtils.isEmpty(item.getComment())) {
+
+
             content_Tv.setVisibility(View.GONE);
         } else {
             content_Tv.setVisibility(View.VISIBLE);
         }
 
-        content_Tv.setText(item.getComment());
+        if (TextUtils.isEmpty(item.getReplyerName())) {
+            content_Tv.setText(item.getComment());
+        } else {
+            String format = String.format("回复@%1$s:%2$s", item.getReplyerName(), item.getComment());
+            int startLength = 2;
+            int endLength = startLength + (item.getReplyerName() + "：").length();
+            setName(format, startLength, startLength, endLength, content_Tv);
+        }
+
         String userDate = DateUtil.getUserDate(item.getCreateTime());
         time_Tv.setText(userDate);
         follow_Count.setText(item.getLikedNum());
 //        mes_Count.setText(item.getChildrenNum());
         isLike(item.getLikedStatus(), item.getLikedNum(), follow_Img, follow_Count);
 
-//        if (ListUtils.isEmpty(item.getChildrens())) {//是否有二级评论
-//            children_Comment.setVisibility(View.GONE);
-//        } else {
-//            children_Comment.setVisibility(View.VISIBLE);
-//            showNineView(commentChildren_List,item);
-//            if (item.getChildrens().size() > 3) {//二级评论超过三条
-//                commentMore_Tv.setVisibility(View.VISIBLE);
-//                String format = String.format("查看全部%1$s条回复", item.getChildrenNum());
-//                commentMore_Tv.setText(format);
-//            }
-//        }
-//
-//        helper.addOnClickListener(R.id.follow_Tv);
-//        helper.addOnClickListener(R.id.follow_Img);
-//        helper.addOnClickListener(R.id.commentMore_Tv);
-//        helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.mes_Img);
     }
 
 
@@ -116,22 +112,16 @@ public class CommentDetail_Adapter extends BaseQuickAdapter<CommentBean, BaseVie
     }
 
     /**
-     * 加载二级评论
-     *
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
      */
-    private void showNineView(RecyclerView mNineView, ArticleCommentBean data) {
-        LinearLayoutManager layout = new LinearLayoutManager(mContext);
-        layout.setOrientation(LinearLayoutManager.VERTICAL);
-        mNineView.setLayoutManager(layout);
-        ArticleComment_Childrens_Adapter childrens_adapter = new ArticleComment_Childrens_Adapter();
-        mNineView.setAdapter(childrens_adapter);
-        childrens_adapter.setNewData(data.getChildrens());
-        childrens_adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleDetali_CommentList_Activity.startActivity(mContext,data);
-            }
-        });
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
     }
 
 

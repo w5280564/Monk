@@ -1,18 +1,14 @@
 package com.qingbo.monk.home.adapter;
 
-import android.content.Context;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,23 +17,21 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.home.NineGrid.NineGridAdapter;
-import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
-import com.xunda.lib.common.common.utils.StringUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean, BaseViewHolder> {
-
-    public ArticleComment_Adapter() {
+    String articleId,type;
+    public ArticleComment_Adapter(String articleId,String type) {
         super(R.layout.articlecomment_adapter);
+        this.articleId = articleId;
+        this.type = type;
+
     }
 
 
@@ -57,7 +51,6 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
-
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -141,7 +134,9 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         childrens_adapter.setOnItemClickListener(new ArticleComment_Childrens_Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleDetali_CommentList_Activity.startActivity(mContext,data);
+
+                String id = data.getId();
+                ArticleDetali_CommentList_Activity.startActivity(mContext,data,articleId,type);
             }
         });
     }

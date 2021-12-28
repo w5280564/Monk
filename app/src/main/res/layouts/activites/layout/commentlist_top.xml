@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
 
     <ImageView
-        android:id="@+id/mes_Img"
+        android:id="@+id/topMes_Img"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_19"
@@ -87,7 +87,7 @@
         android:layout_marginEnd="@dimen/dp_26"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/mes_Img"
+        app:layout_constraintEnd_toStartOf="@+id/topMes_Img"
         app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
 
     <ImageView
