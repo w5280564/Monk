@@ -53,8 +53,10 @@ public class GroupManagerActivity extends BaseActivity {
                 skipAnotherActivity(GroupManagerSetCostActivity.class);
                 break;
             case R.id.arrowItemView_manager:
+                skipAnotherActivity(GroupManagerOrPartnerListActivity.class);
                 break;
             case R.id.arrowItemView_partner:
+                skipAnotherActivity(GroupManagerOrPartnerListActivity.class);
                 break;
         }
     }
