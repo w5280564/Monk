@@ -126,10 +126,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 	}
 
 
+
 	@Override
 	public void onResp(BaseResp resp) {
-		L.e("errCode>>"+resp.errCode);
-		L.e("getType>>"+resp.getType());
 		if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
 			String result = "";
 			switch (resp.errCode) {//ERR_OK = 0(用户同意) ERR_AUTH_DENIED = -4（用户拒绝授权） ERR_USER_CANCEL = -2（用户取消）
@@ -149,18 +148,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 					finish();
 					break;
 			}
-		}else if (resp.getType() == ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX) {
-			switch (resp.errCode) {
-				case BaseResp.ErrCode.ERR_OK:
-                    T.ss("分享成功");
-					break;
-				case BaseResp.ErrCode.ERR_USER_CANCEL://分享取消
-                    T.ss("分享失败");
-					break;
-				case BaseResp.ErrCode.ERR_AUTH_DENIED://分享被拒绝
-                    T.ss("分享取消");
-					break;
-			}
+		}else if(resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
+			finish();
 		}
 
 	}

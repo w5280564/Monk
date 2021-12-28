@@ -11,7 +11,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="合伙人" />
+        app:titleBarTitle="合伙人"
+        app:titleBarRightShowType="TEXT"
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightTxt="完成"/>
 
 
     <LinearLayout

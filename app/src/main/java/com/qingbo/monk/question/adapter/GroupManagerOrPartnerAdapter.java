@@ -3,8 +3,6 @@ package com.qingbo.monk.question.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
-import com.qingbo.monk.bean.ChooseMemberBean;
-import java.util.List;
 
 /**
  * 管理员或合伙人
