@@ -79,7 +79,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         } else {
             children_Comment.setVisibility(View.VISIBLE);
             showNineView(commentChildren_List,item);
-            if (item.getChildrens().size() > 3) {//二级评论超过三条
+            if (!TextUtils.isEmpty(item.getChildrenNum()) && Integer.parseInt(item.getChildrenNum()) > 3) {//二级评论超过三条
                 commentMore_Tv.setVisibility(View.VISIBLE);
                 String format = String.format("查看全部%1$s条回复", item.getChildrenNum());
                 commentMore_Tv.setText(format);

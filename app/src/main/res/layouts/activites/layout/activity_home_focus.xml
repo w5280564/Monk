@@ -447,6 +447,7 @@
             android:layout_marginEnd="@dimen/dp_15"
             android:layout_marginStart="@dimen/dp_15"
             android:textSize="12sp"
+            android:maxLength="40"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/release_Tv"
             app:layout_constraintStart_toStartOf="parent"

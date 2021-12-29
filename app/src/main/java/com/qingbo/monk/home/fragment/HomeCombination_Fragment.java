@@ -17,8 +17,11 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.CombinationListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
@@ -52,7 +55,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", false);
     }
 
     @Override
@@ -71,7 +74,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
+                    combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
                     if (combinationListBean != null) {
                         handleSplitListData(combinationListBean, mAdapter, limit);
                     }
@@ -103,28 +106,43 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    protected void initEvent() {
-        super.initEvent();
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+                String id = item.getId();
+                CombinationDetail_Activity.startActivity(requireActivity(), "", "", "", id);
+            }
+        });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+                switch (view.getId()) {
                     case R.id.follow_Img:
-                        HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
                         String likeId = item.getId();
                         postLikedData(likeId, position);
+                        break;
+                    case R.id.mes_Img:
+//                        String articleId = item.getId();
+//                        String type = item.getType();
+                        String id = item.getId();
+                        CombinationDetail_Activity.startActivity(requireActivity(), "", "1", "", id);
                         break;
                 }
             }
         });
     }
 
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+
+    }
+
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", likeId+ "");
+        requestMap.put("id", likeId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.combination_Topic_Like, "首页-仓位组合点赞", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -152,7 +170,6 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
-
 
 
 }

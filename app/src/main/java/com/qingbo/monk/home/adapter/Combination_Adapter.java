@@ -27,6 +27,7 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HomeCombinationBean item) {
+        TextView comName_TV = helper.getView(R.id.comName_TV);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
@@ -34,6 +35,7 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
         TextView time_Tv = helper.getView(R.id.time_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
 
+        comName_TV.setText(item.getName());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
         mes_Count.setText(item.getCommentcount());
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
@@ -45,7 +47,9 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
         Combination_Shares_Adapter combination_shares_adapter = new Combination_Shares_Adapter();
         mNineView.setAdapter(combination_shares_adapter);
         combination_shares_adapter.setNewData(item.getDetail());
+
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.mes_Img);
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {

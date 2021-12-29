@@ -184,6 +184,7 @@ public class HttpUrl {
     public static final String Character_List = "fund/fund/character-list";//人物列表
     public static final String CommentChildren_List = "comment/comment/comment-children-list";//回复评论列表-获取评论回复
     public static final String Square_Position_List = "square/position/position-detail";//仓位组合详情
+    public static final String Show_Comment_List = "square/position/show-comment";//仓位组合评论详情
 
 }
 

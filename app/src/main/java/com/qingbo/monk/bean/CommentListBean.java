@@ -4,10 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class CommentListBean extends BaseSplitIndexBean<CommentBean> {
     @SerializedName("commentData")
     private CommentDataDTO commentData;

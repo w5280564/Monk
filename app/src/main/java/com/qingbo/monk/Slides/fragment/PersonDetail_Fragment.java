@@ -252,7 +252,6 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
         l.setDrawInside(false);
         l.setEnabled(false); //显示
-
     }
 
     //固定设置饼状图颜色
