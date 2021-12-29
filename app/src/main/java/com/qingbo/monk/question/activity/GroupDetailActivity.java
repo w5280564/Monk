@@ -118,7 +118,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 bean.setName("审核");
                 fragments.add(new GroupDetailFragment_All());
             } else {
-                bean.setName("预览");
+                bean.setName("预览主题");
                 fragments.add(new GroupDetailFragment_All());
             }
 
