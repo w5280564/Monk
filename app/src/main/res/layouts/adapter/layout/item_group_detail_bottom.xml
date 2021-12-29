@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/tv_des"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="@dimen/dp_4"
         android:layout_marginTop="@dimen/dp_10"
@@ -47,7 +47,8 @@
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_14"
         app:layout_constraintTop_toBottomOf="@id/iv_header_host"
-        app:layout_constraintStart_toStartOf="@id/tv_group_host_name" />
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <View style="@style/app_line"
         app:layout_constraintTop_toBottomOf="@id/tv_des"

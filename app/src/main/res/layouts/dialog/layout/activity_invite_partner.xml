@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_color_f6f6f6"
+    android:orientation="vertical">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarBackgroundColor="@color/text_color_f6f6f6"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="邀请合伙人" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_37"
+                android:text="邀请合伙人，共同运营"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:text="（最多可邀请20位合伙人）"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_35">
+
+
+                <ImageView
+                    android:id="@+id/iv_bag"
+                    android:layout_width="296dp"
+                    android:layout_height="0dp"
+                    android:src="@mipmap/fengmian"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="0.81"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_invite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_32"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dp_23"
+                    android:paddingRight="@dimen/dp_23"
+                    android:background="@drawable/background_bg_white"
+                    android:text="邀请合伙人"
+                    android:drawableLeft="@mipmap/wx"
+                    android:drawablePadding="@dimen/dp_10"
+                    android:textColor="#24DB5A"
+                    android:textSize="@dimen/sp_15"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_bag"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="@dimen/dp_17"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="每个链接只能邀请一个合伙人"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_invite"
+                    android:layout_marginBottom="@dimen/dp_14"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dp_24"
+                android:paddingRight="@dimen/dp_24"
+                android:gravity="center_vertical">
+
+                <View android:layout_width="@dimen/dp_0"
+                    android:layout_weight="1"
+                    android:layout_height="1px"
+                    android:background="@color/text_color_6f6f6f"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_marginRight="@dimen/dp_15"
+                    android:text="如何运用『合伙人制』运营社群"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="@dimen/sp_15"
+                    android:textStyle="bold"/>
+
+                <View android:layout_width="@dimen/dp_0"
+                    android:layout_weight="1"
+                    android:layout_height="1px"
+                    android:background="@color/text_color_6f6f6f"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_17"
+                android:layout_marginLeft="@dimen/dp_60"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/background_dot_a1a1a1"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="制定运营规则，并向合伙人说明"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/text_color_a1a1a1"/>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_9"
+                android:layout_marginLeft="@dimen/dp_60"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/background_dot_a1a1a1"/>
+
+
+                <TextView
+                    android:id="@+id/tv_toast2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="为合伙人设计恰当的激励计划"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="@color/text_color_a1a1a1"/>
+
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

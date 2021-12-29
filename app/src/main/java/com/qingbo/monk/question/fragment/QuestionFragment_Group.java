@@ -14,9 +14,9 @@ import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
+import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.activity.MyGroupListActivity;
-import com.qingbo.monk.question.activity.PreviewGroupDetailActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -91,7 +91,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                 if (mGroupBean==null) {
                     return;
                 }
-                PreviewGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
+                CheckOtherGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
             }
         });
     }

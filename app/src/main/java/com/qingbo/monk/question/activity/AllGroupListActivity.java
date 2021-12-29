@@ -1,10 +1,14 @@
 package com.qingbo.monk.question.activity;
 
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.BaseGroupBean;
+import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
@@ -34,7 +38,16 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initEvent() {
-        super.initEvent();//一定要写
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                GroupBean mGroupBean = (GroupBean) adapter.getItem(position);
+                if (mGroupBean==null) {
+                    return;
+                }
+                CheckOtherGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
+            }
+        });
     }
 
     private void initRecyclerView() {

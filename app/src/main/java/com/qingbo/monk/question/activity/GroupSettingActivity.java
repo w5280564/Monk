@@ -121,8 +121,10 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     }
 
 
-
-
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(PreviewGroupDetailActivity.class);
+    }
 
     @OnClick({R.id.ll_tag,R.id.shangchuan,R.id.tv_group_name,R.id.ll_des})
     public void onViewClicked(View view) {

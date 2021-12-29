@@ -200,7 +200,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 skipAnotherActivity(GroupManagerActivity.class);
                 break;
             case R.id.arrowItemView_invite_partner:
-
+                skipAnotherActivity(InvitePartnerActivity.class);
                 break;
             case R.id.arrowItemView_invite_member:
                 break;

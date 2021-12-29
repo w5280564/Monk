@@ -5,30 +5,27 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**
- * 预览社群详情
+ * 查看未加入的社群详情
  */
-public class PreviewGroupDetailActivity extends BaseActivity {
+public class CheckOtherGroupDetailActivity extends BaseActivity {
     @BindView(R.id.ll_container_bottom)
     LinearLayout llContainerBottom;
     private String id;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.actiivty_preview_group_detail;
+        return R.layout.actiivty_check_other_group_detail;
     }
 
     public static void actionStart(Context context, String id) {
-        Intent intent = new Intent(context, PreviewGroupDetailActivity.class);
+        Intent intent = new Intent(context, CheckOtherGroupDetailActivity.class);
         intent.putExtra("id", id);
         context.startActivity(intent);
     }

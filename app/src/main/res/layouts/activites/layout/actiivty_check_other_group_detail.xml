@@ -9,6 +9,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
+        app:titleBarTitle="社群详情"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false" />
 
@@ -296,6 +297,14 @@
             <View
                 style="@style/app_line"
                 android:layout_marginTop="@dimen/dp_7" />
+
+            <LinearLayout
+                android:id="@+id/ll_container_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
