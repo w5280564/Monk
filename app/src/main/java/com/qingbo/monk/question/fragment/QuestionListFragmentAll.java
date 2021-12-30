@@ -48,7 +48,7 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
         mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无话题", true);
+        initSwipeRefreshLayoutAndAdapter("暂无话题", 0,true);
     }
 
 

@@ -63,7 +63,7 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无公告",false);
+        initSwipeRefreshLayoutAndAdapter("暂无公告",0,false);
     }
 
     @Override

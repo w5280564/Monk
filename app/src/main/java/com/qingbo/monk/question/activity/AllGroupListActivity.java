@@ -33,7 +33,7 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
     protected void initView() {
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据",0,true);
     }
 
     @Override

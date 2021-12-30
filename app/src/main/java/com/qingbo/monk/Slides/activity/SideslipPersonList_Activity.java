@@ -79,7 +79,7 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
     protected void initView() {
         mRecyclerView = findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无人物", false);
+        initSwipeRefreshLayoutAndAdapter("暂无人物", 0,false);
     }
 
     @Override

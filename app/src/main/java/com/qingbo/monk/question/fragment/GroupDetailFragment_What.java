@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.question.adapter.GroupDetailListAdapterAll;
 import com.qingbo.monk.question.adapter.GroupDetailListAdapterWhat;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class GroupDetailFragment_What extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setEnabled(false);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,false);
     }
 
     private void initRecyclerView() {

@@ -55,7 +55,7 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0,false);
     }
 
     @Override

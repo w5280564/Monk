@@ -62,7 +62,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", false);
+        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override

@@ -32,8 +32,8 @@ public abstract class BaseRecyclerViewSplitFragment extends BaseLazyFragment imp
     }
 
 
-    protected void initSwipeRefreshLayoutAndAdapter(String emptyViewToast, boolean isHaveRefresh) {
-        mAdapter.setEmptyView(addEmptyView(emptyViewToast, 0));
+    protected void initSwipeRefreshLayoutAndAdapter(String emptyToastText,int emptyViewImgResource, boolean isHaveRefresh) {
+        mAdapter.setEmptyView(addEmptyView(emptyToastText, emptyViewImgResource));
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         if (isHaveRefresh && mSwipeRefreshLayout != null) {

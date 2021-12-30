@@ -65,7 +65,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 //        release_Tv = requireActivity().findViewById(R.id.release_Tv);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", false);
+        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override

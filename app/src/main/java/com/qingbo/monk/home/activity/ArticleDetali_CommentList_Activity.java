@@ -98,7 +98,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据",0, true);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据",0,false);
     }
 
     @Override

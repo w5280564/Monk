@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.BaseGroupTopicBean;
 import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
-import com.qingbo.monk.question.adapter.GroupDetailListAdapterAll;
+import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapterAll;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import java.util.ArrayList;
+import com.xunda.lib.common.common.utils.GsonUtil;
+
 import java.util.HashMap;
-import java.util.List;
 import butterknife.OnClick;
 
 /**
@@ -55,7 +56,7 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", true);
+        initSwipeRefreshLayoutAndAdapter("暂无话题",0, true);
     }
 
     private void initRecyclerView() {
@@ -64,19 +65,8 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailListAdapterAll();
+        mAdapter = new GroupDetailTopicListAdapterAll();
         mRecyclerView.setAdapter(mAdapter);
-
-        List<String> mList = new ArrayList<>();
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mAdapter.setNewData(mList);
     }
 
     @Override
@@ -89,12 +79,14 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getQuestionList();
     }
 
     @Override
     protected void onLoadMoreData() {
-
+        page++;
+        getQuestionList();
     }
 
     @Override
@@ -111,9 +103,13 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         HttpSender sender = new HttpSender(HttpUrl.groupDetailAllTab, "社群全部", map,
                 new MyOnHttpResListener() {
                     @Override
-                    public void onComplete(String json, int status, String description, String data) {
-                        if (status == Constants.REQUEST_SUCCESS_CODE) {
-
+                    public void onComplete(String json, int code, String description, String data) {
+                        if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            BaseGroupTopicBean obj = GsonUtil.getInstance().json2Bean(data, BaseGroupTopicBean.class);
+                            handleSplitListData(obj, mAdapter, limit);
                         }
                     }
                 }, false);
@@ -121,11 +117,6 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         sender.sendGet();
     }
 
-
-    private void handleData() {
-
-
-    }
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {

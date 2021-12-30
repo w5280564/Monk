@@ -52,7 +52,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无推荐数据",false);
+        initSwipeRefreshLayoutAndAdapter("暂无推荐数据",0,false);
     }
 
     @Override

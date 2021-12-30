@@ -53,7 +53,7 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
     protected void initView() {
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据",0, true);
         title_bar.setTitle("仓位组合");
         title_bar.showTitle();
         title_bar.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
