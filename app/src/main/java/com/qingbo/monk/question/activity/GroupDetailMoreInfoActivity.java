@@ -19,6 +19,7 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import org.greenrobot.eventbus.Subscribe;
@@ -185,13 +186,13 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.arrowItemView_edit:
-                if ("0".equals(role)){
+                if ("0".equals(role)|| StringUtil.isBlank(role)){
                     return;
                 }
                 GroupSettingActivity.actionStart(mActivity, sheQunBean);
                 break;
             case R.id.arrowItemView_number:
-                if ("0".equals(role)){
+                if ("0".equals(role)|| StringUtil.isBlank(role)){
                     return;
                 }
                 skipAnotherActivity(GroupMemberListActivity.class);

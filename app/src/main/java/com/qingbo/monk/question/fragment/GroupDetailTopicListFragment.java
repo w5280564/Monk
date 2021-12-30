@@ -1,24 +1,39 @@
 package com.qingbo.monk.question.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
+import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
+import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapterAll;
+import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.dialog.MyPopWindow;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
+import java.util.List;
+
 import butterknife.OnClick;
 
 /**
@@ -87,9 +102,88 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
+
+                if (mQuestionBean == null) {
+                    return;
+                }
+                switch (view.getId()) {
+                    case R.id.follow_Img:
+                        String likeId = mQuestionBean.getArticleId();
+                        postLikedData(likeId, position);
+                        break;
+                    case R.id.more_Img:
+                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                        showPopMenu(more_Img,mQuestionBean,position);
+                        break;
+                }
+            }
+        });
+
+
+        ((GroupDetailTopicListAdapterAll) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+            @Override
+            public void OnItemImgClickLister(int position, List<String> strings) {
+                jumpToPhotoShowActivity(position, strings);
+            }
+        });
+    }
+
+
+    private void postLikedData(String likeId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", likeId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
+                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+                    if (likedStateBena != null) {
+                        //0取消点赞成功，1点赞成功
+                        int nowLike;
+                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+                        if (likedStateBena.getLiked_status() == 0) {
+                            nowLike -= 1;
+                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+                        } else if (likedStateBena.getLiked_status() == 1) {
+                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                            nowLike += 1;
+                        }
+                        follow_Count.setText(nowLike + "");
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
+    private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){
+        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+        boolean haveEdit = false;
+        if(TextUtils.equals(status, "2")){//审核未通过才能删除
+            haveEdit = true;
+        }
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
+            @Override
+            public void onClickEdit() {
+                PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);
+            }
+
+            @Override
+            public void onClickDelete() {
+//                showDeleteDialog(mQuestionBean.getId(),position);
+            }
 
         });
+        morePopWindow.showPopupWindow(more_Img);
     }
 
 

@@ -308,7 +308,7 @@
                     android:layout_marginBottom="@dimen/dp_16"
                     android:background="@drawable/background_bg_efefef"
                     android:gravity="center"
-                    android:text="加入社群后查看全部 1 条主题"
+                    android:text="加入社群后查看全部主题"
                     android:textColor="@color/text_color_a1a1a1"
                     android:textSize="@dimen/sp_12" />
 

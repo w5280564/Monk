@@ -115,7 +115,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     private void handleData(CheckOtherGroupBean groupBean) {
         if (groupBean != null) {
             tvGroupName.setText(groupBean.getShequnName());
-            tvGroupId.setText(String.format("群ID：%s",groupBean.getId()));
+            tvGroupId.setText(String.format("群ID：%s",groupBean.getSqId()));
             GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(),R.mipmap.bg_create_group, DisplayUtil.dip2px(mContext,9));
             tv_tag.setText(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());

@@ -46,8 +46,6 @@ public class GroupDetailTopicListAdapterAll extends BaseQuickAdapter<OwnPublishB
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
-//        ImageView more_Img = helper.getView(R.id.more_Img);
-//        viewTouchDelegate.expandViewTouchDelegate(more_Img,100);
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
         group_Name.setText(item.getNickname());
@@ -112,7 +110,6 @@ public class GroupDetailTopicListAdapterAll extends BaseQuickAdapter<OwnPublishB
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
-        helper.addOnClickListener(R.id.more_Img);
     }
 
 
