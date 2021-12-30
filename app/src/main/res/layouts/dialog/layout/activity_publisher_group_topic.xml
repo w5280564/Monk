@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="left"
-                    android:hint="点击此处说点什么…."
+                    android:hint="点击此处说点什么…"
                     android:paddingTop="@dimen/dp_12"
                     android:paddingBottom="@dimen/dp_12"
                     android:ellipsize="end"
@@ -59,37 +59,9 @@
                     android:id="@+id/recycleView_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_21"
                     android:layout_marginTop="@dimen/dp_40"
                     android:nestedScrollingEnabled="false"/>
-
-
-                <LinearLayout
-                    android:id="@+id/ll_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_20"
-                    android:visibility="gone"
-                    android:tag="0"
-                    android:layout_gravity="right"
-                    android:paddingLeft="@dimen/dp_8"
-                    android:paddingRight="@dimen/dp_8"
-                    android:gravity="center"
-                    android:background="@drawable/background_group_edit"
-                    android:layout_marginTop="@dimen/dp_28"
-                    android:layout_marginBottom="@dimen/dp_21"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_tag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="公开"
-                        android:drawablePadding="@dimen/dp_5"
-                        android:drawableLeft="@mipmap/gongkai"
-                        android:textColor="@color/text_color_6f6f6f"
-                        android:textSize="@dimen/sp_12"/>
-
-                </LinearLayout>
-
 
             </LinearLayout>
 

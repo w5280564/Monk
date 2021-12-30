@@ -186,6 +186,8 @@ public class HttpUrl {
     public static final String Square_Position_List = "square/position/position-detail";//仓位组合详情
     public static final String Show_Comment_List = "square/position/show-comment";//仓位组合评论详情
     public static final String groupDetailAllTab = "square/detail/topic-list";//全部
+    public static final String getGroupToQuestionList = "square/square/getshequn-question-list";//去提问列表
+    public static final String checkOtherGroupDetail = "square/square/shequn-detail";//未加入的社群详情
 
 }
 

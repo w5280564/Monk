@@ -68,16 +68,6 @@
                 app:layout_constraintStart_toStartOf="@id/tv_name"
                 app:layout_constraintTop_toBottomOf="@id/tv_name"/>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="7dp"
-                android:layout_height="@dimen/dp_12"
-                android:layout_marginStart="@dimen/dp_10"
-                android:src="@mipmap/arrow_right_white"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_des"
-                app:layout_constraintStart_toEndOf="@id/tv_des"
-                app:layout_constraintTop_toTopOf="@+id/tv_des" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -96,7 +86,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
         android:layout_marginTop="@dimen/dp_30"
-        android:background="@drawable/shape_bag_what_yellow"
         android:gravity="center"
         android:text="向ta提问"
         android:textColor="@color/white"

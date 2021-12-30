@@ -110,7 +110,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             } else if (i == 2) {
                 bean.setName("去提问");
-                fragments.add(new GroupDetailFragment_What());
+                fragments.add(GroupDetailFragment_What.NewInstance(id));
             } else if (i == 3) {
                 bean.setName("我的发布");
                 fragments.add(GroupDetailTopicListFragment.NewInstance(1,id));

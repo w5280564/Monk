@@ -1,23 +1,42 @@
 package com.qingbo.monk.question.fragment;
 
+import android.os.Bundle;
 import android.view.View;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.BaseLazyFragment;
+import com.qingbo.monk.bean.AskQuestionBean;
+import com.qingbo.monk.question.activity.AskQuestionToPeopleActivity;
 import com.qingbo.monk.question.adapter.GroupDetailListAdapterWhat;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpBaseList;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import java.util.HashMap;
+import butterknife.BindView;
 
 /**
  * 社群详情（去提问）
  */
-public class GroupDetailFragment_What extends BaseRecyclerViewSplitFragment {
+public class GroupDetailFragment_What extends BaseLazyFragment {
 
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
+    private String id;
+    private GroupDetailListAdapterWhat mAdapter;
 
+    public static GroupDetailFragment_What NewInstance(String id) {
+        Bundle args = new Bundle();
+        args.putString("id", id);
+        GroupDetailFragment_What fragment = new GroupDetailFragment_What();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     @Override
@@ -26,57 +45,75 @@ public class GroupDetailFragment_What extends BaseRecyclerViewSplitFragment {
     }
 
 
+    @Override
+    protected void initLocalData() {
+        Bundle mBundle = getArguments();
+        if (mBundle != null) {
+            id = mBundle.getString("id");
+        }
+    }
 
     @Override
     protected void initView(View mView) {
-        mRecyclerView = mView.findViewById(R.id.mRecyclerView);
-        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
-        mSwipeRefreshLayout.setEnabled(false);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,false);
     }
 
     private void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
-        mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new GroupDetailListAdapterWhat();
+        mAdapter.setEmptyView(addEmptyView("暂无提问", R.mipmap.zhuti));
         mRecyclerView.setAdapter(mAdapter);
-
-        List<String> mList = new ArrayList<>();
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mAdapter.setNewData(mList);
     }
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                skipAnotherActivity(AskQuestionToPeopleActivity.class);
+            }
         });
     }
 
 
     @Override
-    protected void onRefreshData() {
-
-    }
-
-    @Override
-    protected void onLoadMoreData() {
-
-    }
-
-    @Override
     protected void loadData() {
-
+        getShequnToQuestionList();
     }
+
+    /**
+     * 去提问列表
+     */
+    private void getShequnToQuestionList() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("shequn_id", id);
+        HttpSender sender = new HttpSender(HttpUrl.getGroupToQuestionList, "去提问列表", map,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int code, String description, String data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            handleData(json);
+                        }
+                    }
+                }, false);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+    private void handleData(String json) {
+        HttpBaseList<AskQuestionBean> objList = GsonUtil
+
+                .getInstance()
+                .json2List(
+                        json,
+                        new TypeToken<HttpBaseList<AskQuestionBean>>() {
+                        }.getType());
+        mAdapter.setNewData(objList.getData());
+    }
+
+
 }

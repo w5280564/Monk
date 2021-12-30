@@ -78,7 +78,6 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
 
     private void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
-        mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
