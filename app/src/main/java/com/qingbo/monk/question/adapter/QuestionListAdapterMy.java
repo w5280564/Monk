@@ -2,7 +2,6 @@ package com.qingbo.monk.question.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +20,7 @@ import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

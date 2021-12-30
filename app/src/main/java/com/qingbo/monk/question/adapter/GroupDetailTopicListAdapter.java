@@ -25,11 +25,11 @@ import java.util.List;
 /**
  * 社群话题全部列表
  */
-public class GroupDetailTopicListAdapterAll extends BaseQuickAdapter<OwnPublishBean, BaseViewHolder> {
+public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean, BaseViewHolder> {
     private int type;
 
-    public GroupDetailTopicListAdapterAll(int type) {
-        super(R.layout.item_group_detail_all);
+    public GroupDetailTopicListAdapter(int type) {
+        super(R.layout.item_group_detail_topic);
         this.type = type;
     }
 
@@ -39,6 +39,7 @@ public class GroupDetailTopicListAdapterAll extends BaseQuickAdapter<OwnPublishB
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_status = helper.getView(R.id.tv_status);
+        TextView tv_answer = helper.getView(R.id.tv_answer);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
@@ -89,7 +90,9 @@ public class GroupDetailTopicListAdapterAll extends BaseQuickAdapter<OwnPublishB
 
         if (type==0) {
             tv_status.setVisibility(View.GONE);
-        }else{
+            tv_answer.setVisibility(View.GONE);
+        }else if(type==1){
+            tv_answer.setVisibility(View.GONE);
             String status = item.getStatus();//0待审核 1通过 2未通过
             if (TextUtils.equals(status, "0")) {
                 tv_status.setVisibility(View.VISIBLE);

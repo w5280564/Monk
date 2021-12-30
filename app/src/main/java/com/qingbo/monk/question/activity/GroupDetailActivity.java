@@ -12,6 +12,7 @@ import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.question.fragment.GroupDetailTopicListFragment;
 import com.qingbo.monk.question.fragment.GroupDetailFragment_What;
+import com.qingbo.monk.question.fragment.GroupDetailWaitAnswerListFragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
@@ -107,7 +108,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             } else if (i == 1) {
                 bean.setName("等你回答");
-                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
+                fragments.add(GroupDetailWaitAnswerListFragment.NewInstance(id));
             } else if (i == 2) {
                 bean.setName("去提问");
                 fragments.add(GroupDetailFragment_What.NewInstance(id));

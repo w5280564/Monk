@@ -145,7 +145,8 @@
         <activity android:name=".question.activity.PreviewGroupDetailActivity" />
         <activity android:name=".question.activity.PublisherQuestionActivity" />
         <activity android:name=".question.activity.PublisherGroupTopicActivity" />
-        <activity android:name=".question.activity.AskQuestionToPeopleActivity" />
+        <activity android:name=".question.activity.PublisherAnswerQuestionToPeopleActivity" />
+        <activity android:name=".question.activity.PublisherAskQuestionToPeopleActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
         <activity android:name=".question.activity.ApplyExitGroupOrMoneyActivity" />
         <activity android:name=".Slides.activity.AAndHKDetail_Activity" />

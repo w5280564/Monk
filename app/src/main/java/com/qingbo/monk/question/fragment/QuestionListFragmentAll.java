@@ -17,7 +17,9 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.QuestionBean;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterAll;
 import com.xunda.lib.common.common.Constants;
@@ -89,7 +91,14 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
         mAdapter = new QuestionListAdapterAll();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            QuestionBean mQuestionBean = (QuestionBean) adapter.getItem(position);
 
+            if (mQuestionBean == null) {
+                return;
+            }
+
+            String type = mQuestionBean.getType();
+            ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type);
         });
 
     }
@@ -113,6 +122,10 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                     case R.id.follow_Img:
                         String likeId = mQuestionBean.getArticleId();
                         postLikedData(likeId, position);
+                        break;
+                    case R.id.mes_Img:
+                        String type = mQuestionBean.getType();
+                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type);
                         break;
                 }
             }

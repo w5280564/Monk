@@ -427,7 +427,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void getJoinSheQun(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_SheQun, "加入/退出社群", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.joinGroup, "加入/退出社群", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
