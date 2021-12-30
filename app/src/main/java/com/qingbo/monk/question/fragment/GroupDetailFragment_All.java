@@ -1,22 +1,37 @@
 package com.qingbo.monk.question.fragment;
 
+import android.os.Bundle;
 import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.adapter.GroupDetailListAdapterAll;
-
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import butterknife.OnClick;
 
 /**
  * 社群详情全部
  */
 public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
+    private int type;
+    private String id;
 
-
-
+    public static GroupDetailFragment_All NewInstance(int type, String id) {
+        Bundle args = new Bundle();
+        args.putInt("type", type);
+        args.putString("id", id);
+        GroupDetailFragment_All fragment = new GroupDetailFragment_All();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected int getLayoutId() {
@@ -24,14 +39,23 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
     }
 
 
+    @Override
+    protected void initLocalData() {
+        Bundle mBundle = getArguments();
+        if (mBundle != null) {
+            type = mBundle.getInt("type", 0);
+            id = mBundle.getString("id");
+        }
+
+    }
 
     @Override
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
-        mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", true);
     }
 
     private void initRecyclerView() {
@@ -75,6 +99,36 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+        getQuestionList();
+    }
 
+    private void getQuestionList() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("id", id);
+        map.put("action", "1");
+        map.put("page", page + "");
+        map.put("limit", limit + "");
+        HttpSender sender = new HttpSender(HttpUrl.groupDetailAllTab, "社群全部", map,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int status, String description, String data) {
+                        if (status == Constants.REQUEST_SUCCESS_CODE) {
+
+                        }
+                    }
+                }, false);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+    private void handleData() {
+
+
+    }
+
+    @OnClick(R.id.iv_bianji)
+    public void onClick() {
+        PublisherGroupTopicActivity.actionStart(mActivity,id);
     }
 }

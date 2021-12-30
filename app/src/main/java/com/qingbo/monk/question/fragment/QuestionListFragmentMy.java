@@ -29,7 +29,6 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

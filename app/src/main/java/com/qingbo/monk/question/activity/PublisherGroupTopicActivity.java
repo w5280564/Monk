@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -33,13 +35,14 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 问答广场发布页
+ * 社群话题发布页
  */
-public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More {
+public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.ll_tag)
@@ -55,14 +58,20 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
     private String mTitle,mContent,images,questionId;
-    private String submitRequestUrl;
+    private String submitRequestUrl,shequn_id;
     private boolean isEdit;
 
 
-    public static void actionStart(Context context, QuestionBeanMy mQuestionBeanMy,boolean isEdit) {
-        Intent intent = new Intent(context, PublisherQuestionActivity.class);
+    public static void actionStart(Context context, String shequn_id, QuestionBeanMy mQuestionBeanMy,boolean isEdit) {
+        Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
+        intent.putExtra("shequn_id",shequn_id);
         intent.putExtra("obj",mQuestionBeanMy);
         intent.putExtra("isEdit",isEdit);
+        context.startActivity(intent);
+    }
+    public static void actionStart(Context context, String shequn_id) {
+        Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
+        intent.putExtra("shequn_id",shequn_id);
         context.startActivity(intent);
     }
 
@@ -76,8 +85,8 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     protected void initLocalData() {
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
-
-        title = "广场问答";
+        title = "社群话题";
+        shequn_id = getIntent().getStringExtra("shequn_id");
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;
@@ -260,11 +269,12 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         baseMap.put("content", mContent);
         baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("images", images);
+        baseMap.put("shequn_id", shequn_id);
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
         }else{
             baseMap.put("type", "1");
-            baseMap.put("action", "3");
+            baseMap.put("action", "1");
             baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }
 
