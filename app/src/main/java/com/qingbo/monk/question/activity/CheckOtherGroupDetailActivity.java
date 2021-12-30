@@ -211,6 +211,6 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                     }
                 }, true);
         sender.setContext(mActivity);
-        sender.sendGet();
+        sender.sendPost();
     }
 }
