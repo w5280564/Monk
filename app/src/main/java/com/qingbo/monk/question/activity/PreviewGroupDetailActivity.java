@@ -65,6 +65,12 @@ public class PreviewGroupDetailActivity extends BaseActivity {
         getPreviewGroupDetail();
     }
 
+
+    @Override
+    protected void initLocalData() {
+        id = getIntent().getStringExtra("id");
+    }
+
     /**
      * 未加入的社群详情
      */
@@ -76,8 +82,8 @@ public class PreviewGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            CheckOtherGroupBean groupBean = GsonUtil.getInstance().json2Bean(data, CheckOtherGroupBean.class);
-                            handleData(groupBean);
+//                            CheckOtherGroupBean groupBean = GsonUtil.getInstance().json2Bean(data, CheckOtherGroupBean.class);
+//                            handleData(groupBean);
                         }
                     }
                 }, true);

@@ -2,6 +2,7 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,8 +40,8 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     TextView tvGroupName;
     @BindView(R.id.tv_group_id)
     TextView tvGroupId;
-    @BindView(R.id.tv_tag)
-    TextView tv_tag;
+    @BindView(R.id.lable_Lin)
+    LinearLayout tag_list;
     @BindView(R.id.tv_theme_num)
     TextView tv_theme_num;
     @BindView(R.id.tv_member_num)
@@ -117,7 +119,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             tvGroupName.setText(groupBean.getShequnName());
             tvGroupId.setText(String.format("群ID：%s",groupBean.getSqId()));
             GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(),R.mipmap.bg_create_group, DisplayUtil.dip2px(mContext,9));
-            tv_tag.setText(groupBean.getTags());
+            labelFlow(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());
             tv_member_num.setText(groupBean.getMemberCount());
             tv_question_num.setText(groupBean.getTopicCount());
@@ -141,6 +143,26 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             }
 
             tv_pay_notice.setText(groupBean.getPayNotice());
+        }
+    }
+
+    public void labelFlow(String tag) {
+        if (TextUtils.isEmpty(tag)) {
+            return;
+        }
+        String[] tagS = tag.split(",");
+        int length = tagS.length;
+        if (length > 2) {
+            length = 2;
+        }
+        for (int i = 0; i < length; i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.group_tag, null);
+            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            itemParams.setMargins(0, 0, DisplayUtil.dip2px(mContext,8), 0);
+            view.setLayoutParams(itemParams);
+            TextView tv_tag = view.findViewById(R.id.tv_tag);
+            tv_tag.setText(tagS[i]);
+            tag_list.addView(view);
         }
     }
 
@@ -189,6 +211,6 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                     }
                 }, true);
         sender.setContext(mActivity);
-        sender.sendGet();
+        sender.sendPost();
     }
 }

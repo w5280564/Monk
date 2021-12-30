@@ -439,7 +439,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             }
         }, true);
         httpSender.setContext(mActivity);
-        httpSender.sendGet();
+        httpSender.sendPost();
     }
 
     private void getJoinGroup(String ID) {

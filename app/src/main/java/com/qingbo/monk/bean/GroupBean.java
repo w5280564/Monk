@@ -29,7 +29,7 @@ public class GroupBean {
     @SerializedName("shequn_fee")
     private String shequnFee;
     @SerializedName("detail")
-    private List<DetailDTO> detail;
+    private DetailDTO detail;
 
     @NoArgsConstructor
     @Data
@@ -38,5 +38,6 @@ public class GroupBean {
         private String shequnId;
         @SerializedName("avatar")
         private String avatar;
+
     }
 }

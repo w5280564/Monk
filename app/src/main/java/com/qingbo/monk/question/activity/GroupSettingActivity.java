@@ -43,7 +43,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     TextView tv_group_name;
     @BindView(R.id.tv_group_des)
     TextView tv_group_des;
-    private String id,tag;
+    private String id,tags;
     private GroupMoreInfoBean sheQunBean;
     private List<NameIdBean> tagList = new ArrayList<>();
 
@@ -72,8 +72,8 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
         sheQunBean = (GroupMoreInfoBean) getIntent().getSerializableExtra("sheQunBean");
         if (sheQunBean!=null) {
             id = sheQunBean.getSqId();
-            tag = StringUtil.getStringValue(sheQunBean.getTags());
-            tv_group_tag.setText(tag);
+            tags = StringUtil.getStringValue(sheQunBean.getTags());
+            tv_group_tag.setText(StringUtil.getStringValue(sheQunBean.getTags()));
             tv_group_des.setText(StringUtil.getStringValue(sheQunBean.getShequnDes()));
             tv_group_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
             if (StringUtil.isBlank(sheQunBean.getShequnImage())) {
@@ -106,10 +106,17 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
                             List<String> strings = StringUtil.stringToList(data);
                             if (!ListUtils.isEmpty(strings)) {
-                                for (String item:strings) {
+                                for (String itemTag:strings) {
                                     NameIdBean mNameIdBean = new NameIdBean();
-                                    mNameIdBean.setName(item);
-                                    mNameIdBean.setSelect(tag.equals(item));
+                                    mNameIdBean.setName(itemTag);
+                                    if (!StringUtil.isBlank(tags)){
+                                        for (String chooseTag:StringUtil.stringToList(tags)) {
+                                            if (itemTag.equals(chooseTag)) {
+                                                mNameIdBean.setSelect(true);
+                                                mChooseList.add(itemTag);
+                                            }
+                                        }
+                                    }
                                     tagList.add(mNameIdBean);
                                 }
                             }
@@ -181,7 +188,20 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     protected void onUploadFailure(String error_info) {
 
     }
+    /**
+     * 添加标签
+     */
+    private void addTag(String chooseTag,boolean after_check) {
+        if (after_check) {
+            mChooseList.add(chooseTag);
+        }else{
+            if (mChooseList.contains(chooseTag)) {
+                mChooseList.remove(chooseTag);
+            }
+        }
 
+        editShequn("tag",StringUtil.listToString(mChooseList));
+    }
 
 
     /**
@@ -204,11 +224,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
                             }else if("image".equals(key)){
                                 GlideUtils.loadImage(mContext,iv_header_group,value);
                             }else if("tag".equals(key)){
-                                for (NameIdBean mNameIdBean:tagList) {
-                                    mNameIdBean.setSelect(false);
-                                }
-                                tagList.get(currentPosition).setSelect(true);
-                                tv_group_tag.setText(StringUtil.getStringValue(value));
+                                tv_group_tag.setText(value);
                             }
                             EventBus.getDefault().post(new EditGroupEvent(EditGroupEvent.EDIT_GROUP));
                         }
@@ -220,10 +236,13 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     }
 
     private int currentPosition;
+    private List<String> mChooseList = new ArrayList<>();
     @Override
     public void onSelectItem(int position) {
         currentPosition = position;
         String tag = tagList.get(currentPosition).getName();
-        editShequn("tag",tag);
+        boolean after_check = !tagList.get(currentPosition).isSelect();
+        tagList.get(currentPosition).setSelect(after_check);
+        addTag(tag,after_check);
     }
 }
