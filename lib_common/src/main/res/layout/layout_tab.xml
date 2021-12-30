@@ -23,9 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"
-        android:text="guguguggigigigg"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_13"
+        android:textColor="@color/text_color_a1a1a1"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="@dimen/sp_14"
         app:layout_constraintStart_toStartOf="parent" />

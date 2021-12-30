@@ -42,7 +42,7 @@
                 android:id="@+id/title_bar_center_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="提问"
+                android:text="回答"
                 android:textStyle="bold"
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/text_title_size" />
@@ -67,68 +67,44 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="发布"
-                android:textColor="@color/text_color_1F8FE5"
-                android:layout_centerVertical="true" />
+                android:layout_centerVertical="true"
+                android:text="提交"
+                android:textColor="@color/text_color_1F8FE5" />
         </RelativeLayout>
         <!-- 右侧按钮结束 -->
 
     </RelativeLayout>
 
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="vertical">
-        <LinearLayout
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15">
+
+
+        <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15">
-
-
-                <EditText
-                    android:id="@+id/et_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="left"
-                    android:hint="提问被回答后，将公开显示在社群内"
-                    android:paddingTop="@dimen/dp_12"
-                    android:paddingBottom="@dimen/dp_12"
-                    android:ellipsize="end"
-                    android:maxLength="2000"
-                    android:lineSpacingExtra="@dimen/dp_2"
-                    android:textColor="@color/text_color_444444"
-                    android:textColorHint="@color/text_hint_color"
-                    android:textSize="@dimen/sp_14" />
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycleView_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_40"
-                    android:layout_marginBottom="@dimen/dp_21"
-                    android:nestedScrollingEnabled="false"/>
+            android:layout_marginBottom="@dimen/dp_21"
+            android:background="@null"
+            android:gravity="left"
+            android:hint="请输入回答内容"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_12"
+            android:ellipsize="end"
+            android:maxLength="2000"
+            android:lineSpacingExtra="@dimen/dp_2"
+            android:textColor="@color/text_color_444444"
+            android:textColorHint="@color/text_hint_color"
+            android:textSize="@dimen/sp_14" />
 
 
 
-            </LinearLayout>
+    </LinearLayout>
 
-
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
 
 

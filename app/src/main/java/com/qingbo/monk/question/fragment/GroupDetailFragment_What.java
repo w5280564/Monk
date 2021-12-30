@@ -10,7 +10,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.AskQuestionBean;
-import com.qingbo.monk.question.activity.AskQuestionToPeopleActivity;
+import com.qingbo.monk.question.activity.PublisherAskQuestionToPeopleActivity;
 import com.qingbo.monk.question.adapter.GroupDetailListAdapterWhat;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpBaseList;
@@ -79,7 +79,7 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
                     return;
                 }
 
-                AskQuestionToPeopleActivity.actionStart(mActivity,mAskQuestionBean.getNickname(),mAskQuestionBean.getId(),id);
+                PublisherAskQuestionToPeopleActivity.actionStart(mActivity,mAskQuestionBean.getNickname(),mAskQuestionBean.getId(),id);
             }
         });
     }

@@ -2,7 +2,6 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,13 +30,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 向别人提问
  */
-public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_More {
+public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.et_content)
     EditText et_content;
     @BindView(R.id.tv_to_name)
@@ -53,7 +51,7 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
 
 
     public static void actionStart(Context context, String to_name, String to_id, String shequn_id) {
-        Intent intent = new Intent(context, AskQuestionToPeopleActivity.class);
+        Intent intent = new Intent(context, PublisherAskQuestionToPeopleActivity.class);
         intent.putExtra("to_name", to_name);
         intent.putExtra("to_id", to_id);
         intent.putExtra("shequn_id", shequn_id);

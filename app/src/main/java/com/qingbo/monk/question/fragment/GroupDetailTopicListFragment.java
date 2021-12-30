@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
@@ -21,7 +20,7 @@ import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
-import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapterAll;
+import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -67,7 +66,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
             id = mBundle.getString("id");
             if (type==0) {
                 requestUrl = HttpUrl.groupDetailAllTab;
-            }else{
+            }else if(type==1){
                 requestUrl = HttpUrl.getOwnPublishList;
             }
         }
@@ -97,7 +96,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailTopicListAdapterAll(type);
+        mAdapter = new GroupDetailTopicListAdapter(type);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -143,7 +142,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         });
 
 
-        ((GroupDetailTopicListAdapterAll) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+        ((GroupDetailTopicListAdapter) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);

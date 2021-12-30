@@ -151,7 +151,6 @@ public class HttpUrl {
     public static final String createTopic = "square/square/create-topic";
     public static final String combination_Topic_Like = "square/position/topic-like";//首页-仓位组合点赞
     public static final String User_Article_Detail = "user/user/article-detail";//首页-个人文章详情
-    public static final String Join_SheQun = "square/square/join-shequn";//加入社群
 
     /**
      * 删除话题
@@ -178,8 +177,6 @@ public class HttpUrl {
     public static final String Fund_Manager = "fund/fund/fund-manager";//基金经理
     public static final String Fund_Thigh = "fund/fund/thigh";//十大股东/十大流通股东/基金持股
     public static final String FundStock_MesLike = "fund/stock/zixun-like";//资讯点赞
-    public static final String bandLogin = "login/login/band-login";//绑定手机号并登录
-    public static final String bandAccount = "user/user/band";//绑定第三方账号
     public static final String Fund_Postion = "fund/fund/character-position";//人物
     public static final String Character_List = "fund/fund/character-list";//人物列表
     public static final String CommentChildren_List = "comment/comment/comment-children-list";//回复评论列表-获取评论回复
@@ -192,6 +189,8 @@ public class HttpUrl {
     public static final String getPreviewGroupDetail = "square/square/show-before";//社群预览
     public static final String joinGroup = "square/square/join-shequn";//加入社群
     public static final String Combination_AddComment = "square/position/add-comment";//仓位组合-添加评论
+    public static final String waitAnswerList = "square/square/question-list";//等待回答问题列表
+    public static final String answerQuestion = "square/square/answer-question";//回答社群问题
 
 }
 
