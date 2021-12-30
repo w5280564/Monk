@@ -20,8 +20,6 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.xunda.lib.common.common.Constants;
@@ -36,14 +34,12 @@ import java.util.HashMap;
  * 仓位组合详情-评论列表
  */
 public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFragment implements View.OnClickListener {
-    public String articleId, type,id;
+    public String id;
     TabLayout tab;
     private EditText sendComment_Et;
 
-    public static CombinationDetail_Comment_Fragment newInstance(String articleId, String type,String id) {
+    public static CombinationDetail_Comment_Fragment newInstance(String id) {
         Bundle args = new Bundle();
-        args.putString("articleId", articleId);
-        args.putString("type", type);
         args.putString("id", id);
         CombinationDetail_Comment_Fragment fragment = new CombinationDetail_Comment_Fragment();
         fragment.setArguments(args);
@@ -67,8 +63,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 
     @Override
     protected void initLocalData() {
-        articleId = getArguments().getString("articleId");
-        type = getArguments().getString("type");
+//        articleId = getArguments().getString("articleId");
+//        type = getArguments().getString("type");
         id = getArguments().getString("id");
     }
 
@@ -120,7 +116,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ArticleComment_Adapter(articleId,type);
+        mAdapter = new ArticleComment_Adapter(id,"");
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -139,7 +135,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
+//                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
                     break;
                 case R.id.mes_Img:
                     ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
@@ -172,11 +168,11 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     T.s("评论不能为空", 2000);
                     return;
                 }
-                if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
+                if (TextUtils.isEmpty(id)) {
                     T.s("文章ID是空", 2000);
                     return;
                 }
-                addComment(articleId, type, s, item);
+                addComment(id, s, item);
                 break;
         }
     }
@@ -199,19 +195,18 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         httpSender.sendPost();
     }
 
-    public void addComment(String articleId, String type, String comment, ArticleCommentBean item) {
+    public void addComment(String id, String comment, ArticleCommentBean item) {
         if (item == null) {
             return;
         }
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId);
-        requestMap.put("type", type);
+        requestMap.put("id", id);
         requestMap.put("comment", comment);
-        requestMap.put("isAnonymous", "0");
+        requestMap.put("is_anonymous", "0");
         requestMap.put("commentId", item.getId());
         requestMap.put("replyerId", item.getAuthorId());
         requestMap.put("replyerName", item.getAuthorName());
-        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-回复评论", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Combination_AddComment, "仓位组合-添加评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

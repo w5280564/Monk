@@ -128,7 +128,7 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
             String id = item.getId();
-            CombinationDetail_Activity.startActivity(this,"","","",id);
+            CombinationDetail_Activity.startActivity(this,"0",id);
         });
     }
 

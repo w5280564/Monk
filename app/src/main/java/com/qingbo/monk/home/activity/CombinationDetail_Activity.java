@@ -31,6 +31,10 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -42,6 +46,7 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.CombinationLineChart_Bean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -55,9 +60,13 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -93,6 +102,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     public TextView comName_TV;
     @BindView(R.id.chart)
     LineChart chart;
+    @BindView(R.id.label_Name)
+    TextView label_Name;
 
 
     private String articleId;
@@ -103,14 +114,12 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     /**
      * @param context
-     * @param articleId
+     * @param id
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String articleId, String isShowTop, String type, String id) {
+    public static void startActivity(Context context, String isShowTop,  String id) {
         Intent intent = new Intent(context, CombinationDetail_Activity.class);
-        intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
-        intent.putExtra("type", type);
         intent.putExtra("id", id);
         context.startActivity(intent);
     }
@@ -153,8 +162,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
         initLineChart();
+        StringUtil.setColor(mContext,0,label_Name);
     }
-
 
 
     @Override
@@ -168,6 +177,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     @Override
     protected void getServerData() {
         getUserDetail(false);
+        addLineData(id, "6");
     }
 
     @Override
@@ -185,22 +195,29 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                 sendComment_Et.setHint("");
                 break;
             case R.id.release_Tv:
-                String s = sendComment_Et.getText().toString();
-                if (TextUtils.isEmpty(s)) {
-                    T.s("评论不能为空", 2000);
-                    return;
-                }
-                if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
-                    T.s("文章ID是空", 2000);
-                    return;
-                }
-                if (isReply) {
-                    ArticleDetail_Comment_Fragment o = (ArticleDetail_Comment_Fragment) tabFragmentList.get(0);
-                    o.onClick(release_Tv);
-                } else {
-                    addComment(articleId, type, s);
-                }
+                sendMes();
                 break;
+        }
+    }
+
+    /**
+     * 发送评论
+     */
+    private void sendMes() {
+        String s = sendComment_Et.getText().toString();
+        if (TextUtils.isEmpty(s)) {
+            T.s("评论不能为空", 2000);
+            return;
+        }
+        if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
+            T.s("文章ID是空", 2000);
+            return;
+        }
+        if (isReply) {
+            CombinationDetail_Comment_Fragment o = (CombinationDetail_Comment_Fragment) tabFragmentList.get(0);
+            o.onClick(release_Tv);
+        } else {
+            addComment(articleId, s);
         }
     }
 
@@ -238,7 +255,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 //        String type = homeFoucsDetail_bean.getData().getDetail().getType();
         articleId = "1";
         type = "1";
-        tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(articleId, type, id));
+        tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -302,6 +319,35 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     }
 
 
+    /**
+     * 折线图数据
+     *
+     * @param id
+     * @param type
+     */
+    public void addLineData(String id, String type) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id);
+        requestMap.put("type", type);
+        HttpSender httpSender = new HttpSender(HttpUrl.LineChart_Position, "仓位组合--净值折线", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+
+                    CombinationLineChart_Bean combinationLineChart_bean = GsonUtil.getInstance().json2Bean(json_data, CombinationLineChart_Bean.class);
+                    if (combinationLineChart_bean != null) {
+                        int labelCount = chart.getXAxis().getLabelCount();
+                        setLineChartData(combinationLineChart_bean);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+
     private void postLikedData(String likeId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", likeId + "");
@@ -324,17 +370,16 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     /**
      * 添加评论
-     * @param articleId
-     * @param type
+     *
+     * @param id
      * @param comment
      */
-    public void addComment(String articleId, String type, String comment) {
+    public void addComment(String id, String comment) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId);
-        requestMap.put("type", type);
+        requestMap.put("id", id);
         requestMap.put("comment", comment);
-        requestMap.put("isAnonymous", "0");
-        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-添加评论", requestMap, new MyOnHttpResListener() {
+        requestMap.put("is_anonymous", "0");
+        HttpSender httpSender = new HttpSender(HttpUrl.Combination_AddComment, "仓位组合-添加评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -349,76 +394,85 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         httpSender.sendPost();
     }
 
+    /**
+     * 折线图初始化
+     */
     private void initLineChart() {
         // apply styling
         // holder.chart.setValueTypeface(mTf);
-        chart.getDescription().setEnabled(false);
+        chart.getDescription().setEnabled(false); // 不显示描述
         chart.setDrawGridBackground(false);
-
-        //x轴下面数据
+        chart.setScaleEnabled(false);// 取消缩放
+        chart.setNoDataText("暂无数据");
+        //x轴下
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//        xAxis.setTypeface(mTf);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(true); //X轴数字竖线
+        xAxis.setDrawLabels(true);//绘制X轴上的对应值
+        xAxis.setDrawAxisLine(false);
+//        xAxis.setGranularity(1f); //设置x轴间距
+        xAxis.setLabelCount(6, false);//横坐标显示7个
+        xAxis.setAxisMaximum(6);//横坐标最多
+        xAxis.setAxisMinimum(0f);//横坐标最少
 
-        //y轴左边数据
+        //y轴左边
         YAxis leftAxis = chart.getAxisLeft();
-//        leftAxis.setTypeface(mTf);
-        leftAxis.setLabelCount(5, false);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
+        // 强制显示Y轴6个坐标 第二个参数表示是否平均分配 如果为true则按比例分为6个点、如果为false则适配X刻度的值来分配点
+        leftAxis.setLabelCount(5, true);
+        leftAxis.setAxisMinimum(0f); // y轴坐标最少
+//        leftAxis.setAxisMaximum(1.3f);// y轴坐标最大
+//        leftAxis.setDrawGridLines(false); //Y轴横线线
+        //y轴右边
         YAxis rightAxis = chart.getAxisRight();
-//        rightAxis.setTypeface(mTf);
-        rightAxis.setLabelCount(5, false);
-        rightAxis.setDrawGridLines(false);
-        rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
         rightAxis.setEnabled(false);// disable dual axis (only use LEFT axis) 右边数据不显示
         // set data
-//       chart.setData((LineData) mChartData);
         // do not forget to refresh the chart
         // holder.chart.invalidate();
         chart.animateX(750);
-
-        setLineChartData(2);
     }
 
-    private void setLineChartData(int cnt){
-        ArrayList<Entry> values1 = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            values1.add(new Entry(i, (int) (Math.random() * 65) + 40));
+    /**
+     * 折线图加载数据
+     * @param combinationLineChart_bean
+     */
+    private void setLineChartData(CombinationLineChart_Bean combinationLineChart_bean) {
+        if (ListUtils.isEmpty(combinationLineChart_bean.getData().getJingzhiLine())) {
+            return;
         }
-        LineDataSet d1 = new LineDataSet(values1, "New DataSet " + cnt + ", (1)");
+        //x轴格式化一周时间
+        chart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                if (ListUtils.isEmpty(combinationLineChart_bean.getDatetime())) {
+                    return "";
+                } else {
+                    int value1 = (int) value;
+                    String xlineDate = DateUtil.getLineDate(combinationLineChart_bean.getDatetime().get(value1));
+                    return xlineDate;
+                }
+            }
+        });
+//        List<String> jingzhiLine = combinationLineChart_bean.getData().getJingzhiLine();
+//        float max = Float.parseFloat(Collections.max(jingzhiLine));
+//        chart.getAxisLeft().setAxisMaximum(max);//左边y轴最大值
+//        L.d("max", max + "");
+        ArrayList<Entry> values1 = new ArrayList<>();
+        int size = combinationLineChart_bean.getData().getJingzhiLine().size();
+        for (int i = 0; i < size; i++) {
+            float v = Float.parseFloat(combinationLineChart_bean.getData().getJingzhiLine().get(i));
+            values1.add(new Entry(i, v));
+        }
+        LineDataSet d1 = new LineDataSet(values1, ""); //label是显示提示
         d1.setLineWidth(1f);
         d1.setCircleRadius(3f);
         d1.setDrawCircleHole(false);
-        d1.setHighLightColor(Color.rgb(188,219,247));//点击线颜色
+        d1.setHighLightColor(Color.rgb(188, 219, 247));//点击线颜色
         d1.setColor(Color.rgb(31, 143, 229));//连线颜色
         d1.setCircleColor(Color.rgb(31, 143, 229));//圆点颜色
-        d1.setDrawValues(false);
-
-//        ArrayList<Entry> values2 = new ArrayList<>();
-//        for (int i = 0; i < 12; i++) {
-//            values2.add(new Entry(i, values1.get(i).getY() - 30));
-//        }
-//
-//        LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (2)");
-//        d2.setLineWidth(2.5f);
-//        d2.setCircleRadius(4.5f);
-//        d2.setHighLightColor(Color.rgb(244, 117, 117));
-//        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        d2.setDrawValues(false);
-
+        d1.setDrawValues(true); // 坐标不显示值
         // set the filled area
-        d1.setDrawFilled(true); //显示渐变阴影色
-//        d1.setFillFormatter(new IFillFormatter() {
-//            @Override
-//            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-//                return chart.getAxisLeft().getAxisMinimum();
-//            }
-//        });
-
+        d1.setDrawFilled(true); // 填充颜色(渐变色)
+        d1.setFillFormatter((dataSet, dataProvider) -> chart.getAxisLeft().getAxisMinimum());
         // set color of filled area 渐变阴影颜色
         if (Utils.getSDKInt() >= 18) {
             // drawables only supported on api level 18 and above
@@ -427,16 +481,9 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         } else {
             d1.setFillColor(Color.BLACK);
         }
-
-//        ArrayList<ILineDataSet> sets = new ArrayList<>();
-//        sets.add(d1);
-//        sets.add(d2);
         LineData lineData = new LineData(d1);
         chart.setData(lineData);
-//        return new LineData(d1);
-
     }
-
 
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {

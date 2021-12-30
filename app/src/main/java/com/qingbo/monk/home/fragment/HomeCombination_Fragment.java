@@ -111,7 +111,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
                 String id = item.getId();
-                CombinationDetail_Activity.startActivity(requireActivity(), "", "", "", id);
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", id);
             }
         });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -127,7 +127,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
 //                        String articleId = item.getId();
 //                        String type = item.getType();
                         String id = item.getId();
-                        CombinationDetail_Activity.startActivity(requireActivity(), "", "1", "", id);
+                        CombinationDetail_Activity.startActivity(requireActivity(), "1", id);
                         break;
                 }
             }

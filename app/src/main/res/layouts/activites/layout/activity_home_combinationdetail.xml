@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/title_height"
         app:layout_constraintTop_toTopOf="parent"
+        app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightImg="@mipmap/icon_sousuo"
-        app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarRightShowFlag="VISIBLE"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
@@ -166,11 +166,56 @@
                     app:layout_constraintTop_toBottomOf="@id/constraintLayout" />
 
 
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="@dimen/dp_2"
+                    android:layout_height="@dimen/dp_10"
+                    android:layout_marginStart="@dimen/dp_19"
+                    android:layout_marginTop="@dimen/dp_19"
+                    android:background="@color/app_main_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/line" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:text="净值曲线"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view3"
+                    app:layout_constraintStart_toEndOf="@+id/view3"
+                    app:layout_constraintTop_toTopOf="@id/view3" />
+
+                <TextView
+                    android:id="@+id/label_Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lable_txt_radius"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/dp_4"
+                    android:paddingEnd="@dimen/dp_4"
+                    android:text="最新异动"
+                    android:textColor="@color/text_color_FF801F"
+                    android:textSize="10sp"
+                    android:layout_marginStart="@dimen/dp_9"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView2"
+                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintTop_toTopOf="@+id/textView2"
+                    tools:ignore="MissingConstraints" />
+
+
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_150"
-                    app:layout_constraintTop_toBottomOf="@+id/line" />
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view3"
+                    android:layout_marginTop="@dimen/dp_22"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

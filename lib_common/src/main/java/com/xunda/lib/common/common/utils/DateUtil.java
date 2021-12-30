@@ -147,6 +147,16 @@ public class DateUtil {
         }
         return dateString;
     }
+    public static String getLineDate(String sformat) {
+        String dateString = "";
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(sformat);//先转固定格式
+            dateString = new SimpleDateFormat("MM-dd").format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateString;
+    }
 
     /**
      * 计算两个日期间隔天数
