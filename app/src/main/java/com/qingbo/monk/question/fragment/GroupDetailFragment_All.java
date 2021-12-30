@@ -14,7 +14,6 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-
 import java.util.HashMap;
 import butterknife.OnClick;
 
@@ -22,7 +21,7 @@ import butterknife.OnClick;
  * 社群详情全部
  */
 public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
-    private int type;
+    private int type;//全部
     private String id;
 
     public static GroupDetailFragment_All NewInstance(int type, String id) {
