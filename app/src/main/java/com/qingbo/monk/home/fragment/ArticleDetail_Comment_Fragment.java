@@ -24,12 +24,14 @@ import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.view.CustomLoadMoreView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +67,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 //        release_Tv = requireActivity().findViewById(R.id.release_Tv);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
+//        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override
@@ -117,22 +119,43 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
 
+//    public void initRecyclerView() {
+//        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
+//        mMangaer.setOrientation(RecyclerView.VERTICAL);
+//        mRecyclerView.setLayoutManager(mMangaer);
+//        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+//        mRecyclerView.setHasFixedSize(true);
+//        mAdapter = new ArticleComment_Adapter(articleId,type);
+//        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+////            skipAnotherActivity(ArticleDetail_Activity.class);
+////            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+////            String articleId = item.getArticleId();
+////            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0");
+//        });
+//
+//    }
+
+    ArticleComment_Adapter mAdapter;
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleComment_Adapter(articleId,type);
+//        mAdapter.setEmptyView(addEmptyView(emptyToastText, emptyViewImgResource));
+        mAdapter.setLoadMoreView(new CustomLoadMoreView());
+        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(ArticleDetail_Activity.class);
-//            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
-//            String articleId = item.getArticleId();
-//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0");
+        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
+            @Override
+            public void onItemClick(View view, int postion) {
+                ArticleCommentBean item = (ArticleCommentBean) mAdapter.getItem(postion);
+                ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
+            }
         });
-
     }
+
 
 
     ArticleCommentBean item;

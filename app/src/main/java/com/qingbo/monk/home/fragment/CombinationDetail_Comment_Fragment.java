@@ -21,12 +21,14 @@ import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.view.CustomLoadMoreView;
 
 import java.util.HashMap;
 
@@ -58,13 +60,11 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
+//        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override
     protected void initLocalData() {
-//        articleId = getArguments().getString("articleId");
-//        type = getArguments().getString("type");
         id = getArguments().getString("id");
     }
 
@@ -109,15 +109,25 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         getListData(false);
     }
 
-
+    ArticleComment_Adapter mAdapter;
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleComment_Adapter(id,"");
+//        mAdapter.setEmptyView(addEmptyView(emptyToastText, emptyViewImgResource));
+        mAdapter.setLoadMoreView(new CustomLoadMoreView());
+        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
+            @Override
+            public void onItemClick(View view, int postion) {
+                ArticleCommentBean item = (ArticleCommentBean) mAdapter.getItem(postion);
+                String id = item.getId();
+                CombinationDetail_CommentList_Activity.startActivity(requireActivity(), item, id);
+            }
+        });
     }
 
 
@@ -135,7 +145,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-//                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
+                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(),item,id);
                     break;
                 case R.id.mes_Img:
                     ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
@@ -143,7 +153,6 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     break;
             }
         });
-        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister(this::jumpToPhotoShowActivity);
     }
 
     /**

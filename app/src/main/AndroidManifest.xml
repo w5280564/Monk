@@ -60,6 +60,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".home.activity.CombinationDetail_CommentList_Activity"
+            android:exported="false" />
+        <activity
             android:name=".home.activity.CombinationDetail_Activity"
             android:exported="false" />
         <activity

@@ -91,7 +91,7 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
         tabName.add("问答");
         tabName.add("公告");
         tabName.add("基金持股");
-        tabName.add("基金经理");
+        tabName.add("经理");
         for (int i = 0; i < tabName.size(); i++) {
             AppMenuBean bean = new AppMenuBean();
             bean.setName(tabName.get(i));

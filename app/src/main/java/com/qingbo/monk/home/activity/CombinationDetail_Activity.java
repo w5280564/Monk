@@ -169,7 +169,6 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     @Override
     protected void initEvent() {
         follow_Img.setOnClickListener(this);
-//        appLayout.addOnOffsetChangedListener(new appLayoutListener());
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
     }

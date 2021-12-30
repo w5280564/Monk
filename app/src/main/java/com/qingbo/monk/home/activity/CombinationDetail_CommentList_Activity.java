@@ -1,16 +1,8 @@
 package com.qingbo.monk.home.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,20 +12,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
-import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
-import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -43,7 +34,6 @@ import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -51,9 +41,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 文章——评论回复详情
+ * 仓位组合——评论回复详情
  */
-public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitActivity implements View.OnClickListener {
+public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSplitActivity implements View.OnClickListener {
 
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
@@ -65,18 +55,17 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
     private ImageView topFollow_Img;
     private TextView topFollow_Count;
     private ImageView topMes_Img;
-    private String articleId, type;
 
     boolean isTopComment = false;//回复头部评论，或者列表评论 true是回复列表
+    private String id;
 
     /**
      * @param context
      */
-    public static void startActivity(Context context, ArticleCommentBean item, String articleId, String type) {
-        Intent intent = new Intent(context, ArticleDetali_CommentList_Activity.class);
+    public static void startActivity(Context context, ArticleCommentBean item,String id) {
+        Intent intent = new Intent(context, CombinationDetail_CommentList_Activity.class);
         intent.putExtra("item", (Serializable) item);
-        intent.putExtra("articleId", articleId);
-        intent.putExtra("type", type);
+        intent.putExtra("id",  id);
         context.startActivity(intent);
     }
 
@@ -88,8 +77,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
     @Override
     protected void initLocalData() {
         item = (ArticleCommentBean) getIntent().getSerializableExtra("item");
-        articleId = getIntent().getStringExtra("articleId");
-        type = getIntent().getStringExtra("type");
+        id = getIntent().getStringExtra("id");
     }
 
     @Override
@@ -129,7 +117,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
     private void getListData(boolean isShow, String commentId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("commentId", commentId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.CommentChildren_List, "文章-回复评论列表", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.CommentChildren_List, "仓位组合-回复评论列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -211,22 +199,23 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             T.s("评论不能为空", 2000);
             return;
         }
-        if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
+        if (TextUtils.isEmpty(id)) {
             T.s("文章ID是空", 2000);
             return;
         }
-        String id, authorId, authorName1 = "";
+        String commentID, authorId, authorName1 = "";
         if (isTopComment) {
-            id = commentItem.getId();
+            commentID = commentItem.getId();
             authorId = commentItem.getAuthorId();
             authorName1 = commentItem.getAuthorName();
         } else {
             CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();
-            id = commentData.getId();
+            commentID = commentData.getId();
             authorId = commentData.getAuthorId();
             authorName1 = commentData.getAuthorName();
         }
-        addComment(articleId, type, s, id, authorId, authorName1);
+//        addComment(articleId, type, s, id, authorId, authorName1);
+        addComment(id,s,commentID,authorId,authorName1);
     }
 
     private void addHeadView() {
@@ -324,16 +313,42 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         }
     }
 
-    public void addComment(String articleId, String type, String comment, String commentId, String replyerId, String replyerName) {
+//    public void addComment(String articleId, String type, String comment, String commentId, String replyerId, String replyerName) {
+//        HashMap<String, String> requestMap = new HashMap<>();
+//        requestMap.put("articleId", articleId);
+//        requestMap.put("type", type);
+//        requestMap.put("comment", comment);
+//        requestMap.put("isAnonymous", "0");
+//        requestMap.put("commentId", commentId);
+//        requestMap.put("replyerId", replyerId);
+//        requestMap.put("replyerName", replyerName);
+//        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-回复评论", requestMap, new MyOnHttpResListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onComplete(String json_root, int code, String msg, String json_data) {
+//                if (code == Constants.REQUEST_SUCCESS_CODE) {
+//                    T.s(json_data, 3000);
+//                    sendComment_Et.setText("");
+//                    sendComment_Et.setHint("");
+//                }
+//            }
+//        }, true);
+//        httpSender.setContext(mActivity);
+//        httpSender.sendPost();
+//    }
+
+    public void addComment(String id, String comment, String commentId, String replyerId, String replyerName) {
+        if (item == null) {
+            return;
+        }
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId);
-        requestMap.put("type", type);
+        requestMap.put("id", id);
         requestMap.put("comment", comment);
-        requestMap.put("isAnonymous", "0");
+        requestMap.put("is_anonymous", "0");
         requestMap.put("commentId", commentId);
         requestMap.put("replyerId", replyerId);
         requestMap.put("replyerName", replyerName);
-        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-回复评论", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Combination_AddComment, "仓位组合-添加评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

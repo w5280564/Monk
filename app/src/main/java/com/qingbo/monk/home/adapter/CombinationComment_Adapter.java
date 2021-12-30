@@ -17,7 +17,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -26,10 +25,10 @@ import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.List;
 
-public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean, BaseViewHolder> {
+public class CombinationComment_Adapter extends BaseQuickAdapter<ArticleCommentBean, BaseViewHolder> {
     String articleId, type;
 
-    public ArticleComment_Adapter(String articleId, String type) {
+    public CombinationComment_Adapter(String articleId, String type) {
         super(R.layout.articlecomment_adapter);
         this.articleId = articleId;
         this.type = type;
@@ -38,7 +37,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, ArticleCommentBean item) {
+    public void convert(@NonNull BaseViewHolder helper, ArticleCommentBean item) {
         ImageView head_Img = helper.getView(R.id.head_Img);
         TextView nickName_Tv = helper.getView(R.id.nickName_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
@@ -92,6 +91,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.commentMore_Tv);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.commentChildren_List);
     }
 
 
@@ -112,15 +112,8 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         super.setOnItemClickListener(listener);
     }
 
-    public interface OnItemImgClickLister {
-        void OnItemImgClickLister(int position, List<String> strings);
-    }
 
-    private OnItemImgClickLister onItemImgClickLister;
 
-    public void setOnItemImgClickLister(OnItemImgClickLister ItemListener) {
-        onItemImgClickLister = ItemListener;
-    }
 
     /**
      * 加载二级评论
@@ -133,25 +126,25 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         mNineView.setAdapter(childrens_adapter);
         childrens_adapter.setNewData(data.getChildrens());
 
-        childrens_adapter.setOnItemClickListener(new ArticleComment_Childrens_Adapter.OnItemClickListener() {
+
+        childrens_adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                ArticleDetali_CommentList_Activity.startActivity(mContext,data,articleId,type);
+//                String id = data.getId();
+//                CombinationDetail_CommentList_Activity.startActivity(mContext, data, id);
                 onClickLister.onItemClick(view,position);
             }
         });
     }
 
-    public interface OnClickLister {
+    public interface OnLister {
         void onItemClick(View view, int postion);
     }
+    private OnLister onClickLister;
 
-
-    public void setOnClickLister(OnClickLister onClickLister) {
+    public void setOnClickLister(OnLister onClickLister) {
         this.onClickLister = onClickLister;
     }
-
-    private OnClickLister onClickLister;
 
 
 }
