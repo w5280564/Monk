@@ -115,15 +115,6 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
 
-    @Override
-    public void onBackPressed() {
-        showBackDialog();
-    }
-
-    @Override
-    public void onLeftClick() {
-        showBackDialog();
-    }
 
 
     private void showBackDialog() {
@@ -275,12 +266,17 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
 
     }
 
+    @Override
+    public void onBackPressed() {
+        showBackDialog();
+    }
+
 
     @OnClick({R.id.rl_back, R.id.rl_publish})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
-                back();
+                showBackDialog();
                 break;
             case R.id.rl_publish:
                 getPramsValue();
