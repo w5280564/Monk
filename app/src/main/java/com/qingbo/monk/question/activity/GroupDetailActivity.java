@@ -10,7 +10,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MyGroupBean;
-import com.qingbo.monk.question.fragment.GroupDetailFragment_All;
+import com.qingbo.monk.question.fragment.GroupDetailTopicListFragment;
 import com.qingbo.monk.question.fragment.GroupDetailFragment_What;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
@@ -104,22 +104,22 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
                 bean.setName("全部");
-                fragments.add(GroupDetailFragment_All.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             } else if (i == 1) {
                 bean.setName("等你回答");
-                fragments.add(GroupDetailFragment_All.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             } else if (i == 2) {
                 bean.setName("去提问");
                 fragments.add(new GroupDetailFragment_What());
             } else if (i == 3) {
                 bean.setName("我的发布");
-                fragments.add(GroupDetailFragment_All.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(1,id));
             } else if (i == 4) {
                 bean.setName("审核");
-                fragments.add(GroupDetailFragment_All.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             } else {
                 bean.setName("预览主题");
-                fragments.add(GroupDetailFragment_All.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             }
 
             menuList.add(bean);

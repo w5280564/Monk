@@ -14,9 +14,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseQuestionBeanMy;
+import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.QuestionBeanMy;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
@@ -82,7 +82,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    BaseQuestionBeanMy obj = GsonUtil.getInstance().json2Bean(json_data, BaseQuestionBeanMy.class);
+                    BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseOwnPublishBean.class);
                     handleSplitListData(obj, mAdapter, limit);
                 }
             }
@@ -112,7 +112,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                QuestionBeanMy mQuestionBean = (QuestionBeanMy) adapter.getItem(position);
+                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
 
                 if (mQuestionBean == null) {
                     return;
@@ -140,7 +140,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
     }
 
 
-    private void showPopMenu(ImageView more_Img,QuestionBeanMy mQuestionBean,int position){
+    private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){
         String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
         boolean haveEdit = false;
         if(TextUtils.equals(status, "2")){//审核未通过才能删除

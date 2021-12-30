@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class QuestionBeanMy implements Serializable {
+public class OwnPublishBean implements Serializable {
 
 
     @SerializedName("id")
@@ -19,16 +19,14 @@ public class QuestionBeanMy implements Serializable {
     private String articleId;
     @SerializedName("shequn_id")
     private String shequnId;
-    @SerializedName("status")
-    private String status;//状态(0待审核 1通过 2未通过 3保存草稿)
     @SerializedName("title")
     private String title;
     @SerializedName("content")
     private String content;
-    @SerializedName("images")
-    private String images;
     @SerializedName("topic_type")
     private String topicType;
+    @SerializedName("images")
+    private String images;
     @SerializedName("create_time")
     private String createTime;
     @SerializedName("nickname")
@@ -38,11 +36,11 @@ public class QuestionBeanMy implements Serializable {
     @SerializedName("tag_name")
     private String tagName;
     @SerializedName("role")
-    private Object role;
-    @SerializedName("answername")
-    private Object answername;
-    @SerializedName("detail")
-    private List<?> detail;
+    private String role;
+    @SerializedName("status")
+    private String status;
+    @SerializedName("is_hot")
+    private String isHot;
     @SerializedName("like")
     private Integer like;
     @SerializedName("likecount")

@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
-import com.qingbo.monk.bean.QuestionBeanMy;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -59,7 +59,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private boolean isEdit;
 
 
-    public static void actionStart(Context context, QuestionBeanMy mQuestionBeanMy,boolean isEdit) {
+    public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, PublisherQuestionActivity.class);
         intent.putExtra("obj",mQuestionBeanMy);
         intent.putExtra("isEdit",isEdit);
@@ -69,7 +69,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_publisher;
+        return R.layout.activity_publisher_question;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;
-            QuestionBeanMy mQuestionBeanMy = (QuestionBeanMy) getIntent().getSerializableExtra("obj");
+            OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy!=null) {
                 questionId = mQuestionBeanMy.getId();
                 handleEditOtherData(mQuestionBeanMy);
@@ -93,7 +93,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
     }
 
-    private void handleEditOtherData(QuestionBeanMy mQuestionBeanMy) {
+    private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
         String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
@@ -108,7 +108,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         }
     }
 
-    private void handleEditImageData(QuestionBeanMy mQuestionBeanMy) {
+    private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
         String images = mQuestionBeanMy.getImages();
         if (!StringUtil.isBlank(images)) {
             List<String> urlList = StringUtil.stringToList(images);

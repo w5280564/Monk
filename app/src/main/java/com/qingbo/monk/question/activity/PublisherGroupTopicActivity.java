@@ -2,12 +2,8 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
-import com.qingbo.monk.bean.QuestionBeanMy;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -37,18 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * 社群话题发布页
  */
 public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_More {
-    @BindView(R.id.tv_tag)
-    TextView tvTag;
-    @BindView(R.id.ll_tag)
-    LinearLayout llTag;
-    @BindView(R.id.et_title)
-    EditText et_title;
     @BindView(R.id.et_content)
     EditText et_content;
     @BindView(R.id.recycleView_image)
@@ -57,12 +46,12 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String mTitle,mContent,images,questionId;
+    private String mContent,images,questionId;
     private String submitRequestUrl,shequn_id;
     private boolean isEdit;
 
 
-    public static void actionStart(Context context, String shequn_id, QuestionBeanMy mQuestionBeanMy,boolean isEdit) {
+    public static void actionStart(Context context, String shequn_id, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
         intent.putExtra("shequn_id",shequn_id);
         intent.putExtra("obj",mQuestionBeanMy);
@@ -78,7 +67,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_publisher;
+        return R.layout.activity_publisher_group_topic;
     }
 
     @Override
@@ -90,7 +79,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;
-            QuestionBeanMy mQuestionBeanMy = (QuestionBeanMy) getIntent().getSerializableExtra("obj");
+            OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy!=null) {
                 questionId = mQuestionBeanMy.getId();
                 handleEditOtherData(mQuestionBeanMy);
@@ -102,22 +91,11 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
 
     }
 
-    private void handleEditOtherData(QuestionBeanMy mQuestionBeanMy) {
-        et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
+    private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
-        String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
-        if (TextUtils.equals(is_anonymous, "1")) {
-            tvTag.setText("匿名");
-            setDrawableLeft(R.mipmap.niming);
-            llTag.setTag("1");
-        } else {
-            tvTag.setText("公开");
-            setDrawableLeft(R.mipmap.gongkai);
-            llTag.setTag("0");
-        }
     }
 
-    private void handleEditImageData(QuestionBeanMy mQuestionBeanMy) {
+    private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
         String images = mQuestionBeanMy.getImages();
         if (!StringUtil.isBlank(images)) {
             List<String> urlList = StringUtil.stringToList(images);
@@ -179,7 +157,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private void showBackDialog() {
         getPramsValue();
 
-        if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
+        if (!StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
@@ -206,34 +184,12 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
 
-    @OnClick(R.id.ll_tag)
-    public void onClick() {
-        String tag = (String) llTag.getTag();
-        if ("0".equals(tag)) {
-            tvTag.setText("匿名");
-            setDrawableLeft(R.mipmap.niming);
-            llTag.setTag("1");
-        }else{
-            tvTag.setText("公开");
-            setDrawableLeft(R.mipmap.gongkai);
-            llTag.setTag("0");
-        }
-    }
-
-    private void setDrawableLeft(int mipmap) {
-        Drawable drawableLeft = getResources().getDrawable(
-                mipmap);
-        tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
-                null, null, null);
-    }
-
-
     @Override
     public void onRightClick() {
         getPramsValue();
 
-        if (StringUtil.isBlank(mTitle)  && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
+        if (StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+            T.ss("内容、图片必须填写一项");
             return;
         }
 
@@ -241,8 +197,6 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
     private void getPramsValue() {
-        mTitle = StringUtil.getEditText(et_title);
-
         mContent = StringUtil.getEditText(et_content);
 
         StringBuilder result = new StringBuilder();
@@ -265,9 +219,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
      */
     private void createOrEditSaveQuestion(String optype) {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("title", mTitle);
         baseMap.put("content", mContent);
-        baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("images", images);
         baseMap.put("shequn_id", shequn_id);
         if (isEdit) {//编辑
@@ -278,14 +230,14 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
             baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }
 
-        HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题或提问，或保存至草稿", baseMap,
+        HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题，或保存至草稿", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
                             if ("0".equals(optype)) {
-                                EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
+                                EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_TOPIC));
                                 showToastDialog("发布成功！");
                             }else{
                                 showToastDialog("已保存至草稿箱！");

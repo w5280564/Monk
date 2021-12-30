@@ -16,7 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.QuestionBeanMy;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * 问答广场(我的问答)
  */
-public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, BaseViewHolder> {
+public class QuestionListAdapterMy extends BaseQuickAdapter<OwnPublishBean, BaseViewHolder> {
 
     public QuestionListAdapterMy() {
         super(R.layout.item_question_list_my);
@@ -39,7 +39,7 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<QuestionBeanMy, Base
 
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, QuestionBeanMy item) {
+    protected void convert(@NonNull BaseViewHolder helper, OwnPublishBean item) {
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_status = helper.getView(R.id.tv_status);

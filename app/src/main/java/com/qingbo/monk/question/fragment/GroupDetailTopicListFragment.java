@@ -7,28 +7,32 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseGroupTopicBean;
+import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapterAll;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import butterknife.OnClick;
 
 /**
- * 社群详情全部
+ * 社群详情话题列表
  */
-public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
-    private int type;//全部
-    private String id;
+public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment {
+    private int type;//0全部 1我的发布
+    private String id,requestUrl;
 
-    public static GroupDetailFragment_All NewInstance(int type, String id) {
+    public static GroupDetailTopicListFragment NewInstance(int type, String id) {
         Bundle args = new Bundle();
         args.putInt("type", type);
         args.putString("id", id);
-        GroupDetailFragment_All fragment = new GroupDetailFragment_All();
+        GroupDetailTopicListFragment fragment = new GroupDetailTopicListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,8 +49,22 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         if (mBundle != null) {
             type = mBundle.getInt("type", 0);
             id = mBundle.getString("id");
+            if (type==0) {
+                requestUrl = HttpUrl.groupDetailAllTab;
+            }else{
+                requestUrl = HttpUrl.getOwnPublishList;
+            }
         }
 
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onPublishSuccessEvent(FinishEvent event) {
+        if(event.type == FinishEvent.PUBLISH_TOPIC){
+            page = 1;
+            getQuestionList();
+        }
     }
 
     @Override
@@ -55,7 +73,7 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无话题",0, true);
+        initSwipeRefreshLayoutAndAdapter("暂无话题",R.mipmap.zhuti, true);
     }
 
     private void initRecyclerView() {
@@ -64,7 +82,7 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailTopicListAdapterAll();
+        mAdapter = new GroupDetailTopicListAdapterAll(type);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -99,7 +117,7 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
         map.put("action", "1");
         map.put("page", page + "");
         map.put("limit", limit + "");
-        HttpSender sender = new HttpSender(HttpUrl.groupDetailAllTab, "社群全部", map,
+        HttpSender sender = new HttpSender(requestUrl, "社群话题列表", map,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json, int code, String description, String data) {
@@ -107,7 +125,7 @@ public class GroupDetailFragment_All extends BaseRecyclerViewSplitFragment {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseGroupTopicBean obj = GsonUtil.getInstance().json2Bean(data, BaseGroupTopicBean.class);
+                            BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(data, BaseOwnPublishBean.class);
                             handleSplitListData(obj, mAdapter, limit);
                         }
                     }
