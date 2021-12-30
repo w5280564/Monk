@@ -159,17 +159,17 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
 
         if (!StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
-                mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
+                mDialog = new TwoButtonDialogBlue(this, "返回将丢失填写的内容，确定返回吗？", "取消", "确定",
                         new TwoButtonDialogBlue.ConfirmListener() {
 
                             @Override
                             public void onClickRight() {
-                                createOrEditSaveQuestion("1");
+                                finish();
                             }
 
                             @Override
                             public void onClickLeft() {
-                                finish();
+
                             }
                         });
             }

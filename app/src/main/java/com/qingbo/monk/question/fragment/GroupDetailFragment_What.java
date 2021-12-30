@@ -73,7 +73,13 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                skipAnotherActivity(AskQuestionToPeopleActivity.class);
+
+                AskQuestionBean mAskQuestionBean = (AskQuestionBean) adapter.getItem(position);
+                if (mAskQuestionBean==null) {
+                    return;
+                }
+
+                AskQuestionToPeopleActivity.actionStart(mActivity,mAskQuestionBean.getNickname(),mAskQuestionBean.getId(),id);
             }
         });
     }
@@ -98,7 +104,7 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
                             handleData(json);
                         }
                     }
-                }, false);
+                }, true);
         sender.setContext(mActivity);
         sender.sendGet();
     }

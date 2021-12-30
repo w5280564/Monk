@@ -16,7 +16,7 @@ public class Constants {
 
     public static final String WEB_SITE_URL = "http://www.shandongdayi.com/";
 
-    public static final String WECHAT_APPID = "wx7746619c6fb38b15"; //微信开发者账号appid
+    public static final String WECHAT_APPID = "wx9891dbe23d8ce255"; //微信开发者账号appid
 
     public static final String TANCENT_BUGLY_APPID = "e702e5c066"; //腾讯云bugly的AppId
 

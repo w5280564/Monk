@@ -13,11 +13,16 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.CheckOtherGroupBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
@@ -62,6 +67,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     @BindView(R.id.tv_pay_notice)
     TextView tv_pay_notice;
     private String id;
+    private String fee_type = "1";
 
     @Override
     protected int getLayoutId() {
@@ -110,7 +116,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         if (groupBean != null) {
             tvGroupName.setText(groupBean.getShequnName());
             tvGroupId.setText(String.format("群ID：%s",groupBean.getId()));
-            GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(), DisplayUtil.dip2px(mContext,9));
+            GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(),R.mipmap.bg_create_group, DisplayUtil.dip2px(mContext,9));
             tv_tag.setText(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());
             tv_member_num.setText(groupBean.getMemberCount());
@@ -121,14 +127,17 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             GlideUtils.loadRoundImage(mContext, ivHeaderHost, groupBean.getAvatar(), DisplayUtil.dip2px(mContext,9));
             tvCreateTime.setText(String.format("创建%1$s天，%2$s活跃过", groupBean.getCreateDay(), groupBean.getLastLogin()));
 
-            if ("0".equals(groupBean.getType())) {
+            fee_type = groupBean.getType();
+            if ("0".equals(fee_type)) {
                 tv_money.setText("免费");
                 tv_fee_type.setText("免费");
                 tv_money.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_1F8FE5));
+                tv_fee_type.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_1F8FE5));
             }else{
                 tv_money.setText("￥"+groupBean.getShequnFee());
-                tv_money.setText("付费");
+                tv_fee_type.setText("￥"+groupBean.getShequnFee());
                 tv_money.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_FC0000));
+                tv_fee_type.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_FC0000));
             }
 
             tv_pay_notice.setText(groupBean.getPayNotice());
@@ -155,6 +164,31 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
 
     @OnClick(R.id.tv_join)
     public void onClick() {
+        if ("0".equals(fee_type)) {
+            joinGroup();
+        }else{
+            T.ss("微信支付");
+        }
+    }
 
+    /**
+     * 加入社群
+     */
+    private void joinGroup() {
+        HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("id", id);
+        HttpSender sender = new HttpSender(HttpUrl.joinGroup, "加入社群", baseMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            T.ss("加入成功");
+                            GroupDetailActivity.actionStart(mActivity, id);
+                            finish();
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
     }
 }

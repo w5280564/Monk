@@ -2,11 +2,9 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,11 +14,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
-import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
@@ -30,43 +26,37 @@ import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * 向别人提问
  */
 public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_More {
-    @BindView(R.id.tv_tag)
-    TextView tvTag;
-    @BindView(R.id.ll_tag)
-    LinearLayout llTag;
-    @BindView(R.id.et_title)
-    EditText et_title;
     @BindView(R.id.et_content)
     EditText et_content;
+    @BindView(R.id.tv_to_name)
+    TextView tv_to_name;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String mTitle,mContent,images,questionId;
-    private String submitRequestUrl;
-    private boolean isEdit;
-    private String to_name,to_id;
+    private String mContent, images;
+    private String to_name, to_id,shequn_id;
 
 
-    public static void actionStart(Context context, String to_name,String to_id) {
+    public static void actionStart(Context context, String to_name, String to_id, String shequn_id) {
         Intent intent = new Intent(context, AskQuestionToPeopleActivity.class);
-        intent.putExtra("to_name",to_name);
-        intent.putExtra("to_id",to_id);
+        intent.putExtra("to_name", to_name);
+        intent.putExtra("to_id", to_id);
+        intent.putExtra("shequn_id", shequn_id);
         context.startActivity(intent);
     }
 
@@ -82,43 +72,8 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
         initImageRecyclerViewAndAdapter();
         to_name = getIntent().getStringExtra("to_name");
         to_id = getIntent().getStringExtra("to_id");
-        isEdit = getIntent().getBooleanExtra("isEdit",false);
-        if (isEdit) {//编辑
-            submitRequestUrl = HttpUrl.editQuestion;
-            OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
-            if (mQuestionBeanMy!=null) {
-                questionId = mQuestionBeanMy.getId();
-                handleEditOtherData(mQuestionBeanMy);
-                handleEditImageData(mQuestionBeanMy);
-            }
-        }else{
-            submitRequestUrl = HttpUrl.createTopic;
-        }
-
-    }
-
-    private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
-        et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
-        et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
-        String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
-        if (TextUtils.equals(is_anonymous, "1")) {
-            tvTag.setText("匿名");
-            setDrawableLeft(R.mipmap.niming);
-            llTag.setTag("1");
-        } else {
-            tvTag.setText("公开");
-            setDrawableLeft(R.mipmap.gongkai);
-            llTag.setTag("0");
-        }
-    }
-
-    private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
-        String images = mQuestionBeanMy.getImages();
-        if (!StringUtil.isBlank(images)) {
-            List<String> urlList = StringUtil.stringToList(images);
-            imageStringList.addAll(urlList);
-            showImageListImages(urlList);
-        }
+        shequn_id = getIntent().getStringExtra("shequn_id");
+        tv_to_name.setText(StringUtil.getStringValue(to_name));
     }
 
 
@@ -134,7 +89,7 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false, DisplayUtil.sp2px(mContext,32),getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false, DisplayUtil.sp2px(mContext, 32), getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);
@@ -174,19 +129,19 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
     private void showBackDialog() {
         getPramsValue();
 
-        if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
+        if (!StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
-                mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
+                mDialog = new TwoButtonDialogBlue(this, "返回将丢失填写的内容，确定返回吗", "取消", "确定",
                         new TwoButtonDialogBlue.ConfirmListener() {
 
                             @Override
                             public void onClickRight() {
-                                createOrEditSaveQuestion("1");
+                                finish();
                             }
 
                             @Override
                             public void onClickLeft() {
-                                finish();
+
                             }
                         });
             }
@@ -201,43 +156,7 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
 
-    @OnClick(R.id.ll_tag)
-    public void onClick() {
-        String tag = (String) llTag.getTag();
-        if ("0".equals(tag)) {
-            tvTag.setText("匿名");
-            setDrawableLeft(R.mipmap.niming);
-            llTag.setTag("1");
-        }else{
-            tvTag.setText("公开");
-            setDrawableLeft(R.mipmap.gongkai);
-            llTag.setTag("0");
-        }
-    }
-
-    private void setDrawableLeft(int mipmap) {
-        Drawable drawableLeft = getResources().getDrawable(
-                mipmap);
-        tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
-                null, null, null);
-    }
-
-
-    @Override
-    public void onRightClick() {
-        getPramsValue();
-
-        if (StringUtil.isBlank(mTitle)  && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
-            return;
-        }
-
-        createOrEditSaveQuestion("0");
-    }
-
     private void getPramsValue() {
-        mTitle = StringUtil.getEditText(et_title);
-
         mContent = StringUtil.getEditText(et_content);
 
         StringBuilder result = new StringBuilder();
@@ -256,34 +175,25 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
     /**
-     * 创建或编辑话题或提问，或保存至草稿
+     * 创建提问
      */
-    private void createOrEditSaveQuestion(String optype) {
+    private void createAskQuestion() {
         HashMap<String, String> baseMap = new HashMap<>();
-        baseMap.put("title", mTitle);
+        baseMap.put("type", "2");
+        baseMap.put("id", to_id);
+        baseMap.put("shequn_id", shequn_id);
         baseMap.put("content", mContent);
-        baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("images", images);
-        if (isEdit) {//编辑
-            baseMap.put("id", questionId);
-        }else{
-            baseMap.put("type", "1");
-            baseMap.put("action", "3");
-            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
-        }
+        baseMap.put("action", "1");
+        baseMap.put("optype", "0");//默认是0,0是发布,1是保存
 
-        HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题或提问，或保存至草稿", baseMap,
+        HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建提问", baseMap,
                 new MyOnHttpResListener() {
 
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            if ("0".equals(optype)) {
-                                EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
-                                showToastDialog("发布成功！");
-                            }else{
-                                showToastDialog("已保存至草稿箱！");
-                            }
+                            showToastDialog("发布成功！");
                         }
                     }
                 }, true);
@@ -310,9 +220,9 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
         int all_size = imageList.size();
         if (all_size < 8) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(7-all_size);
-            }else{
-                jumpToPhotoShowActivity(position,imageStringList);
+                checkGalleryPermission(7 - all_size);
+            } else {
+                jumpToPhotoShowActivity(position, imageStringList);
             }
         }
     }
@@ -325,7 +235,7 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
         for (int i = 0; i < urlList.size(); i++) {
             UploadPictureBean obj = new UploadPictureBean();
             obj.setImageUrl(urlList.get(i));
-            imageList.add(imageList.size()-1, obj);
+            imageList.add(imageList.size() - 1, obj);
         }
         deleteLastOne();
         mAdapter.notifyDataSetChanged();
@@ -354,8 +264,6 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
 
-
-
     @Override
     protected void onUploadSuccess(List<String> urlList) {
         imageStringList.addAll(urlList);
@@ -367,4 +275,23 @@ public class AskQuestionToPeopleActivity extends BaseCameraAndGalleryActivity_Mo
 
     }
 
+
+    @OnClick({R.id.rl_back, R.id.rl_publish})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_back:
+                back();
+                break;
+            case R.id.rl_publish:
+                getPramsValue();
+
+                if (StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+                    T.ss("内容、图片必须填写一项");
+                    return;
+                }
+
+                createAskQuestion();
+                break;
+        }
+    }
 }
