@@ -49,4 +49,22 @@ public class OwnPublishBean implements Serializable {
     private String commentcount;
     @SerializedName("is_anonymous")
     private String isAnonymous;
+    @SerializedName("detail")
+    private List<DetailDTO> detail;
+
+    @NoArgsConstructor
+    @Data
+    public static class DetailDTO {
+
+        @SerializedName("answer_content")
+        private String answerContent;
+        @SerializedName("nickname")
+        private String nickname;
+        @SerializedName("create_time")
+        private String createTime;
+        @SerializedName("avatar")
+        private String avatar;
+        @SerializedName("role")
+        private String role;
+    }
 }

@@ -91,7 +91,7 @@
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:textColor="@color/text_color_444444"
-                            android:textSize="@dimen/sp_16"
+                            android:textSize="@dimen/sp_20"
                             android:textStyle="bold" />
 
                     </LinearLayout>

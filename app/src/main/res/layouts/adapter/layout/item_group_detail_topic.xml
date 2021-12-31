@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
-        android:maxLength="6"
+        android:maxLength="10"
         android:text="一个低调的人"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_12"
@@ -30,14 +30,23 @@
         app:layout_constraintStart_toEndOf="@+id/group_Img"
         app:layout_constraintTop_toTopOf="@+id/group_Img" />
 
-    <LinearLayout
-        android:id="@+id/lable_Lin"
+
+    <TextView
+        android:id="@+id/tv_role"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_14"
+        android:paddingLeft="@dimen/dp_4"
+        android:paddingRight="@dimen/dp_4"
+        android:text="群主"
+        android:background="@drawable/background_bg_orange"
         android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
         app:layout_constraintBottom_toBottomOf="@+id/group_Name"
         app:layout_constraintStart_toEndOf="@+id/group_Name"
-        app:layout_constraintTop_toTopOf="@+id/group_Name" />
+        app:layout_constraintTop_toTopOf="@+id/group_Name"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -118,6 +127,21 @@
         app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
 
 
+
+    <LinearLayout
+        android:id="@+id/ll_container_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/group_Img"/>
+
+
+
     <TextView
         android:id="@+id/content_Tv"
         android:layout_width="0dp"
@@ -132,7 +156,7 @@
         android:text="社群创建成功!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group_Img" />
+        app:layout_constraintTop_toBottomOf="@+id/ll_container_answer" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -145,6 +169,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
+
 
     <ImageView
         android:id="@+id/follow_Img"
