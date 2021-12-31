@@ -43,9 +43,9 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_role = helper.getView(R.id.tv_role);
+        TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView tv_status = helper.getView(R.id.tv_status);
         TextView tv_answer = helper.getView(R.id.tv_answer);
-        TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
@@ -53,33 +53,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
 
-        GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
-        group_Name.setText(item.getNickname());
 
-        if (!StringUtil.isBlank(item.getContent())) {
-            content_Tv.setVisibility(View.VISIBLE);
-            content_Tv.setText(item.getContent());
-        }else{
-            content_Tv.setVisibility(View.GONE);
-        }
-
-        String role = item.getRole();
-        if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("管理员");
-            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else if("2".equals(role)) {
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("合伙人");
-            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else if("3".equals(role)) {
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("群主");
-            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else{
-            tv_role.setVisibility(View.GONE);
-            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
-        }
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -90,26 +64,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         mes_Count.setText(item.getCommentcount());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
 
-        NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        List<String> strings = new ArrayList<>();
-        mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
-        mNineView.setAdapter(nineGridAdapter);
-        //多张图片
-        if (!TextUtils.isEmpty(item.getImages())) {
-            String[] imgS = item.getImages().split(",");
-            strings.addAll(Arrays.asList(imgS));
-            nineGridAdapter.setNewData(strings);
-            nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    if (onItemImgClickLister!=null) {
-                        onItemImgClickLister.OnItemImgClickLister(position, strings);
-                    }
-                }
-            });
-        }else{
-            nineGridAdapter.setNewData(null);
-        }
+
 
         if (type==0) {
             tv_status.setVisibility(View.GONE);
@@ -138,34 +93,95 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         LinearLayout ll_container_answer = helper.getView(R.id.ll_container_answer);
         String topicType = item.getTopicType();
         if ("1".equals(topicType)) {//1是话题2是问答
+            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
+                    ,group_Img,group_Name,content_Tv,tv_role);
+            handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
             List<OwnPublishBean.DetailDTO> details = item.getDetail();
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
-                createAnswerList(ll_container_answer,details);
+                OwnPublishBean.DetailDTO answerObj = details.get(0);
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole()
+                ,group_Img,group_Name,content_Tv,tv_role);
+                createQuestionList(ll_container_answer,item);
             }else{
                 ll_container_answer.setVisibility(View.GONE);
             }
         }
-
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
     }
 
+    private void handleCommonData(String headImg,String headName,String content,String role
+            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role) {
+        GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
+        tv_headName.setText(headName);
+
+        if (!StringUtil.isBlank(content)) {
+            tv_content.setVisibility(View.VISIBLE);
+            tv_content.setText(content);
+        }else{
+            tv_content.setVisibility(View.GONE);
+        }
+
+        if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("管理员");
+            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else if("2".equals(role)) {
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("合伙人");
+            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else if("3".equals(role)) {
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("群主");
+            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else{
+            tv_role.setVisibility(View.GONE);
+            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+        }
+    }
+
 
     /**
-     * 细看更多宝贝
+     * 提问
      */
-    private void createAnswerList(LinearLayout ll_container_answer,List<OwnPublishBean.DetailDTO> details) {
+    private void createQuestionList(LinearLayout ll_container_answer, OwnPublishBean item ) {
         ll_container_answer.removeAllViews();
-        for (int i = 0; i < details.size(); i++) {
-            View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
-            TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
-            TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
-            tv_answer_name.setText(details.get(i).getNickname()+"：");
-            tv_answer_content.setText(details.get(i).getAnswerContent());
-            ll_container_answer.addView(itemView);
+        View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
+        TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
+        TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
+        RecyclerView mNineView = itemView.findViewById(R.id.nine_grid_answer);
+        tv_answer_name.setText(item.getNickname());
+        tv_answer_content.setText("提问："+item.getContent());
+
+        handleImageList(item, mNineView);
+        ll_container_answer.addView(itemView);
+    }
+
+    private void handleImageList(OwnPublishBean item, RecyclerView mNineView) {
+        NineGridAdapter nineGridAdapter = new NineGridAdapter();
+        List<String> strings = new ArrayList<>();
+        mNineView.setLayoutManager(new NineGridLayoutManager(mContext));
+        mNineView.setAdapter(nineGridAdapter);
+        //多张图片
+        if (!TextUtils.isEmpty(item.getImages())) {
+            mNineView.setVisibility(View.VISIBLE);
+            String[] imgS = item.getImages().split(",");
+            strings.addAll(Arrays.asList(imgS));
+            nineGridAdapter.setNewData(strings);
+            nineGridAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                    if (onItemImgClickLister != null) {
+                        onItemImgClickLister.OnItemImgClickLister(position, strings);
+                    }
+                }
+            });
+        } else {
+            mNineView.setVisibility(View.GONE);
+            nineGridAdapter.setNewData(null);
         }
     }
 
