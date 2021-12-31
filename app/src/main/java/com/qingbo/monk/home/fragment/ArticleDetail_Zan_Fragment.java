@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 文章详情-赞列表
+ * 文章/仓位-详情-赞列表
  */
 public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     private String articleId, type;
@@ -77,7 +77,7 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     ArticleLikedListBean articleLikedListBean;
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", 1 + "");
+        requestMap.put("articleId", articleId + "");
         requestMap.put("type", type);
         HttpSender httpSender = new HttpSender(HttpUrl.Article_LikedList, "文章点赞列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)

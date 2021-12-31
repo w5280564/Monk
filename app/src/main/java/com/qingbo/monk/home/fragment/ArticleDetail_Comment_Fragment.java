@@ -67,7 +67,6 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 //        release_Tv = requireActivity().findViewById(R.id.release_Tv);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-//        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override
@@ -119,46 +118,31 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
 
-//    public void initRecyclerView() {
-//        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
-//        mMangaer.setOrientation(RecyclerView.VERTICAL);
-//        mRecyclerView.setLayoutManager(mMangaer);
-//        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-//        mRecyclerView.setHasFixedSize(true);
-//        mAdapter = new ArticleComment_Adapter(articleId,type);
-//        mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-////            skipAnotherActivity(ArticleDetail_Activity.class);
-////            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
-////            String articleId = item.getArticleId();
-////            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0");
-//        });
-//
-//    }
-
     ArticleComment_Adapter mAdapter;
+
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ArticleComment_Adapter(articleId,type);
-//        mAdapter.setEmptyView(addEmptyView(emptyToastText, emptyViewImgResource));
+        mAdapter = new ArticleComment_Adapter(articleId, type);
+        mAdapter.setEmptyView(addEmptyView("暂无评论", 0));
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
             @Override
-            public void onItemClick(View view, int postion) {
-                ArticleCommentBean item = (ArticleCommentBean) mAdapter.getItem(postion);
-                ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
+            public void onItemClick(View view, int pos, ArticleCommentBean data) {
+                if (data != null) {
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), data, articleId, type);
+                }
             }
         });
     }
 
 
-
     ArticleCommentBean item;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void initEvent() {
@@ -172,17 +156,19 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item,articleId,type);
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type);
                     break;
                 case R.id.mes_Img:
-                    ((ArticleDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
-                    setHint(item, sendComment_Et);
+                    String authorId = item.getAuthorId();
+                    boolean my = ((ArticleDetail_Activity) requireActivity()).isMy(authorId);
+                    if (!my) {
+                        ((ArticleDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
+                        setHint(item, sendComment_Et);
+                    }
 //                    ((ArticleDetail_Activity)requireActivity()).addComment();
                     break;
             }
         });
-
-        ((ArticleComment_Adapter) mAdapter).setOnItemImgClickLister(this::jumpToPhotoShowActivity);
     }
 
     /**
@@ -262,7 +248,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
     /**
-     *   修改点赞状态
+     * 修改点赞状态
+     *
      * @param likedStateBena
      * @param position
      */

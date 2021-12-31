@@ -58,6 +58,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
@@ -106,9 +107,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     TextView label_Name;
 
 
-    private String articleId;
     private String isShowTop;
-    private String type;
     boolean isReply = false;
     private String id;
 
@@ -149,9 +148,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     @Override
     protected void initLocalData() {
-        articleId = getIntent().getStringExtra("articleId");
         isShowTop = getIntent().getStringExtra("isShowTop");
-        type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
     }
 
@@ -175,8 +172,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     @Override
     protected void getServerData() {
-        getUserDetail(false);
-        addLineData(id, "6");
+        getUserDetail(true);
+        addLineData(id, "6",false);
     }
 
     @Override
@@ -208,7 +205,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             T.s("评论不能为空", 2000);
             return;
         }
-        if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
+        if (TextUtils.isEmpty(id)) {
             T.s("文章ID是空", 2000);
             return;
         }
@@ -216,8 +213,22 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             CombinationDetail_Comment_Fragment o = (CombinationDetail_Comment_Fragment) tabFragmentList.get(0);
             o.onClick(release_Tv);
         } else {
-            addComment(articleId, s);
+            addComment(id, s);
         }
+    }
+
+    /**
+     * 是否是自己
+     * @param authorId2
+     * @return
+     */
+    public boolean isMy(String authorId2){
+        String id = PrefUtil.getUser().getId();
+        String authorId = authorId2;
+        if (TextUtils.equals(id, authorId)) {//是自己不能评论
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -250,12 +261,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
         }
-//        String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
-//        String type = homeFoucsDetail_bean.getData().getDetail().getType();
-        articleId = "1";
-        type = "1";
         tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id));
-        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
+        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(id, ""));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
@@ -279,9 +286,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         card_Tab.setupWithViewPager(card_ViewPager, false);
     }
 
-
     HomeCombinationBean homeCombinationBean;
-
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
@@ -290,9 +295,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-//                    CombinationDetail_Bean combinationDetail_bean = GsonUtil.getInstance().json2Bean(json_root, CombinationDetail_Bean.class);
                     homeCombinationBean = GsonUtil.getInstance().json2Bean(json_data, HomeCombinationBean.class);
-
                     if (homeCombinationBean != null) {
                         comName_TV.setText(homeCombinationBean.getName());
                         isLike(homeCombinationBean.getLike(), homeCombinationBean.getLikecount(), follow_Img, follow_Count);
@@ -324,7 +327,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
      * @param id
      * @param type
      */
-    public void addLineData(String id, String type) {
+    public void addLineData(String id, String type,boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
         requestMap.put("type", type);
@@ -341,7 +344,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                     }
                 }
             }
-        }, true);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }

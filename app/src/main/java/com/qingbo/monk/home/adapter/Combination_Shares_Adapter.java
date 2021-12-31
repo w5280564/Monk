@@ -53,4 +53,6 @@ public class Combination_Shares_Adapter extends BaseQuickAdapter<HomeCombination
         viewName.setText(spannableString);
     }
 
+
+
 }

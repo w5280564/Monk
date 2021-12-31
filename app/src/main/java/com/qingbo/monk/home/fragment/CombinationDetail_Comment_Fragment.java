@@ -20,6 +20,7 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
@@ -60,7 +61,6 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-//        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Show_Comment_List,"获取仓位组合评论", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Show_Comment_List, "获取仓位组合评论", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -110,28 +110,31 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
     }
 
     ArticleComment_Adapter mAdapter;
+
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new ArticleComment_Adapter(id,"");
-//        mAdapter.setEmptyView(addEmptyView(emptyToastText, emptyViewImgResource));
+        mAdapter = new ArticleComment_Adapter(id, "");
+        mAdapter.setEmptyView(addEmptyView("暂无评论", 0));
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
             @Override
-            public void onItemClick(View view, int postion) {
-                ArticleCommentBean item = (ArticleCommentBean) mAdapter.getItem(postion);
-                String id = item.getId();
-                CombinationDetail_CommentList_Activity.startActivity(requireActivity(), item, id);
+            public void onItemClick(View view, int pos, ArticleCommentBean data) {
+                if (data != null) {
+                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), data, id);
+                }
+
             }
         });
     }
 
 
     ArticleCommentBean item;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void initEvent() {
@@ -145,11 +148,15 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(),item,id);
+                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), item, id);
                     break;
                 case R.id.mes_Img:
-                    ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
-                    setHint(item, sendComment_Et);
+                    String authorId = item.getAuthorId();
+                    boolean my = ((CombinationDetail_Activity) requireActivity()).isMy(authorId);
+                    if (!my) {
+                        ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
+                        setHint(item, sendComment_Et);
+                    }
                     break;
             }
         });
@@ -231,7 +238,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
     }
 
     /**
-     *   修改点赞状态
+     * 修改点赞状态
+     *
      * @param likedStateBena
      * @param position
      */

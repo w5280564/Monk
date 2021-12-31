@@ -1,16 +1,8 @@
 package com.qingbo.monk.home.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,30 +12,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
-import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
-import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -171,15 +162,18 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                     postLikedData(likeId, position);
                     break;
                 case R.id.mes_Img:
-                    isTopComment = true;
-                    showInput(sendComment_Et);
-                    String isAnonymous = this.commentItem.getIsAnonymous();
-                    String authorName = this.commentItem.getAuthorName();
-                    setHint(isAnonymous, authorName, sendComment_Et);
+                    String authorId = commentItem.getAuthorId();
+                    boolean my = isMy(authorId);
+                    if (!my) {
+                        isTopComment = true;
+                        showInput(sendComment_Et);
+                        String isAnonymous = this.commentItem.getIsAnonymous();
+                        String authorName = this.commentItem.getAuthorName();
+                        setHint(isAnonymous, authorName, sendComment_Et);
+                    }
                     break;
             }
         });
-
     }
 
     @Override
@@ -190,11 +184,15 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                 postLikedData(likeId, -1);
                 break;
             case R.id.topMes_Img:
-                isTopComment = false;
-                showInput(sendComment_Et);
-                String isAnonymous = commentListBean.getCommentData().getIsAnonymous();
-                String authorName = commentListBean.getCommentData().getAuthorName();
-                setHint(isAnonymous, authorName, sendComment_Et);
+                String authorId = commentListBean.getCommentData().getAuthorId();
+                boolean my = isMy(authorId);
+                if (!my) {
+                    isTopComment = false;
+                    showInput(sendComment_Et);
+                    String isAnonymous = commentListBean.getCommentData().getIsAnonymous();
+                    String authorName = commentListBean.getCommentData().getAuthorName();
+                    setHint(isAnonymous, authorName, sendComment_Et);
+                }
                 break;
             case R.id.release_Tv:
                 sendMes();
@@ -346,6 +344,21 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+
+    /**
+     * 是否是自己
+     * @param authorId2
+     * @return
+     */
+    public boolean isMy(String authorId2){
+        String id = PrefUtil.getUser().getId();
+        String authorId = authorId2;
+        if (TextUtils.equals(id, authorId)) {//是自己不能评论
+            return true;
+        }
+        return false;
     }
 
 

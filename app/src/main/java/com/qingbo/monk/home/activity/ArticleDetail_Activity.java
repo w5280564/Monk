@@ -19,7 +19,6 @@ import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -37,7 +36,6 @@ import com.qingbo.monk.base.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -49,9 +47,9 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
@@ -60,8 +58,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -224,6 +220,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 postFollowData(authorId1, titleFollow_Tv, titleSend_Mes);
                 break;
             case R.id.mes_Img:
+                String authorId2 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
                 showInput(sendComment_Et, false);
                 sendComment_Et.setHint("");
                 break;
@@ -245,6 +242,21 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 }
                 break;
         }
+    }
+
+
+    /**
+     * 是否是自己
+     * @param authorId2
+     * @return
+     */
+    public boolean isMy(String authorId2){
+        String id = PrefUtil.getUser().getId();
+        String authorId = authorId2;
+        if (TextUtils.equals(id, authorId)) {//是自己不能评论
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -106,14 +106,14 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
-                String id = item.getId();
-                CombinationDetail_Activity.startActivity(requireActivity(), "0", id);
-            }
-        });
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+//                String id = item.getId();
+//                CombinationDetail_Activity.startActivity(requireActivity(), "0", id);
+//            }
+//        });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

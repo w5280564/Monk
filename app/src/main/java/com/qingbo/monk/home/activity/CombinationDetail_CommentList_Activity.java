@@ -30,6 +30,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
@@ -61,11 +62,13 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
 
     /**
      * @param context
+     * @param item
+     * @param id      策略ID 用于 回复评论
      */
-    public static void startActivity(Context context, ArticleCommentBean item,String id) {
+    public static void startActivity(Context context, ArticleCommentBean item, String id) {
         Intent intent = new Intent(context, CombinationDetail_CommentList_Activity.class);
         intent.putExtra("item", (Serializable) item);
-        intent.putExtra("id",  id);
+        intent.putExtra("id", id);
         context.startActivity(intent);
     }
 
@@ -86,7 +89,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",0, true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
@@ -158,13 +161,17 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                     position += 1;
                     postLikedData(likeId, position);
                     break;
-                case R.id.mes_Img:
-                    isTopComment = true;
-                    showInput(sendComment_Et);
-                    String isAnonymous = this.commentItem.getIsAnonymous();
-                    String authorName = this.commentItem.getAuthorName();
-                    setHint(isAnonymous, authorName, sendComment_Et);
-                    break;
+//                case R.id.mes_Img:
+//                String authorId = commentItem.getAuthorId();
+//                boolean my = isMy(authorId);
+//                if (!my) {
+//                    isTopComment = true;
+//                    showInput(sendComment_Et);
+//                    String isAnonymous = this.commentItem.getIsAnonymous();
+//                    String authorName = this.commentItem.getAuthorName();
+//                    setHint(isAnonymous, authorName, sendComment_Et);
+//                }
+//                    break;
             }
         });
 
@@ -178,11 +185,15 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                 postLikedData(likeId, -1);
                 break;
             case R.id.topMes_Img:
-                isTopComment = false;
-                showInput(sendComment_Et);
-                String isAnonymous = commentListBean.getCommentData().getIsAnonymous();
-                String authorName = commentListBean.getCommentData().getAuthorName();
-                setHint(isAnonymous, authorName, sendComment_Et);
+                String authorId = commentListBean.getCommentData().getAuthorId();
+                boolean my = isMy(authorId);
+                if (!my) {
+                    isTopComment = false;
+                    showInput(sendComment_Et);
+                    String isAnonymous = commentListBean.getCommentData().getIsAnonymous();
+                    String authorName = commentListBean.getCommentData().getAuthorName();
+                    setHint(isAnonymous, authorName, sendComment_Et);
+                }
                 break;
             case R.id.release_Tv:
                 sendMes();
@@ -204,18 +215,17 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
             return;
         }
         String commentID, authorId, authorName1 = "";
-        if (isTopComment) {
-            commentID = commentItem.getId();
-            authorId = commentItem.getAuthorId();
-            authorName1 = commentItem.getAuthorName();
-        } else {
-            CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();
-            commentID = commentData.getId();
-            authorId = commentData.getAuthorId();
-            authorName1 = commentData.getAuthorName();
-        }
-//        addComment(articleId, type, s, id, authorId, authorName1);
-        addComment(id,s,commentID,authorId,authorName1);
+//        if (isTopComment) {
+//            commentID = commentItem.getId();
+//            authorId = commentItem.getAuthorId();
+//            authorName1 = commentItem.getAuthorName();
+//        } else {
+        CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();
+        commentID = commentData.getId();
+        authorId = commentData.getAuthorId();
+        authorName1 = commentData.getAuthorName();
+//        }
+        addComment(id, s, commentID, authorId, authorName1);
     }
 
     private void addHeadView() {
@@ -313,30 +323,6 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         }
     }
 
-//    public void addComment(String articleId, String type, String comment, String commentId, String replyerId, String replyerName) {
-//        HashMap<String, String> requestMap = new HashMap<>();
-//        requestMap.put("articleId", articleId);
-//        requestMap.put("type", type);
-//        requestMap.put("comment", comment);
-//        requestMap.put("isAnonymous", "0");
-//        requestMap.put("commentId", commentId);
-//        requestMap.put("replyerId", replyerId);
-//        requestMap.put("replyerName", replyerName);
-//        HttpSender httpSender = new HttpSender(HttpUrl.AddComment_Post, "文章-回复评论", requestMap, new MyOnHttpResListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onComplete(String json_root, int code, String msg, String json_data) {
-//                if (code == Constants.REQUEST_SUCCESS_CODE) {
-//                    T.s(json_data, 3000);
-//                    sendComment_Et.setText("");
-//                    sendComment_Et.setHint("");
-//                }
-//            }
-//        }, true);
-//        httpSender.setContext(mActivity);
-//        httpSender.sendPost();
-//    }
-
     public void addComment(String id, String comment, String commentId, String replyerId, String replyerName) {
         if (item == null) {
             return;
@@ -356,6 +342,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    getServerData();
                 }
             }
         }, true);
@@ -365,11 +352,31 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
 
 
     /**
+     * 是否是自己
+     * @param authorId2
+     * @return
+     */
+    public boolean isMy(String authorId2){
+        String id = PrefUtil.getUser().getId();
+        String authorId = authorId2;
+        if (TextUtils.equals(id, authorId)) {//是自己不能评论
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * 点击弹出键盘
      *
      * @param editView
      */
     public void showInput(View editView) {
+        String id = PrefUtil.getUser().getId();
+        String authorId = commentListBean.getCommentData().getAuthorId();
+        if (TextUtils.equals(id, authorId)) {//是自己不能评论
+            return;
+        }
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
         editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
