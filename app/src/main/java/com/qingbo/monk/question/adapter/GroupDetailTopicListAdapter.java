@@ -2,11 +2,14 @@ package com.qingbo.monk.question.adapter;
 
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -17,6 +20,7 @@ import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +42,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
     protected void convert(@NonNull BaseViewHolder helper, OwnPublishBean item) {
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
+        TextView tv_role = helper.getView(R.id.tv_role);
         TextView tv_status = helper.getView(R.id.tv_status);
         TextView tv_answer = helper.getView(R.id.tv_answer);
         TextView content_Tv = helper.getView(R.id.content_Tv);
@@ -56,6 +61,24 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             content_Tv.setText(item.getContent());
         }else{
             content_Tv.setVisibility(View.GONE);
+        }
+
+        String role = item.getRole();
+        if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("管理员");
+            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else if("2".equals(role)) {
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("合伙人");
+            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else if("3".equals(role)) {
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("群主");
+            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+        }else{
+            tv_role.setVisibility(View.GONE);
+            group_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
         }
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
@@ -111,8 +134,39 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             }
         }
 
+
+        LinearLayout ll_container_answer = helper.getView(R.id.ll_container_answer);
+        String topicType = item.getTopicType();
+        if ("1".equals(topicType)) {//1是话题2是问答
+            ll_container_answer.setVisibility(View.GONE);
+        }else{
+            List<OwnPublishBean.DetailDTO> details = item.getDetail();
+            if (!ListUtils.isEmpty(details)) {
+                ll_container_answer.setVisibility(View.VISIBLE);
+                createAnswerList(ll_container_answer,details);
+            }else{
+                ll_container_answer.setVisibility(View.GONE);
+            }
+        }
+
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+    }
+
+
+    /**
+     * 细看更多宝贝
+     */
+    private void createAnswerList(LinearLayout ll_container_answer,List<OwnPublishBean.DetailDTO> details) {
+        ll_container_answer.removeAllViews();
+        for (int i = 0; i < details.size(); i++) {
+            View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
+            TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
+            TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
+            tv_answer_name.setText(details.get(i).getNickname()+"：");
+            tv_answer_content.setText(details.get(i).getAnswerContent());
+            ll_container_answer.addView(itemView);
+        }
     }
 
 

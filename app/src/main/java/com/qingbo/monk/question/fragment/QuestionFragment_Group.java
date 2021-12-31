@@ -1,7 +1,10 @@
 package com.qingbo.monk.question.fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,10 +72,20 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
     private void initRecyclerView() {
+        View itemView = LayoutInflater.from(mActivity).inflate(R.layout.layout_group_bottom, null);
+        TextView tv_more = itemView.findViewById(R.id.tv_more);
         mQuestionGroupAdapter = new QuestionGroupAdapter();
+        mQuestionGroupAdapter.addFooterView(itemView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mQuestionGroupAdapter);
+
+        tv_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                skipAnotherActivity(AllGroupListActivity.class);
+            }
+        });
     }
 
     @Override
@@ -104,7 +117,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     private void getAllShequn() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", "1");
-        requestMap.put("limit", "4");
+        requestMap.put("limit", "10");
         HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -184,14 +197,11 @@ public class QuestionFragment_Group extends BaseLazyFragment {
 
 
 
-    @OnClick({R.id.tv_create, R.id.tv_more})
+    @OnClick({R.id.tv_create})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_create:
                 skipAnotherActivity(CreateGroupStepOneActivity.class);
-                break;
-            case R.id.tv_more:
-                skipAnotherActivity(AllGroupListActivity.class);
                 break;
         }
     }

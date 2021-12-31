@@ -101,7 +101,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
      * 初始化4个频道
      */
     private void initMenuData() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
                 bean.setName("全部");
@@ -115,10 +115,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             } else if (i == 3) {
                 bean.setName("我的发布");
                 fragments.add(GroupDetailTopicListFragment.NewInstance(1,id));
-            } else if (i == 4) {
-                bean.setName("审核");
-                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
-            } else {
+            }else {
                 bean.setName("预览主题");
                 fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
             }

@@ -12,7 +12,7 @@
         android:layout_height="@dimen/title_height"
         app:titleBarTitle="编辑资料"
         app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightShowType="TEXT"
         app:titleBarRightTxt="预览"/>
 
