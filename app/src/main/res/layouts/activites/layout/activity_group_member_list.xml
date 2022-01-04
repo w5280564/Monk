@@ -41,7 +41,6 @@
                 android:id="@+id/title_bar_center_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="群成员（4）"
                 android:textColor="@color/text_main_color"
                 android:textSize="@dimen/text_title_size" />
 
@@ -84,7 +83,12 @@
             android:layout_marginLeft="@dimen/dp_11"
             android:background="@null"
             android:textSize="@dimen/sp_12"
-            style="@style/Widget.EditViewStyle"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingLeft="@dimen/dp_7"
+            android:paddingRight="@dimen/dp_7"
+            android:singleLine="true"
             />
     </LinearLayout>
 

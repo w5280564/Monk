@@ -1,9 +1,17 @@
 package com.qingbo.monk.question.adapter;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.bean.GroupMemberBean;
+import com.xunda.lib.common.common.glide.GlideUtils;
 
 /**
  * ================================================
@@ -12,30 +20,37 @@ import com.qingbo.monk.R;
  * <p>
  * ================================================
  */
-public class GroupMemberListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class GroupMemberListAdapter extends BaseQuickAdapter<GroupMemberBean, BaseViewHolder> {
     public GroupMemberListAdapter() {
         super(R.layout.item_group_member_list);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
+    protected void convert(@NonNull BaseViewHolder helper, GroupMemberBean item) {
         helper.addOnClickListener(R.id.iv_more);
-//        TextView tv_name_question = helper.getView(R.id.tv_name_question);
-//        TextView tv_name_fee = helper.getView(R.id.tv_name_fee);
-//        if ("0".equals(item.getType())) {
-//            tv_name_fee.setText("限时免费");
-//        }else{
-//            tv_name_fee.setText("加入");
-//        }
-//        tv_name_question.setText(StringUtil.getStringValue(item.getShequnName()));
-//        DiscussionAvatarView mAvatarViewList = helper.getView(R.id.daview);
-//        if (!ListUtils.isEmpty(item.getDetail())) {
-//            ArrayList<String> mList = new ArrayList<>();
-//            for (GroupBean.DetailDTO detailObj :item.getDetail()) {
-//                mList.add(detailObj.getAvatar());
-//            }
-//            mAvatarViewList.initDatas(mList);
-//        }
+        ImageView iv_more = helper.getView(R.id.iv_more);
+        TextView tv_role = helper.getView(R.id.tv_role);
+        ImageView iv_header = helper.getView(R.id.iv_header);
+        helper.setText(R.id.tv_name,item.getNickname());
+        GlideUtils.loadCircleImage(mContext, iv_header, item.getAvatar());
+
+        String role = item.getRole();
+        if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
+            iv_more.setVisibility(View.VISIBLE);
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("管理员");
+        }else if("2".equals(role)) {
+            iv_more.setVisibility(View.VISIBLE);
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("合伙人");
+        }else if("3".equals(role)) {
+            iv_more.setVisibility(View.GONE);
+            tv_role.setVisibility(View.VISIBLE);
+            tv_role.setText("群主");
+        }else{
+            iv_more.setVisibility(View.VISIBLE);
+            tv_role.setVisibility(View.GONE);
+        }
     }
 
 }

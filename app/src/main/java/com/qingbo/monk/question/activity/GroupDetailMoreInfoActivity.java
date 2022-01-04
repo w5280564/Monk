@@ -195,7 +195,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 if ("0".equals(role)|| StringUtil.isBlank(role)){
                     return;
                 }
-                skipAnotherActivity(GroupMemberListActivity.class);
+                GroupMemberListActivity.actionStart(mActivity,id);
                 break;
             case R.id.arrowItemView_manager:
                 skipAnotherActivity(GroupManagerActivity.class);

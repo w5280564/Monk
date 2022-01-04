@@ -194,7 +194,8 @@ public class HttpUrl {
     public static final String showTheme = "square/square/show-theme";//预览主题
     public static final String editTheme = "square/square/theme-edit";//编辑主题
     public static final String Interest_My = "square/interested/mygroup-app";//我的兴趣圈
-    public static final String Interest_Detail = "square/interested/interested-info";//兴趣圈详情
+    public static final String groupUserList = "square/set/user-list";//群成员列表
+    public static final String setAdmins = "square/set/add-admins";//添加管理员/合伙人
 
 }
 

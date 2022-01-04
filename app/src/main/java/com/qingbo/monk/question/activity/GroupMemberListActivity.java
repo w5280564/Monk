@@ -1,28 +1,61 @@
 package com.qingbo.monk.question.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.GroupMemberBean;
+import com.qingbo.monk.bean.GroupMemberListBean;
 import com.qingbo.monk.dialog.SetManagerDialog;
 import com.qingbo.monk.question.adapter.GroupMemberListAdapter;
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 群成员
+ * 群成员列表
  */
 public class GroupMemberListActivity extends BaseActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
-
+    @BindView(R.id.title_bar_center_txt)
+    TextView title_tv;
+    @BindView(R.id.et_search)
+    EditText et_search;
+    private String id;
+    private List<GroupMemberBean> allMemberList = new ArrayList<>();
+    private List<GroupMemberBean> resultMemberList = new ArrayList<>();
     private GroupMemberListAdapter mGroupMemberListAdapter;
+
+    public static void actionStart(Context context, String id) {
+        Intent intent = new Intent(context, GroupMemberListActivity.class);
+        intent.putExtra("id",id);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected int getLayoutId() {
@@ -31,7 +64,7 @@ public class GroupMemberListActivity extends BaseActivity {
 
     @Override
     protected void initLocalData() {
-        super.initLocalData();
+        id = getIntent().getStringExtra("id");
     }
 
     @Override
@@ -39,21 +72,51 @@ public class GroupMemberListActivity extends BaseActivity {
         initRecyclerView();
     }
 
+
+
     public void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
-        mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(true);
         mGroupMemberListAdapter = new GroupMemberListAdapter();
         mRecyclerView.setAdapter(mGroupMemberListAdapter);
-        List<String> mList = new ArrayList<>();
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mList.add("");
-        mGroupMemberListAdapter.setNewData(mList);
+    }
+
+    @Override
+    protected void getServerData() {
+        groupUserList();
+    }
+
+    /**
+     * 群成员列表
+     */
+    private void groupUserList() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id);
+        requestMap.put("type", "1");
+        HttpSender sender = new HttpSender(HttpUrl.groupUserList, "群成员列表", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            GroupMemberListBean obj = GsonUtil.getInstance().json2Bean(json_data, GroupMemberListBean.class);
+                            if (obj==null) {
+                                return;
+                            }
+
+                            handleData(obj);
+                        }
+                    }
+
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+    private void handleData(GroupMemberListBean obj) {
+        allMemberList.addAll(obj.getList());
+        mGroupMemberListAdapter.setNewData(allMemberList);
+        title_tv.setText(String.format("群成员（%s）",obj.getCount()));
     }
 
     @Override
@@ -61,19 +124,90 @@ public class GroupMemberListActivity extends BaseActivity {
         mGroupMemberListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                showSetManagerDialog();
+                GroupMemberBean obj = (GroupMemberBean) adapter.getItem(position);
+                if (obj==null) {
+                    return;
+                }
+                showSetManagerDialog(obj,position);
+            }
+        });
+
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {//打开软键盘
+                    imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+                }
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchMemberList();
+                }
+                return false;
             }
         });
     }
 
-    private void showSetManagerDialog() {
-        SetManagerDialog mSetManagerDialog = new SetManagerDialog(this, new SetManagerDialog.ConfirmListener() {
-            @Override
-            public void onSet() {
 
+    private void searchMemberList() {
+        String searchStr = et_search.getText().toString().trim();
+        if (StringUtil.isBlank(searchStr)) {
+            T.ss("请输入群成员名称");
+            return;
+        }
+
+        getMemberListByName(searchStr);
+    }
+
+    private void getMemberListByName(String searchStr) {
+        if (!ListUtils.isEmpty(allMemberList)) {
+            for (GroupMemberBean mObj : allMemberList) {
+                if (mObj.getNickname().contains(searchStr)) {
+                    resultMemberList.add(mObj);
+                }
+            }
+            mGroupMemberListAdapter.setNewData(resultMemberList);
+        }
+    }
+
+    private void showSetManagerDialog(GroupMemberBean obj,int position) {
+        SetManagerDialog mSetManagerDialog = new SetManagerDialog(this,obj, new SetManagerDialog.ConfirmListener() {
+            @Override
+            public void onSet(String user_id,String submit_type) {
+                setAdmins(user_id,submit_type,position);
             }
         });
         mSetManagerDialog.show();
+    }
+
+    private void setAdmins(String user_id,String submit_type,int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id);
+        requestMap.put("type", submit_type);
+        requestMap.put("uids", user_id);
+        HttpSender sender = new HttpSender(HttpUrl.setAdmins, "设置/取消管理员/合伙人", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            ImageView iv_more = (ImageView) mGroupMemberListAdapter.getViewByPosition(mRecyclerView, position, R.id.iv_more);
+                            TextView tv_role = (TextView) mGroupMemberListAdapter.getViewByPosition(mRecyclerView, position, R.id.tv_role);
+                            if ("3".equals(submit_type)) {
+                                iv_more.setVisibility(View.VISIBLE);
+                                tv_role.setVisibility(View.GONE);
+                                mGroupMemberListAdapter.getItem(position).setRole("0");
+                            }else if("1".equals(submit_type)){
+                                iv_more.setVisibility(View.VISIBLE);
+                                tv_role.setVisibility(View.VISIBLE);
+                                tv_role.setText("管理员");
+                                mGroupMemberListAdapter.getItem(position).setRole("1");
+                            }
+                        }
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendPost();
     }
 
 

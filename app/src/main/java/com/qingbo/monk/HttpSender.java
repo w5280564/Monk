@@ -98,7 +98,7 @@ public class HttpSender {
 	 * 上传单个文件
 	 */
 	public void sendPostImage(File file) {
-		this.dialogMessage = "努力加载中...";
+		this.dialogMessage = "努力上传中...";
 		requestPostFile(file);
 	}
 
