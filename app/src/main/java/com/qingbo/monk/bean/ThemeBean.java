@@ -14,6 +14,8 @@ public class ThemeBean {
 
     @SerializedName("id")
     private String id;
+    @SerializedName("article_id")
+    private String article_id;
     @SerializedName("title")
     private String title;
     @SerializedName("content")
@@ -31,7 +33,7 @@ public class ThemeBean {
     @SerializedName("create_time")
     private String createTime;
     @SerializedName("answer_content")
-    private Object answerContent;
+    private String answerContent;
     @SerializedName("last_up_time")
     private String lastUpTime;
     @SerializedName("topic_type")

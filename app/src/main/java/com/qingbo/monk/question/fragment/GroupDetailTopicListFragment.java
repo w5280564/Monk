@@ -34,12 +34,13 @@ import java.util.List;
  */
 public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment {
     private int type;//0全部 1我的发布
-    private String id,requestUrl;
+    private String id,role,requestUrl;
 
-    public static GroupDetailTopicListFragment NewInstance(int type, String id) {
+    public static GroupDetailTopicListFragment NewInstance(int type, String id,String role) {
         Bundle args = new Bundle();
         args.putInt("type", type);
         args.putString("id", id);
+        args.putString("role", role);
         GroupDetailTopicListFragment fragment = new GroupDetailTopicListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -57,6 +58,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         if (mBundle != null) {
             type = mBundle.getInt("type", 0);
             id = mBundle.getString("id");
+            role = mBundle.getString("role");
             if (type==0) {
                 requestUrl = HttpUrl.groupDetailAllTab;
             }else if(type==1){
@@ -89,7 +91,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailTopicListAdapter(type);
+        mAdapter = new GroupDetailTopicListAdapter(type,role);
         mRecyclerView.setAdapter(mAdapter);
     }
 

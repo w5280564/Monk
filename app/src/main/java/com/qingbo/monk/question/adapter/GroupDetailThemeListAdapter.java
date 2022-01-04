@@ -17,6 +17,7 @@ import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ThemeBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
+import com.qingbo.monk.question.fragment.GroupDetailWaitAnswerListFragment;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
@@ -29,9 +30,11 @@ import java.util.List;
  * 社群预览主题列表
  */
 public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, BaseViewHolder> {
+    private String role;
 
-    public GroupDetailThemeListAdapter() {
+    public GroupDetailThemeListAdapter(String role) {
         super(R.layout.item_group_detail_theme);
+        this.role = role;
     }
 
 
@@ -44,9 +47,15 @@ public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, Bas
         TextView time_Tv = helper.getView(R.id.time_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView iv_delete = helper.getView(R.id.iv_delete);
-        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
 
 
+        if ("2".equals(role)||"3".equals(role)) {//1管理员2合伙人0一般用户3群主
+            iv_delete.setVisibility(View.VISIBLE);
+            viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
+            helper.addOnClickListener(R.id.iv_delete);
+        }else{
+            iv_delete.setVisibility(View.INVISIBLE);
+        }
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -73,7 +82,7 @@ public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, Bas
                 ll_container_answer.setVisibility(View.GONE);
             }
         }
-        helper.addOnClickListener(R.id.iv_delete);
+
     }
 
     private void handleCommonData(String headImg,String headName,String content,String role

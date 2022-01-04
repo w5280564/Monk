@@ -51,6 +51,8 @@ public class OwnPublishBean implements Serializable {
     private String isAnonymous;
     @SerializedName("detail")
     private List<DetailDTO> detail;
+    @SerializedName("isCheck")
+    private boolean isCheck;
 
     @NoArgsConstructor
     @Data

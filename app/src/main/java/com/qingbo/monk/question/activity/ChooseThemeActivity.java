@@ -3,28 +3,47 @@ package com.qingbo.monk.question.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
+import com.qingbo.monk.bean.HaveBean;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.question.adapter.GroupDetailThemeListAdapterChoose;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
+import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ToastDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 选择主题
  */
 public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
-
-
+    @BindView(R.id.tv_choose)
+    TextView tv_choose;
+    private List<String> mChooseIsList = new ArrayList<>();
     private String id;
 
     @Override
@@ -55,6 +74,35 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new GroupDetailThemeListAdapterChoose();
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initEvent() {
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                OwnPublishBean obj = (OwnPublishBean) adapter.getItem(position);
+                if (obj!=null) {
+                    if (!obj.isCheck()) {
+                        mChooseIsList.add(obj.getArticleId());
+                        obj.setCheck(true);
+                    }else{
+                        mChooseIsList.remove(obj.getArticleId());
+                        obj.setCheck(false);
+                    }
+                    tv_choose.setText(mChooseIsList.size()==0?"选择":String.format("已选择(%s)",mChooseIsList.size()));
+                    mAdapter.notifyDataSetChanged();
+                }
+
+            }
+        });
+
+        ((GroupDetailThemeListAdapterChoose) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+            @Override
+            public void OnItemImgClickLister(int position, List<String> strings) {
+                jumpToPhotoShowActivity(position, strings);
+            }
+        });
     }
 
     @Override
@@ -94,6 +142,7 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
                     @Override
                     public void onComplete(String json, int code, String description, String data) {
                         if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                            mChooseIsList.clear();
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
@@ -105,4 +154,46 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
         sender.setContext(mActivity);
         sender.sendGet();
     }
+
+
+    @OnClick({R.id.rl_back,R.id.tv_cancel,R.id.tv_choose})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_back:
+            case R.id.tv_cancel:
+                back();
+                break;
+            case R.id.tv_choose:
+                if (ListUtils.isEmpty(mChooseIsList)) {
+                    T.ss("请选择主题");
+                    return;
+                }
+                editTheme();
+                break;
+
+        }
+    }
+
+
+    private void editTheme() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("id", StringUtil.listToString(mChooseIsList));
+        map.put("status", "1");
+        HttpSender sender = new HttpSender(HttpUrl.editTheme, "编辑主题", map,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int code, String description, String data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.CHOOSE_THEME));
+                            showToastDialog("操作成功！");
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendPost();
+    }
+
+
+
+
 }

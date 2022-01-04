@@ -81,4 +81,11 @@ public class ToastDialog extends Dialog implements
 		}
 	}
 
+
+	@Override
+	public void onBackPressed() {
+
+	}
+
+
 }

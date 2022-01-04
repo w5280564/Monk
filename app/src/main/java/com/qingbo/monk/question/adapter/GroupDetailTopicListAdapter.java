@@ -19,6 +19,7 @@ import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -31,10 +32,14 @@ import java.util.List;
  */
 public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean, BaseViewHolder> {
     private int type;
+    private String role_self;
+    private String id_self;
 
-    public GroupDetailTopicListAdapter(int type) {
+    public GroupDetailTopicListAdapter(int type,String role) {
         super(R.layout.item_group_detail_topic);
         this.type = type;
+        this.role_self = role;
+        id_self = SharePref.user().getUserId();
     }
 
 
@@ -52,8 +57,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
-
-
+        ImageView iv_delete = helper.getView(R.id.iv_delete);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -69,7 +73,36 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         if (type==0) {
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
-        }else if(type==1){
+
+            String publish_user_id = item.getId();
+            if (id_self.equals(publish_user_id)) {
+                iv_delete.setVisibility(View.VISIBLE);
+                viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
+                helper.addOnClickListener(R.id.iv_delete);
+            }else{
+                String publish_role = item.getRole();
+                if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    iv_delete.setVisibility(View.VISIBLE);
+                    viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
+                    helper.addOnClickListener(R.id.iv_delete);
+                }else if ("2".equals(role_self)) {
+                    if ("1".equals(publish_role)||"0".equals(publish_role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
+                        helper.addOnClickListener(R.id.iv_delete);
+                    }
+                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    if ("0".equals(publish_role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
+                        helper.addOnClickListener(R.id.iv_delete);
+                    }
+                }else{
+                    iv_delete.setVisibility(View.GONE);
+                }
+            }
+        }else{
+            iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
             String status = item.getStatus();//0待审核 1通过 2未通过
             if (TextUtils.equals(status, "0")) {

@@ -3,6 +3,7 @@ package com.qingbo.monk.question.adapter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,8 +43,9 @@ public class GroupDetailThemeListAdapterChoose extends BaseQuickAdapter<OwnPubli
         TextView tv_role = helper.getView(R.id.tv_role);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
+        CheckBox cb_check = helper.getView(R.id.cb_check);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
-
+        cb_check.setChecked(item.isCheck());
 
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
@@ -71,7 +73,7 @@ public class GroupDetailThemeListAdapterChoose extends BaseQuickAdapter<OwnPubli
                 ll_container_answer.setVisibility(View.GONE);
             }
         }
-        helper.addOnClickListener(R.id.iv_delete);
+        helper.addOnClickListener(R.id.cb_check);
     }
 
     private void handleCommonData(String headImg,String headName,String content,String role

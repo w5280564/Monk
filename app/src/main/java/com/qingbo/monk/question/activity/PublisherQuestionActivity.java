@@ -288,15 +288,6 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     }
 
 
-    private void showToastDialog(String description) {//1 点击确定会返回， 0 只是弹窗消失
-        ToastDialog mDialog = new ToastDialog(this, getString(R.string.toast_warm_prompt), description, getString(R.string.Sure), new ToastDialog.DialogConfirmListener() {
-            @Override
-            public void onConfirmClick() {
-                back();
-            }
-        });
-        mDialog.show();
-    }
 
 
     /**

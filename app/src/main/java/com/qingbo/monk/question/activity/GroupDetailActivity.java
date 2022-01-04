@@ -111,11 +111,11 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
                 bean.setName("全部");
-                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id,sheQunBean.getRole()));
                 menuList.add(bean);
             } else if (i == 1) {
                 String role = sheQunBean.getRole();
-                if ("2".equals(role)||"3".equals(role)) {////1管理员2合伙人0一般用户3群主
+                if ("2".equals(role)||"3".equals(role)) {//1管理员2合伙人0一般用户3群主
                     bean.setName("等你回答");
                     fragments.add(GroupDetailWaitAnswerListFragment.NewInstance(id));
                     menuList.add(bean);
@@ -126,11 +126,11 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 menuList.add(bean);
             } else if (i == 3) {
                 bean.setName("我的发布");
-                fragments.add(GroupDetailTopicListFragment.NewInstance(1,id));
+                fragments.add(GroupDetailTopicListFragment.NewInstance(1,id,sheQunBean.getRole()));
                 menuList.add(bean);
             }else {
                 bean.setName("预览主题");
-                fragments.add(GroupDetailThemeListFragment.NewInstance(id));
+                fragments.add(GroupDetailThemeListFragment.NewInstance(id,sheQunBean.getRole()));
                 menuList.add(bean);
             }
 

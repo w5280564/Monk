@@ -18,6 +18,11 @@ import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
+
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.List;
@@ -29,12 +34,13 @@ import butterknife.BindView;
 public class GroupDetailThemeListFragment extends BaseLazyFragment {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
-    private String id;
+    private String id,role;
     private GroupDetailThemeListAdapter mAdapter;
 
-    public static GroupDetailThemeListFragment NewInstance(String id) {
+    public static GroupDetailThemeListFragment NewInstance(String id, String role) {
         Bundle args = new Bundle();
         args.putString("id", id);
+        args.putString("role", role);
         GroupDetailThemeListFragment fragment = new GroupDetailThemeListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,6 +57,7 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
         Bundle mBundle = getArguments();
         if (mBundle != null) {
             id = mBundle.getString("id");
+            role = mBundle.getString("role");
         }
         registerEventBus();
     }
@@ -72,7 +79,7 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailThemeListAdapter();
+        mAdapter = new GroupDetailThemeListAdapter(role);
         mAdapter.setEmptyView(addEmptyView("暂无主题", R.mipmap.zhuti));
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -86,7 +93,8 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
                 if (mThemeBean == null) {
                     return;
                 }
-                //删除
+                showToastDialog(mThemeBean.getArticle_id(),position);
+
             }
         });
 
@@ -100,6 +108,38 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
 
 
     }
+
+    private void showToastDialog(String id,int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条预览主题吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                editTheme(id,position);
+            }
+
+            @Override
+            public void onClickLeft() {
+            }
+        });
+        mDialog.show();
+    }
+
+    private void editTheme(String id,int position) {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("id", id);
+        map.put("status", "0");
+        HttpSender sender = new HttpSender(HttpUrl.editTheme, "编辑主题", map,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int code, String description, String data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            mAdapter.remove(position);
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendPost();
+    }
+
 
 
 
