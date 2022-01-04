@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.viewpager.widget.ViewPager;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
@@ -34,6 +38,8 @@ import butterknife.OnClick;
 public class GroupDetailActivity extends BaseTabLayoutActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
+    @BindView(R.id.ll_choose_theme)
+    LinearLayout ll_choose_theme;
     @BindView(R.id.tv_shequn_name)
     TextView tv_shequn_name;
     @BindView(R.id.rl_title)
@@ -130,6 +136,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
 
 
         }
+        setTabTextSize(15,15);
         initViewPager(0);
     }
 
@@ -175,7 +182,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
 
 
 
-    @OnClick({R.id.ll_back,R.id.ll_menu})
+    @OnClick({R.id.ll_back,R.id.ll_menu,R.id.iv_bianji,R.id.ll_choose_theme})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_back:
@@ -184,7 +191,44 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             case R.id.ll_menu:
                 GroupDetailMoreInfoActivity.actionStart(mActivity,id);
                 break;
+            case R.id.iv_bianji:
+                PublisherGroupTopicActivity.actionStart(mActivity,id);
+                break;
+            case R.id.ll_choose_theme:
+                ChooseThemeActivity.actionStart(mActivity,id);
+                break;
+
         }
     }
 
+
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int index) {
+                if (menuList.get(index).getName().equals("预览主题")) {
+                    String role = sheQunBean.getRole();
+                    if ("2".equals(role)||"3".equals(role)) {////1管理员2合伙人0一般用户3群主
+                        ll_choose_theme.setVisibility(View.VISIBLE);
+                    }else{
+                        ll_choose_theme.setVisibility(View.GONE);
+                    }
+                }else{
+                    ll_choose_theme.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
 }

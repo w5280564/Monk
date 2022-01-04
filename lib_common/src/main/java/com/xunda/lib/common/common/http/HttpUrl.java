@@ -192,7 +192,6 @@ public class HttpUrl {
     public static final String waitAnswerList = "square/square/question-list";//等待回答问题列表
     public static final String answerQuestion = "square/square/answer-question";//回答社群问题
     public static final String showTheme = "square/square/show-theme";//预览主题
-    public static final String getTheme = "square/square/get-theme";//查看主题
 
 }
 

@@ -6,10 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -18,7 +16,6 @@ import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
@@ -28,13 +25,9 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.MyPopWindow;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import java.util.List;
-
-import butterknife.OnClick;
 
 /**
  * 社群详情话题列表
@@ -54,7 +47,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_group_detail_all_layout;
+        return R.layout.refresh_recyclerview_layout;
     }
 
 
@@ -246,8 +239,5 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     }
 
 
-    @OnClick(R.id.iv_bianji)
-    public void onClick() {
-        PublisherGroupTopicActivity.actionStart(mActivity,id);
-    }
+
 }

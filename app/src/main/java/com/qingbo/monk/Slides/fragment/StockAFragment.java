@@ -1,18 +1,13 @@
 package com.qingbo.monk.Slides.fragment;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutFragment;
-import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
-import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 
 import java.util.ArrayList;
 
@@ -70,8 +65,7 @@ public class StockAFragment extends BaseTabLayoutFragment {
         fragments.add(StockThigh_Fragment.newInstance(code, "2"));
         fragments.add(StockThigh_Fragment.newInstance(code, "3"));
 
-        FragmentManager childFragmentManager = getChildFragmentManager();
-        initViewPager(0, childFragmentManager);
+        initChildViewPager(0);
     }
 
 

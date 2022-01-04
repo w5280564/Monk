@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="@id/tab_item_textview"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"
-        android:layout_marginTop="@dimen/dp_30"/>
+        android:layout_marginTop="@dimen/dp_28"/>
 
     <TextView
         android:id="@+id/tab_item_textview"
@@ -27,7 +27,6 @@
         android:layout_marginTop="@dimen/dp_13"
         android:textColor="@color/text_color_a1a1a1"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="@dimen/sp_14"
         app:layout_constraintStart_toStartOf="parent" />
 
 

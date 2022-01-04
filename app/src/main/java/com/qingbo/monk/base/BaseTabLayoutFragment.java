@@ -94,9 +94,8 @@ public class BaseTabLayoutFragment extends BaseFragment {
     /**
      *
      * @param position 页面下标
-     * @param manager getChildFragmentManager 父容器是fragment碎片管理器
      */
-    protected void initViewPager(int position, FragmentManager manager) {
+    protected void initChildViewPager(int position) {
         NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getChildFragmentManager(), fragments, menuList);
         //给ViewPager设置适配器
         mViewPager.setAdapter(mFragmentAdapter);

@@ -18,8 +18,6 @@ import com.xunda.lib.common.bean.AppMenuBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * tablayout的基类
  */
@@ -28,6 +26,8 @@ public class BaseTabLayoutActivity extends BaseActivity {
     protected List<AppMenuBean> menuList = new ArrayList<>();
     protected TabLayout mTabLayout;
     protected ViewPager mViewPager;
+    private int selectSize = 16;
+    private int normalSize = 14;
 
 
     @Override
@@ -42,6 +42,10 @@ public class BaseTabLayoutActivity extends BaseActivity {
     }
 
 
+    public void setTabTextSize(int selectSize,int normalSize){
+        this.selectSize = selectSize;
+        this.normalSize = normalSize;
+    }
 
 
 
@@ -54,7 +58,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
 //                mViewPager.setCurrentItem(tab.getPosition());
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 18, com.xunda.lib.common.R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+                setTextViewStyle(view, selectSize, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
             }
         }
 
@@ -62,7 +66,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
         public void onTabUnselected(TabLayout.Tab tab) {
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 15, com.xunda.lib.common.R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
+                setTextViewStyle(view, normalSize, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
             }
         }
 
@@ -92,7 +96,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
 
         View view = mTabLayout.getTabAt(position).getCustomView();
         if (null != view) {
-            setTextViewStyle(view, 16, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+            setTextViewStyle(view, selectSize, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
         mViewPager.setCurrentItem(position);
     }
@@ -117,6 +121,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
     private View getTabView(int currentPosition) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_tab, null);
         TextView textView = view.findViewById(R.id.tab_item_textview);
+        textView.setTextSize(normalSize);
         textView.setText(menuList.get(currentPosition).getName());
         return view;
     }
