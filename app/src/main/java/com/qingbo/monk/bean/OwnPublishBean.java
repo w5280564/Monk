@@ -15,6 +15,8 @@ public class OwnPublishBean implements Serializable {
 
     @SerializedName("id")
     private String id;
+    @SerializedName("author_id")
+    private String authorId;
     @SerializedName("article_id")
     private String articleId;
     @SerializedName("shequn_id")

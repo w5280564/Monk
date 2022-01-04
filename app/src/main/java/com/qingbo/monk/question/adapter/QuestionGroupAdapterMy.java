@@ -24,7 +24,7 @@ public class QuestionGroupAdapterMy extends BaseQuickAdapter<MyGroupBean, BaseVi
     @Override
     protected void convert(@NonNull BaseViewHolder helper, MyGroupBean item) {
         helper.setText(R.id.tv_name_group,item.getShequnName());
-        helper.setText(R.id.tv_des_group,item.getShequnDes());
+        helper.setText(R.id.tv_des_group,StringUtil.isBlank(item.getShequnDes())?"暂无群简介...":item.getShequnDes());
 
         RoundImageView iv_header = helper.getView(R.id.iv_header);
         if (StringUtil.isBlank(item.getShequnImage())) {
@@ -32,7 +32,6 @@ public class QuestionGroupAdapterMy extends BaseQuickAdapter<MyGroupBean, BaseVi
         }else{
             GlideUtils.loadCircleImage(mContext,iv_header,item.getShequnImage());
         }
-        helper.addOnClickListener(R.id.tv_join);
     }
 
 }

@@ -49,16 +49,14 @@ public class MyGroupListActivity extends BaseActivity {
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (view.getId()==R.id.tv_join) {
-                    MyGroupBean obj = (MyGroupBean) adapter.getItem(position);
-                    if (obj==null) {
-                        return;
-                    }
-                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                MyGroupBean obj = (MyGroupBean) adapter.getItem(position);
+                if (obj==null) {
+                    return;
                 }
+                GroupDetailActivity.actionStart(mActivity, obj.getId());
             }
         });
     }

@@ -25,6 +25,8 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.MyPopWindow;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+
 import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +120,9 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
                         showPopMenu(more_Img,mQuestionBean,position);
                         break;
+                    case R.id.iv_delete:
+                        showToastDialog(mQuestionBean.getArticleId(),position);
+                        break;
                 }
             }
         });
@@ -143,6 +148,41 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+    }
+
+    private void showToastDialog(String id,int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条话题吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                deleteQuestion(id,position);
+            }
+
+            @Override
+            public void onClickLeft() {
+            }
+        });
+        mDialog.show();
+    }
+
+
+    /**
+     * 删除话题
+     * @param mQuestionId
+     */
+    private void deleteQuestion(String mQuestionId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", mQuestionId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.deleteTopic, "删除话题", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    mAdapter.remove(position);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 

@@ -21,6 +21,7 @@ import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.ArrayList;
@@ -40,6 +41,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         this.type = type;
         this.role_self = role;
         id_self = SharePref.user().getUserId();
+        L.e("id_self>>>"+id_self);
     }
 
 
@@ -48,6 +50,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_role = helper.getView(R.id.tv_role);
+        TextView title_Tv = helper.getView(R.id.title_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView tv_status = helper.getView(R.id.tv_status);
         TextView tv_answer = helper.getView(R.id.tv_answer);
@@ -74,7 +77,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
 
-            String publish_user_id = item.getId();
+            String publish_user_id = item.getAuthorId();
             if (id_self.equals(publish_user_id)) {
                 iv_delete.setVisibility(View.VISIBLE);
                 viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
@@ -126,11 +129,18 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         LinearLayout ll_container_answer = helper.getView(R.id.ll_container_answer);
         String topicType = item.getTopicType();
         if ("1".equals(topicType)) {//1是话题2是问答
+            if (!StringUtil.isBlank(item.getTitle())) {
+                title_Tv.setVisibility(View.VISIBLE);
+                title_Tv.setText(item.getTitle());
+            }else{
+                title_Tv.setVisibility(View.GONE);
+            }
             handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
                     ,group_Img,group_Name,content_Tv,tv_role);
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
+            title_Tv.setVisibility(View.GONE);
             List<OwnPublishBean.DetailDTO> details = item.getDetail();
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
