@@ -11,36 +11,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InterestBean {
-
-
-    @SerializedName("code")
-    private Integer code;
-    @SerializedName("msg")
-    private String msg;
-    @SerializedName("data")
-    private DataDTO data;
-
-    @NoArgsConstructor
-    @Data
-    public static class DataDTO {
-        @SerializedName("list")
-        private List<ListDTO> list;
-        @SerializedName("count")
-        private String count;
-
-        @NoArgsConstructor
-        @Data
-        public static class ListDTO {
             @SerializedName("id")
             private String id;
             @SerializedName("group_name")
             private String groupName;
+            @SerializedName("group_des")
+            private String groupDes;
             @SerializedName("group_image")
             private String groupImage;
+            @SerializedName("create_time")
+            private String createTime;
+            @SerializedName("update_time")
+            private String updateTime;
+            @SerializedName("order")
+            private String order;
+            @SerializedName("create_day")
+            private String createDay;
+            @SerializedName("detail")
+            private List<DetailDTO> detail;
             @SerializedName("join_num")
             private String joinNum;
             @SerializedName("join_status")
-            private Integer joinStatus;
-        }
-    }
+            private String joinStatus;
+
+            @NoArgsConstructor
+            @Data
+            public static class DetailDTO {
+                @SerializedName("group_id")
+                private String groupId;
+                @SerializedName("avatar")
+                private String avatar;
+            }
 }

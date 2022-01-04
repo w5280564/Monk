@@ -23,6 +23,7 @@ import com.qingbo.monk.Slides.activity.SideslipExpert_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFollow_Activity;
 import com.qingbo.monk.Slides.activity.SideslipFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
+import com.qingbo.monk.Slides.activity.SideslipInterest_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
@@ -91,9 +92,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     MyArrowItemView cang_MyView;
     @BindView(R.id.person_MyView)
     MyArrowItemView person_MyView;
-
     @BindView(R.id.wen_MyView)
     MyArrowItemView wen_MyView;
+    @BindView(R.id.Interest_MyView)
+    MyArrowItemView Interest_MyView;
 
 
     private long clickTime;
@@ -151,6 +153,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         person_MyView.setOnClickListener(this);
 
         wen_MyView.setOnClickListener(this);
+        Interest_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -331,11 +334,13 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 //                SideslipPersonDetail_Activity.startActivity(mActivity, s,s1, "0");
                 SideslipPersonList_Activity.startActivity(mActivity);
                 break;
-
-
             case R.id.wen_MyView:
                 closeLeft();
                 mBottomNavigationView.setSelectedItemId(mBottomNavigationView.getMenu().getItem(1).getItemId());
+                break;
+            case R.id.Interest_MyView:
+                closeLeft();
+                SideslipInterest_Activity.startActivity(mActivity);
                 break;
         }
     }

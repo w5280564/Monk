@@ -106,30 +106,25 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
-//                String id = item.getId();
-//                CombinationDetail_Activity.startActivity(requireActivity(), "0", id);
-//            }
-//        });
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.follow_Img:
-                        String likeId = item.getId();
-                        postLikedData(likeId, position);
-                        break;
-                    case R.id.mes_Img:
-//                        String articleId = item.getId();
-//                        String type = item.getType();
-                        String id = item.getId();
-                        CombinationDetail_Activity.startActivity(requireActivity(), "1", id);
-                        break;
-                }
+                String id = item.getId();
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", id);
+            }
+        });
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.follow_Img:
+                    String likeId = item.getId();
+                    postLikedData(likeId, position);
+                    break;
+                case R.id.mes_Img:
+                    String id = item.getId();
+                    CombinationDetail_Activity.startActivity(requireActivity(), "1", id);
+                    break;
             }
         });
     }

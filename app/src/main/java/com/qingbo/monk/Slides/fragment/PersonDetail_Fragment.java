@@ -73,6 +73,8 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
     RecyclerView mNineView;
     @BindView(R.id.fundTime_Tv)
     TextView fundTime_Tv;
+    @BindView(R.id.Keywords_Tv)
+    TextView Keywords_Tv;
     @BindView(R.id.stock_Con)
     ConstraintLayout stock_Con;
 
@@ -141,7 +143,7 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
                         company_Tv.setText(listDTO.getCompanyName());
                         brief_Tv.setText(listDTO.getDescription());
                         labelFlow(lable_Flow, mActivity, listDTO.getTagName());
-
+                        Keywords_Tv.setText(listDTO.getKeywords());
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         mNineView.setLayoutManager(linearLayoutManager);

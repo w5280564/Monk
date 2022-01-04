@@ -222,7 +222,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/person_MyView" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
-                        android:id="@+id/xin_MyView"
+                        android:id="@+id/Interest_MyView"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_43"
                         app:arrowItemAvatarHeight="@dimen/dp_12"

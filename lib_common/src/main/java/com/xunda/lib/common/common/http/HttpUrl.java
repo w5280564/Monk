@@ -83,7 +83,7 @@ public class HttpUrl {
      * 修改个人信息
      */
     public static final String Edit_Info = "user/user/edit-info";
-    public static final String All_Group = "square/interested/allgroup";//全部兴趣圈
+    public static final String Interest_All = "square/interested/allgroup";//全部兴趣圈
     public static final String Interest_Group = "square/interested/interest-recommend";//推荐--兴趣圈列表
     public static final String Join_Group = "square/interested/join-interested";//加入/退出兴趣圈
     public static final String Recommend_List = "index/index/recommend-list";//首页-推荐
@@ -193,6 +193,7 @@ public class HttpUrl {
     public static final String answerQuestion = "square/square/answer-question";//回答社群问题
     public static final String showTheme = "square/square/show-theme";//预览主题
     public static final String editTheme = "square/square/theme-edit";//编辑主题
+    public static final String Interest_My = "square/interested/mygroup-app";//我的兴趣圈
 
 }
 

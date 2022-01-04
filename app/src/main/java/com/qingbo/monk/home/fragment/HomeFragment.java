@@ -28,7 +28,7 @@ import com.google.gson.Gson;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.bean.InterestBean;
+import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -99,9 +99,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    InterestBean interestBean = new Gson().fromJson(json_root, InterestBean.class);
+                    HomeInterestBean interestBean = new Gson().fromJson(json_root, HomeInterestBean.class);
                     if (interestBean != null) {
-                        lableList(mContext, interest_Lin, interestBean.getData());
+                        labelList(mContext, interest_Lin, interestBean.getData());
                     }
                 }
             }
@@ -129,7 +129,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void lableList(Context context, LinearLayout myFlex, InterestBean.DataDTO model) {
+    public void labelList(Context context, LinearLayout myFlex, HomeInterestBean.DataDTO model) {
         if (myFlex != null) {
             myFlex.removeAllViews();
         }else {
@@ -138,7 +138,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         int size = model.getList().size();
         for (int i = 0; i < size; i++) {
             View myView = LayoutInflater.from(context).inflate(R.layout.interest_lable, null);
-            InterestBean.DataDTO.ListDTO data = model.getList().get(i);
+            HomeInterestBean.DataDTO.ListDTO data = model.getList().get(i);
             ImageView head_Tv = myView.findViewById(R.id.head_Tv);
             TextView shares_Tv = myView.findViewById(R.id.shares_Tv);
             TextView add_Tv = myView.findViewById(R.id.add_Tv);
@@ -148,7 +148,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             shares_Tv.setText(data.getGroupName());
             add_Tv.setText(data.getJoinNum() + "加入");
             int state = data.getJoinStatus();
-            if (state == 0) {
+            if (state == 1) { //1已加入 其他都是未加入
                 join_Tv.setText("已加入");
                 join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_a1a1a1));
                 changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.text_color_F5F5F5));
@@ -163,7 +163,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 //                v.setEnabled(false);
                 int tag = (Integer) v.getTag();
                 int stateIndex = model.getList().get(tag).getJoinStatus();
-                if (stateIndex == 0) {
+                if (stateIndex == 1) {//1已加入 其他都是未加入
                     model.getList().get(tag).setJoinStatus(1);
                     join_Tv.setText("加入");
                     join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_444444));

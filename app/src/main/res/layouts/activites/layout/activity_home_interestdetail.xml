@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.qingbo.monk.base.CustomConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints">
+
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/title_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightShowFlag="INVISIBLE"
+        app:titleBarRightShowType="IMG"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="兴趣圈" />
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/comment_Con"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="false">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+
+
+
+
+
+
+
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/card_Tab"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_39"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_bar"
+                app:tabBackground="@color/transparent"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabTextAppearance="@style/TabLayoutTextStyle"
+                app:tabTextColor="@color/text_color_6f6f6f" />
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/card_ViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</com.qingbo.monk.base.CustomConstraintLayout>
