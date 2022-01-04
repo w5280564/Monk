@@ -68,6 +68,8 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     public void onFinishEvent(FinishEvent event) {
         if(event.type == FinishEvent.CREATE_GROUP){
             getMyGroup();
+        }else if(event.type == FinishEvent.JOIN_GROUP){
+            getAllShequn();
         }
     }
 
@@ -117,7 +119,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     private void getAllShequn() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", "1");
-        requestMap.put("limit", "10");
+        requestMap.put("limit", "4");
         HttpSender sender = new HttpSender(HttpUrl.allGroup, "全部社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override

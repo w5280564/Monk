@@ -41,7 +41,6 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         this.type = type;
         this.role_self = role;
         id_self = SharePref.user().getUserId();
-        L.e("id_self>>>"+id_self);
     }
 
 

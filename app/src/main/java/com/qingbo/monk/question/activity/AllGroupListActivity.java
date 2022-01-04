@@ -12,9 +12,12 @@ import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 
@@ -34,6 +37,19 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据",0,true);
+    }
+
+    @Override
+    protected void initLocalData() {
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onFinishEvent(FinishEvent event) {
+        if(event.type == FinishEvent.JOIN_GROUP){
+            page = 1;
+            getAllGroup(true);
+        }
     }
 
     @Override
