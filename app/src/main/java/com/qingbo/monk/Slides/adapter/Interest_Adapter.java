@@ -48,7 +48,6 @@ public class Interest_Adapter extends BaseQuickAdapter<InterestBean, BaseViewHol
 
         }
         isJoin(item.getJoinStatus(), join_Tv);
-
         helper.addOnClickListener(R.id.join_Tv);
 
     }

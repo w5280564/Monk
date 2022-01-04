@@ -27,7 +27,7 @@ import com.xunda.lib.common.common.utils.T;
 import java.util.HashMap;
 
 /**
- * 侧边栏-兴趣圈-我的
+ * 侧边栏-兴趣圈-我的兴趣圈
  */
 public class InterestMy_Fragment extends BaseRecyclerViewSplitFragment {
 

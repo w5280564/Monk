@@ -60,11 +60,13 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
 
-        <activity android:name=".Slides.activity.InterestDetail_Activity"
-            android:exported="false"/>
+        <activity
+            android:name=".Slides.activity.InterestDetail_Activity"
+            android:exported="false" />
 
-        <activity android:name=".Slides.activity.SideslipInterest_Activity"
-            android:exported="false"/>
+        <activity
+            android:name=".Slides.activity.SideslipInterest_Activity"
+            android:exported="false" />
         <activity
             android:name=".home.activity.CombinationDetail_CommentList_Activity"
             android:exported="false" />
