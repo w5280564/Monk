@@ -207,9 +207,9 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
      */
     private void clickPhoto(int position) {
         int all_size = imageList.size();
-        if (all_size < 8) {
+        if (all_size < 3) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(7 - all_size);
+                checkGalleryPermission(2 - all_size);
             } else {
                 jumpToPhotoShowActivity(position, imageStringList);
             }

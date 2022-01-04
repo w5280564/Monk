@@ -9,35 +9,36 @@ import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseLazyFragment;
-import com.qingbo.monk.bean.AskQuestionBean;
-import com.qingbo.monk.question.activity.PublisherAskQuestionToPeopleActivity;
-import com.qingbo.monk.question.adapter.GroupDetailListAdapterWhat;
+import com.qingbo.monk.bean.ThemeBean;
+import com.qingbo.monk.question.adapter.GroupDetailThemeListAdapter;
+import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
+import java.util.List;
 import butterknife.BindView;
 
 /**
- * 社群详情（去提问）
+ * 预览主题列表
  */
-public class GroupDetailFragment_What extends BaseLazyFragment {
-
+public class GroupDetailThemeListFragment extends BaseLazyFragment {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     private String id;
-    private GroupDetailListAdapterWhat mAdapter;
+    private GroupDetailThemeListAdapter mAdapter;
 
-    public static GroupDetailFragment_What NewInstance(String id) {
+    public static GroupDetailThemeListFragment NewInstance(String id) {
         Bundle args = new Bundle();
         args.putString("id", id);
-        GroupDetailFragment_What fragment = new GroupDetailFragment_What();
+        GroupDetailThemeListFragment fragment = new GroupDetailThemeListFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -51,6 +52,14 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
         if (mBundle != null) {
             id = mBundle.getString("id");
         }
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onPublishSuccessEvent(FinishEvent event) {
+        if(event.type == FinishEvent.CHOOSE_THEME){
+            showTheme();
+        }
     }
 
     @Override
@@ -63,8 +72,8 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new GroupDetailListAdapterWhat();
-        mAdapter.setEmptyView(addEmptyView("暂无提问", R.mipmap.zhuti));
+        mAdapter = new GroupDetailThemeListAdapter();
+        mAdapter.setEmptyView(addEmptyView("暂无主题", R.mipmap.zhuti));
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -73,30 +82,36 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-
-                AskQuestionBean mAskQuestionBean = (AskQuestionBean) adapter.getItem(position);
-                if (mAskQuestionBean==null) {
+                ThemeBean mThemeBean = (ThemeBean) adapter.getItem(position);
+                if (mThemeBean == null) {
                     return;
                 }
-
-                PublisherAskQuestionToPeopleActivity.actionStart(mActivity,mAskQuestionBean.getNickname(),mAskQuestionBean.getId(),id);
+                //删除
             }
         });
+
+
+        mAdapter.setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+            @Override
+            public void OnItemImgClickLister(int position, List<String> strings) {
+                jumpToPhotoShowActivity(position, strings);
+            }
+        });
+
+
     }
+
 
 
     @Override
     protected void loadData() {
-        getShequnToQuestionList();
+        showTheme();
     }
 
-    /**
-     * 去提问列表
-     */
-    private void getShequnToQuestionList() {
+    private void showTheme() {
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("shequn_id", id);
-        HttpSender sender = new HttpSender(HttpUrl.getGroupToQuestionList, "去提问列表", map,
+        map.put("id", id);
+        HttpSender sender = new HttpSender(HttpUrl.showTheme, "预览主题", map,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json, int code, String description, String data) {
@@ -104,22 +119,20 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
                             handleData(json);
                         }
                     }
-                }, true);
+                }, false);
         sender.setContext(mActivity);
         sender.sendGet();
     }
 
 
     private void handleData(String json) {
-        HttpBaseList<AskQuestionBean> objList = GsonUtil
-
+        HttpBaseList<ThemeBean> objList = GsonUtil
                 .getInstance()
                 .json2List(
                         json,
-                        new TypeToken<HttpBaseList<AskQuestionBean>>() {
+                        new TypeToken<HttpBaseList<ThemeBean>>() {
                         }.getType());
         mAdapter.setNewData(objList.getData());
     }
-
 
 }

@@ -10,6 +10,7 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MyGroupBean;
+import com.qingbo.monk.question.fragment.GroupDetailThemeListFragment;
 import com.qingbo.monk.question.fragment.GroupDetailTopicListFragment;
 import com.qingbo.monk.question.fragment.GroupDetailFragment_What;
 import com.qingbo.monk.question.fragment.GroupDetailWaitAnswerListFragment;
@@ -57,7 +58,6 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
         setBar();
-        initMenuData();
         registerEventBus();
     }
 
@@ -106,21 +106,29 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
             if (i == 0) {
                 bean.setName("全部");
                 fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
+                menuList.add(bean);
             } else if (i == 1) {
-                bean.setName("等你回答");
-                fragments.add(GroupDetailWaitAnswerListFragment.NewInstance(id));
+                String role = sheQunBean.getRole();
+                if ("2".equals(role)||"3".equals(role)) {////1管理员2合伙人0一般用户3群主
+                    bean.setName("等你回答");
+                    fragments.add(GroupDetailWaitAnswerListFragment.NewInstance(id));
+                    menuList.add(bean);
+                }
             } else if (i == 2) {
                 bean.setName("去提问");
                 fragments.add(GroupDetailFragment_What.NewInstance(id));
+                menuList.add(bean);
             } else if (i == 3) {
                 bean.setName("我的发布");
                 fragments.add(GroupDetailTopicListFragment.NewInstance(1,id));
+                menuList.add(bean);
             }else {
                 bean.setName("预览主题");
-                fragments.add(GroupDetailTopicListFragment.NewInstance(0,id));
+                fragments.add(GroupDetailThemeListFragment.NewInstance(id));
+                menuList.add(bean);
             }
 
-            menuList.add(bean);
+
         }
         initViewPager(0);
     }
@@ -158,6 +166,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 GlideUtils.loadImage(mContext,iv_head_bag,group_header);
             }
             tv_shequn_name.setText(StringUtil.getStringValue(sheQunBean.getShequnName()));
+            initMenuData();
         }
     }
 

@@ -39,6 +39,26 @@
 
 
                 <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dp_12"
+                    android:background="@null"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:gravity="left"
+                    android:hint="请输入标题"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:maxLength="40"
+                    android:lineSpacingExtra="@dimen/dp_1"
+                    android:textColor="@color/text_color_444444"
+                    android:textColorHint="@color/text_hint_color"
+                    android:textSize="@dimen/sp_16" />
+
+                <View style="@style/app_line" />
+
+
+                <EditText
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

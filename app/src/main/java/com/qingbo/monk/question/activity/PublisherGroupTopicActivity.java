@@ -38,6 +38,8 @@ import butterknife.BindView;
  * 社群话题发布页
  */
 public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_More {
+    @BindView(R.id.et_title)
+    EditText et_title;
     @BindView(R.id.et_content)
     EditText et_content;
     @BindView(R.id.recycleView_image)
@@ -46,7 +48,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String mContent,images,questionId;
+    private String mTitle,mContent,images,questionId;
     private String submitRequestUrl,shequn_id;
     private boolean isEdit;
 
@@ -92,6 +94,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
     private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
+        et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
     }
 
@@ -157,7 +160,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private void showBackDialog() {
         getPramsValue();
 
-        if (!StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
+        if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "返回将丢失填写的内容，确定返回吗？", "取消", "确定",
                         new TwoButtonDialogBlue.ConfirmListener() {
@@ -188,8 +191,8 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     public void onRightClick() {
         getPramsValue();
 
-        if (StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("内容、图片必须填写一项");
+        if (StringUtil.isBlank(mTitle)  && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+            T.ss("标题、内容、图片必须填写一项");
             return;
         }
 
@@ -197,6 +200,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
     private void getPramsValue() {
+        mTitle = StringUtil.getEditText(et_title);
         mContent = StringUtil.getEditText(et_content);
 
         StringBuilder result = new StringBuilder();
@@ -219,6 +223,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
      */
     private void createOrEditSaveQuestion(String optype) {
         HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("title", mTitle);
         baseMap.put("content", mContent);
         baseMap.put("images", images);
         baseMap.put("shequn_id", shequn_id);
@@ -266,9 +271,9 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
      */
     private void clickPhoto(int position) {
         int all_size = imageList.size();
-        if (all_size < 8) {
+        if (all_size < 3) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(7-all_size);
+                checkGalleryPermission(2-all_size);
             }else{
                 jumpToPhotoShowActivity(position,imageStringList);
             }

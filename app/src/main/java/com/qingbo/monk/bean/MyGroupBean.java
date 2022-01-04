@@ -31,4 +31,6 @@ public class MyGroupBean implements Serializable {
     private List<String> detail;
     @SerializedName("total")
     private String total;
+    @SerializedName("role")
+    private String role;
 }
