@@ -1,4 +1,4 @@
-package com.qingbo.monk.question.fragment;
+package com.qingbo.monk.Slides.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -6,8 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -17,7 +20,6 @@ import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
-import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -28,82 +30,114 @@ import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * 社群详情话题列表
- */
-public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment {
-    private int type;//0全部 1我的发布
-    private String id,role,requestUrl;
+import butterknife.OnClick;
 
-    /**
-     *
-     * @param type 0全部 1我的发布
-     * @param id 社群/兴趣圈 id
-     * @param role 0是待审核
-     * @return
-     */
-    public static GroupDetailTopicListFragment NewInstance(int type, String id,String role) {
+/**
+ * 兴趣圈-我的发布
+ */
+public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
+
+
+    private String id;
+
+    public static InterestDetail_My_Fragment newInstance(String id) {
         Bundle args = new Bundle();
-        args.putInt("type", type);
         args.putString("id", id);
-        args.putString("role", role);
-        GroupDetailTopicListFragment fragment = new GroupDetailTopicListFragment();
+        InterestDetail_My_Fragment fragment = new InterestDetail_My_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
 
+
     @Override
     protected int getLayoutId() {
-        return R.layout.refresh_recyclerview_layout;
+        return R.layout.fragment_question_list;
     }
 
 
     @Override
     protected void initLocalData() {
-        Bundle mBundle = getArguments();
-        if (mBundle != null) {
-            type = mBundle.getInt("type", 0);
-            id = mBundle.getString("id");
-            role = mBundle.getString("role");
-            if (type==0) {
-                requestUrl = HttpUrl.groupDetailAllTab;
-            }else if(type==1){
-                requestUrl = HttpUrl.getOwnPublishList;
-            }
-        }
-
-        registerEventBus();
-    }
-
-    @Subscribe
-    public void onPublishSuccessEvent(FinishEvent event) {
-        if(event.type == FinishEvent.PUBLISH_TOPIC){
-            page = 1;
-            getQuestionList();
-        }
+        id = getArguments().getString("id");
     }
 
     @Override
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
-        mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无话题",R.mipmap.zhuti, true);
+        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题", 0, true);
+        registerEventBus();
     }
+
+    @Subscribe
+    public void onPublishSuccessEvent(FinishEvent event) {
+        if (event.type == FinishEvent.PUBLISH_QUESTION) {
+            page = 1;
+            getSquareList(false);
+        }
+    }
+
+    @Override
+    protected void loadData() {
+        getSquareList(true);
+    }
+
+
+    /**
+     * 默认是1 1是社群,2是兴趣圈 3是问答广场
+     *
+     * @param isShowAnimal
+     */
+    private void getSquareList(boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
+        requestMap.put("action", "2");
+        requestMap.put("id", id);
+
+        HttpSender httpSender = new HttpSender(HttpUrl.getOwnPublishList, "兴趣圈-我的发布", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseOwnPublishBean.class);
+                    handleSplitListData(obj, mAdapter, limit);
+                }
+            }
+        }, isShowAnimal);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
 
     private void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
+        mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-
-        mAdapter = new GroupDetailTopicListAdapter(type,role);
+        mAdapter = new QuestionListAdapterMy();
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
+
+            if (mQuestionBean == null) {
+                return;
+            }
+
+            String type = mQuestionBean.getTopicType();
+            ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0", type);
+        });
+
     }
+
 
     @Override
     protected void initEvent() {
@@ -120,37 +154,20 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         String likeId = mQuestionBean.getArticleId();
                         postLikedData(likeId, position);
                         break;
-                    case R.id.mes_Img:
-                        String type = mQuestionBean.getTopicType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type);
-                        break;
                     case R.id.more_Img:
                         ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                        showPopMenu(more_Img,mQuestionBean,position);
+                        showPopMenu(more_Img, mQuestionBean, position);
                         break;
-                    case R.id.iv_delete:
-                        showToastDialog(mQuestionBean.getArticleId(),position);
+                    case R.id.mes_Img:
+                        String type = mQuestionBean.getTopicType();
+                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1", type);
                         break;
                 }
             }
         });
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
 
-                if (mQuestionBean == null) {
-                    return;
-                }
-
-                String type = mQuestionBean.getTopicType();
-                ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type);
-            }
-        });
-
-
-        ((GroupDetailTopicListAdapter) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+        ((QuestionListAdapterMy) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -158,23 +175,49 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         });
     }
 
-    private void showToastDialog(String id,int position) {
-        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条话题吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+
+    private void showPopMenu(ImageView more_Img, OwnPublishBean mQuestionBean, int position) {
+        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+        boolean haveEdit = false;
+        if (TextUtils.equals(status, "2")) {//审核未通过才能删除
+            haveEdit = true;
+        }
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
-            public void onClickRight() {
-                deleteQuestion(id,position);
+            public void onClickEdit() {
+                PublisherQuestionActivity.actionStart(mActivity, mQuestionBean, true);
             }
 
             @Override
-            public void onClickLeft() {
+            public void onClickDelete() {
+                showDeleteDialog(mQuestionBean.getId(), position);
             }
+
         });
+        morePopWindow.showPopupWindow(more_Img);
+    }
+
+    private void showDeleteDialog(String mQuestionId, int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity, "确定删除此问答？", "取消", "确定",
+                new TwoButtonDialogBlue.ConfirmListener() {
+
+                    @Override
+                    public void onClickRight() {
+                        deleteQuestion(mQuestionId, position);
+                    }
+
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+                });
+
         mDialog.show();
     }
 
-
     /**
      * 删除话题
+     *
      * @param mQuestionId
      */
     private void deleteQuestion(String mQuestionId, int position) {
@@ -226,68 +269,21 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     }
 
 
-    private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){
-        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
-        boolean haveEdit = false;
-        if(TextUtils.equals(status, "2")){//审核未通过才能删除
-            haveEdit = true;
-        }
-        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
-            @Override
-            public void onClickEdit() {
-                PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);
-            }
-
-            @Override
-            public void onClickDelete() {
-//                showDeleteDialog(mQuestionBean.getId(),position);
-            }
-
-        });
-        morePopWindow.showPopupWindow(more_Img);
-    }
-
-
     @Override
     protected void onRefreshData() {
         page = 1;
-        getQuestionList();
+        getSquareList(false);
     }
 
     @Override
     protected void onLoadMoreData() {
         page++;
-        getQuestionList();
-    }
-
-    @Override
-    protected void loadData() {
-        getQuestionList();
-    }
-
-    private void getQuestionList() {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("id", id);
-        map.put("action", "1");
-        map.put("page", page + "");
-        map.put("limit", limit + "");
-        HttpSender sender = new HttpSender(requestUrl, "社群话题列表", map,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json, int code, String description, String data) {
-                        if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(data, BaseOwnPublishBean.class);
-                            handleSplitListData(obj, mAdapter, limit);
-                        }
-                    }
-                }, false);
-        sender.setContext(mActivity);
-        sender.sendGet();
+        getSquareList(false);
     }
 
 
-
+    @OnClick(R.id.iv_bianji)
+    public void onClick() {
+        skipAnotherActivity(PublisherQuestionActivity.class);
+    }
 }

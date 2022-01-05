@@ -312,7 +312,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 return tabsList.get(position);
             }
         });
-        //设置TabLayout和ViewPager联动
         card_Tab.setupWithViewPager(card_ViewPager, false);
     }
 
@@ -351,7 +350,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         title_Tv.setText(detailData.getTitle());
 //                        center_Tv.setText(detailData.getTitle());
                         content_Tv.setText(detailData.getContent());
-                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + detailData.getCompanyName();
+                        String companyName = TextUtils.isEmpty(detailData.getCompanyName()) ? "" : detailData.getCompanyName();
+                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + companyName;
                         time_Tv.setText(userDate);
                         //多张图片
                         if (!TextUtils.isEmpty(detailData.getImages())) {

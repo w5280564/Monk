@@ -80,7 +80,9 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         title_Tv.setText(item.getTitle());
         content_Tv.setText(item.getContent());
         if (!TextUtils.isEmpty(item.getCreateTime())) {
-            String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
+            String companyName = TextUtils.isEmpty(item.getCompany_name()) ? "" : item.getCompany_name();
+            String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + companyName;
+//            String userDate = DateUtil.getUserDate(item.getCreateTime()) + " " + item.getCompany_name();
             time_Tv.setText(userDate);
         }
         follow_Count.setText(item.getLikedNum());

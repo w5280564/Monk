@@ -212,8 +212,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     }
 
     private void setDrawableLeft(int mipmap) {
-        Drawable drawableLeft = getResources().getDrawable(
-                mipmap);
+        Drawable drawableLeft = getResources().getDrawable(mipmap);
         tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }

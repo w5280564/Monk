@@ -19,12 +19,17 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Interest_Adapter;
 import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
 import com.qingbo.monk.Slides.fragment.InterestAll_Fragment;
+import com.qingbo.monk.Slides.fragment.InterestDetail_All_Fragment;
+import com.qingbo.monk.Slides.fragment.InterestDetail_My_Fragment;
 import com.qingbo.monk.Slides.fragment.StockOrFund_Question_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.bean.InterestDetail_Bean;
+import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
+import com.qingbo.monk.home.fragment.InterestDetail_Member_Fragment;
+import com.qingbo.monk.question.fragment.GroupDetailTopicListFragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -111,9 +116,9 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        fragments.add(InterestAll_Fragment.newInstance("1"));
-        fragments.add(StockOrFund_Question_Fragment.newInstance("", ""));
-        fragments.add(InterestAll_Fragment.newInstance("1"));
+        fragments.add(InterestDetail_All_Fragment.newInstance(id));
+        fragments.add( InterestDetail_My_Fragment.newInstance(id));
+        fragments.add(InterestDetail_Member_Fragment.newInstance(id));
         initViewPager(0);
     }
 
@@ -135,7 +140,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
                         add_Tv.setText(s);
                         content_Tv.setText(interestDetail_bean.getGroupDes());
 
-                        isJoin(interestDetail_bean.getStatusJoin(), join_Tv);
+                        isJoin(interestDetail_bean.getStatus_num(), join_Tv);
 
                     }
                 }

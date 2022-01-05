@@ -29,4 +29,6 @@ public class InterestDetail_Bean {
     private List<String> list;
     @SerializedName("count")
     private String count;
+    @SerializedName("status_num")
+    private String status_num;
 }
