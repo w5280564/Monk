@@ -10,11 +10,15 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.dialog.InputStringDialog;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.eventbus.GroupManagerEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.MySwitchItemView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -136,6 +140,7 @@ public class GroupManagerSetCostActivity extends BaseActivity {
                                 arrowItemView_cost.setVisibility(View.VISIBLE);
                                 arrowItemView_cost.getTvContent().setText(fee+"元");
                             }
+                            EventBus.getDefault().post(new GroupManagerEvent(GroupManagerEvent.UPDATE_FEE,content));
                         }
                     }
                 }, true);

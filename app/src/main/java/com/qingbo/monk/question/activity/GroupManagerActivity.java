@@ -9,9 +9,14 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.eventbus.GroupManagerEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.view.MySwitchItemView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 
@@ -38,6 +43,17 @@ public class GroupManagerActivity extends BaseActivity {
         return R.layout.activity_group_manager;
     }
 
+    @Override
+    protected void initView() {
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onGroupManagerEvent(GroupManagerEvent event) {
+        if(event.type == GroupManagerEvent.UPDATE_FEE){
+            shequn_fee = event.value;
+        }
+    }
 
     @Override
     protected void initEvent() {
@@ -64,7 +80,8 @@ public class GroupManagerActivity extends BaseActivity {
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
                             theme_Switch.getSwitch().setChecked(isCheck);
-                            //todo
+                            String current_status = isCheck?"1":"2";
+                            EventBus.getDefault().post(new GroupManagerEvent(GroupManagerEvent.UPDATE_THEME,current_status));
                         }
                     }
                 }, true);

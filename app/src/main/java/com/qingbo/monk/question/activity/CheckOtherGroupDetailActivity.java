@@ -205,6 +205,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             T.ss("加入成功");
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.JOIN_GROUP));
                             GroupDetailActivity.actionStart(mActivity, id);
                             finish();
                         }

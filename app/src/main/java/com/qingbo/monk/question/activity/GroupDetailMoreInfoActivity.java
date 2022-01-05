@@ -15,6 +15,7 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
+import com.xunda.lib.common.common.eventbus.GroupManagerEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -86,7 +87,14 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
         }
     }
 
-
+    @Subscribe
+    public void onGroupManagerEvent(GroupManagerEvent event) {
+        if(event.type == GroupManagerEvent.UPDATE_FEE){
+            sheQunBean.setShequnFee(event.value);
+        }else if(event.type == GroupManagerEvent.UPDATE_THEME){
+            sheQunBean.setShowTheme(event.value);
+        }
+    }
 
     @Override
     protected void initLocalData() {
