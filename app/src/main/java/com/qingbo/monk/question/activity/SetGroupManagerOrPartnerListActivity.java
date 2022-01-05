@@ -80,6 +80,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(true);
         mGroupMemberListAdapter = new GroupManagerOrPartnerBigAdapter(mList);
+        mGroupMemberListAdapter.setEmptyView(addEmptyView("暂无数据",0));
         mRecyclerView.setAdapter(mGroupMemberListAdapter);
     }
 
