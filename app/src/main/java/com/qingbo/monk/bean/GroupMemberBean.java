@@ -25,8 +25,8 @@ public class GroupMemberBean {
     private Integer type=0;// 0-网络图片 1- 添加图标 2 踢人图标
     @SerializedName("isCheck")
     private boolean isCheck;
-    @SerializedName("initials")
-    private String initials;
+    @SerializedName("firstLetter")
+    private String firstLetter;
     @SerializedName("item_type")
     private Integer itemType=0;//0是header  1是member
 }

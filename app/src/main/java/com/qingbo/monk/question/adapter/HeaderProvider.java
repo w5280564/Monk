@@ -22,7 +22,7 @@ public class HeaderProvider extends BaseItemProvider<GroupMemberBean,BaseViewHol
     @Override
     public void convert(BaseViewHolder helper, GroupMemberBean item, int position) {
         TextView header = helper.getView(R.id.header);
-        header.setText(item.getInitials());
+        header.setText(item.getFirstLetter());
     }
 
 }

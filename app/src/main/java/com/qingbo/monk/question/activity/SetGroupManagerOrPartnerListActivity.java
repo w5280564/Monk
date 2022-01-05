@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -158,14 +159,15 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
                 String letter = obj.getFirstLetter();
                 if(!StringUtil.isBlank(letter)){
                     GroupMemberBean mLetterObj = new GroupMemberBean();
-                    mLetterObj.setInitials(letter);
+                    mLetterObj.setFirstLetter(letter);
                     mLetterObj.setItemType(1);
                     mList.add(mLetterObj);
                 }
                 List<GroupMemberBean> memberList = obj.getChildlist();
                 if(!ListUtils.isEmpty(memberList)){
-                    for (GroupMemberBean mCodeObj:memberList) {
-                        mCodeObj.setItemType(0);
+                    for (GroupMemberBean mMemberObj:memberList) {
+                        mMemberObj.setFirstLetter(letter);
+                        mMemberObj.setItemType(0);
                     }
                     mList.addAll(memberList);
                 }
@@ -193,16 +195,18 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
         sideBarLayout.setSideBarLayout(new SideBarLayout.OnSideBarLayoutListener() {
             @Override
             public void onSideBarScrollUpdateItem(String word) {
-                L.e("word>>>"+word);
-                L.e("mList>>>"+GsonUtil.getInstance().toJson(mList));
                 for (int i = 0; i < mList.size(); i++) {
-                    if (word.equals(mList.get(i).getInitials())) {
-                        mRecyclerView.smoothScrollToPosition(i);
+                    if (word.equals(mList.get(i).getFirstLetter())) {
+                        mRecyclerView.scrollToPosition(i);
+                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();//必不可少
+                        mLayoutManager.scrollToPositionWithOffset(i, 0);
                         break;
                     }
                 }
             }
         });
+
+//        sideBarLayout.OnItemScrollUpdateText(mList.get(firstItemPosition).getWord());
 
         mGroupMemberListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -211,9 +215,13 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
                 if (obj==null) {
                     return;
                 }
+                if (obj.getItemType()==1) {
+                    return;
+                }
+
                 if (!obj.isCheck()) {
-                    mChooseList.add(obj);
                     obj.setCheck(true);
+                    mChooseList.add(obj);
                     addHeaderView(obj);
                 }else{
                     obj.setCheck(false);
@@ -233,11 +241,18 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
      */
     private void deleteHeaderView(GroupMemberBean obj) {
         for (int i = 0; i < mChooseList.size(); i++) {
-            if (mChooseList.get(i).getId().equals(obj.getId())) {
-                ll_header_container.removeViewAt(i);
+            String tempId = mChooseList.get(i).getId();
+            String currentId = obj.getId();
+            if (!StringUtil.isBlank(tempId)&&!StringUtil.isBlank(currentId)) {
+                if (tempId.equals(currentId)) {
+                    ll_header_container.removeViewAt(i);
+                    break;
+                }
             }
         }
     }
+
+
 
     /**
      * 选中
