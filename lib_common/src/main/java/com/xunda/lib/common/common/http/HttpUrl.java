@@ -157,6 +157,8 @@ public class HttpUrl {
      */
     public static final String deleteTopic = "square/detail/delete-topic";
     public static final String feeSet = "square/set/fee-set";//入群费用设置
+    public static final String themeSet = "square/set/theme-set";//设置预览主题
+    public static final String userDelete = "square/set/user-delete";//删除用户
 
 
     /**

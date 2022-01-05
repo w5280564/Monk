@@ -34,9 +34,10 @@ public class GroupManagerSetCostActivity extends BaseActivity {
     MyArrowItemView arrowItemView_cost;
     private String id,fee="";
 
-    public static void actionStart(Context context, String id) {
+    public static void actionStart(Context context, String id,String shequn_fee) {
         Intent intent = new Intent(context, GroupManagerSetCostActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("shequn_fee", shequn_fee);
         context.startActivity(intent);
     }
 
@@ -45,10 +46,6 @@ public class GroupManagerSetCostActivity extends BaseActivity {
         return R.layout.activity_group_manager_set_cost;
     }
 
-    @Override
-    protected void initView() {
-
-    }
 
     @Override
     protected void initEvent() {
@@ -67,6 +64,15 @@ public class GroupManagerSetCostActivity extends BaseActivity {
     @Override
     protected void initLocalData() {
         id = getIntent().getStringExtra("id");
+        fee = getIntent().getStringExtra("shequn_fee");
+        if ("0".equals(fee)) {
+            free_Switch.getSwitch().setChecked(true);
+            arrowItemView_cost.setVisibility(View.GONE);
+        }else{
+            free_Switch.getSwitch().setChecked(false);
+            arrowItemView_cost.setVisibility(View.VISIBLE);
+            arrowItemView_cost.getTvContent().setText(fee+"元");
+        }
     }
 
 

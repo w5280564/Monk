@@ -42,7 +42,7 @@
             app:arrowItemTitle="合伙人"/>
 
         <com.xunda.lib.common.view.MySwitchItemView
-            android:id="@+id/disturb_Switch"
+            android:id="@+id/theme_Switch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_14"

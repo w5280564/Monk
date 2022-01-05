@@ -38,4 +38,8 @@ public class GroupMoreInfoBean implements Serializable {
     private String count;
     @SerializedName("share_url")
     private String shareUrl;
+    @SerializedName("shequn_fee")
+    private String shequnFee;
+    @SerializedName("show_theme")
+    private String showTheme;
 }

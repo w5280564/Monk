@@ -2,12 +2,15 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +49,8 @@ public class GroupMemberListActivity extends BaseActivity {
     TextView title_tv;
     @BindView(R.id.et_search)
     EditText et_search;
+    @BindView(R.id.ll_cancel)
+    LinearLayout ll_cancel;
     private String id;
     private List<GroupMemberBean> allMemberList = new ArrayList<>();
     private List<GroupMemberBean> resultMemberList = new ArrayList<>();
@@ -146,20 +151,53 @@ public class GroupMemberListActivity extends BaseActivity {
                 return false;
             }
         });
+
+        addEditTextListener();
+    }
+
+
+    /**
+     * 给editext添加监听
+     */
+    private void addEditTextListener() {
+        et_search.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                if(!StringUtil.isBlank(arg0.toString())){
+                    ll_cancel.setVisibility(View.VISIBLE);
+                }else{
+                    ll_cancel.setVisibility(View.GONE);
+                }
+                searchMemberList();
+            }
+        });
     }
 
 
     private void searchMemberList() {
         String searchStr = et_search.getText().toString().trim();
         if (StringUtil.isBlank(searchStr)) {
-            T.ss("请输入群成员名称");
-            return;
+            mGroupMemberListAdapter.setNewData(allMemberList);
+        }else{
+            getMemberListByName(searchStr);
         }
-
-        getMemberListByName(searchStr);
     }
 
     private void getMemberListByName(String searchStr) {
+        resultMemberList.clear();
         if (!ListUtils.isEmpty(allMemberList)) {
             for (GroupMemberBean mObj : allMemberList) {
                 if (mObj.getNickname().contains(searchStr)) {
@@ -235,15 +273,15 @@ public class GroupMemberListActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.title_bar_left, R.id.title_bar_center_txt, R.id.et_search})
+    @OnClick({R.id.title_bar_left,R.id.ll_cancel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_bar_left:
                 back();
                 break;
-            case R.id.title_bar_center_txt:
-                break;
-            case R.id.et_search:
+            case R.id.ll_cancel:
+                et_search.setText("");
+                ll_cancel.setVisibility(View.GONE);
                 break;
 
         }

@@ -1,19 +1,27 @@
 package com.qingbo.monk.question.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
+import android.widget.TextView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.bean.ChooseMemberBean;
+import com.qingbo.monk.bean.GroupMemberBean;
+import com.qingbo.monk.bean.GroupMemberListBean;
 import com.qingbo.monk.question.adapter.ChooseMemberAdapter;
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
 
@@ -21,11 +29,20 @@ import butterknife.BindView;
  * 社群管理员或合伙人
  */
 public class GroupManagerOrPartnerListActivity extends BaseActivity {
-    private List<ChooseMemberBean> memberList = new ArrayList<>();
+    private List<GroupMemberBean> memberList = new ArrayList<>();
     private ChooseMemberAdapter mAdapter;
     @BindView(R.id.mRecycleView)
     RecyclerView mRecycleView;
+    @BindView(R.id.tv_label)
+    TextView tv_label;
+    private String id,type;//3是管理员 4是合伙人
 
+    public static void actionStart(Context context, String id,String type) {
+        Intent intent = new Intent(context, GroupManagerOrPartnerListActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("type", type);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -34,6 +51,15 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
 
     @Override
     protected void initLocalData() {
+        id = getIntent().getStringExtra("id");
+        type = getIntent().getStringExtra("type");
+        if ("3".equals(type)) {
+            title = "管理员";
+            tv_label.setText("添加管理员");
+        }else{
+            title = "合伙人";
+            tv_label.setText("添加合伙人");
+        }
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
     }
@@ -43,7 +69,7 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      * 添加添加图片这个对象
      */
     private void initFirstAddData() {
-        ChooseMemberBean bean = new ChooseMemberBean();
+        GroupMemberBean bean = new GroupMemberBean();
         bean.setType(1);
         memberList.add(bean);
     }
@@ -74,13 +100,57 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      */
     private void clickItem(int position) {
         if (memberList.get(position).getType() == 1) {//添加
-            skipAnotherActivity(SetGroupManagerOrPartnerListActivity.class);
+            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type);
         }else if(memberList.get(position).getType() == 2){//踢人
-            skipAnotherActivity(SetGroupManagerOrPartnerListActivity.class);
+//            skipAnotherActivity(SetGroupManagerOrPartnerListActivity.class);
         }else{
 
         }
     }
 
 
+    @Override
+    protected void getServerData() {
+        groupUserList();
+    }
+
+
+    /**
+     * 群管理员/合伙人列表
+     */
+    private void groupUserList() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id);
+        requestMap.put("type", type);//3是管理员 4是合伙人
+        HttpSender sender = new HttpSender(HttpUrl.groupUserList, "群管理员/合伙人列表", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            GroupMemberListBean obj = GsonUtil.getInstance().json2Bean(json_data, GroupMemberListBean.class);
+                            if (obj==null) {
+                                return;
+                            }
+
+                            handleData(obj);
+                        }
+                    }
+
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+    private void handleData(GroupMemberListBean obj) {
+        memberList.addAll(memberList.size()-1,obj.getList());
+        deleteLastOne();
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void deleteLastOne() {
+        if (memberList.size() > 10) {
+            memberList.remove(memberList.size() - 1);
+        }
+    }
 }

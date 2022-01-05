@@ -40,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_9"
-                android:text="添加合伙人 "
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_16" />
 
