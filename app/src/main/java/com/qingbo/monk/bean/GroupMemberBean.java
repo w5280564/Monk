@@ -27,4 +27,6 @@ public class GroupMemberBean {
     private boolean isCheck;
     @SerializedName("initials")
     private String initials;
+    @SerializedName("item_type")
+    private Integer itemType=0;//0是header  1是member
 }

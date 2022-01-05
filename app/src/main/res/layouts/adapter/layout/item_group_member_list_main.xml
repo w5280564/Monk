@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
         android:id="@+id/header"
@@ -15,14 +15,5 @@
         android:paddingLeft="@dimen/dp_5"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="@dimen/sp_10"
-        android:textStyle="bold"
-        android:text="A"
-        android:visibility="visible" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
-
+        android:textStyle="bold"/>
 </LinearLayout>

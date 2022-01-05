@@ -15,11 +15,15 @@ import com.qingbo.monk.bean.GroupMemberBean;
 import com.qingbo.monk.bean.GroupMemberListBean;
 import com.qingbo.monk.question.adapter.ChooseMemberAdapter;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +51,20 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.group_manager_or_partner_list_activity;
+    }
+
+    @Override
+    protected void initView() {
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onFinishEvent(FinishEvent event) {
+        if(event.type == FinishEvent.EDIT_MANAGER_PARTNER){
+            memberList.clear();
+            initFirstAddData();
+            groupUserList();
+        }
     }
 
     @Override
@@ -103,11 +121,9 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      */
     private void clickItem(int position) {
         if (memberList.get(position).getType() == 1) {//添加
-            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type);
+            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,1);
         }else if(memberList.get(position).getType() == 2){//踢人
-//            skipAnotherActivity(SetGroupManagerOrPartnerListActivity.class);
-        }else{
-
+            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,2);
         }
     }
 

@@ -9,6 +9,7 @@ public class FinishEvent {
     public final static int PUBLISH_TOPIC = 3; //发布完社群话题
     public final static int PUBLISH_ANSWER = 4; //回答提问
     public final static int CHOOSE_THEME = 5; //选择主题
+    public final static int EDIT_MANAGER_PARTNER = 8; //编辑完管理员或合伙人
 
 
     //操作所属的模块类型(业务线)

@@ -16,23 +16,26 @@ import com.lzj.sidebar.SideBarLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.bean.AskQuestionBean;
 import com.qingbo.monk.bean.GroupMemberBean;
 import com.qingbo.monk.bean.GroupMemberBigBean;
-import com.qingbo.monk.bean.GroupMemberListBean;
-import com.qingbo.monk.question.adapter.GroupManagerOrPartnerAdapter;
+import com.qingbo.monk.question.adapter.GroupManagerOrPartnerBigAdapter;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -40,19 +43,24 @@ import butterknife.OnClick;
  * 添加或删除社区管理员或合伙人
  */
 public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
-    @BindView(R.id.ll_main_container)
-    LinearLayout ll_main_container;
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
     @BindView(R.id.ll_header_container)
     LinearLayout ll_header_container;
     @BindView(R.id.sideBarLayout)
     SideBarLayout sideBarLayout;
     private String id,type;//3是管理员 4是合伙人
+    private int edit_type;//1添加 2删除
+    private String getRequestType,setRequestType;
     private List<GroupMemberBean> mChooseList = new ArrayList<>();
+    private List<GroupMemberBean> mList = new ArrayList();
+    private GroupManagerOrPartnerBigAdapter mGroupMemberListAdapter;
 
-    public static void actionStart(Context context, String id, String type) {
+    public static void actionStart(Context context, String id, String type,int edit_type) {
         Intent intent = new Intent(context, SetGroupManagerOrPartnerListActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("type", type);
+        intent.putExtra("edit_type", edit_type);
         context.startActivity(intent);
     }
 
@@ -62,13 +70,45 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void initView() {
+        initRecyclerView();
+    }
 
+    private void initRecyclerView() {
+        LinearLayoutManager mManager  = new LinearLayoutManager(mActivity);
+        mRecyclerView.setLayoutManager(mManager);
+        mRecyclerView.setHasFixedSize(true);
+        mGroupMemberListAdapter = new GroupManagerOrPartnerBigAdapter(mList);
+        mRecyclerView.setAdapter(mGroupMemberListAdapter);
+    }
 
 
     @Override
     protected void initLocalData() {
         id = getIntent().getStringExtra("id");
         type = getIntent().getStringExtra("type");
+        edit_type = getIntent().getIntExtra("edit_type",1);
+
+        if (edit_type==1) {//添加
+            getRequestType = "1";
+            if ("3".equals(type)) {//管理员
+                setRequestType = "1";
+                title = "添加管理员";
+            }else{
+                setRequestType = "2";
+                title = "添加合伙人";
+            }
+        }else{//删除
+            setRequestType = "3";
+            if ("3".equals(type)) {//管理员
+                getRequestType = "2";
+                title = "删除管理员";
+            }else{
+                getRequestType = "3";
+                title = "删除合伙人";
+            }
+        }
     }
 
     @Override
@@ -83,7 +123,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     private void groupUserList() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        requestMap.put("type", "1");
+        requestMap.put("type", getRequestType);
         HttpSender sender = new HttpSender(HttpUrl.commonUser, "群成员列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -110,50 +150,32 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
 
 
 
-    private void createMainList(List<GroupMemberBigBean> mList) {
-        if (!ListUtils.isEmpty(mList)) {
-            ll_main_container.removeAllViews();
-            for (GroupMemberBigBean mTempObj:mList) {
-                View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_member_list_main, null);
-                TextView header = itemView.findViewById(R.id.header);
-                header.setText(mTempObj.getFirstLetter());
-                RecyclerView mRecyclerView = itemView.findViewById(R.id.mRecyclerView);
-                initRecyclerView(mRecyclerView,mTempObj.getChildlist());
-                ll_main_container.addView(itemView);
+    private void createMainList(List<GroupMemberBigBean> tempList) {
+        if (!ListUtils.isEmpty(tempList)) {
+            sideBarLayout.setVisibility(View.VISIBLE);
+            for (GroupMemberBigBean obj:tempList) {
+                String letter = obj.getFirstLetter();
+                if(!StringUtil.isBlank(letter)){
+                    GroupMemberBean mLetterObj = new GroupMemberBean();
+                    mLetterObj.setInitials(letter);
+                    mLetterObj.setItemType(1);
+                    mList.add(mLetterObj);
+                }
+                List<GroupMemberBean> memberList = obj.getChildlist();
+                if(!ListUtils.isEmpty(memberList)){
+                    for (GroupMemberBean mCodeObj:memberList) {
+                        mCodeObj.setItemType(0);
+                    }
+                    mList.addAll(memberList);
+                }
             }
+        } else {
+            sideBarLayout.setVisibility(View.GONE);
         }
-
+        mGroupMemberListAdapter.notifyDataSetChanged();
     }
 
-    public void initRecyclerView(RecyclerView mRecyclerView,List<GroupMemberBean> childList) {
-        LinearLayoutManager mManager  = new LinearLayoutManager(mActivity);
-        mRecyclerView.setLayoutManager(mManager);
-        mRecyclerView.setHasFixedSize(true);
-        GroupManagerOrPartnerAdapter mGroupMemberListAdapter = new GroupManagerOrPartnerAdapter();
-        mRecyclerView.setAdapter(mGroupMemberListAdapter);
-        mGroupMemberListAdapter.setNewData(childList);
 
-        mGroupMemberListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                GroupMemberBean obj = (GroupMemberBean) adapter.getItem(position);
-                if (obj==null) {
-                    return;
-                }
-                if (!obj.isCheck()) {
-                    mChooseList.add(obj);
-                    obj.setCheck(true);
-                    addHeaderView(obj,mGroupMemberListAdapter);
-                }else{
-                    obj.setCheck(false);
-                    deleteHeaderView(obj);
-                    mChooseList.remove(obj);
-                }
-                titleBar.setRightText(mChooseList.size()==0?"完成":String.format("完成(%s)",mChooseList.size()));
-                mGroupMemberListAdapter.notifyDataSetChanged();
-            }
-        });
-    }
 
 
     @OnClick({R.id.et_search})
@@ -170,13 +192,35 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
         sideBarLayout.setSideBarLayout(new SideBarLayout.OnSideBarLayoutListener() {
             @Override
             public void onSideBarScrollUpdateItem(String word) {
-//                //根据自己业务实现
-//                for (int i = 0; i < mList.size(); i++) {
-//                    if (mList.get(i).getWord().equals(word)) {
-//                        recyclerView.smoothScrollToPosition(i);
-//                        break;
-//                    }
-//                }
+                L.e("word>>>"+word);
+                L.e("mList>>>"+GsonUtil.getInstance().toJson(mList));
+                for (int i = 0; i < mList.size(); i++) {
+                    if (word.equals(mList.get(i).getInitials())) {
+                        mRecyclerView.smoothScrollToPosition(i);
+                        break;
+                    }
+                }
+            }
+        });
+
+        mGroupMemberListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                GroupMemberBean obj = (GroupMemberBean) adapter.getItem(position);
+                if (obj==null) {
+                    return;
+                }
+                if (!obj.isCheck()) {
+                    mChooseList.add(obj);
+                    obj.setCheck(true);
+                    addHeaderView(obj);
+                }else{
+                    obj.setCheck(false);
+                    deleteHeaderView(obj);
+                    mChooseList.remove(obj);
+                }
+                titleBar.setRightText(mChooseList.size()==0?"完成":String.format("完成(%s)",mChooseList.size()));
+                mGroupMemberListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -197,7 +241,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     /**
      * 选中
      */
-    private void addHeaderView(GroupMemberBean obj,GroupManagerOrPartnerAdapter mGroupMemberListAdapter) {
+    private void addHeaderView(GroupMemberBean obj) {
         View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_member_list_top, null);
         ImageView iv_header = itemView.findViewById(R.id.iv_header);
         GlideUtils.loadCircleImage(mContext, iv_header, obj.getAvatar());
@@ -213,5 +257,41 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
                 mGroupMemberListAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+
+    @Override
+    public void onRightClick() {
+        if (ListUtils.isEmpty(mChooseList)) {
+            T.ss("请选择群成员");
+            return;
+        }
+        List<String> mSubmitList = new ArrayList();
+        for (GroupMemberBean submitObj:mChooseList) {
+            mSubmitList.add(submitObj.getId());
+        }
+
+        setAdmins(StringUtil.listToString(mSubmitList));
+    }
+
+    private void setAdmins(String user_id) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id);
+        requestMap.put("type", setRequestType);//	1添加管理员 2添加合伙人 3设置为一般用户
+        requestMap.put("uids", user_id);
+        HttpSender sender = new HttpSender(HttpUrl.setAdmins, "设置/取消管理员/合伙人", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.EDIT_MANAGER_PARTNER));
+                            back();
+                        }
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendPost();
     }
 }
