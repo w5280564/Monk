@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:layout_constraintTop_toTopOf="parent"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
         app:titleBarTitle="合伙人"
@@ -20,62 +20,85 @@
     <LinearLayout
         android:id="@+id/ll_search"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_30"
-        android:layout_marginLeft="@dimen/dp_15"
+        android:layout_height="@dimen/dp_36"
         android:layout_marginTop="@dimen/dp_18"
         android:layout_marginRight="@dimen/dp_15"
-        android:background="@drawable/background_bg_search_member"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/dp_17"
-        app:layout_constraintTop_toBottomOf="@id/title_bar">
+        android:paddingLeft="@dimen/dp_20">
 
-        <ImageView
-            android:layout_width="@dimen/dp_12"
-            android:layout_height="@dimen/dp_12"
-            android:src="@mipmap/icon_search" />
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/et_search"
-            style="@style/Widget.EditViewStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dp_11"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="搜索成员"
-            android:textSize="@dimen/sp_12" />
+                <LinearLayout
+                    android:id="@+id/ll_header_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/et_search"
+                    style="@style/Widget.EditViewStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="搜索"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+
+
+        </HorizontalScrollView>
     </LinearLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
-        app:layout_constraintTop_toBottomOf="@id/ll_search"
-        app:layout_constraintVertical_weight="1">
+        android:layout_weight="1">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/ll_main_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/group_dialog"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_toast"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            android:visibility="invisible" />
+            </LinearLayout>
 
-        <com.xunda.lib.common.view.SideBar
-            android:id="@+id/sidrbar"
-            android:layout_width="@dimen/dp_35"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center" />
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <com.lzj.sidebar.SideBarLayout
+            android:id="@+id/sideBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_gravity="right|center_vertical"
+            app:sidebarSelectTextColor="@color/text_color_6f6f6f"
+            app:sidebarUnSelectTextColor="@color/text_color_6f6f6f"
+            app:sidebarSelectTextSize="12sp"
+            app:sidebarUnSelectTextSize="10sp"
+            app:sidebarWordBackground="@drawable/bg_toast"
+            app:sidebarWordTextColor="@color/white"
+            app:sidebarWordTextSize="45sp"/>
     </FrameLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

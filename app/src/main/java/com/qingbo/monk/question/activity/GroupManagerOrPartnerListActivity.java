@@ -69,9 +69,12 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      * 添加添加图片这个对象
      */
     private void initFirstAddData() {
-        GroupMemberBean bean = new GroupMemberBean();
-        bean.setType(1);
-        memberList.add(bean);
+        GroupMemberBean beanAdd = new GroupMemberBean();
+        beanAdd.setType(1);
+        memberList.add(beanAdd);
+        GroupMemberBean beanDelete = new GroupMemberBean();
+        beanDelete.setType(2);
+        memberList.add(beanDelete);
     }
 
 
@@ -142,15 +145,8 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
     }
 
     private void handleData(GroupMemberListBean obj) {
-        memberList.addAll(memberList.size()-1,obj.getList());
-        deleteLastOne();
+        memberList.addAll(0,obj.getList());
         mAdapter.notifyDataSetChanged();
     }
 
-
-    private void deleteLastOne() {
-        if (memberList.size() > 10) {
-            memberList.remove(memberList.size() - 1);
-        }
-    }
 }

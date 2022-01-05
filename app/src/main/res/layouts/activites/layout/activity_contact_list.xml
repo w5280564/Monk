@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white">
 
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:layout_constraintTop_toTopOf="parent"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
         app:titleBarTitle="好友" />
@@ -23,8 +23,7 @@
         android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/search_bg"
         android:gravity="center"
-        android:text="搜索好友"
-        app:layout_constraintTop_toBottomOf="@id/title_bar">
+        android:text="搜索好友">
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,9 +38,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintTop_toBottomOf="@id/seek_ll"
-        app:layout_constraintVertical_weight="1" >
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/dp_10">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mRecyclerView"
@@ -59,15 +57,22 @@
             android:textSize="30dp"
             android:visibility="invisible" />
 
-        <com.xunda.lib.common.view.SideBar
-            android:id="@+id/sidrbar"
-            android:layout_width="@dimen/dp_35"
-            android:layout_height="match_parent"
-            android:layout_gravity="right|center"/>
+        <com.lzj.sidebar.SideBarLayout
+            android:id="@+id/sideBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_gravity="right|center_vertical"
+            app:sidebarSelectTextColor="@color/text_color_1F8FE5"
+            app:sidebarUnSelectTextColor="@color/text_color_1F8FE5"
+            app:sidebarSelectTextSize="12sp"
+            app:sidebarUnSelectTextSize="10sp"
+            app:sidebarWordBackground="@drawable/bg_toast"
+            app:sidebarWordTextColor="@color/white"
+            app:sidebarWordTextSize="45sp"/>
     </FrameLayout>
 
 
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -99,6 +99,7 @@ android {
 
         implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//折线图 饼状图
         implementation 'com.contrarywind:Android-PickerView:4.1.9'//选择器
+        implementation 'com.github.lzjin:SideBarView:1.0'//字母索引
     }
 
 

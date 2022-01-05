@@ -24,6 +24,7 @@ public class GroupManagerOrPartnerAdapter extends BaseQuickAdapter<GroupMemberBe
     @Override
     protected void convert(BaseViewHolder helper, GroupMemberBean item) {
         CheckBox cb_check = helper.getView(R.id.cb_check);
+        cb_check.setChecked(item.isCheck());
         ImageView iv_header = helper.getView(R.id.iv_header);
         helper.setText(R.id.tv_name,item.getNickname());
         GlideUtils.loadCircleImage(mContext, iv_header, item.getAvatar());

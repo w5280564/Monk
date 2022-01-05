@@ -11,10 +11,14 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapterMy;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import butterknife.BindView;
 
@@ -37,8 +41,14 @@ public class MyGroupListActivity extends BaseActivity {
     protected void initView() {
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
+        registerEventBus();
     }
-
+    @Subscribe
+    public void onFinishEvent(FinishEvent event) {
+        if(event.type == FinishEvent.EXIT_GROUP){
+            getMyGroup();
+        }
+    }
 
     private void initRecyclerView() {
         mAdapter = new QuestionGroupAdapterMy();

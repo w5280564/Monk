@@ -64,7 +64,7 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     }
 
     private void showCancelRoleDialog() {
-        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this,"确定退出社群吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this,"确定退出该社群吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
                 exitGroup();
