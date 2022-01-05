@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.xunda.lib.common.view.MySwitchItemView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -13,14 +14,14 @@ import butterknife.OnClick;
  * 群管理
  */
 public class GroupManagerActivity extends BaseActivity {
-
-
     @BindView(R.id.disturb_Switch)
     MySwitchItemView disturbSwitch;
 
-    public static void actionStart(Context context, String id) {
+    private String id;
+
+    public static void actionStart(Context context, GroupMoreInfoBean sheQunBean) {
         Intent intent = new Intent(context, GroupManagerActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra("sheQunBean", sheQunBean);
         context.startActivity(intent);
     }
 
@@ -37,20 +38,19 @@ public class GroupManagerActivity extends BaseActivity {
 
     @Override
     protected void initLocalData() {
-
+        GroupMoreInfoBean sheQunBean = (GroupMoreInfoBean) getIntent().getSerializableExtra("sheQunBean");
+        if (sheQunBean!=null) {
+            id = sheQunBean.getSqId();
+        }
     }
 
-    @Override
-    protected void getServerData() {
-
-    }
 
 
     @OnClick({R.id.arrowItemView_type, R.id.arrowItemView_manager, R.id.arrowItemView_partner})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.arrowItemView_type:
-                skipAnotherActivity(GroupManagerSetCostActivity.class);
+                GroupManagerSetCostActivity.actionStart(mActivity,id);
                 break;
             case R.id.arrowItemView_manager:
                 skipAnotherActivity(GroupManagerOrPartnerListActivity.class);

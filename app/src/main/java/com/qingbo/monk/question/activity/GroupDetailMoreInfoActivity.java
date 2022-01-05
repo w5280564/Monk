@@ -198,7 +198,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 GroupMemberListActivity.actionStart(mActivity,id);
                 break;
             case R.id.arrowItemView_manager:
-                skipAnotherActivity(GroupManagerActivity.class);
+                GroupManagerActivity.actionStart(mActivity,sheQunBean);
                 break;
             case R.id.arrowItemView_invite_partner:
                 skipAnotherActivity(InvitePartnerActivity.class);

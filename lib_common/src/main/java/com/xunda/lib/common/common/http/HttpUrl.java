@@ -156,6 +156,7 @@ public class HttpUrl {
      * 删除话题
      */
     public static final String deleteTopic = "square/detail/delete-topic";
+    public static final String feeSet = "square/set/fee-set";//入群费用设置
 
 
     /**
@@ -196,6 +197,6 @@ public class HttpUrl {
     public static final String Interest_My = "square/interested/mygroup-app";//我的兴趣圈
     public static final String groupUserList = "square/set/user-list";//群成员列表
     public static final String setAdmins = "square/set/add-admins";//添加管理员/合伙人
-
+    public static final String Interest_Detail = "square/interested/interested-info";//兴趣圈详情
 }
 

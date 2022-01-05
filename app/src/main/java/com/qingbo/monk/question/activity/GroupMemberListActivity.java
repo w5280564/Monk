@@ -27,6 +27,7 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,11 +173,34 @@ public class GroupMemberListActivity extends BaseActivity {
     private void showSetManagerDialog(GroupMemberBean obj,int position) {
         SetManagerDialog mSetManagerDialog = new SetManagerDialog(this,obj, new SetManagerDialog.ConfirmListener() {
             @Override
-            public void onSet(String user_id,String submit_type) {
-                setAdmins(user_id,submit_type,position);
+            public void onSet(String user_id,String submit_type,String current_personal_role) {
+                String content ="";
+                if("2".equals(current_personal_role)) {//1管理员2合伙人0一般用户3群主
+                    content = "确定取消该成员的合伙人身份吗？";
+                }else if("1".equals(current_personal_role)){
+                    content = "确定取消该成员的管理员身份吗？";
+                }else{
+                    content = "确定把该成员设置成管理员吗？";
+                }
+                showCancelRoleDialog(user_id,submit_type,position,content);
             }
         });
         mSetManagerDialog.show();
+    }
+
+    private void showCancelRoleDialog(String user_id,String submit_type,int position,String content) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this,content,"取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                setAdmins(user_id,submit_type,position);
+            }
+
+            @Override
+            public void onClickLeft() {
+
+            }
+        });
+        mDialog.show();
     }
 
     private void setAdmins(String user_id,String submit_type,int position) {

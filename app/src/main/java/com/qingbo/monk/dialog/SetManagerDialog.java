@@ -27,6 +27,7 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
     private TextView tv_submit, tv_join_time, tv_name;
     private ImageView iv_header;
     private String submit_type;//1添加管理员 2添加合伙人 3设置为一般用户
+    private String role;
 
     public SetManagerDialog(Context context, GroupMemberBean obj, ConfirmListener confirmListener) {
         super(context, R.style.bottomrDialogStyle);
@@ -57,7 +58,7 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
         tv_join_time.setText(StringUtil.isBlank(obj.getCreateTime())?"":obj.getCreateTime()+"  加入");
         GlideUtils.loadCircleImage(mContext, iv_header, obj.getAvatar());
 
-        String role = obj.getRole();
+        role = obj.getRole();
         if ("0".equals(role)) {//1管理员2合伙人0一般用户3群主
             tv_submit.setText("设置成管理员");
             submit_type ="1";//1添加管理员 2添加合伙人 3设置为一般用户
@@ -78,9 +79,8 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
     /**
      * 回调接口对象
      */
-
     public interface ConfirmListener {
-        void onSet(String user_id,String type);
+        void onSet(String user_id,String type,String current_personal_role);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
         if (id == R.id.tv_cancel) {
             dismiss();
         } else if (id == R.id.tv_submit) {
-            listener.onSet(obj.getId(),submit_type);
+            listener.onSet(obj.getId(),submit_type,role);
             dismiss();
         }
     }
