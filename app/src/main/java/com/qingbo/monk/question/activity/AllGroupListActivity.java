@@ -46,7 +46,7 @@ public class AllGroupListActivity extends BaseRecyclerViewSplitActivity {
 
     @Subscribe
     public void onFinishEvent(FinishEvent event) {
-        if(event.type == FinishEvent.JOIN_GROUP){
+        if(event.type == FinishEvent.JOIN_GROUP||event.type == FinishEvent.EXIT_GROUP){
             page = 1;
             getAllGroup(true);
         }

@@ -68,7 +68,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     public void onFinishEvent(FinishEvent event) {
         if(event.type == FinishEvent.CREATE_GROUP){
             getMyGroup();
-        }else if(event.type == FinishEvent.JOIN_GROUP){
+        }else if(event.type == FinishEvent.JOIN_GROUP||event.type == FinishEvent.EXIT_GROUP){
             getAllShequn();
         }
     }

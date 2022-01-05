@@ -21,6 +21,7 @@ import com.qingbo.monk.question.fragment.GroupDetailWaitAnswerListFragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -74,6 +75,12 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
         }
     }
 
+    @Subscribe
+    public void onFinishEvent(FinishEvent event) {
+        if(event.type == FinishEvent.EXIT_GROUP){
+            back();
+        }
+    }
 
 
     @Override
