@@ -1,5 +1,6 @@
 package com.qingbo.monk.question.adapter;
 
+import android.view.View;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
@@ -22,7 +23,13 @@ public class HeaderProvider extends BaseItemProvider<GroupMemberBean,BaseViewHol
     @Override
     public void convert(BaseViewHolder helper, GroupMemberBean item, int position) {
         TextView header = helper.getView(R.id.header);
-        header.setText(item.getFirstLetter());
+        int letterShow = item.getLetterShow();
+        if (letterShow==1) {
+            header.setVisibility(View.GONE);
+        }else{
+            header.setVisibility(View.VISIBLE);
+            header.setText(item.getFirstLetter());
+        }
     }
 
 }

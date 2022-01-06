@@ -29,4 +29,7 @@ public class GroupMemberBean {
     private String firstLetter;
     @SerializedName("item_type")
     private Integer itemType=0;//0是header  1是member
+
+    @SerializedName("letterShow")
+    private Integer letterShow=0;//0显示  1是不显示
 }

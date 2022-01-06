@@ -2,10 +2,17 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +50,8 @@ import butterknife.OnClick;
  * 选择好友
  */
 public class SelectMemberListActivity extends BaseActivity {
+    @BindView(R.id.et_search)
+    EditText et_search;
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_header_container)
@@ -53,6 +62,7 @@ public class SelectMemberListActivity extends BaseActivity {
     private int type;
     private List<GroupMemberBean> mChooseList = new ArrayList<>();
     private List<GroupMemberBean> mList = new ArrayList();
+    private List<GroupMemberBean> resultMemberList = new ArrayList<>();
     private GroupManagerOrPartnerBigAdapter mGroupMemberListAdapter;
 
     public static void actionStart(Context context, String id, int type) {
@@ -132,19 +142,24 @@ public class SelectMemberListActivity extends BaseActivity {
             sideBarLayout.setVisibility(View.VISIBLE);
             for (GroupMemberBigBean obj:tempList) {
                 String letter = obj.getFirstLetter();
-                if(!StringUtil.isBlank(letter)){
-                    GroupMemberBean mLetterObj = new GroupMemberBean();
-                    mLetterObj.setFirstLetter(letter);
-                    mLetterObj.setItemType(1);
-                    mList.add(mLetterObj);
-                }
+                GroupMemberBean mLetterObj = new GroupMemberBean();
+                mLetterObj.setFirstLetter(StringUtil.isBlank(letter)?"#":letter);
+                mLetterObj.setItemType(1);
+                mList.add(mLetterObj);
+
                 List<GroupMemberBean> memberList = obj.getChildlist();
                 if(!ListUtils.isEmpty(memberList)){
                     for (GroupMemberBean mMemberObj:memberList) {
-                        mMemberObj.setFirstLetter(letter);
-                        mMemberObj.setItemType(0);
+                        if ("-1".equals(mMemberObj.getRole())) {//role=-1的才能邀请
+                            mMemberObj.setFirstLetter(letter);
+                            mMemberObj.setItemType(0);
+                            mList.add(mMemberObj);
+                        }else{
+                            if (memberList.size()==1) {
+                                mLetterObj.setLetterShow(1);
+                            }
+                        }
                     }
-                    mList.addAll(memberList);
                 }
             }
         } else {
@@ -207,6 +222,21 @@ public class SelectMemberListActivity extends BaseActivity {
             }
         });
 
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {//打开软键盘
+                    imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
+                }
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchMemberList();
+                }
+                return false;
+            }
+        });
+
+        addEditTextListener();
     }
 
 
@@ -281,5 +311,59 @@ public class SelectMemberListActivity extends BaseActivity {
 
         sender.setContext(mActivity);
         sender.sendPost();
+    }
+
+
+
+
+
+    /**
+     * 给editext添加监听
+     */
+    private void addEditTextListener() {
+        et_search.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                searchMemberList();
+            }
+        });
+    }
+
+
+    private void searchMemberList() {
+        String searchStr = et_search.getText().toString().trim();
+        if (StringUtil.isBlank(searchStr)) {
+            mGroupMemberListAdapter.setNewData(mList);
+        }else{
+            getMemberListByName(searchStr);
+        }
+    }
+
+    private void getMemberListByName(String searchStr) {
+        resultMemberList.clear();
+        if (!ListUtils.isEmpty(mList)) {
+            for (GroupMemberBean mObj : mList) {
+                String nickname = mObj.getNickname();
+                if (!StringUtil.isBlank(nickname)) {
+                    if (nickname.contains(searchStr)) {
+                        resultMemberList.add(mObj);
+                    }
+                }
+            }
+            mGroupMemberListAdapter.setNewData(resultMemberList);
+        }
     }
 }
