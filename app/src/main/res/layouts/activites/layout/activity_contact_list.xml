@@ -19,18 +19,24 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_29"
         android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/search_bg"
         android:gravity="center"
         android:text="搜索好友">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@mipmap/seek_icon"
-            android:drawablePadding="@dimen/dp_9"
-            android:text="搜索好友" />
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="搜索"
+            android:textSize="@dimen/sp_12"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15"
+            android:singleLine="true"/>
 
 
     </LinearLayout>

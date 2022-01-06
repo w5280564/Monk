@@ -18,11 +18,12 @@
         app:titleBarTitle="一只可爱的羊"
       />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView"
+
+    <include layout="@layout/refresh_recyclerview_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/dp_15"/>
 
 
     <LinearLayout

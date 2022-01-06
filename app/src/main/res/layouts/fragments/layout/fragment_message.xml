@@ -58,8 +58,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/dp_15"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
+
+    <include layout="@layout/refresh_recyclerview_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0"
         app:layout_constraintVertical_weight="1"

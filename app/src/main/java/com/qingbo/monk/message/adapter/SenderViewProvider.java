@@ -1,22 +1,18 @@
 package com.qingbo.monk.message.adapter;
 
 import android.widget.ImageView;
-
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
-import com.qingbo.monk.bean.ServiceChatBean;
-import com.qingbo.monk.bean.ServiceChatIndexBean;
+import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
-import java.util.List;
 
 /**
  * 发送
  */
-public class SenderViewProvider extends BaseItemProvider<ServiceChatIndexBean,BaseViewHolder> {
+public class SenderViewProvider extends BaseItemProvider<ReceiveMessageBean,BaseViewHolder> {
 
     @Override
     public int viewType() {
@@ -29,13 +25,10 @@ public class SenderViewProvider extends BaseItemProvider<ServiceChatIndexBean,Ba
     }
 
     @Override
-    public void convert(BaseViewHolder helper, ServiceChatIndexBean item, int position) {
-        List<ServiceChatBean> mList =  item.getList();
-        if(!ListUtils.isEmpty(mList)){
-            helper.setText(R.id.tv_content, StringUtil.isBlank(mList.get(0).getContent()) ? "" : mList.get(0).getContent());
-            ImageView iv_head = helper.getView(R.id.iv_head);
-            GlideUtils.loadCircleImage(mContext,iv_head, SharePref.user().getUserHead());
-        }
+    public void convert(BaseViewHolder helper, ReceiveMessageBean item, int position) {
+        helper.setText(R.id.tv_content, StringUtil.getStringValue(item.getMessage()));
+        ImageView iv_head = helper.getView(R.id.iv_head);
+        GlideUtils.loadCircleImage(mContext,iv_head, SharePref.user().getUserHead());
     }
 
 }

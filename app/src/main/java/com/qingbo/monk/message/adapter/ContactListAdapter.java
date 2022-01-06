@@ -1,10 +1,10 @@
 package com.qingbo.monk.message.adapter;
 
-import androidx.annotation.NonNull;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.qingbo.monk.R;
+import com.chad.library.adapter.base.MultipleItemRvAdapter;
+import com.qingbo.monk.bean.FriendContactBean;
+import com.qingbo.monk.bean.GroupMemberBean;
+import java.util.List;
 
 /**
  * ================================================
@@ -13,14 +13,30 @@ import com.qingbo.monk.R;
  * <p>
  * ================================================
  */
-public class ContactListAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
-    public ContactListAdapter() {
-        super(R.layout.item_contact_list);
+public class ContactListAdapter extends MultipleItemRvAdapter<FriendContactBean, BaseViewHolder> {
+    public static final int TYPE_HEADER = 101;
+    public static final int TYPE_MEMBER = 201;
+
+    public ContactListAdapter(List<FriendContactBean> data) {
+        super(data);
+        finishInitialize();
+    }
+
+
+    @Override
+    protected int getViewType(FriendContactBean entity) {
+        if (entity.getItemType() == 1) {// 1是header 0是member
+            return TYPE_HEADER;
+        } else{
+            return TYPE_MEMBER;
+        }
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, String item) {
-
+    public void registerItemProvider() {
+        mProviderDelegate.registerProvider(new ContactHeaderProvider());
+        mProviderDelegate.registerProvider(new ContactMemberProvider());
     }
+
 
 }

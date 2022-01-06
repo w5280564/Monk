@@ -5,30 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_30"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="10dp"
-        android:paddingTop="3dp"
-        android:textColor="@color/text_color_444444"
-        android:textSize="@dimen/sp_18"
-        android:textStyle="bold"
-        android:text="A"
-        android:visibility="visible" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_user"
         android:layout_width="0dp"
         android:layout_height="56dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_10"
         android:background="?selectableItemBackground"
         android:duplicateParentState="true" >

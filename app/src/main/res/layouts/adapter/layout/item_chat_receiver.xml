@@ -49,9 +49,9 @@
                 android:lineSpacingExtra="2dp"
                 android:maxWidth="225dp"
                 android:minHeight="22dp"
+                android:text="hello world"
                 android:textColor="@color/text_color_444444"
-                android:textSize="@dimen/sp_14"
-                android:text="hello world" />
+                android:textSize="@dimen/sp_14" />
         </RelativeLayout>
 
         <TextView

@@ -1,15 +1,20 @@
 package com.qingbo.monk.message.adapter;
 
+import android.widget.ImageView;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
-import com.qingbo.monk.bean.ServiceChatIndexBean;
+import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.StringUtil;
 
 /**
  *接收
  */
 
-public class ReceiverViewProvider extends BaseItemProvider<ServiceChatIndexBean,BaseViewHolder> {
+public class ReceiverViewProvider extends BaseItemProvider<ReceiveMessageBean,BaseViewHolder> {
 
 
     @Override
@@ -23,8 +28,10 @@ public class ReceiverViewProvider extends BaseItemProvider<ServiceChatIndexBean,
     }
 
     @Override
-    public void convert(BaseViewHolder helper, ServiceChatIndexBean item, int position) {
-
+    public void convert(BaseViewHolder helper, ReceiveMessageBean item, int position) {
+        helper.setText(R.id.tv_content, StringUtil.getStringValue(item.getMessage()));
+        ImageView iv_head = helper.getView(R.id.iv_head);
+        GlideUtils.loadCircleImage(mContext,iv_head, SharePref.user().getUserHead());
     }
 
 
