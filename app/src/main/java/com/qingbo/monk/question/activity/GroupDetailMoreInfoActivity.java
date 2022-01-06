@@ -220,6 +220,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 skipAnotherActivity(InvitePartnerActivity.class);
                 break;
             case R.id.arrowItemView_invite_member:
+                SelectMemberListActivity.actionStart(mActivity,id,1);
                 break;
             case R.id.arrowItemView_apply_exit:
                 ApplyExitGroupOrMoneyActivity.actionStart(mActivity,back,id);

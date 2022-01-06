@@ -160,8 +160,8 @@ public class HttpUrl {
     public static final String themeSet = "square/set/theme-set";//设置预览主题
     public static final String userDelete = "square/set/user-delete";//删除用户
     public static final String commonUser = "square/set/common-user";//普通用户列表(按名字首字母排序)
-    public static final String followMutual = "square/set/follow-mutual";//群主相互关注的列表
-    public static final String invite = "square/set/invite";//邀请
+    public static final String followMutualList = "square/set/follow-mutual";//群主相互关注的列表
+    public static final String invite = "square/set/invite";//邀请好友
 
     /**
      * 编辑话题

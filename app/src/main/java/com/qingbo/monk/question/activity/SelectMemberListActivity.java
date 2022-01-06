@@ -2,19 +2,14 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.lzj.sidebar.SideBarLayout;
@@ -34,44 +29,42 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 添加或删除社区管理员或合伙人
+ * 选择好友
  */
-public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
+public class SelectMemberListActivity extends BaseActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
-    @BindView(R.id.et_search)
-    EditText et_search;
     @BindView(R.id.ll_header_container)
     LinearLayout ll_header_container;
     @BindView(R.id.sideBarLayout)
     SideBarLayout sideBarLayout;
-    private String id,type;//3是管理员 4是合伙人
-    private int edit_type;//1添加 2删除
-    private String getRequestType,setRequestType;
+    private String id;//
+    private int type;
     private List<GroupMemberBean> mChooseList = new ArrayList<>();
     private List<GroupMemberBean> mList = new ArrayList();
-    private List<GroupMemberBean> resultMemberList = new ArrayList<>();
     private GroupManagerOrPartnerBigAdapter mGroupMemberListAdapter;
 
-    public static void actionStart(Context context, String id, String type,int edit_type) {
-        Intent intent = new Intent(context, SetGroupManagerOrPartnerListActivity.class);
+    public static void actionStart(Context context, String id, int type) {
+        Intent intent = new Intent(context, SelectMemberListActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("type", type);
-        intent.putExtra("edit_type", edit_type);
         context.startActivity(intent);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_group_manager_or_partner_list_set;
+        return R.layout.activity_select_member_list;
     }
 
 
@@ -93,44 +86,22 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     @Override
     protected void initLocalData() {
         id = getIntent().getStringExtra("id");
-        type = getIntent().getStringExtra("type");
-        edit_type = getIntent().getIntExtra("edit_type",1);
-
-        if (edit_type==1) {//添加
-            getRequestType = "1";
-            if ("3".equals(type)) {//管理员
-                setRequestType = "1";
-                title = "添加管理员";
-            }else{
-                setRequestType = "2";
-                title = "添加合伙人";
-            }
-        }else{//删除
-            setRequestType = "3";
-            if ("3".equals(type)) {//管理员
-                getRequestType = "2";
-                title = "删除管理员";
-            }else{
-                getRequestType = "3";
-                title = "删除合伙人";
-            }
-        }
+        type = getIntent().getIntExtra("type",1);
     }
 
     @Override
     protected void getServerData() {
-        groupUserList();
+        followMutualList();
     }
 
 
     /**
-     * 群成员列表
+     * 群主相互关注的列表
      */
-    private void groupUserList() {
+    private void followMutualList() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        requestMap.put("type", getRequestType);
-        HttpSender sender = new HttpSender(HttpUrl.commonUser, "群成员列表", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.followMutualList, "群主相互关注的列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -141,7 +112,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
 
                 }, true);
         sender.setContext(mActivity);
-        sender.sendGet();
+        sender.sendPost();
     }
 
     private void handleData(String json) {
@@ -210,7 +181,6 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
             }
         });
 
-//        sideBarLayout.OnItemScrollUpdateText(mList.get(firstItemPosition).getWord());
 
         mGroupMemberListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -236,23 +206,6 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
                 mGroupMemberListAdapter.notifyDataSetChanged();
             }
         });
-
-
-        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {//打开软键盘
-                    imm.hideSoftInputFromWindow(et_search.getWindowToken(), 0);
-                }
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchMemberList();
-                }
-                return false;
-            }
-        });
-
-        addEditTextListener();
 
     }
 
@@ -300,7 +253,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     @Override
     public void onRightClick() {
         if (ListUtils.isEmpty(mChooseList)) {
-            T.ss("请选择群成员");
+            T.ss("请选择好友");
             return;
         }
         List<String> mSubmitList = new ArrayList();
@@ -308,21 +261,19 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
             mSubmitList.add(submitObj.getId());
         }
 
-        setAdmins(StringUtil.listToString(mSubmitList));
+        invite(StringUtil.listToString(mSubmitList));
     }
 
-    private void setAdmins(String user_id) {
+    private void invite(String user_id) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        requestMap.put("type", setRequestType);//	1添加管理员 2添加合伙人 3设置为一般用户
-        requestMap.put("uids", user_id);
-        HttpSender sender = new HttpSender(HttpUrl.setAdmins, "设置/取消管理员/合伙人", requestMap,
+        requestMap.put("user_id", user_id);
+        HttpSender sender = new HttpSender(HttpUrl.invite, "邀请好友", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            EventBus.getDefault().post(new FinishEvent(FinishEvent.EDIT_MANAGER_PARTNER));
-                            back();
+                            showCommonToastDialog("邀请成功",1);
                         }
                     }
 
@@ -330,58 +281,5 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
 
         sender.setContext(mActivity);
         sender.sendPost();
-    }
-
-
-
-
-    /**
-     * 给editext添加监听
-     */
-    private void addEditTextListener() {
-        et_search.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                searchMemberList();
-            }
-        });
-    }
-
-
-    private void searchMemberList() {
-        String searchStr = et_search.getText().toString().trim();
-        if (StringUtil.isBlank(searchStr)) {
-            mGroupMemberListAdapter.setNewData(mList);
-        }else{
-            getMemberListByName(searchStr);
-        }
-    }
-
-    private void getMemberListByName(String searchStr) {
-        resultMemberList.clear();
-        if (!ListUtils.isEmpty(mList)) {
-            for (GroupMemberBean mObj : mList) {
-                String nickname = mObj.getNickname();
-                if (!StringUtil.isBlank(nickname)) {
-                    if (nickname.contains(searchStr)) {
-                        resultMemberList.add(mObj);
-                    }
-                }
-            }
-            mGroupMemberListAdapter.setNewData(resultMemberList);
-        }
     }
 }

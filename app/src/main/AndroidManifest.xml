@@ -149,6 +149,7 @@
         <activity android:name=".question.activity.GroupManagerSetCostActivity" />
         <activity android:name=".question.activity.GroupManagerOrPartnerListActivity" />
         <activity android:name=".question.activity.SetGroupManagerOrPartnerListActivity" />
+        <activity android:name=".question.activity.SelectMemberListActivity" />
         <activity android:name=".question.activity.CheckOtherGroupDetailActivity" />
         <activity android:name=".question.activity.InvitePartnerActivity" />
         <activity android:name=".question.activity.ChooseThemeActivity" />
