@@ -216,7 +216,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     mSendMessageBean.setFlag("msg");
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
 
-                    addContentToList(forbidSensitiveWord(content),"text", ReceiveMessageBean.CHAT_TYPE_SEND);
+                    addContentToList(content,"text", ReceiveMessageBean.CHAT_TYPE_SEND);
                 }
                 break;
         }
@@ -238,7 +238,9 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         obj.setType(chatType);
         obj.setFromName(name);
         mAdapter.addData(0,obj);
-        etContent.setText("");
+        if ("text".equals(msgType)) {
+            etContent.setText("");
+        }
     }
 
 
