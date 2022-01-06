@@ -1,6 +1,9 @@
 package com.qingbo.monk.message.adapter;
 
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
@@ -8,6 +11,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 /**
@@ -29,9 +33,22 @@ public class ReceiverViewProvider extends BaseItemProvider<ReceiveMessageBean,Ba
 
     @Override
     public void convert(BaseViewHolder helper, ReceiveMessageBean item, int position) {
-        helper.setText(R.id.tv_content, StringUtil.getStringValue(item.getMessage()));
-        ImageView iv_head = helper.getView(R.id.iv_head);
-        GlideUtils.loadCircleImage(mContext,iv_head, SharePref.user().getUserHead());
+
+        RelativeLayout bubble = helper.getView(R.id.bubble);
+        ImageView iv_header = helper.getView(R.id.iv_header);
+        ImageView iv_image = helper.getView(R.id.iv_image);
+        GlideUtils.loadCircleImage(mContext,iv_header, item.getFromHeader());
+
+
+        if ("text".equals(item.getMsgType())) {
+            bubble.setVisibility(View.VISIBLE);
+            iv_image.setVisibility(View.GONE);
+            helper.setText(R.id.tv_content, StringUtil.getStringValue(item.getMessage()));
+        }else{
+            bubble.setVisibility(View.GONE);
+            iv_image.setVisibility(View.VISIBLE);
+            GlideUtils.loadRoundImage(mContext,iv_image, item.getMessage(), DisplayUtil.dip2px(mContext,9));
+        }
     }
 
 

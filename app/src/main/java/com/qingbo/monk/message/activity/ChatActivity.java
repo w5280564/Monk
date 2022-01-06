@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -20,7 +19,6 @@ import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
-import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -30,7 +28,6 @@ import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.CustomLoadMoreView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -219,7 +216,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     mSendMessageBean.setFlag("msg");
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
 
-                    addContentToList(content, ReceiveMessageBean.CHAT_TYPE_SEND);
+                    addContentToList(forbidSensitiveWord(content),"text", ReceiveMessageBean.CHAT_TYPE_SEND);
                 }
                 break;
         }
@@ -233,10 +230,10 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
      * @param content 消息内容
      * @param chatType 消息类型
      */
-    private void addContentToList(String content, int chatType) {
+    private void addContentToList(String content,String msgType, int chatType) {
         ReceiveMessageBean obj = new ReceiveMessageBean();
         obj.setMessage(content);
-        obj.setMsgType("text");
+        obj.setMsgType(msgType);
         obj.setFrom(id);
         obj.setType(chatType);
         obj.setFromName(name);
@@ -253,7 +250,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void onUploadSuccess(String imageString) {
-
+        addContentToList(imageString,"image", ReceiveMessageBean.CHAT_TYPE_SEND);
     }
 
     @Override

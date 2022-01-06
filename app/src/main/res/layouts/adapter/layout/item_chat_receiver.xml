@@ -20,7 +20,7 @@
 
 
         <ImageView
-            android:id="@+id/iv_head"
+            android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
             android:layout_marginLeft="@dimen/dp_15"
@@ -34,7 +34,7 @@
             android:layout_below="@+id/tv_userid"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="2dp"
-            android:layout_toRightOf="@id/iv_head"
+            android:layout_toRightOf="@id/iv_header"
             android:background="@drawable/bag_chat_bubble_receive"
             android:minWidth="30dp"
             android:padding="8dp">
@@ -54,12 +54,23 @@
                 android:textSize="@dimen/sp_14" />
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_180"
+            android:layout_below="@+id/tv_userid"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/iv_header"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/icon_logo" />
+
         <TextView
             android:id="@+id/tv_userid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="som"
-            android:layout_toRightOf="@id/iv_head"
+            android:layout_toRightOf="@id/iv_header"
             android:visibility="gone" />
     </RelativeLayout>
 

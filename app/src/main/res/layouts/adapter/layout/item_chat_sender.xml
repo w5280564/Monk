@@ -19,7 +19,7 @@
         android:layout_marginTop="10dp" >
 
         <ImageView
-            android:id="@+id/iv_head"
+            android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
             android:layout_alignParentRight="true"
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_head"
+            android:layout_toLeftOf="@id/iv_header"
             android:minWidth="30dp"
             android:padding="8dp"
             android:layout_marginTop="2dp"
@@ -57,13 +57,24 @@
         </RelativeLayout>
 
 
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_180"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_header"
+            android:layout_below="@+id/tv_userid"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
         <TextView
             android:id="@+id/tv_userid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp_12"
             android:textSize="@dimen/sp_13"
-            android:layout_toLeftOf="@id/iv_head"
+            android:layout_toLeftOf="@id/iv_header"
             android:visibility="gone" />
 
     </RelativeLayout>

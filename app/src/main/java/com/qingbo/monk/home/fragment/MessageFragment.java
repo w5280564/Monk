@@ -73,9 +73,11 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     }
 
 
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        conversationList(true);
+    }
 
     @Override
     protected void loadData() {
