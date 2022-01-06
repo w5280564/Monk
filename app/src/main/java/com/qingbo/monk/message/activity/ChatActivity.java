@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.gson.reflect.TypeToken;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
@@ -16,11 +15,6 @@ import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.bean.ServiceChatBean;
 import com.qingbo.monk.bean.ServiceChatIndexBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
-import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.http.HttpBaseList;
-import com.qingbo.monk.HttpSender;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
@@ -28,7 +22,6 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,7 +35,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
     RecyclerView mRecyclerView;
     @BindView(R.id.et_content)
     EditText etContent;
-    WebSocketService webSocketService;
+    private WebSocketService webSocketService;
     private List<String> mSensitiveWordList = new ArrayList<>();//敏感词词汇列表
     private ChatAdapter mAdapter;
     private List<ServiceChatIndexBean> mList = new ArrayList<>();
@@ -60,9 +53,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
             mSensitiveWordList.clear();
             mSensitiveWordList.addAll(objList);
         }
-
-        addContentToList("hello world", ServiceChatIndexBean.CHAT_TYPE_ANSWER);
-        addContentToList("下班了", ServiceChatIndexBean.CHAT_TYPE_SEND);
     }
 
     @Override
@@ -107,7 +97,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
                 }
             }
             return sendBeforeMessage;
-
         }
         return "";
     }
@@ -129,67 +118,23 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
                     return;
                 }
 
-                addContentToList(forbidSensitiveWord(content), ServiceChatIndexBean.CHAT_TYPE_SEND);
-                mAdapter.notifyDataSetChanged();
-
                 if (webSocketService != null) {
                     SendMessageBean mSendMessageBean = new SendMessageBean();
                     mSendMessageBean.setMessage(etContent.getText().toString());
                     mSendMessageBean.setFrom(SharePref.user().getUserId());
-                    mSendMessageBean.setTo("9");
+                    mSendMessageBean.setTo("5");
                     mSendMessageBean.setMsgType("text");
+                    mSendMessageBean.setFlag("msg");
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+
+                    addContentToList(forbidSensitiveWord(content), ServiceChatIndexBean.CHAT_TYPE_SEND);
+                    mAdapter.notifyDataSetChanged();
                 }
-//                sendQuestion(content);
                 break;
         }
     }
 
 
-
-    /**
-     * 发送问题请求
-     */
-    private void sendQuestion(String keyword) {
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("keyword",keyword);
-        HttpSender sender = new HttpSender(HttpUrl.sendQuestion, "发送问题请求",
-                map, new MyOnHttpResListener() {
-
-            @Override
-            public void onComplete(String json, int status, String description, String data) {
-                if (status == Constants.REQUEST_SUCCESS_CODE) {
-                    etContent.setText("");
-                    handleData(json);
-                } else {
-                    T.ss(description);
-                }
-            }
-
-        }, true);
-        sender.setContext(mActivity);
-        sender.sendGet();
-    }
-
-
-    private void handleData(String json) {
-        HttpBaseList<ServiceChatBean> objList = GsonUtil
-                .getInstance()
-                .json2List(
-                        json,
-                        new TypeToken<HttpBaseList<ServiceChatBean>>() {
-                        }.getType());
-        if (!ListUtils.isEmpty(objList.getData())) {
-            ServiceChatIndexBean obj = new ServiceChatIndexBean();
-            obj.setList(objList.getData());
-            obj.setType(ServiceChatIndexBean.CHAT_TYPE_ANSWER);
-            mList.add(obj);
-        }else{
-            addContentToList("暂无客服", ServiceChatIndexBean.CHAT_TYPE_ANSWER);
-        }
-
-        mAdapter.notifyDataSetChanged();
-    }
 
 
     /**
@@ -233,6 +178,9 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
         unbindService(serviceConnection);
     }
 
+
+
+
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -252,7 +200,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    L.e(TAG,text);
+                    L.e(TAG,"接收到消息>>>"+text);
                 }
             });
         }
@@ -262,7 +210,11 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    L.e(TAG,"onOpen");
+                    SendMessageBean mSendMessageBean = new SendMessageBean();
+                    mSendMessageBean.setFrom(SharePref.user().getUserId());
+                    mSendMessageBean.setFlag("init");
+                    webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+                    L.e(TAG,"onOpen>>初始化");
                 }
             });
         }

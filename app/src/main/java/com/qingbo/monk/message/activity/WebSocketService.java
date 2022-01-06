@@ -14,7 +14,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 /**
- * Created by fanglin on 2020/4/23.
+ * 服务
  */
 public class WebSocketService extends Service {
     private static final String TAG = "websocket";
@@ -66,7 +66,7 @@ public class WebSocketService extends Service {
     }
 
     public void send(String text) {
-        Log.d(TAG, "send " + text);
+        Log.d(TAG, "发送的消息 " + text);
         if (webSocket != null) {
             webSocket.send(text);
         }
@@ -96,7 +96,6 @@ public class WebSocketService extends Service {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            Log.d(TAG, "onOpen");
             if (webSocketCallback != null) {
                 webSocketCallback.onOpen();
             }
@@ -105,7 +104,6 @@ public class WebSocketService extends Service {
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
-            Log.d(TAG, "onMessage " + text);
             if (webSocketCallback != null) {
                 webSocketCallback.onMessage(text);
             }
@@ -113,7 +111,6 @@ public class WebSocketService extends Service {
 
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
-            Log.d(TAG, "onClosed");
             if (webSocketCallback != null) {
                 webSocketCallback.onClosed();
             }

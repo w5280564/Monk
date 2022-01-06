@@ -1,7 +1,7 @@
 package com.qingbo.monk.bean;
 
 public class SendMessageBean {
-    private String flag;
+    private String flag ;//初始化init
     private String from;//当前用户ID
     private String to;//要发送的用户ID
     private String message;//消息内容
