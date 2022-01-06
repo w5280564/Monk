@@ -14,14 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.adapter.InterestDetail_All_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseOwnPublishBean;
-import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.bean.InterestDetailAll_ListBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -53,7 +52,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无话题", 0,false);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    FollowListBean homeFllowBean;
+    InterestDetailAll_ListBean interestDetailAll_listBean;
 
     /**
      *   action 1是社群 2是兴趣圈 3是问答广场
@@ -83,9 +82,9 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
-                    if (homeFllowBean != null) {
-                        handleSplitListData(homeFllowBean, mAdapter, limit);
+                     interestDetailAll_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestDetailAll_ListBean.class);
+                    if (interestDetailAll_listBean != null) {
+                        handleSplitListData(interestDetailAll_listBean, mAdapter, limit);
                     }
                 }
             }
@@ -113,7 +112,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Focus_Adapter();
+        mAdapter = new InterestDetail_All_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
@@ -130,16 +129,16 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (homeFllowBean == null) {
+                if (interestDetailAll_listBean == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
+                        String otherUserId = interestDetailAll_listBean.getList().get(position).getAuthorId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        String likeId = interestDetailAll_listBean.getList().get(position).getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
@@ -153,7 +152,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((Focus_Adapter) mAdapter).setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
+        ((InterestDetail_All_Adapter) mAdapter).setOnItemImgClickLister(new InterestDetail_All_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -173,7 +172,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    ((InterestDetail_All_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
 //                    if (followStateBena.getFollowStatus() == 0) {
 //                        mAdapter.remove(position);
 //                        mAdapter.notifyItemChanged(position);

@@ -117,7 +117,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             menuList.add(bean);
         }
         fragments.add(InterestDetail_All_Fragment.newInstance(id));
-        fragments.add( InterestDetail_My_Fragment.newInstance(id));
+        fragments.add(InterestDetail_My_Fragment.newInstance(id));
         fragments.add(InterestDetail_Member_Fragment.newInstance(id));
         initViewPager(0);
     }
@@ -168,6 +168,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
 
     /**
      * 修改加入状态
+     *
      * @param stateIndex 1已加入 其他都是未加入
      */
     private void changeJoin(String stateIndex) {
@@ -211,9 +212,6 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
-
-
-
 
 
     //    /**

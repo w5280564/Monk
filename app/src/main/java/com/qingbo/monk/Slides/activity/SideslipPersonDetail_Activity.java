@@ -90,6 +90,7 @@ public class SideslipPersonDetail_Activity extends BaseTabLayoutActivity {
                 fragments.add(PersonDetail_Fragment.newInstance(nickname, id));
                 bean.setName("个人信息");
             } else {
+//                nickname = "孙伟";
                 fragments.add(StockOrFund_Question_Fragment.newInstance(nickname, ""));
                 bean.setName("问答");
             }

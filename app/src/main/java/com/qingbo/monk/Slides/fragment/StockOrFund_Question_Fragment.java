@@ -19,6 +19,7 @@ import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.StockOrFund_QuestionBean;
 import com.qingbo.monk.bean.StockOrFund_QuestionListBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
@@ -117,10 +118,10 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
         mAdapter = new StockFund_Question_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-//            String articleId = item.getArticleId();
-//            String type = item.getType();
-//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
+//            StockOrFund_QuestionBean item = (StockOrFund_QuestionBean) adapter.getItem(position);
+//            String id = item.getId();
+//            String type = "";
+//            ArticleDetail_Activity.startActivity(requireActivity(), id, "0",type);
         });
 
     }

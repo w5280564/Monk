@@ -14,11 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.InterestCrate_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
@@ -89,7 +91,6 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
     /**
      * 默认是1 1是社群,2是兴趣圈 3是问答广场
-     *
      * @param isShowAnimal
      */
     private void getSquareList(boolean isShowAnimal) {
@@ -115,6 +116,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
 
 
     private void initRecyclerView() {
@@ -185,7 +187,8 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-                PublisherQuestionActivity.actionStart(mActivity, mQuestionBean, true);
+                String shequnId = mQuestionBean.getShequnId();
+                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
             }
 
             @Override
@@ -284,6 +287,6 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-        skipAnotherActivity(PublisherQuestionActivity.class);
+        InterestCrate_Activity.actionStart(mActivity,id);
     }
 }

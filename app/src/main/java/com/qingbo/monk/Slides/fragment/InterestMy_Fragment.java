@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.adapter.Interest_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.InterestBean;
@@ -120,7 +121,8 @@ public class InterestMy_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                InterestBean item = (InterestBean) adapter.getItem(position);
+                InterestDetail_Activity.startActivity(requireActivity(),"0",item.getId());
             }
         });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
