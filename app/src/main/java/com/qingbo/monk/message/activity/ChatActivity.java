@@ -1,5 +1,9 @@
 package com.qingbo.monk.message.activity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.EditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
+import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.bean.ServiceChatBean;
 import com.qingbo.monk.bean.ServiceChatIndexBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
@@ -18,6 +23,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -31,11 +37,12 @@ import butterknife.OnClick;
  * 聊天页
  */
 public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
-
+    private static final String TAG = "websocket";
     @BindView(R.id.recycleView)
     RecyclerView mRecyclerView;
     @BindView(R.id.et_content)
     EditText etContent;
+    WebSocketService webSocketService;
     private List<String> mSensitiveWordList = new ArrayList<>();//敏感词词汇列表
     private ChatAdapter mAdapter;
     private List<ServiceChatIndexBean> mList = new ArrayList<>();
@@ -64,6 +71,11 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatAdapter(mList);
         mRecyclerView.setAdapter(mAdapter);
+        initWebSocket();
+    }
+
+    private void initWebSocket() {
+        bindService(new Intent(this, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
@@ -120,7 +132,15 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
                 addContentToList(forbidSensitiveWord(content), ServiceChatIndexBean.CHAT_TYPE_SEND);
                 mAdapter.notifyDataSetChanged();
 
-                sendQuestion(content);
+                if (webSocketService != null) {
+                    SendMessageBean mSendMessageBean = new SendMessageBean();
+                    mSendMessageBean.setMessage(etContent.getText().toString());
+                    mSendMessageBean.setFrom(SharePref.user().getUserId());
+                    mSendMessageBean.setTo("9");
+                    mSendMessageBean.setMsgType("text");
+                    webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+                }
+//                sendQuestion(content);
                 break;
         }
     }
@@ -206,5 +226,56 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single {
     protected void onUploadFailure(String error_info) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            webSocketService = ((WebSocketService.LocalBinder) service).getService();
+            webSocketService.setWebSocketCallback(webSocketCallback);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            webSocketService = null;
+        }
+    };
+
+    private WebSocketService.WebSocketCallback webSocketCallback = new WebSocketService.WebSocketCallback() {
+        @Override
+        public void onMessage(final String text) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    L.e(TAG,text);
+                }
+            });
+        }
+
+        @Override
+        public void onOpen() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    L.e(TAG,"onOpen");
+                }
+            });
+        }
+
+        @Override
+        public void onClosed() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    L.e(TAG,"onClosed");
+                }
+            });
+        }
+    };
 }
 
