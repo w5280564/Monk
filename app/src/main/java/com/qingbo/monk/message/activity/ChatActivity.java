@@ -40,7 +40,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -122,7 +122,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     @Override
     protected void initEvent() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mAdapter.setOnLoadMoreListener(this,mRecyclerView);
     }
 
     private void initWebSocket() {
@@ -220,8 +219,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     mSendMessageBean.setFlag("msg");
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
 
-                    addContentToList(forbidSensitiveWord(content), ReceiveMessageBean.CHAT_TYPE_SEND);
-                    mAdapter.notifyDataSetChanged();
+                    addContentToList(content, ReceiveMessageBean.CHAT_TYPE_SEND);
                 }
                 break;
         }
@@ -242,7 +240,8 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         obj.setFrom(id);
         obj.setType(chatType);
         obj.setFromName(name);
-        mList.add(obj);
+        mAdapter.addData(0,obj);
+        etContent.setText("");
     }
 
 
@@ -270,16 +269,11 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     public void onRefresh() {
-        page = 1;
-        getMessageList(false);
-    }
-
-
-    @Override
-    public void onLoadMoreRequested() {
         page++;
         getMessageList(false);
     }
+
+
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>聊天相关>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -313,10 +307,9 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                         return;
                     }
                     if (!"-1".equals(receiveObj.getFrom())) {
-                        mList.add(receiveObj);
+                        mAdapter.addData(0,receiveObj);
                     }
 
-                    mAdapter.notifyDataSetChanged();
                 }
             });
         }
