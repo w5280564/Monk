@@ -58,7 +58,7 @@ public class OwnPublishBean implements Serializable {
 
     @NoArgsConstructor
     @Data
-    public static class DetailDTO {
+    public static class DetailDTO implements Serializable{
 
         @SerializedName("answer_content")
         private String answerContent;

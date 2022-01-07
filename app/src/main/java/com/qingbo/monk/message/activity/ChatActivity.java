@@ -139,7 +139,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     return;
                 }
 
-                if ("image".equals(mReceiveMessageBean.getMsgType())) {
+                if (ReceiveMessageBean.MESSAGE_TYPE_IMAGE.equals(mReceiveMessageBean.getMsgType())) {
                     jumpToPhotoShowActivitySingle(mReceiveMessageBean.getMessage());
                 }
             }
@@ -255,11 +255,11 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     mSendMessageBean.setMessage(etContent.getText().toString());
                     mSendMessageBean.setFrom(SharePref.user().getUserId());
                     mSendMessageBean.setTo(id);
-                    mSendMessageBean.setMsgType("text");
-                    mSendMessageBean.setFlag("msg");
+                    mSendMessageBean.setMsgType(ReceiveMessageBean.MESSAGE_TYPE_TEXT);
+                    mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_MSG);
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
 
-                    addContentToList(content,"text", ReceiveMessageBean.CHAT_TYPE_SEND);
+                    addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
                 }
                 break;
         }
@@ -281,7 +281,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         obj.setType(chatType);
         obj.setFromName(name);
         mAdapter.addData(0,obj);
-        if ("text".equals(msgType)) {
+        if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(msgType)) {
             etContent.setText("");
         }
     }
@@ -295,7 +295,14 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        addContentToList(imageString,"image", ReceiveMessageBean.CHAT_TYPE_SEND);
+        SendMessageBean mSendMessageBean = new SendMessageBean();
+        mSendMessageBean.setMessage(imageString);
+        mSendMessageBean.setFrom(SharePref.user().getUserId());
+        mSendMessageBean.setTo(id);
+        mSendMessageBean.setMsgType(ReceiveMessageBean.MESSAGE_TYPE_IMAGE);
+        mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_MSG);
+        webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+        addContentToList(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE, ReceiveMessageBean.CHAT_TYPE_SEND);
     }
 
     @Override
@@ -363,7 +370,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 public void run() {
                     SendMessageBean mSendMessageBean = new SendMessageBean();
                     mSendMessageBean.setFrom(SharePref.user().getUserId());
-                    mSendMessageBean.setFlag("init");
+                    mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_INIT);
                     webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
                     L.e(TAG,"onOpen>>初始化");
                 }

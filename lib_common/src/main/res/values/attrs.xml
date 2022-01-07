@@ -320,4 +320,18 @@
         <!--边框颜色-->
         <attr name="frameColor" format="reference|color" />
     </declare-styleable>
+
+
+    <declare-styleable name="XunDaImageView">
+        <attr name="xunda_border_color" format="color" />
+        <attr name="xunda_border_width" format="dimension" />
+        <attr name="xunda_press_alpha" format="integer" />
+        <attr name="xunda_press_color" format="color" />
+        <attr name="xunda_radius" format="dimension" />
+        <attr name="xunda_shape_type" format="enum">
+            <enum name="none" value="0" />
+            <enum name="round" value="1" />
+            <enum name="rectangle" value="2" />
+        </attr>
+    </declare-styleable>
 </resources>

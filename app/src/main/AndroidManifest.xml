@@ -163,6 +163,7 @@
         <activity android:name=".question.activity.PublisherAskQuestionToPeopleActivity" />
         <activity android:name=".question.activity.MyGroupListActivity" />
         <activity android:name=".question.activity.ApplyExitGroupOrMoneyActivity" />
+        <activity android:name=".question.activity.GroupTopicDetailActivity" />
         <activity android:name=".Slides.activity.AAndHKDetail_Activity" />
         <activity
             android:name=".question.activity.GroupSettingActivity"

@@ -43,7 +43,7 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageRecordBean, Base
         ReceiveMessageBean lastMsg = item.getLastMsg();
         if (lastMsg!=null) {
             tv_time.setText(StringUtil.getStringValue(lastMsg.getTime()));
-            if ("text".equals(lastMsg.getMsgType())) {
+            if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(lastMsg.getMsgType())) {
                 tv_content.setText(StringUtil.getStringValue(lastMsg.getMessage()));
             }else{
                 tv_content.setText("[图片]");

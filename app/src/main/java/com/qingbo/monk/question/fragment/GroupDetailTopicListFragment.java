@@ -16,6 +16,7 @@ import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
@@ -35,7 +36,7 @@ import java.util.List;
  * 社群详情话题列表
  */
 public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment {
-    private int type;//0全部 1我的发布
+    private int topicType;//0全部 1我的发布
     private String id,role,requestUrl;
 
     /**
@@ -65,12 +66,12 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     protected void initLocalData() {
         Bundle mBundle = getArguments();
         if (mBundle != null) {
-            type = mBundle.getInt("type", 0);
+            topicType = mBundle.getInt("type", 0);
             id = mBundle.getString("id");
             role = mBundle.getString("role");
-            if (type==0) {
+            if (topicType==0) {
                 requestUrl = HttpUrl.groupDetailAllTab;
-            }else if(type==1){
+            }else if(topicType==1){
                 requestUrl = HttpUrl.getOwnPublishList;
             }
         }
@@ -101,7 +102,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new GroupDetailTopicListAdapter(type,role);
+        mAdapter = new GroupDetailTopicListAdapter(topicType,role);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -122,7 +123,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         break;
                     case R.id.mes_Img:
                         String type = mQuestionBean.getTopicType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type);
+                        GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type,mQuestionBean,topicType,role);
                         break;
                     case R.id.more_Img:
                         ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
@@ -145,7 +146,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                 }
 
                 String type = mQuestionBean.getTopicType();
-                ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type);
+                GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type,mQuestionBean,topicType,role);
             }
         });
 

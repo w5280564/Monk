@@ -55,16 +55,18 @@
                 android:textSize="@dimen/sp_14" />
         </RelativeLayout>
 
-        <ImageView
+        <com.xunda.lib.common.view.XunDaImageView
             android:id="@+id/iv_image"
-            android:layout_width="@dimen/dp_120"
+            android:layout_width="140dp"
             android:layout_height="@dimen/dp_180"
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toEndOf="@id/iv_header"
             app:layout_constraintTop_toTopOf="@id/iv_header"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:xunda_shape_type="rectangle"
+            app:xunda_radius="@dimen/dp_9"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

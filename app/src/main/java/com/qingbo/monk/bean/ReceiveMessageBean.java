@@ -3,8 +3,11 @@ package com.qingbo.monk.bean;
 
 public class ReceiveMessageBean {
     public static final int CHAT_TYPE_SEND = 1;//发出的内容
-
     public static final int CHAT_TYPE_RECEIVER = 2;//回答的内容
+    public static final String MESSAGE_TYPE_IMAGE = "image";//图片类型
+    public static final String MESSAGE_TYPE_TEXT = "text";//文字类型
+    public static final String MESSAGE_FLAG_INIT = "init";//初始化
+    public static final String MESSAGE_FLAG_MSG = "msg";//消息
 
     private Integer errorCode;//错误代码0为正常
     private String from;
