@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -119,19 +121,25 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     @Override
     protected void initEvent() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                ReceiveMessageBean mReceiveMessageBean = (ReceiveMessageBean) adapter.getItem(position);
+                if (mReceiveMessageBean==null) {
+                    return;
+                }
+
+                if ("image".equals(mReceiveMessageBean.getMsgType())) {
+                    jumpToPhotoShowActivitySingle(mReceiveMessageBean.getMessage());
+                }
+            }
+        });
     }
 
     private void initWebSocket() {
         bindService(new Intent(this, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
-    @Override
-    protected void setStatusBar() {
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
-                .statusBarDarkFont(true)
-                .init();
-    }
 
     @Override
     protected void getServerData() {
@@ -305,10 +313,10 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     if (receiveObj==null) {
                         return;
                     }
-                    if (!"-1".equals(receiveObj.getFrom())) {
+
+                    if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
                         mAdapter.addData(0,receiveObj);
                     }
-
                 }
             });
         }

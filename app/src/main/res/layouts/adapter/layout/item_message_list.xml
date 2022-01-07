@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/iv_img"
+            android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_45"
             android:layout_height="@dimen/dp_45"
             android:scaleType="centerCrop"
@@ -23,13 +23,28 @@
             app:layout_constraintBottom_toBottomOf="@id/cl_top"
             android:layout_marginStart="@dimen/dp_15"/>
 
+        <TextView
+            android:id="@+id/tv_unread_msg_number"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            app:layout_constraintCircle="@id/iv_header"
+            app:layout_constraintCircleAngle="45"
+            app:layout_constraintCircleRadius="27dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/shape_no_read_point"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            android:gravity="center"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp_10"
-            app:layout_constraintStart_toEndOf="@id/iv_img"
+            app:layout_constraintStart_toEndOf="@id/iv_header"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent">

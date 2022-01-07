@@ -440,14 +440,8 @@
 
 
     <style name="chat_text_date_style">
-        <item name="android:padding">2dp</item>
-        <item name="android:paddingTop">2dip</item>
-        <item name="android:paddingBottom">2dip</item>
-        <item name="android:paddingLeft">12dip</item>
-        <item name="android:paddingRight">12dip</item>
-        <item name="android:textColor">#c0c0c0</item>
-        <item name="android:textSize">12sp</item>
-        <!--<item name="android:background">@drawable/ease_timestampe_bg</item>-->
+        <item name="android:textColor">@color/text_color_444444</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
     <style name="TabLayoutTextStyle" parent="TextAppearance.AppCompat.Headline">

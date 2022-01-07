@@ -1,43 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:paddingTop="13dp">
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/tv_time"
         style="@style/chat_text_date_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="16dp" >
 
 
         <ImageView
             android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_36"
             android:layout_height="@dimen/dp_36"
-            android:layout_marginLeft="@dimen/dp_15"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/icon_logo_round"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scaleType="centerCrop"/>
 
         <RelativeLayout
             android:id="@+id/bubble"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_userid"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
-            android:layout_toRightOf="@id/iv_header"
             android:background="@drawable/bag_chat_bubble_receive"
             android:minWidth="30dp"
-            android:padding="8dp">
+            android:padding="8dp"
+            app:layout_constraintStart_toEndOf="@id/iv_header"
+            app:layout_constraintTop_toTopOf="@id/iv_header">
 
             <TextView
                 android:id="@+id/tv_content"
@@ -58,20 +59,12 @@
             android:id="@+id/iv_image"
             android:layout_width="@dimen/dp_120"
             android:layout_height="@dimen/dp_180"
-            android:layout_below="@+id/tv_userid"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/iv_header"
             android:scaleType="centerCrop"
-            android:src="@mipmap/icon_logo" />
-
-        <TextView
-            android:id="@+id/tv_userid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="som"
-            android:layout_toRightOf="@id/iv_header"
-            android:visibility="gone" />
-    </RelativeLayout>
+            app:layout_constraintStart_toEndOf="@id/iv_header"
+            app:layout_constraintTop_toTopOf="@id/iv_header"
+            android:visibility="gone"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

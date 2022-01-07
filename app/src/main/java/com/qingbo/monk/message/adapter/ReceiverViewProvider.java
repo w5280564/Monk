@@ -38,7 +38,7 @@ public class ReceiverViewProvider extends BaseItemProvider<ReceiveMessageBean,Ba
         ImageView iv_header = helper.getView(R.id.iv_header);
         ImageView iv_image = helper.getView(R.id.iv_image);
         GlideUtils.loadCircleImage(mContext,iv_header, item.getFromHeader());
-
+        helper.setText(R.id.tv_time, StringUtil.getStringValue(item.getTime()));
 
         if ("text".equals(item.getMsgType())) {
             bubble.setVisibility(View.VISIBLE);
@@ -47,7 +47,8 @@ public class ReceiverViewProvider extends BaseItemProvider<ReceiveMessageBean,Ba
         }else{
             bubble.setVisibility(View.GONE);
             iv_image.setVisibility(View.VISIBLE);
-            GlideUtils.loadRoundImage(mContext,iv_image, item.getMessage(), DisplayUtil.dip2px(mContext,9));
+            GlideUtils.loadRoundImage(mContext,iv_image, item.getMessage(), 9);
+            helper.addOnClickListener(R.id.iv_image);
         }
     }
 

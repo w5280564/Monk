@@ -19,7 +19,7 @@ public class MessageRecordBean {
     @SerializedName("description")
     private String description;
     @SerializedName("unread_num")
-    private String unreadNum;
+    private Integer unreadNum;
     @SerializedName("last_msg")
     private ReceiveMessageBean lastMsg;
     @SerializedName("initials")

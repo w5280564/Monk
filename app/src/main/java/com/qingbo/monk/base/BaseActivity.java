@@ -290,7 +290,18 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     }
 
 
-
+    /**
+     * 跳转到查看图片页(单张图片)
+     *
+     * @param image_url
+     */
+    protected void jumpToPhotoShowActivitySingle(String image_url) {
+        Intent intent = new Intent(mActivity, PhotoShowActivity.class);
+        intent.putExtra("image_url", image_url);
+        intent.putExtra("single", true);
+        startActivity(intent);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 
     /**
      * 判断是否登录过

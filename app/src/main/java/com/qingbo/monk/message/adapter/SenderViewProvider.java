@@ -35,7 +35,7 @@ public class SenderViewProvider extends BaseItemProvider<ReceiveMessageBean,Base
         ImageView iv_header = helper.getView(R.id.iv_header);
         ImageView iv_image = helper.getView(R.id.iv_image);
         GlideUtils.loadCircleImage(mContext,iv_header, SharePref.user().getUserHead());
-
+        helper.setText(R.id.tv_time, StringUtil.getStringValue(item.getTime()));
 
         if ("text".equals(item.getMsgType())) {
             bubble.setVisibility(View.VISIBLE);
@@ -45,6 +45,7 @@ public class SenderViewProvider extends BaseItemProvider<ReceiveMessageBean,Base
             bubble.setVisibility(View.GONE);
             iv_image.setVisibility(View.VISIBLE);
             GlideUtils.loadRoundImage(mContext,iv_image, StringUtil.getStringValue(item.getMessage()), DisplayUtil.dip2px(mContext,9));
+            helper.addOnClickListener(R.id.iv_image);
         }
     }
 

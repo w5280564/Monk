@@ -5,16 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
-
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -25,7 +26,6 @@ import com.qingbo.monk.Slides.activity.SideslipFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInterest_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseActivityWithFragment;
@@ -36,23 +36,20 @@ import com.qingbo.monk.home.fragment.MineFragment;
 import com.qingbo.monk.home.fragment.QuestionFragment;
 import com.qingbo.monk.home.fragment.UniverseFragment;
 import com.qingbo.monk.login.activity.BindPhoneNumberActivity;
-import com.qingbo.monk.login.activity.GetPhoneCodeStepTwoActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
-import com.qingbo.monk.login.activity.WelcomeActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.view.MyArrowItemView;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 /**
@@ -97,8 +94,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @BindView(R.id.Interest_MyView)
     MyArrowItemView Interest_MyView;
 
-
     private long clickTime;
+    private TextView tv_unread_msg_number;
 
     @Override
     protected int getLayoutId() {
@@ -124,7 +121,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     protected void initView(Bundle savedInstanceState) {
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
+        addTabBadge();
     }
+
+
+
 
     HomeFragment homeFragment;
 
@@ -367,5 +368,58 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         httpSender.sendGet();
     }
 
+
+    @Override
+    protected void getServerData() {
+        getAllUnreadNumber();
+    }
+
+    /**
+     * 获取所有未读消息数量
+     */
+    private void getAllUnreadNumber() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        HttpSender httpSender = new HttpSender(HttpUrl.getAllUnreadNumber, "获取所有未读消息数量", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    String tempNum = GsonUtil.getInstance().getValue(json_data,"num");
+                    if (StringUtil.isBlank(tempNum)) {
+                        return;
+                    }
+
+                    int unreadNum = Integer.parseInt(tempNum);
+                    if (unreadNum==0) {
+                        tv_unread_msg_number.setVisibility(View.GONE);
+                    }else{
+                        tv_unread_msg_number.setVisibility(View.VISIBLE);
+                        tv_unread_msg_number.setText(handleUnreadNum(unreadNum));
+                    }
+                }
+            }
+        }, false);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+    private String handleUnreadNum(int unreadMsgCount) {
+        if(unreadMsgCount <= 99) {
+            return String.valueOf(unreadMsgCount);
+        }else {
+            return "99+";
+        }
+    }
+
+    /**
+     * 添加右上角的红点
+     */
+    private void addTabBadge() {
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) mBottomNavigationView.getChildAt(0);
+        BottomNavigationItemView itemTab = (BottomNavigationItemView) menuView.getChildAt(3);
+        View badge = LayoutInflater.from(mContext).inflate(R.layout.layout_home_badge, menuView, false);
+        tv_unread_msg_number = badge.findViewById(R.id.tv_unread_msg_number);
+        itemTab.addView(badge);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.qingbo.monk.base;
 
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
@@ -43,13 +44,20 @@ public class PhotoShowActivity extends BaseActivity implements PhotoFragment.Fra
     }
 
     private void getDataFromIntent() {
-        index = getIntent().getIntExtra("index",0);
-        List<String> tempList = (List<String>) getIntent().getSerializableExtra("imgList");
-        if(!ListUtils.isEmpty(tempList)){
-            imageUrlList.addAll(tempList);
-            tvNum.setText((index + 1) + "/" + imageUrlList.size());
-            initPagerAdapter();
+        boolean single = getIntent().getBooleanExtra("single",false);//单张图片
+        if (single) {
+            String image_url = getIntent().getStringExtra("image_url");
+            imageUrlList.add(image_url);
+            tvNum.setVisibility(View.GONE);
+        }else{
+            index = getIntent().getIntExtra("index",0);
+            List<String> tempList = (List<String>) getIntent().getSerializableExtra("imgList");
+            if(!ListUtils.isEmpty(tempList)){
+                imageUrlList.addAll(tempList);
+                tvNum.setText((index + 1) + "/" + imageUrlList.size());
+            }
         }
+        initPagerAdapter();
     }
 
     private void initPagerAdapter() {
