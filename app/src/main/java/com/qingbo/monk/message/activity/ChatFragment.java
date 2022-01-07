@@ -1,23 +1,25 @@
 package com.qingbo.monk.message.activity;
 
+import static android.content.Context.BIND_AUTO_CREATE;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
+import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
 import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.bean.SendMessageBean;
@@ -31,16 +33,18 @@ import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener{
+public class ChatFragment extends BaseCameraAndGalleryFragment implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -56,11 +60,10 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     private int page = 1;
     private int limit = 20;
     private String selfUserId;
-    private LinearLayoutManager layoutManager;
 
 
     public static void actionStart(Context context, String id,String name,String header) {
-        Intent intent = new Intent(context, ChatActivity.class);
+        Intent intent = new Intent(context, ChatFragment.class);
         intent.putExtra("id",id);
         intent.putExtra("name",name);
         intent.putExtra("header",header);
@@ -71,26 +74,19 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_chat;
-    }
-
-    @Override
-    protected void setStatusBar() {
-        ImmersionBar.with(this)
-                .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
-                .statusBarDarkFont(true)
-                .init();
+        return R.layout.fragment_chat;
     }
 
 
     @Override
     protected void initLocalData() {
         selfUserId = SharePref.user().getUserId();
-        id = getIntent().getStringExtra("id");
-        name = getIntent().getStringExtra("name");
-        header = getIntent().getStringExtra("header");
-        title = name;
-
+        Bundle bundle = getArguments();
+        if(bundle != null) {
+            id = bundle.getString("id");
+            header = bundle.getString("header");
+            name = bundle.getString("name");
+        }
         List<String> objList = GsonUtil.getInstance().parseDataNoKey(SharePref.local().getSensitiveWordsListJson());
         if (!ListUtils.isEmpty(objList)) {
             mSensitiveWordList.clear();
@@ -118,8 +114,8 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     @Override
     protected void initView() {
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
-        layoutManager = new LinearLayoutManager(mActivity);
-//        layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+        layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
         layoutManager.setReverseLayout(true);//列表翻转
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatAdapter(mList);
@@ -144,35 +140,10 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 }
             }
         });
-
-//
-//        //这里控制只要点击输入框就滚动到最底部
-//        etContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        if (layoutManager.findLastCompletelyVisibleItemPosition() < mAdapter.getItemCount() - 1) {
-//                            layoutManager.setStackFromEnd(true);
-//                            mRecyclerView.setLayoutManager(layoutManager);
-//                            mRecyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                        } else {
-//                            layoutManager.setStackFromEnd(false);
-//                            mRecyclerView.setLayoutManager(layoutManager);
-//                        }
-//                    }
-//                });
-//                if (mList.size() > 0) {
-//                    mRecyclerView.smoothScrollToPosition(mList.size() - 1);
-//                }
-//            }
-//        });
-
     }
 
     private void initWebSocket() {
-        bindService(new Intent(this, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
+        requireActivity().bindService(new Intent(mActivity, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
 
@@ -241,7 +212,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_image:
-                checkGalleryPermission();
+                checkGalleryPermission(1);
                 break;
             case R.id.tv_send:
                 String content = StringUtil.getEditText(etContent);
@@ -287,12 +258,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     }
 
 
-
-    @Override
-    public void onRightClick() {
-        back();
-    }
-
     @Override
     protected void onUploadSuccess(String imageString) {
         addContentToList(imageString,"image", ReceiveMessageBean.CHAT_TYPE_SEND);
@@ -304,9 +269,9 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(serviceConnection);
+    public void onDestroyView() {
+        super.onDestroyView();
+        requireActivity().unbindService(serviceConnection);
     }
 
     @Override
@@ -336,48 +301,33 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     private WebSocketService.WebSocketCallback webSocketCallback = new WebSocketService.WebSocketCallback() {
         @Override
         public void onMessage(final String text) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    L.e(TAG,"接收到消息>>>"+text);
-                    if (text==null) {
-                        return;
-                    }
+            L.e(TAG,"接收到消息>>>"+text);
+            if (text==null) {
+                return;
+            }
 
-                    ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
-                    if (receiveObj==null) {
-                        return;
-                    }
+            ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
+            if (receiveObj==null) {
+                return;
+            }
 
-                    if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
-                        mAdapter.addData(0,receiveObj);
-                    }
-                }
-            });
+            if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
+                mAdapter.addData(0,receiveObj);
+            }
         }
 
         @Override
         public void onOpen() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    SendMessageBean mSendMessageBean = new SendMessageBean();
-                    mSendMessageBean.setFrom(SharePref.user().getUserId());
-                    mSendMessageBean.setFlag("init");
-                    webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
-                    L.e(TAG,"onOpen>>初始化");
-                }
-            });
+            SendMessageBean mSendMessageBean = new SendMessageBean();
+            mSendMessageBean.setFrom(SharePref.user().getUserId());
+            mSendMessageBean.setFlag("init");
+            webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+            L.e(TAG,"onOpen>>初始化");
         }
 
         @Override
         public void onClosed() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    L.e(TAG,"onClosed");
-                }
-            });
+            L.e(TAG,"onClosed");
         }
     };
 

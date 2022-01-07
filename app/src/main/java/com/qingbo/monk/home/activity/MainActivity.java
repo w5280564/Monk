@@ -369,8 +369,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
 
+
+
     @Override
-    protected void getServerData() {
+    protected void onResume() {
+        super.onResume();
         getAllUnreadNumber();
     }
 

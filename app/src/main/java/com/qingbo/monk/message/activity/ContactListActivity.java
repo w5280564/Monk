@@ -148,6 +148,11 @@ public class ContactListActivity extends BaseActivity {
                     return;
                 }
 
+                if (obj.getItemType()==0) {
+                    return;
+                }
+
+                ChatActivity.actionStart(mActivity,obj.getId(),obj.getNickname(),obj.getAvatar());
             }
         });
 
