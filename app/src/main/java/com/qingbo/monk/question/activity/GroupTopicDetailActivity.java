@@ -256,8 +256,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             }else{
                 title_Tv.setVisibility(View.GONE);
             }
-            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
-                    ,person_Img,person_Name,content_Tv,tv_role);
+            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole());
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
@@ -266,12 +265,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole()
-                        ,person_Img,person_Name,content_Tv,tv_role);
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole());
                 createQuestionList(ll_container_answer,item);
             }else{
-                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
-                        ,person_Img,person_Name,content_Tv,tv_role);
+                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole());
                 handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
@@ -279,33 +276,34 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     }
 
 
-    private void handleCommonData(String headImg,String headName,String content,String role
-            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role) {
-        GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
-        tv_headName.setText(headName);
+    private void handleCommonData(String headImg,String headName,String content,String role) {
+        GlideUtils.loadCircleImage(mContext, person_Img, headImg);
+        person_Name.setText(headName);
+        GlideUtils.loadCircleImage(mContext, title_Img, headImg);
+        titleNickName_Tv.setText(headName);
 
         if (!StringUtil.isBlank(content)) {
-            tv_content.setVisibility(View.VISIBLE);
-            tv_content.setText(content);
+            content_Tv.setVisibility(View.VISIBLE);
+            content_Tv.setText(content);
         }else{
-            tv_content.setVisibility(View.GONE);
+            content_Tv.setVisibility(View.GONE);
         }
 
         if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("管理员");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+            person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
         }else if("2".equals(role)) {
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("合伙人");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+            person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
         }else if("3".equals(role)) {
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("群主");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
+            person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
         }else{
             tv_role.setVisibility(View.GONE);
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+            person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
         }
     }
 
@@ -533,8 +531,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                     homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-                        GlideUtils.loadCircleImage(mContext, title_Img, detailData.getAvatar(), R.mipmap.icon_logo);
-                        titleNickName_Tv.setText(detailData.getAuthorName());
                         isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
@@ -748,25 +744,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         }
     }
 
-    /**
-     * 加载多图适配器
-     *
-     * @param imgString
-     */
-    private void showNineView(String imgString) {
-        String[] imgS = imgString.split(",");
-        List<String> strings = Arrays.asList(imgS);
-        mNineView.setLayoutManager(new NineGridLayoutManager(mNineView.getContext()));
-        NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        mNineView.setAdapter(nineGridAdapter);
-        nineGridAdapter.setNewData(strings);
-        nineGridAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
-    }
 
     /**
      * 横向多个头像

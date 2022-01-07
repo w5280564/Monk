@@ -19,7 +19,7 @@ public class NineGridAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     @Override
     protected void convert(@NonNull BaseViewHolder helper, String item) {
         ImageView image = helper.getView(R.id.image);
-        GlideUtils.addRadius(mContext,image,item,9);
+        GlideUtils.loadRoundImage(mContext,image,item,9);
     }
 
 }

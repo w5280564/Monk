@@ -39,8 +39,8 @@
 
                     <ImageView
                         android:id="@+id/group_Img"
-                        android:layout_width="@dimen/dp_30"
-                        android:layout_height="@dimen/dp_30"
+                        android:layout_width="@dimen/dp_36"
+                        android:layout_height="@dimen/dp_36"
                         android:layout_marginStart="@dimen/dp_15"
                         android:layout_marginTop="@dimen/dp_10"
                         android:scaleType="centerCrop"
@@ -54,7 +54,7 @@
                         android:layout_marginStart="@dimen/dp_15"
                         android:maxLength="10"
                         android:textColor="@color/text_color_444444"
-                        android:textSize="@dimen/sp_12"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/group_Img"
                         app:layout_constraintTop_toTopOf="@+id/group_Img" />

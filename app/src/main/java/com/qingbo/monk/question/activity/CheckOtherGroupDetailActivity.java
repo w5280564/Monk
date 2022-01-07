@@ -125,7 +125,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         if (groupBean != null) {
             tvGroupName.setText(groupBean.getShequnName());
             tvGroupId.setText(String.format("群ID：%s",id));
-            GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(),R.mipmap.bg_create_group, DisplayUtil.dip2px(mContext,9));
+            GlideUtils.loadRoundImage(mContext,ivHeader, groupBean.getAvatar(),9);
             labelFlow(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());
             tv_member_num.setText(groupBean.getMemberCount());
@@ -133,7 +133,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             tvDes.setText(groupBean.getShequnDes());
 
             tvGroupHostName.setText(groupBean.getNickname());
-            GlideUtils.loadRoundImage(mContext, ivHeaderHost, groupBean.getAvatar(), DisplayUtil.dip2px(mContext,9));
+            GlideUtils.loadCircleImage(mContext, ivHeaderHost, groupBean.getAvatar());
             tvCreateTime.setText(String.format("创建%1$s天，%2$s活跃过", groupBean.getCreateDay(), groupBean.getLastLogin()));
 
             fee_type = groupBean.getType();
