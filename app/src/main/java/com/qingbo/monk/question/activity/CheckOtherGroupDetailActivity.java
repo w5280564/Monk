@@ -9,22 +9,29 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.CheckOtherGroupBean;
+import com.qingbo.monk.bean.ThemeBean;
+import com.qingbo.monk.home.NineGrid.NineGridAdapter;
+import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-
 import org.greenrobot.eventbus.EventBus;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
@@ -117,7 +124,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     private void handleData(CheckOtherGroupBean groupBean) {
         if (groupBean != null) {
             tvGroupName.setText(groupBean.getShequnName());
-            tvGroupId.setText(String.format("群ID：%s",groupBean.getSqId()));
+            tvGroupId.setText(String.format("群ID：%s",id));
             GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(),R.mipmap.bg_create_group, DisplayUtil.dip2px(mContext,9));
             labelFlow(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());
@@ -143,6 +150,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             }
 
             tv_pay_notice.setText(groupBean.getPayNotice());
+            createList(groupBean.getTheme());
         }
     }
 
@@ -169,20 +177,107 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
 
 
     /**
-     * 细看更多宝贝
+     * 部分主题预览
      */
-    private void createList(List<String> mList) {
-        llContainerBottom.removeAllViews();
-        for (int i = 0; i < mList.size(); i++) {
-            View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_detail_bottom, null);
-//            TextView tv_group_host_name = itemView.findViewById(R.id.tv_group_host_name);
-//            TextView tv_des = itemView.findViewById(R.id.tv_des);
-//            TextView tv_create_time = itemView.findViewById(R.id.tv_create_time);
-//            ImageView iv_header_host = itemView.findViewById(R.id.iv_header_host);
-            llContainerBottom.addView(itemView);
+    private void createList(List<ThemeBean> mList) {
+        if (!ListUtils.isEmpty(mList)) {
+            llContainerBottom.removeAllViews();
+            for (ThemeBean item:mList) {
+                View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_detail_bottom, null);
+                TextView tv_group_host_name = itemView.findViewById(R.id.tv_group_host_name);
+                TextView tv_des = itemView.findViewById(R.id.tv_des);
+                TextView tv_create_time = itemView.findViewById(R.id.tv_create_time);
+                ImageView iv_header_host = itemView.findViewById(R.id.iv_header_host);
+                LinearLayout ll_container_answer = itemView.findViewById(R.id.ll_container_answer);
+                RecyclerView mNineView = itemView.findViewById(R.id.nine_grid);
+
+                if (!TextUtils.isEmpty(item.getCreateTime())) {
+                    String userDate = DateUtil.getUserDate(item.getCreateTime());
+                    tv_create_time.setText(userDate);
+                }
+
+
+
+                String topicType = item.getTopicType();
+                if ("1".equals(topicType)) {//1是话题2是问答
+                    handleCommonData(item.getAvatar(),item.getNickname(),item.getContent()
+                            ,iv_header_host,tv_group_host_name,tv_des);
+                    handleImageList(item, mNineView);
+                    ll_container_answer.setVisibility(View.GONE);
+                }else{
+                    List<ThemeBean.DetailDTO> details = item.getDetail();
+                    if (!ListUtils.isEmpty(details)) {
+                        ll_container_answer.setVisibility(View.VISIBLE);
+                        ThemeBean.DetailDTO answerObj = details.get(0);
+                        handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent()
+                                ,iv_header_host,tv_group_host_name,tv_des);
+                        createQuestionList(ll_container_answer,item);
+                    }else{
+                        handleCommonData(item.getAvatar(),item.getNickname(),item.getContent()
+                                ,iv_header_host,tv_group_host_name,tv_des);
+                        handleImageList(item, mNineView);
+                        ll_container_answer.setVisibility(View.GONE);
+                    }
+                }
+
+                llContainerBottom.addView(itemView);
+            }
         }
     }
 
+    private void handleCommonData(String headImg,String headName,String content
+            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content) {
+        GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
+        tv_headName.setText(headName);
+
+        if (!StringUtil.isBlank(content)) {
+            tv_content.setVisibility(View.VISIBLE);
+            tv_content.setText(content);
+        }else{
+            tv_content.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 提问
+     */
+    private void createQuestionList(LinearLayout ll_container_answer, ThemeBean item ) {
+        ll_container_answer.removeAllViews();
+        View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
+        TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
+        TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
+        RecyclerView mNineView = itemView.findViewById(R.id.nine_grid_answer);
+        tv_answer_name.setText(item.getNickname());
+        tv_answer_content.setText("提问："+item.getContent());
+
+        handleImageList(item, mNineView);
+        ll_container_answer.addView(itemView);
+    }
+
+    private void handleImageList(ThemeBean item, RecyclerView mNineView) {
+        NineGridAdapter nineGridAdapter = new NineGridAdapter();
+        List<String> strings = new ArrayList<>();
+        mNineView.setLayoutManager(new NineGridLayoutManager(mContext));
+        mNineView.setAdapter(nineGridAdapter);
+        //多张图片
+        if (!TextUtils.isEmpty(item.getImages())) {
+            mNineView.setVisibility(View.VISIBLE);
+            String[] imgS = item.getImages().split(",");
+            strings.addAll(Arrays.asList(imgS));
+            nineGridAdapter.setNewData(strings);
+            nineGridAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                    if (onItemImgClickLister != null) {
+//                        onItemImgClickLister.OnItemImgClickLister(position, strings);
+//                    }
+                }
+            });
+        } else {
+            mNineView.setVisibility(View.GONE);
+            nineGridAdapter.setNewData(null);
+        }
+    }
 
     @OnClick(R.id.tv_join)
     public void onClick() {

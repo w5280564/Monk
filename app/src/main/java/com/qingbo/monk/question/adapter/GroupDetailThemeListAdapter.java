@@ -79,6 +79,9 @@ public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, Bas
                 ,group_Img,group_Name,content_Tv,tv_role);
                 createQuestionList(ll_container_answer,item);
             }else{
+                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
+                        ,group_Img,group_Name,content_Tv,tv_role);
+                handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
         }

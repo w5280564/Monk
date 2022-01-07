@@ -37,6 +37,16 @@
         app:layout_constraintBottom_toBottomOf="@id/iv_header_host"
         app:layout_constraintStart_toStartOf="@id/tv_group_host_name" />
 
+    <LinearLayout
+        android:id="@+id/ll_container_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
+        app:layout_constraintTop_toBottomOf="@+id/iv_header_host"/>
+
     <TextView
         android:id="@+id/tv_des"
         android:layout_width="0dp"
@@ -50,8 +60,17 @@
         app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nine_grid"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_des" />
+
     <View style="@style/app_line"
-        app:layout_constraintTop_toBottomOf="@id/tv_des"
+        app:layout_constraintTop_toBottomOf="@id/nine_grid"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/dp_15"/>
 

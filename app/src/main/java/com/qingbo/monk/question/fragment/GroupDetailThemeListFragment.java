@@ -93,7 +93,7 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
                 if (mThemeBean == null) {
                     return;
                 }
-                showToastDialog(mThemeBean.getArticle_id(),position);
+                showToastDialog(mThemeBean.getArticleId(),position);
 
             }
         });

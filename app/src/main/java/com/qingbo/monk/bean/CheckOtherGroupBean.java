@@ -2,6 +2,8 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -45,4 +47,6 @@ public class CheckOtherGroupBean {
     private String topicCount;
     @SerializedName("last_up_time")
     private String lastUpTime;
+    @SerializedName("theme")
+    private List<ThemeBean> theme;
 }
