@@ -131,7 +131,7 @@ public class PrivacyPolicyDialog extends Dialog implements View.OnClickListener 
 		 */
 		@Override
 		public void updateDrawState(TextPaint ds) {
-			ds.setColor(ContextCompat.getColor(mContext, R.color.app_main_color));
+
 		}
 
 	}

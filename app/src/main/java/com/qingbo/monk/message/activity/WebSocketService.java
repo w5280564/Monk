@@ -27,7 +27,7 @@ public class WebSocketService extends Service {
 
     private Handler handler = new Handler();
 
-    class LocalBinder extends Binder {
+    public class LocalBinder extends Binder {
         WebSocketService getService() {
             return WebSocketService.this;
         }

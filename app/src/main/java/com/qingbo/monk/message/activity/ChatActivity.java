@@ -1,26 +1,20 @@
 package com.qingbo.monk.message.activity;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
+import com.qingbo.monk.base.BaseCameraAndGalleryActivity_SingleService;
 import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.qingbo.monk.bean.ReceiveMessageBean;
-import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -40,7 +34,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener{
+public class ChatActivity extends BaseCameraAndGalleryActivity_SingleService implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -48,7 +42,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.et_content)
     EditText etContent;
-    private WebSocketService webSocketService;
     private List<String> mSensitiveWordList = new ArrayList<>();//敏感词词汇列表
     private ChatAdapter mAdapter;
     private List<ReceiveMessageBean> mList = new ArrayList<>();
@@ -117,6 +110,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void initView() {
+        super.initView();
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         layoutManager = new LinearLayoutManager(mActivity);
 //        layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
@@ -125,7 +119,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         mAdapter = new ChatAdapter(mList);
         mAdapter.setEmptyView(addEmptyView("暂无消息", 0));
         mRecyclerView.setAdapter(mAdapter);
-        initWebSocket();
     }
 
     @Override
@@ -171,9 +164,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     }
 
-    private void initWebSocket() {
-        bindService(new Intent(this, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
-    }
 
 
     @Override
@@ -250,17 +240,8 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     return;
                 }
 
-                if (webSocketService != null) {
-                    SendMessageBean mSendMessageBean = new SendMessageBean();
-                    mSendMessageBean.setMessage(etContent.getText().toString());
-                    mSendMessageBean.setFrom(SharePref.user().getUserId());
-                    mSendMessageBean.setTo(id);
-                    mSendMessageBean.setMsgType(ReceiveMessageBean.MESSAGE_TYPE_TEXT);
-                    mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_MSG);
-                    webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
-
-                    addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
-                }
+                sendText(content,id);
+                addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
                 break;
         }
     }
@@ -295,13 +276,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        SendMessageBean mSendMessageBean = new SendMessageBean();
-        mSendMessageBean.setMessage(imageString);
-        mSendMessageBean.setFrom(SharePref.user().getUserId());
-        mSendMessageBean.setTo(id);
-        mSendMessageBean.setMsgType(ReceiveMessageBean.MESSAGE_TYPE_IMAGE);
-        mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_MSG);
-        webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
+        sendText(imageString,id);
         addContentToList(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE, ReceiveMessageBean.CHAT_TYPE_SEND);
     }
 
@@ -310,10 +285,22 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(serviceConnection);
+    protected void onCommonResponse(String text) {
+        L.e(TAG,"接收到消息>>>"+text);
+        if (text==null) {
+            return;
+        }
+
+        ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
+        if (receiveObj==null) {
+            return;
+        }
+        receiveObj.setFromHeader(header);
+        if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
+            mAdapter.addData(0,receiveObj);
+        }
     }
 
     @Override
@@ -322,71 +309,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         getMessageList(false);
     }
 
-
-
-
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>聊天相关>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            webSocketService = ((WebSocketService.LocalBinder) service).getService();
-            webSocketService.setWebSocketCallback(webSocketCallback);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            webSocketService = null;
-        }
-    };
-
-    private WebSocketService.WebSocketCallback webSocketCallback = new WebSocketService.WebSocketCallback() {
-        @Override
-        public void onMessage(final String text) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    L.e(TAG,"接收到消息>>>"+text);
-                    if (text==null) {
-                        return;
-                    }
-
-                    ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
-                    if (receiveObj==null) {
-                        return;
-                    }
-
-                    if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
-                        mAdapter.addData(0,receiveObj);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void onOpen() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    SendMessageBean mSendMessageBean = new SendMessageBean();
-                    mSendMessageBean.setFrom(SharePref.user().getUserId());
-                    mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_INIT);
-                    webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
-                    L.e(TAG,"onOpen>>初始化");
-                }
-            });
-        }
-
-        @Override
-        public void onClosed() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    L.e(TAG,"onClosed");
-                }
-            });
-        }
-    };
 
 
 }
