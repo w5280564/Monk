@@ -11,7 +11,7 @@ import com.xunda.lib.common.R;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 /**
- * Description: 小数位数限定(提现)
+ * 设置入群费用
  */
 
 public class DecimalInputTextWatcherExtract implements TextWatcher {
@@ -23,7 +23,8 @@ public class DecimalInputTextWatcherExtract implements TextWatcher {
      */
     private EditText editText = null;
     private TextView tv_beyond_below_toast = null;
-    private int maxAmount,minAmount,remains_money;
+    private int maxAmount = 6000;
+    private int minAmount = 50;
 
     /**
      * @param editText      editText
@@ -57,7 +58,7 @@ public class DecimalInputTextWatcherExtract implements TextWatcher {
                     && s.trim().length() > 1) {
                 editable.replace(0, editable.length(), Zero);
             }
-//            judgeButtonIsClickAble(s);
+            judgeButtonIsClickAble(s);
             editText.addTextChangedListener(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,16 +68,16 @@ public class DecimalInputTextWatcherExtract implements TextWatcher {
 
 
 
-//    /**
-//     * 判断按钮是否可以点击
-//     */
-//    private void judgeButtonIsClickAble(String value) {
-//        if (StringUtil.isBlank(StringUtil.getEditText(editText))){
-//            btn_charge.setBackgroundResource(R.drawable.btn_shape_gray_round);
-//            btn_charge.setEnabled(false);
-//        }else {
-//            btn_charge.setBackgroundResource(R.drawable.selector_btn_round);
-//            btn_charge.setEnabled(true);
-//        }
-//    }
+    /**
+     * 判断按钮是否可以点击
+     */
+    private void judgeButtonIsClickAble(String value) {
+        if (StringUtil.isBlank(value)){
+            tv_beyond_below_toast.setVisibility(View.GONE);
+        }else if(Integer.parseInt(value)<minAmount || Integer.parseInt(value)>maxAmount){
+            tv_beyond_below_toast.setVisibility(View.VISIBLE);
+        }else{
+            tv_beyond_below_toast.setVisibility(View.GONE);
+        }
+    }
 }

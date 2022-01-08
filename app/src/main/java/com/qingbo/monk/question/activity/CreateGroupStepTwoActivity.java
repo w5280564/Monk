@@ -91,6 +91,7 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
             isFree = true;
             tvGroupType.setText("免费入群");
             tvMoneyLogo.setVisibility(View.GONE);
+            tv_beyond_below_toast.setVisibility(View.GONE);
             etPriceNumber.setText("");
             etPriceNumber.setHint("设置后入群无需付费");
             etPriceNumber.setEnabled(false);
