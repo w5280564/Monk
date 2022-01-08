@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.home.activity.MainActivity;
-import com.qingbo.monk.wxapi.WXEntryActivity;
 import com.tuo.customview.VerificationCodeView;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;

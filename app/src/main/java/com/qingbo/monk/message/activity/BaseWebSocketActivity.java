@@ -58,7 +58,7 @@ public abstract class BaseWebSocketActivity extends BaseActivity {
                         return;
                     }
 
-                    onCommonResponse(text);
+                    onReceiveMessage(text);
                 }
             });
         }
@@ -90,7 +90,7 @@ public abstract class BaseWebSocketActivity extends BaseActivity {
 
 
     //接收消息
-    protected abstract void onCommonResponse(String text);
+    protected abstract void onReceiveMessage(String text);
 
 
 

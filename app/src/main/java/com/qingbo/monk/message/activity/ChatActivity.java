@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity_SingleService;
+import com.qingbo.monk.base.BaseCameraAndGalleryActivity_SingleWithWebService;
 import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_SingleService implements SwipeRefreshLayout.OnRefreshListener{
+public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebService implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -287,7 +287,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_SingleService imp
 
 
     @Override
-    protected void onCommonResponse(String text) {
+    protected void onReceiveMessage(String text) {
         L.e(TAG,"接收到消息>>>"+text);
         if (text==null) {
             return;

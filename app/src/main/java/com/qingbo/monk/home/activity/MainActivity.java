@@ -28,7 +28,7 @@ import com.qingbo.monk.Slides.activity.SideslipInterest_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
-import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.qingbo.monk.base.BaseActivityWithFragmentWithWebService;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
@@ -55,7 +55,7 @@ import butterknife.BindView;
 /**
  * 主首页
  */
-public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends BaseActivityWithFragmentWithWebService implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     @BindView(R.id.mBottomNavigationView)
     BottomNavigationView mBottomNavigationView;
     private int fragmentId = R.id.act_main_fragment;
@@ -124,8 +124,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         addTabBadge();
     }
 
-
-
+    @Override
+    protected void initView() {
+//        super.initView();
+    }
 
     HomeFragment homeFragment;
 
@@ -425,4 +427,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         itemTab.addView(badge);
     }
 
+    @Override
+    protected void onReceiveMessage(String text) {
+        getAllUnreadNumber();
+    }
 }

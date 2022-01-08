@@ -35,7 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  *
  */
 
-public abstract class BaseCameraAndGalleryActivity_SingleService extends BaseWebSocketActivity implements EasyPermissions.PermissionCallbacks{
+public abstract class BaseCameraAndGalleryActivity_SingleWithWebService extends BaseWebSocketActivity implements EasyPermissions.PermissionCallbacks{
 
     private static final int APP_SETTINGS_PHOTO = 100;
 
