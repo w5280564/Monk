@@ -164,12 +164,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 int tag = (Integer) v.getTag();
                 int stateIndex = model.getList().get(tag).getJoinStatus();
                 if (stateIndex == 1) {//1已加入 其他都是未加入
-                    model.getList().get(tag).setJoinStatus(1);
+                    model.getList().get(tag).setJoinStatus(0);
                     join_Tv.setText("加入");
                     join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_444444));
                     changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.app_main_color));
                 } else {
-                    model.getList().get(tag).setJoinStatus(0);
+                    model.getList().get(tag).setJoinStatus(1);
                     join_Tv.setText("已加入");
                     join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_a1a1a1));
                     changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.text_color_F5F5F5));

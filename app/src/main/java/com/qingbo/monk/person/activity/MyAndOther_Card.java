@@ -1,20 +1,33 @@
 package com.qingbo.monk.person.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.widget.ImageView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 
 import java.util.ArrayList;
 
 public class MyAndOther_Card extends BaseTabLayoutActivity {
+
+
+    /**
+     * 设置状态栏
+     */
+    private void setBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(true)
+                .init();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        setBar();
+    }
 
 
     @Override
@@ -26,11 +39,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity {
     protected void initView() {
         mTabLayout = findViewById(R.id.card_Tab);
         mViewPager = findViewById(R.id.card_ViewPager);
-       CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
        ImageView iv_img = findViewById(R.id.iv_img);
-       ConstraintLayout title_Con = findViewById(R.id.title_Con);
-       headLayout.setmMoveView(title_Con,mViewPager);
-       headLayout.setmZoomView(iv_img);
+//       ConstraintLayout title_Con = findViewById(R.id.title_Con);
+//       headLayout.setmMoveView(mTabLayout,mViewPager);
+//       headLayout.setmZoomView(iv_img);
         initMenuData();
     }
 

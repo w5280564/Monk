@@ -6,6 +6,7 @@
         <entry key="..\:/Monk/app/src/main/res/drawable/background_group_bottom2.xml" value="0.36666666666666664" />
         <entry key="..\:/Monk/app/src/main/res/drawable/background_group_bottom_transparent.xml" value="0.36666666666666664" />
         <entry key="..\:/Monk/app/src/main/res/drawable/base_gradual.xml" value="0.36102564102564105" />
+        <entry key="..\:/Monk/app/src/main/res/drawable/base_gradual_top.xml" value="0.37916666666666665" />
         <entry key="..\:/Monk/app/src/main/res/drawable/bg_stroke_withe.xml" value="0.36102564102564105" />
         <entry key="..\:/Monk/app/src/main/res/drawable/fade_red.xml" value="0.38229166666666664" />
         <entry key="..\:/Monk/app/src/main/res/drawable/label_stroke.xml" value="0.36102564102564105" />
@@ -20,6 +21,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_code_list.xml" value="0.33541666666666664" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_get_code.xml" value="0.33541666666666664" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail.xml" value="0.34512820512820513" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail_more_info.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_home_aandhk.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_home_combinationdetail.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_home_focus.xml" value="0.34512820512820513" />
@@ -47,6 +49,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/fundcombination_adapter.xml" value="0.334375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/fundmanager_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_label.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_tag.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/insider_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/interest_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_fundshares.xml" value="0.334375" />
@@ -57,12 +60,16 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/stockfund_mess_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_article_detali_comment_list.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_home_focus.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myandother_card.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sidesli_follow.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_expert.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_insider.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_stock.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/find_card.xml" value="0.33076923076923076" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/group_label.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/interest_label.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myinterest_label.xml" value="0.75" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_group_all.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_group_detail_all_layout.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.33" />
@@ -189,7 +196,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_contact_list.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_one.xml" value="0.317481884057971" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_two.xml" value="0.4789473684210526" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_two.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_get_code.xml" value="0.3385416666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail.xml" value="0.1" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail_more_info.xml" value="0.3536458333333333" />
@@ -197,8 +204,6 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_manager_or_partner_list_set.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_member_list.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_setting.xml" value="0.17198581560283688" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_topic_detail.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_home_focus.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login.xml" value="0.5" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login_more_info.xml" value="0.3532608695652174" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login_with_code.xml" value="0.3536458333333333" />
@@ -246,7 +251,6 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list.xml" value="0.17198581560283688" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_all.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/layout_home_badge.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/layout_tab.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/actiivty_preview_group_detail.xml" value="0.5" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_all_group.xml" value="0.317481884057971" />
@@ -254,12 +258,10 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_industry.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_theme.xml" value="0.5279937791601866" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_group_manager_set_cost.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_group_topic_detail.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_home_focus.xml" value="0.18489583333333334" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_invite_partner.xml" value="0.33" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_more_info_step1.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/activity_publisher_group_topic.xml" value="0.23055555555555557" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_chat.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_group_all.xml" value="0.1" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_home.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/dialog/layout/fragment_homee.xml" value="0.3536458333333333" />
@@ -350,7 +352,6 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/item_screen_grid.xml" value="0.16489361702127658" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/item_share.xml" value="0.26851851851851855" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/layout_dialog_grid.xml" value="0.16489361702127658" />
-        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/layout_dialog_input_string.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/layout_tab.xml" value="0.67" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/my_arrowitemview.xml" value="0.3532608695652174" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/picker_single_layout.xml" value="0.11214087117701575" />

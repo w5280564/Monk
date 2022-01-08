@@ -4,6 +4,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -22,13 +23,12 @@ public class AppbarZoomBehavior extends AppBarLayout.Behavior {
     private int mAppbarHeight;//记录AppbarLayout原始高度
     private int mImageViewHeight;//记录ImageView原始高度
 
-    private static final float MAX_ZOOM_HEIGHT = 500;//放大最大高度
+    private static final float MAX_ZOOM_HEIGHT = 1500;//放大最大高度
     private float mTotalDy;//手指在Y轴滑动的总距离
     private float mScaleValue;//图片缩放比例
     private int mLastBottom;//Appbar的变化高度
 
     private boolean isAnimate;//是否做动画标志
-
 
     public AppbarZoomBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -113,8 +113,8 @@ public class AppbarZoomBehavior extends AppBarLayout.Behavior {
         mTotalDy += -dy;
         mTotalDy = Math.min(mTotalDy, MAX_ZOOM_HEIGHT);
         mScaleValue = Math.max(1f, 1f + mTotalDy / MAX_ZOOM_HEIGHT);
-        ViewCompat.setScaleX(mImageView, mScaleValue);
-        ViewCompat.setScaleY(mImageView, mScaleValue);
+        mImageView.setScaleX(mScaleValue);
+        mImageView.setScaleY(mScaleValue);
         mLastBottom = mAppbarHeight + (int) (mImageViewHeight / 2 * (mScaleValue - 1));
         abl.setBottom(mLastBottom);
     }
@@ -169,15 +169,15 @@ public class AppbarZoomBehavior extends AppBarLayout.Behavior {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
                         float value = (float) animation.getAnimatedValue();
-                        ViewCompat.setScaleX(mImageView, value);
-                        ViewCompat.setScaleY(mImageView, value);
+                        mImageView.setScaleX(value);
+                        mImageView.setScaleY(value);
                         abl.setBottom((int) (mLastBottom - (mLastBottom - mAppbarHeight) * animation.getAnimatedFraction()));
                     }
                 });
                 valueAnimator.start();
             } else {
-                ViewCompat.setScaleX(mImageView, 1f);
-                ViewCompat.setScaleY(mImageView, 1f);
+                mImageView.setScaleX(1f);
+                mImageView.setScaleY(1f);
                 abl.setBottom(mAppbarHeight);
             }
         }
