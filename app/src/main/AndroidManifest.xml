@@ -59,7 +59,9 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
+        <activity
+            android:name=".person.activity.MyAndOther_Card"
+            android:exported="false" />
         <activity
             android:name=".Slides.activity.InterestCrate_Activity"
             android:exported="false" />
@@ -138,10 +140,10 @@
         <activity android:name=".login.activity.ChooseIndustryActivity" />
         <activity android:name=".webview.WebviewActivity" />
         <activity android:name=".message.activity.ContactListActivity" />
-        <activity android:name=".message.activity.ChatActivity"
+        <activity
+            android:name=".message.activity.ChatActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".question.activity.CreateGroupStepOneActivity" />
         <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
         <activity android:name=".question.activity.AllGroupListActivity" />
@@ -176,7 +178,9 @@
             android:launchMode="singleTask"
             android:taskAffinity="net.sourceforge.simcpux"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <service android:name=".message.activity.WebSocketService" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"

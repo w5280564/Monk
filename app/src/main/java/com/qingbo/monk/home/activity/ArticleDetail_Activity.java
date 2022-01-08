@@ -163,6 +163,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initView() {
+        viewTouchDelegate.expandViewTouchDelegate(back_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
@@ -668,6 +669,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 }
             } else {
                 //中间状态
+                title_Img.setVisibility(View.GONE);
+                titleNickName_Tv.setVisibility(View.GONE);
+                center_Tv.setVisibility(View.GONE);
+                titleFollow_Tv.setVisibility(View.GONE);
+                titleSend_Mes.setVisibility(View.GONE);
             }
         }
     }

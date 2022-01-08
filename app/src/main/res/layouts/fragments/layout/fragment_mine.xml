@@ -50,7 +50,6 @@
                         android:layout_marginEnd="@dimen/dp_10"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="阿羊G"
                         android:textColor="@color/text_color_444444"
                         android:textSize="@dimen/sp_18"
                         android:textStyle="bold"
@@ -99,7 +98,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_24"
                         android:layout_marginTop="@dimen/dp_30"
-                        android:text="1234"
                         android:textColor="@color/text_color_444444"
                         android:textSize="@dimen/sp_15"
                         android:textStyle="bold"
@@ -124,7 +122,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_60"
-                        android:text="5678"
                         android:textColor="@color/text_color_444444"
                         android:textSize="@dimen/sp_15"
                         android:textStyle="bold"
@@ -163,7 +160,7 @@
                         android:drawableTop="@mipmap/qianbao"
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
-                        android:text="我的钱包"
+                        android:text="钱包"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
@@ -346,8 +343,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/interest_Lin"
+                    <com.xunda.lib.common.view.flowlayout.FlowLayout
+                        android:id="@+id/interest_Flow"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_42"
@@ -363,9 +360,9 @@
                         android:layout_width="@dimen/dp_0"
                         android:layout_height="@dimen/dp_1"
                         android:layout_marginTop="@dimen/dp_13"
-                        app:layout_constraintEnd_toEndOf="@+id/interest_Lin"
-                        app:layout_constraintStart_toStartOf="@id/interest_Lin"
-                        app:layout_constraintTop_toBottomOf="@id/interest_Lin" />
+                        app:layout_constraintEnd_toEndOf="@+id/interest_Flow"
+                        app:layout_constraintStart_toStartOf="@id/interest_Flow"
+                        app:layout_constraintTop_toBottomOf="@id/interest_Flow" />
 
 
                     <TextView
@@ -389,7 +386,7 @@
                         android:layout_marginStart="@dimen/dp_42"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_15"
-                        android:text="量化投资，对冲基金，美元基金，金融科技，内\n容创业，创作者经济"
+                        android:text="暂未填写"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -426,7 +423,7 @@
                         android:layout_marginStart="@dimen/dp_42"
                         android:layout_marginTop="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_15"
-                        android:text="量化投资，对冲基金，美元基金，金融科技，内\n容创业，创作者经济"
+                        android:text="暂未填写"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -450,7 +447,7 @@
                         android:layout_marginTop="@dimen/dp_15"
                         android:drawableLeft="@mipmap/yanjiu"
                         android:drawablePadding="@dimen/dp_10"
-                        android:text="可以提供什么资源/可以问我"
+                        android:text="最有成就感的事"
                         android:textColor="@color/text_color_6f6f6f"
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -487,7 +484,7 @@
                         android:layout_marginTop="@dimen/dp_15"
                         android:drawableLeft="@mipmap/xuexi"
                         android:drawablePadding="@dimen/dp_10"
-                        android:text="最近在学习/研究的方向/可以问我"
+                        android:text="最近在学习/研究的方向"
                         android:textColor="@color/text_color_6f6f6f"
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"

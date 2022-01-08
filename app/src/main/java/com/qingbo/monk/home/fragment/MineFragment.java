@@ -1,5 +1,6 @@
 package com.qingbo.monk.home.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
@@ -10,13 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.adapter.InterestDetail_All_Adapter;
 import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.UserBean;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -24,6 +27,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
 
@@ -32,7 +36,8 @@ import butterknife.BindView;
 /**
  * 我的
  */
-public class MineFragment extends BaseFragment {
+@SuppressLint("NonConstantResourceId")
+public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     @BindView(R.id.iv_userHeader)
     ImageView iv_userHeader;
     @BindView(R.id.tv_name)
@@ -43,6 +48,22 @@ public class MineFragment extends BaseFragment {
     TextView tv_follow_number;
     @BindView(R.id.tv_fans_number)
     TextView tv_fans_number;
+    @BindView(R.id.interest_Flow)
+    FlowLayout interest_Flow;
+    @BindView(R.id.good_Tv)
+    TextView good_Tv;
+    @BindView(R.id.resources_Tv)
+    TextView resources_Tv;
+    @BindView(R.id.achievement_Tv)
+    TextView achievement_Tv;
+    @BindView(R.id.learn_Tv)
+    TextView learn_Tv;
+    @BindView(R.id.harvest_Tv)
+    TextView harvest_Tv;
+    @BindView(R.id.iv_qrcode)
+    TextView iv_qrcode;
+    @BindView(R.id.refresh_layout)
+    SwipeRefreshLayout refresh_layout;
 
     @Override
     protected int getLayoutId() {
@@ -50,40 +71,60 @@ public class MineFragment extends BaseFragment {
     }
 
     @Override
+    protected void initView() {
+        viewTouchDelegate.expandViewTouchDelegate(iv_qrcode,50);
+    }
+
+    @Override
+    protected void initEvent() {
+        iv_qrcode.setOnClickListener(this);
+        refresh_layout.setOnRefreshListener(this);
+    }
+
+    @Override
     protected void getServerData() {
         String id = PrefUtil.getUser().getId();
         if (!TextUtils.isEmpty(id)) {
-            getUserData(id);
+            getUserData(id, true);
         }
     }
 
-    private void getUserData(String userId) {
+    private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (refresh_layout.isRefreshing()) {
+                    refresh_layout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
-                        labelFlow(label_Lin,requireActivity(),userBean.getTagName());
+                        labelFlow(label_Lin, requireActivity(), userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
+                        interestLabelFlow(interest_Flow, requireActivity(), userBean.getInterested());
 
+                        originalValue(userBean.getDomain(), "暂未填写", good_Tv);
+                        originalValue(userBean.getResource(), "暂未填写", resources_Tv);
+                        originalValue(userBean.getAchievement(), "暂未填写", achievement_Tv);
+                        originalValue(userBean.getResearch(), "暂未填写", learn_Tv);
+                        originalValue(userBean.getGetResource(), "暂未填写", harvest_Tv);
                     }
-
                 }
             }
-        }, true);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
 
     /**
      * 我的标签
+     *
      * @param myFlow
      * @param mContext
      * @param tag
@@ -110,10 +151,58 @@ public class MineFragment extends BaseFragment {
             label_Name.setText(tagS[i]);
             label_Name.setTag(i);
             myFlow.addView(view);
-            label_Name.setOnClickListener(v -> {
-            });
+        }
+    }
+
+    /**
+     * 我的兴趣
+     */
+    public void interestLabelFlow(FlowLayout myFlow, Context mContext, String tag) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        if (TextUtils.isEmpty(tag)) {
+            return;
+        }
+        String[] tagS = tag.split(",");
+        for (String s : tagS) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.group_label, null);
+            TextView label_Name = view.findViewById(R.id.label_Name);
+            StringUtil.changeShapColor(label_Name, ContextCompat.getColor(mContext, com.xunda.lib.common.R.color.lable_color_1F8FE5));
+            label_Name.setText(s);
+            myFlow.addView(view);
+        }
+    }
+
+    /**
+     * 没有数据添加默认值
+     *
+     * @param value
+     * @param originalStr
+     */
+    private void originalValue(Object value, String originalStr, TextView tv) {
+        if (TextUtils.isEmpty((CharSequence) value)) {
+            tv.setText(originalStr);
+        } else {
+            tv.setText((CharSequence) value);
         }
     }
 
 
+    @Override
+    public void onRefresh() {
+        String id = PrefUtil.getUser().getId();
+        if (!TextUtils.isEmpty(id)) {
+            getUserData(id, false);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_qrcode:
+                skipAnotherActivity(MyAndOther_Card.class);
+                break;
+        }
+    }
 }
