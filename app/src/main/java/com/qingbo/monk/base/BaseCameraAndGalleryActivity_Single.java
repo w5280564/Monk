@@ -173,14 +173,10 @@ public abstract class BaseCameraAndGalleryActivity_Single extends BaseActivity i
             case Constants.PHOTO_REQUEST_GALLERY:
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
-                        List<Uri> mSelected = Matisse.obtainResult(data);//图片集合
-                        if (!ListUtils.isEmpty(mSelected)) {
-                            try {
-                                File mFile = FileUtil.getTempFile(mActivity, mSelected.get(0));
-                                uploadImage(mFile);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        List<String> mSelectedImagePath = Matisse.obtainPathResult(data);//图片集合
+                        if (!ListUtils.isEmpty(mSelectedImagePath)) {
+                            File mFile = new File(mSelectedImagePath.get(0));
+                            uploadImage(mFile);
                         }
                     }
                 }

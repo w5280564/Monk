@@ -17,6 +17,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.permission.PermissionManager;
 import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.dialog.PermissionApplyDialog;
 import com.zhihu.matisse.Matisse;
@@ -180,18 +181,14 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
             case Constants.PHOTO_REQUEST_GALLERY:
                 if (resultCode == Activity.RESULT_OK) {
                     if (data != null) {
-                        List<Uri> mSelected = Matisse.obtainResult(data);//图片集合
-                        if (!ListUtils.isEmpty(mSelected)) {
-                            try {
-                                Map<String, File> files = new HashMap<>();
-                                for (int i = 0; i < mSelected.size(); i++) {
-                                    File mFile = FileUtil.getTempFile(mActivity, mSelected.get(i));
-                                    files.put(String.format("file[%s]",i),mFile);
-                                }
-                                uploadImage(files);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        List<String> mSelectedImagePath = Matisse.obtainPathResult(data);//图片集合
+                        if (!ListUtils.isEmpty(mSelectedImagePath)) {
+                            Map<String, File> files = new HashMap<>();
+                            for (int i = 0; i < mSelectedImagePath.size(); i++) {
+                                File mFile = new File(mSelectedImagePath.get(i));
+                                files.put(String.format("file[%s]",i),mFile);
                             }
+                            uploadImage(files);
                         }
                     }
                 }

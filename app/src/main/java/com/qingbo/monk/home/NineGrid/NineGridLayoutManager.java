@@ -26,7 +26,7 @@ public class NineGridLayoutManager extends RecyclerView.LayoutManager {
 
     public NineGridLayoutManager(Context context) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        gridSpacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, dm);
+        gridSpacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, dm);
         singleImageWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, dm);
         singleImageHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, dm);
         mCacheBorders = new Pool<>(() -> new Rect());
@@ -67,16 +67,19 @@ public class NineGridLayoutManager extends RecyclerView.LayoutManager {
         itemWidth = (width - getPaddingLeft() - getPaddingRight() - gridSpacing * (mSpanCount - 1)) / mSpanCount;
         itemHeight = itemWidth;//高度没问题
         int height = 0;
+        int allGaceHeight = 0;
         if (childCount == 1) {
             height = singleImageHeight;
         } else if (childCount > 0 && childCount <= 3) {
             height = 1 * itemHeight;
         } else if (childCount > 3 && childCount <= 6) {
             height = 2 * itemHeight;
+            allGaceHeight = gridSpacing;
         } else if (childCount > 6 && childCount <= 9) {
             height = 3 * itemHeight;
+            allGaceHeight = 2 * gridSpacing;
         }
-        height += getPaddingTop() + getPaddingBottom();//TODO:解决 Padding问题
+        height += getPaddingTop() + getPaddingBottom() + allGaceHeight;//TODO:解决 Padding问题
         heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
         super.onMeasure(recycler, state, widthSpec, heightSpec);
     }

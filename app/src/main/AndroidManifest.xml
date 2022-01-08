@@ -58,6 +58,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:replace="android:theme,allowBackup">
         <activity
             android:name=".person.activity.MyAndOther_Card"
@@ -185,7 +186,8 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
