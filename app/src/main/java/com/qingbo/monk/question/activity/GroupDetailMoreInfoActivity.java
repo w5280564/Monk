@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
@@ -36,8 +37,12 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 public class GroupDetailMoreInfoActivity extends BaseActivity {
     @BindView(R.id.iv_head_bag)
     ImageView iv_head_bag;
+    @BindView(R.id.rl_title)
+    RelativeLayout rl_title;
     @BindView(R.id.ll_back)
     LinearLayout ll_back;
+    @BindView(R.id.ll_top)
+    LinearLayout ll_top;
     @BindView(R.id.iv_head)
     ImageView ivHead;
     @BindView(R.id.tv_id)
@@ -124,7 +129,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
      * 设置状态栏
      */
     private void setBar() {
-        ImmersionBar.with(this).titleBar(ll_back)
+        ImmersionBar.with(this).titleBar(ll_top)
                 .statusBarDarkFont(false)
                 .init();
     }
@@ -238,7 +243,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
         if (sheQunBean==null) {
             return;
         }
-        ShareDialog mShareDialog = new ShareDialog(this,"https://www.baidu.com/","",sheQunBean.getShequnName(),sheQunBean.getShequnDes());
+        ShareDialog mShareDialog = new ShareDialog(this,"https://www.baidu.com/","",sheQunBean.getShequnName(),sheQunBean.getShequnDes(),"分享社群");
         mShareDialog.show();
     }
 }

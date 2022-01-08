@@ -40,6 +40,8 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
     EditText etPriceNumber;
     @BindView(R.id.cb_agree)
     CheckBox cbAgree;
+    @BindView(R.id.tv_beyond_below_toast)
+    TextView tv_beyond_below_toast;
     private String group_name,group_header;
     private boolean isFree;
 
@@ -79,7 +81,7 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
      * 给editext添加监听
      */
     private void addEditTextListener_money() {
-        DecimalInputTextWatcherExtract mDecimalInputTextWatcherExtract = new DecimalInputTextWatcherExtract(etPriceNumber);
+        DecimalInputTextWatcherExtract mDecimalInputTextWatcherExtract = new DecimalInputTextWatcherExtract(etPriceNumber,tv_beyond_below_toast);
         etPriceNumber.addTextChangedListener(mDecimalInputTextWatcherExtract);
     }
 
@@ -89,6 +91,7 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
             isFree = true;
             tvGroupType.setText("免费入群");
             tvMoneyLogo.setVisibility(View.GONE);
+            etPriceNumber.setText("");
             etPriceNumber.setHint("设置后入群无需付费");
             etPriceNumber.setEnabled(false);
         } else {
@@ -107,6 +110,12 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
         if (!isFree) {
             if (StringUtil.isBlank(fee)) {
                 T.ss("请输入入群金额");
+                return;
+            }
+
+            int int_fee = Integer.parseInt(fee);
+            if (int_fee<50 || int_fee>6000) {
+                T.sl("请输入50-6000的整数");
                 return;
             }
         }

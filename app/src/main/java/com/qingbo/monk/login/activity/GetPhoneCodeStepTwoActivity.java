@@ -54,7 +54,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
         super.initLocalData();
         area_code = getIntent().getStringExtra("area_code");
         phoneNumber = getIntent().getStringExtra("phoneNumber");
-        phoneNUmberView.setText("短信已发送至+"+phoneNumber);
+        phoneNUmberView.setText("短信已发送至+"+area_code+phoneNumber);
     }
 
 

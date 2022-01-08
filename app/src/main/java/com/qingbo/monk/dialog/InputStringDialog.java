@@ -17,6 +17,8 @@ import com.xunda.lib.common.common.utils.T;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 
 /**
  * 输入内容
@@ -26,6 +28,7 @@ public class InputStringDialog extends Dialog {
     private String cost ;
     private OnConfirmListener mOnConfirmListener;
     private EditText et_content;
+    private TextView tv_beyond_below_toast;
     private TextView tv_confirm;
 
     public InputStringDialog(Context context, String cost, OnConfirmListener mOnConfirmListener) {
@@ -54,6 +57,7 @@ public class InputStringDialog extends Dialog {
         llParent.setLayoutParams(layoutParams);
 
         et_content = findViewById(R.id.et_content);
+        tv_beyond_below_toast = findViewById(R.id.tv_beyond_below_toast);
         et_content.setText(StringUtil.getStringValue(cost));
         tv_confirm = findViewById(R.id.tv_confirm);
 
@@ -85,7 +89,7 @@ public class InputStringDialog extends Dialog {
      * 给editext添加监听
      */
     private void addEditTextListener_money() {
-        DecimalInputTextWatcherExtract mDecimalInputTextWatcherExtract = new DecimalInputTextWatcherExtract(et_content);
+        DecimalInputTextWatcherExtract mDecimalInputTextWatcherExtract = new DecimalInputTextWatcherExtract(et_content,tv_beyond_below_toast);
         et_content.addTextChangedListener(mDecimalInputTextWatcherExtract);
     }
 

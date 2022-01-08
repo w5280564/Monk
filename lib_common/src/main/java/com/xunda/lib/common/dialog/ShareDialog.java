@@ -45,7 +45,7 @@ import java.util.List;
 public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAdapter.OnItemClickListener {
     private static final int THUMB_SIZE = 120;
     private Context context;
-    private String pageUrl,title, text,imageUrl;
+    private String pageUrl,title, text,imageUrl,dialog_title;
     private List<String> platformList =  new ArrayList<>();
     private RecyclerView mRecycleView;
     private String appId;
@@ -53,13 +53,14 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
     public static String[] SHARE_PLATFORM_LIST = {"微信好友","朋友圈"};//分享平台列表
 
 
-    public ShareDialog(Context context,String pageUrl,String imageUrl,String title,String text) {
+    public ShareDialog(Context context,String pageUrl,String imageUrl,String title,String text,String dialog_title) {
         super(context, R.style.bottomrDialogStyle);
         this.context = context;
         this.pageUrl = pageUrl;
         this.imageUrl = imageUrl;
         this.title = title;
         this.text = text;
+        this.dialog_title = dialog_title;
     }
 
 
@@ -89,6 +90,8 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
     }
 
     private void initEventAndView() {
+        TextView tv_title = findViewById(R.id.tv_title);
+        tv_title.setText(dialog_title);
         mRecycleView = findViewById(R.id.recycleView);
         GridLayoutManager layoutManager = new GridLayoutManager(context,platformList.size());
         mRecycleView.setLayoutManager(layoutManager);

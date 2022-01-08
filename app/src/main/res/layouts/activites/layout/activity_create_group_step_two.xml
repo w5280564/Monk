@@ -101,6 +101,16 @@
         <View style="@style/app_line_background"
             android:layout_marginTop="@dimen/dp_13"/>
 
+        <TextView
+            android:id="@+id/tv_beyond_below_toast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请输入50-6000的整数"
+            android:layout_marginTop="@dimen/dp_13"
+            android:textColor="#FF5F2E"
+            android:textSize="@dimen/sp_12"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

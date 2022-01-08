@@ -3,6 +3,7 @@ package com.xunda.lib.common.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class EditStringDialog extends Dialog implements View.OnClickListener {
 	private String content;
 	private String hint;
 	private EditText et_input;
+	private int maxLength;
 
 	public EditStringDialog(@NonNull Context context, String title,String content,String hint, OnCompleteListener listener) {
 		super(context, R.style.bottomrDialogStyle);
@@ -36,6 +38,7 @@ public class EditStringDialog extends Dialog implements View.OnClickListener {
 		this.title = title;
 		this.content = content;
 		this.hint = hint;
+		maxLength = "社群名称".equals(title)?10:200;
 	}
 
 	@Override
@@ -63,6 +66,7 @@ public class EditStringDialog extends Dialog implements View.OnClickListener {
 		et_input = findViewById(R.id.et_input);
 		et_input.setText(StringUtil.getStringValue(content));
 		et_input.setHint(hint);
+		et_input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
 
 		findViewById(R.id.tv_close).setOnClickListener(this);
 		findViewById(R.id.tv_ok).setOnClickListener(this);

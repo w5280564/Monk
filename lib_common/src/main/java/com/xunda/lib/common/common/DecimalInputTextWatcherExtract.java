@@ -22,17 +22,19 @@ public class DecimalInputTextWatcherExtract implements TextWatcher {
      * 需要设置该 DecimalInputTextWatcher 的 EditText
      */
     private EditText editText = null;
-    private Button btn_charge = null;
+    private TextView tv_beyond_below_toast = null;
+    private int maxAmount,minAmount,remains_money;
 
     /**
      * @param editText      editText
-     * @param decimalDigits 小数的位数
+     * @param tv_beyond_below_toast      tv_beyond_below_toast
      */
-    public DecimalInputTextWatcherExtract(EditText editText) {
+    public DecimalInputTextWatcherExtract(EditText editText,TextView tv_beyond_below_toast) {
         if (editText == null) {
             throw new RuntimeException("editText can not be null");
         }
         this.editText = editText;
+        this.tv_beyond_below_toast = tv_beyond_below_toast;
     }
 
     @Override
@@ -65,16 +67,16 @@ public class DecimalInputTextWatcherExtract implements TextWatcher {
 
 
 
-    /**
-     * 判断按钮是否可以点击
-     */
-    private void judgeButtonIsClickAble(String value) {
-        if (StringUtil.isBlank(StringUtil.getEditText(editText))){
-            btn_charge.setBackgroundResource(R.drawable.btn_shape_gray_round);
-            btn_charge.setEnabled(false);
-        }else {
-            btn_charge.setBackgroundResource(R.drawable.selector_btn_round);
-            btn_charge.setEnabled(true);
-        }
-    }
+//    /**
+//     * 判断按钮是否可以点击
+//     */
+//    private void judgeButtonIsClickAble(String value) {
+//        if (StringUtil.isBlank(StringUtil.getEditText(editText))){
+//            btn_charge.setBackgroundResource(R.drawable.btn_shape_gray_round);
+//            btn_charge.setEnabled(false);
+//        }else {
+//            btn_charge.setBackgroundResource(R.drawable.selector_btn_round);
+//            btn_charge.setEnabled(true);
+//        }
+//    }
 }
