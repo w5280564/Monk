@@ -15,16 +15,20 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xunda.lib.common.R;
 import java.util.List;
 
+import q.rorbin.badgeview.DisplayUtil;
+
 /**
  * PopupWindow
  */
 public class MyPopWindow extends PopupWindow implements View.OnClickListener {
     private OnPopWindowClickListener mListener;
     private boolean haveEdit;//是否能编辑
+    private Activity context;
 
     public MyPopWindow(Activity context, boolean haveEdit, OnPopWindowClickListener mListener) {
         this.mListener = mListener;
         this.haveEdit = haveEdit;
+        this.context = context;
         init(context);
     }
 
@@ -86,7 +90,7 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
     public void showPopupWindow(View parent) {
         if (!isShowing()) {
             // 以下拉方式显示popupwindow
-            showAsDropDown(parent, 30, 0);
+            showAsDropDown(parent, -DisplayUtil.dp2px(context, 20), DisplayUtil.dp2px(context, 3));
         } else {
             dismiss();
         }

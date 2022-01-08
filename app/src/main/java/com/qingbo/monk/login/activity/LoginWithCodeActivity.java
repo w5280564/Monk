@@ -10,10 +10,19 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.HttpUrl;
+import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.view.CountDownTextView;
+
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -87,13 +96,35 @@ public class LoginWithCodeActivity extends BaseActivity implements CompoundButto
                     return;
                 }
 
-                GetPhoneCodeStepTwoActivity.actionStart(mActivity,area_code,phoneNumber);
+                getSmsCodeLogin(phoneNumber);
                 break;
             case R.id.iv_wechat:
                 wechatThirdLogin();
                 break;
 
         }
+    }
+
+    /**
+     * 获取验证码
+     */
+    private void getSmsCodeLogin(String phoneNumber) {
+        HashMap<String, String> baseMap = new HashMap<String, String>();
+        baseMap.put("area", area_code);
+        baseMap.put("mobile", phoneNumber);
+        HttpSender sender = new HttpSender(HttpUrl.sendCode, "获取验证码", baseMap,
+                new MyOnHttpResListener() {
+
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {//成功
+                            T.ss(getString(R.string.Base_yzmyfs));
+                            GetPhoneCodeStepTwoActivity.actionStart(mActivity,area_code,phoneNumber);
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
     }
 
 

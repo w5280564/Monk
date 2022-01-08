@@ -77,7 +77,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
 
-        title = "广场问答";
+        title = "问答广场";
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;

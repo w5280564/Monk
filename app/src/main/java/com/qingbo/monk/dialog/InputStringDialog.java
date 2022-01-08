@@ -71,7 +71,13 @@ public class InputStringDialog extends Dialog {
                 String content = StringUtil.getEditText(et_content);
 
                 if (StringUtil.isBlank(content)) {
-                    T.ss("请输入金额");
+                    T.ss("请输入入群金额");
+                    return;
+                }
+
+                int int_fee = Integer.parseInt(content);
+                if (int_fee<50 || int_fee>6000) {
+                    T.sl("请输入50-6000的整数");
                     return;
                 }
 

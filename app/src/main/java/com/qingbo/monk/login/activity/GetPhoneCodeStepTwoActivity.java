@@ -60,7 +60,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
 
     @Override
     protected void getServerData() {
-        getSmsCode(area_code,phoneNumber,tvGetCode);
+        tvGetCode.start();
     }
 
     @Override
