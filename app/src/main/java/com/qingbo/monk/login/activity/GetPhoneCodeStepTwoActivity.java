@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import com.qingbo.monk.R;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.tuo.customview.VerificationCodeView;
@@ -130,7 +131,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             if (userObj==null) {
                 return;
             }
-
+            WebSocketHelper.getInstance().initSocketService(userObj.getId());
             int band_wx = userObj.getBand_wx();
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
             String interested = userObj.getInterested();

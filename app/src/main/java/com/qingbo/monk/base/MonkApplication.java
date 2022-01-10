@@ -3,6 +3,7 @@ package com.qingbo.monk.base;
 import android.content.Context;
 import android.content.res.Configuration;
 import com.baoyz.treasure.Treasure;
+import com.qingbo.monk.WebSocketHelper;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
 import com.xunda.lib.common.common.Constants;
@@ -24,6 +25,7 @@ public class MonkApplication extends BaseApplication {
         instance = this;
         Treasure.setConverterFactory(new GsonConverterFactory());//Treasure：数据保存类
         OkhttpInitUtil.init(instance);//初始化网络请求类
+        WebSocketHelper.getInstance().initWebSocket(instance,BIND_AUTO_CREATE);//初始化WebSocket
     }
 
 

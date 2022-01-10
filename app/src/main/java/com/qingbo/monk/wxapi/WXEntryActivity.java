@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.qingbo.monk.HttpSender;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.login.activity.WelcomeActivity;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -73,7 +74,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				if (userObj==null) {
 					return;
 				}
-
+				WebSocketHelper.getInstance().initSocketService(userObj.getId());
 				PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
 				String interested = userObj.getInterested();
 				if(StringUtil.isBlank(interested)) {//首次登陆

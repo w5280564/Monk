@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.xunda.lib.common.bean.BaseUserBean;
@@ -161,7 +162,7 @@ public class BindPhoneNumberActivity extends BaseActivity{
             if (userObj==null) {
                 return;
             }
-
+            WebSocketHelper.getInstance().initSocketService(userObj.getId());
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
             String interested = userObj.getInterested();
             if(StringUtil.isBlank(interested)) {//首次登陆

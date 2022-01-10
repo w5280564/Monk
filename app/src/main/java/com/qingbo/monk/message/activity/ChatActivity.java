@@ -12,7 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseCameraAndGalleryActivity_SingleWithWebService;
+import com.qingbo.monk.WebSocketHelper;
+import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebService implements SwipeRefreshLayout.OnRefreshListener{
+public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener, WebSocketHelper.OnReceiveMessageListener {
     private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
@@ -123,6 +124,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebServ
 
     @Override
     protected void initEvent() {
+        WebSocketHelper.getInstance().setReceiveMessageListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -240,7 +242,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebServ
                     return;
                 }
 
-                sendText(content,id);
+                WebSocketHelper.getInstance().sendText(content,id);
                 addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
                 break;
         }
@@ -276,7 +278,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebServ
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        sendText(imageString,id);
+        WebSocketHelper.getInstance().sendText(imageString,id);
         addContentToList(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE, ReceiveMessageBean.CHAT_TYPE_SEND);
     }
 
@@ -287,20 +289,26 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_SingleWithWebServ
 
 
     @Override
-    protected void onReceiveMessage(String text) {
-        L.e(TAG,"接收到消息>>>"+text);
-        if (text==null) {
-            return;
-        }
+    public void onReceiveMessage(String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                L.e(TAG,"接收到消息>>>"+text);
+                if (text==null) {
+                    return;
+                }
 
-        ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
-        if (receiveObj==null) {
-            return;
-        }
-        receiveObj.setFromHeader(header);
-        if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
-            mAdapter.addData(0,receiveObj);
-        }
+                ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
+                if (receiveObj==null) {
+                    return;
+                }
+                receiveObj.setFromHeader(header);
+                if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
+                    mAdapter.addData(0,receiveObj);
+                }
+            }
+        });
+
     }
 
     @Override
