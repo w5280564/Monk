@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import androidx.core.content.ContextCompat;
@@ -25,10 +26,12 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import butterknife.BindView;
@@ -38,7 +41,6 @@ import butterknife.OnClick;
  * 聊天页
  */
 public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener, WebSocketHelper.OnReceiveMessageListener {
-    private static final String TAG = "websocket";
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
@@ -116,8 +118,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         super.initView();
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         layoutManager = new LinearLayoutManager(mActivity);
-//        layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
-        layoutManager.setReverseLayout(true);//列表翻转
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatAdapter(mList);
         mAdapter.setEmptyView(addEmptyView("暂无消息", 0));
@@ -142,29 +142,29 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
             }
         });
 
-//
-//        //这里控制只要点击输入框就滚动到最底部
-//        etContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        if (layoutManager.findLastCompletelyVisibleItemPosition() < mAdapter.getItemCount() - 1) {
-//                            layoutManager.setStackFromEnd(true);
-//                            mRecyclerView.setLayoutManager(layoutManager);
-//                            mRecyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                        } else {
-//                            layoutManager.setStackFromEnd(false);
-//                            mRecyclerView.setLayoutManager(layoutManager);
-//                        }
-//                    }
-//                });
-//                if (mList.size() > 0) {
-//                    mRecyclerView.smoothScrollToPosition(mList.size() - 1);
-//                }
-//            }
-//        });
+
+        //这里控制只要点击输入框就滚动到最底部
+        etContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                mRecyclerView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (layoutManager.findLastCompletelyVisibleItemPosition() < mAdapter.getItemCount() - 1) {
+                            layoutManager.setStackFromEnd(true);
+                            mRecyclerView.setLayoutManager(layoutManager);
+                            mRecyclerView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        } else {
+                            layoutManager.setStackFromEnd(false);
+                            mRecyclerView.setLayoutManager(layoutManager);
+                        }
+                    }
+                });
+                if (mList.size() > 0) {
+                    mRecyclerView.smoothScrollToPosition(mList.size() - 1);
+                }
+            }
+        });
 
     }
 
@@ -210,6 +210,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     private void handleSplitListData(BaseReceiveMessageBean obj) {
         if (obj != null) {
             List<ReceiveMessageBean> mTempList = obj.getList();
+            Collections.reverse(obj.getList());
             if (!ListUtils.isEmpty(mTempList)) {
                 for (ReceiveMessageBean mObj:mTempList) {
                     if (!StringUtil.isBlank(mObj.getFrom())) {
@@ -223,8 +224,9 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 }
                 if (ListUtils.isEmpty(mAdapter.getData())) {
                     mAdapter.setNewData(mTempList);
+                    mRecyclerView.scrollToPosition(mAdapter.getData().size()-1);
                 }else{
-                    mAdapter.addData(mTempList);
+                    mAdapter.addData(0,mTempList);
                 }
             }
         }
@@ -266,11 +268,11 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         obj.setType(chatType);
         obj.setFromName(name);
         obj.setTime(DateUtil.dateToString(System.currentTimeMillis(), DateUtil.PATTERN_STANDARD19H));
-        mAdapter.addData(0,obj);
+        mAdapter.addData(obj);
         if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(msgType)) {
             etContent.setText("");
         }
-        mRecyclerView.scrollToPosition(0);
+        mRecyclerView.scrollToPosition(mAdapter.getData().size()-1);
     }
 
 
@@ -302,7 +304,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 }
                 receiveObj.setFromHeader(header);
                 if (id.equals(receiveObj.getFrom())) {
-                    mAdapter.addData(0,receiveObj);
+                    mAdapter.addData(receiveObj);
                     mRecyclerView.scrollToPosition(0);
                 }
             }
