@@ -5,9 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseMessageRecordBean;
 import com.qingbo.monk.bean.MessageRecordBean;
+import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.message.adapter.MessageListAdapter;
@@ -21,7 +23,7 @@ import butterknife.OnClick;
 /**
  * 会话列表
  */
-public class MessageFragment extends BaseRecyclerViewSplitFragment implements BaseQuickAdapter.OnItemClickListener {
+public class MessageFragment extends BaseRecyclerViewSplitFragment implements BaseQuickAdapter.OnItemClickListener, WebSocketHelper.OnReceiveMessageListener {
 
     @Override
     protected int getLayoutId() {
@@ -49,6 +51,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     @Override
     protected void initEvent() {
         mAdapter.setOnItemClickListener(this);
+        WebSocketHelper.getInstance().setReceiveMessageListener(this);
     }
 
     @OnClick({R.id.seek_Tv, R.id.ll_contact})
@@ -76,6 +79,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     @Override
     public void onResume() {
         super.onResume();
+        page = 1;
         conversationList(false);
     }
 
@@ -91,7 +95,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     private void conversationList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
-        requestMap.put("limit", 20 + "");
+        requestMap.put("limit", 40 + "");
         HttpSender sender = new HttpSender(HttpUrl.conversationList, "会话列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -101,7 +105,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseMessageRecordBean mObj = GsonUtil.getInstance().json2Bean(json_data, BaseMessageRecordBean.class);
-                            handleSplitListData(mObj, mAdapter, 20);
+                            handleSplitListData(mObj, mAdapter, 40);
                         }
                     }
 
@@ -124,4 +128,9 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
         conversationList(false);
     }
 
+    @Override
+    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
+        page = 1;
+        conversationList(false);
+    }
 }

@@ -128,13 +128,13 @@ public class WebSocketHelper {
     /**
      * 发送消息
      */
-    public void sendText(String content,String toId) {
+    public void sendMessage(String content,String msgType, String toId) {
         if (webSocketService != null) {
             SendMessageBean mSendMessageBean = new SendMessageBean();
             mSendMessageBean.setMessage(content);
             mSendMessageBean.setFrom(SharePref.user().getUserId());
             mSendMessageBean.setTo(toId);
-            mSendMessageBean.setMsgType(ReceiveMessageBean.MESSAGE_TYPE_TEXT);
+            mSendMessageBean.setMsgType(msgType);
             mSendMessageBean.setFlag(ReceiveMessageBean.MESSAGE_FLAG_MSG);
             webSocketService.send(GsonUtil.getInstance().toJson(mSendMessageBean));
         }

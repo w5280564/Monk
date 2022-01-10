@@ -2,7 +2,9 @@ package com.qingbo.monk.message.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,8 +23,8 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -242,7 +244,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     return;
                 }
 
-                WebSocketHelper.getInstance().sendText(content,id);
+                WebSocketHelper.getInstance().sendMessage(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT,id);
                 addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
                 break;
         }
@@ -263,6 +265,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         obj.setFrom(id);
         obj.setType(chatType);
         obj.setFromName(name);
+        obj.setTime(DateUtil.dateToString(System.currentTimeMillis(), DateUtil.PATTERN_STANDARD19H));
         mAdapter.addData(0,obj);
         if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(msgType)) {
             etContent.setText("");
@@ -279,7 +282,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        WebSocketHelper.getInstance().sendText(imageString,id);
+        WebSocketHelper.getInstance().sendMessage(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE,id);
         addContentToList(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE, ReceiveMessageBean.CHAT_TYPE_SEND);
     }
 
@@ -300,6 +303,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 receiveObj.setFromHeader(header);
                 if (id.equals(receiveObj.getFrom())) {
                     mAdapter.addData(0,receiveObj);
+                    mRecyclerView.scrollToPosition(0);
                 }
             }
         });
@@ -314,5 +318,14 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
 
 
+    // 点击空白区域 自动隐藏软键盘
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(null != this.getCurrentFocus()){
+            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+        return super .onTouchEvent(event);
+    }
 }
 
