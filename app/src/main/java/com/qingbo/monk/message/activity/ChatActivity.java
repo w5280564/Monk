@@ -267,6 +267,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(msgType)) {
             etContent.setText("");
         }
+        mRecyclerView.scrollToPosition(0);
     }
 
 

@@ -73,13 +73,34 @@
                     android:textColorHint="@color/text_hint_color"
                     android:textSize="@dimen/sp_14" />
 
+                <TextView
+                    android:id="@+id/tv_remains_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_60"
+                    android:layout_gravity="right"
+                    android:text="0/2000"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="@dimen/sp_12"/>
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleView_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_40"
+                    android:layout_marginTop="@dimen/dp_14"
                     android:nestedScrollingEnabled="false"/>
+
+
+                <TextView
+                    android:id="@+id/tv_remains_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_28"
+                    android:layout_gravity="right"
+                    android:text="0/6"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="@dimen/sp_12"/>
 
 
                 <LinearLayout
@@ -92,7 +113,7 @@
                     android:paddingRight="@dimen/dp_8"
                     android:gravity="center"
                     android:background="@drawable/background_group_edit"
-                    android:layout_marginTop="@dimen/dp_28"
+                    android:layout_marginTop="@dimen/dp_20"
                     android:layout_marginBottom="@dimen/dp_21"
                     android:orientation="horizontal">
 

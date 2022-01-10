@@ -3,7 +3,9 @@ package com.qingbo.monk.question.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,6 +41,10 @@ import butterknife.OnClick;
 public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.tv_tag)
     TextView tvTag;
+    @BindView(R.id.tv_remains_text)
+    TextView tv_remains_text;
+    @BindView(R.id.tv_remains_image)
+    TextView tv_remains_image;
     @BindView(R.id.ll_tag)
     LinearLayout llTag;
     @BindView(R.id.et_title)
@@ -150,7 +156,27 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
                 deleteImageNew(position);
             }
         });
+
+        et_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
+
+
+
 
 
     @Override
@@ -311,6 +337,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
             imageList.add(imageList.size()-1, obj);
         }
         deleteLastOne();
+        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -333,6 +360,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
                 imageList.add(imageList.size(), addBean);
             }
         }
+        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 

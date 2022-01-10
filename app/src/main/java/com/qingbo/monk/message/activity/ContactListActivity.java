@@ -148,7 +148,7 @@ public class ContactListActivity extends BaseActivity {
                     return;
                 }
 
-                if (obj.getItemType()==0) {
+                if (obj.getItemType()==1) {
                     return;
                 }
 
