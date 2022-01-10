@@ -2,6 +2,8 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,6 +37,8 @@ public class PublisherAnswerQuestionToPeopleActivity extends BaseActivity {
     EditText et_content;
     @BindView(R.id.tv_to_name)
     TextView tv_to_name;
+    @BindView(R.id.tv_remains_text)
+    TextView tv_remains_text;
     private TwoButtonDialogBlue mDialog;
     private String mContent;
     private String to_name, to_id,shequn_id;
@@ -63,9 +67,25 @@ public class PublisherAnswerQuestionToPeopleActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void initEvent() {
+        et_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+            }
 
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 
     private void showBackDialog() {
         getPramsValue();
