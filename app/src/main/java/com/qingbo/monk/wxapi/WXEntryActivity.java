@@ -74,7 +74,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				if (userObj==null) {
 					return;
 				}
-				WebSocketHelper.getInstance().initSocketService(userObj.getId());
+				WebSocketHelper.getInstance().initWebSocketService(WXEntryActivity.this,BIND_AUTO_CREATE);
 				PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
 				String interested = userObj.getInterested();
 				if(StringUtil.isBlank(interested)) {//首次登陆

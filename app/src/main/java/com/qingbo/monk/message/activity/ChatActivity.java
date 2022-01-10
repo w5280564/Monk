@@ -289,21 +289,15 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
 
     @Override
-    public void onReceiveMessage(String text) {
+    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                L.e(TAG,"接收到消息>>>"+text);
-                if (text==null) {
-                    return;
-                }
-
-                ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
                 if (receiveObj==null) {
                     return;
                 }
                 receiveObj.setFromHeader(header);
-                if (!"-1".equals(receiveObj.getFrom()) && id.equals(receiveObj.getFrom())) {
+                if (id.equals(receiveObj.getFrom())) {
                     mAdapter.addData(0,receiveObj);
                 }
             }

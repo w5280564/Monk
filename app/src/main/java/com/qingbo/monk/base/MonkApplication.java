@@ -11,6 +11,7 @@ import com.xunda.lib.common.common.http.OkhttpInitUtil;
 import com.xunda.lib.common.common.language.MultiLanguageUtil;
 import com.xunda.lib.common.common.preferences.GsonConverterFactory;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 
 /**
  * BaseApplication
@@ -25,7 +26,9 @@ public class MonkApplication extends BaseApplication {
         instance = this;
         Treasure.setConverterFactory(new GsonConverterFactory());//Treasure：数据保存类
         OkhttpInitUtil.init(instance);//初始化网络请求类
-        WebSocketHelper.getInstance().initWebSocket(instance,BIND_AUTO_CREATE);//初始化WebSocket
+        if (PrefUtil.isLogin()) {
+            WebSocketHelper.getInstance().initWebSocketService(instance,BIND_AUTO_CREATE);//初始化WebSocket
+        }
     }
 
 

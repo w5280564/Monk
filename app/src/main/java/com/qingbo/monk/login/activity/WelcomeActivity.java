@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
@@ -99,6 +100,7 @@ public class WelcomeActivity extends BaseActivity {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    WebSocketHelper.getInstance().unbindWebSocketService(mContext);//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);

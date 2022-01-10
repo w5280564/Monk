@@ -30,6 +30,7 @@ import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.qingbo.monk.bean.ReceiveMessageBean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
@@ -359,6 +360,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    WebSocketHelper.getInstance().unbindWebSocketService(mContext);//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);
@@ -427,7 +429,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     @Override
-    public void onReceiveMessage(String text) {
+    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
         getAllUnreadNumber();
     }
 }

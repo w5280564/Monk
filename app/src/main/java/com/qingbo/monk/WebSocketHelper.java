@@ -15,6 +15,9 @@ import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
 
+/**
+ * WebSocket封装类
+ */
 public class WebSocketHelper {
     private OnReceiveMessageListener mOnReceiveMessageListener;
     private static final String TAG = "websocket";
@@ -36,10 +39,25 @@ public class WebSocketHelper {
     }
 
 
-
-    public void initWebSocket(Context mContext,int BIND_AUTO_CREATE) {
+    /**
+     * 初始化和绑定WebSocket
+     * @param mContext
+     * @param BIND_AUTO_CREATE
+     */
+    public void initWebSocketService(Context mContext, int BIND_AUTO_CREATE) {
         mContext.bindService(new Intent(mContext, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
     }
+
+
+    /**
+     * 解绑WebSocket
+     * @param mContext
+     */
+    public void unbindWebSocketService(Context mContext) {
+        mContext.unbindService(serviceConnection);
+    }
+
+
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -62,10 +80,20 @@ public class WebSocketHelper {
                 return;
             }
 
+            ReceiveMessageBean receiveObj = GsonUtil.getInstance().json2Bean(text,ReceiveMessageBean.class);
+            if (receiveObj==null) {
+                return;
+            }
+
+
+            if ("-1".equals(receiveObj.getFrom())) {
+                return;
+            }
+
             if (mOnReceiveMessageListener==null) {
                 return;
             }
-            mOnReceiveMessageListener.onReceiveMessage(text);
+            mOnReceiveMessageListener.onReceiveMessage(receiveObj);
         }
 
         @Override
@@ -114,7 +142,7 @@ public class WebSocketHelper {
 
     public interface OnReceiveMessageListener{
         //接收消息
-        void onReceiveMessage(String text);
+        void onReceiveMessage(ReceiveMessageBean receiveObj);
     }
 
 
