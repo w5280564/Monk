@@ -2,8 +2,11 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +45,10 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     EditText et_title;
     @BindView(R.id.et_content)
     EditText et_content;
+    @BindView(R.id.tv_remains_text)
+    TextView tv_remains_text;
+    @BindView(R.id.tv_remains_image)
+    TextView tv_remains_image;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
     private List<UploadPictureBean> imageList = new ArrayList<>();
@@ -141,6 +148,23 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 deleteImageNew(position);
+            }
+        });
+
+        et_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -264,7 +288,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         int all_size = imageList.size();
         if (all_size < 3) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(2-all_size);
+                checkGalleryPermission(1);
             }else{
                 jumpToPhotoShowActivity(position,imageStringList);
             }
@@ -282,12 +306,13 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
             imageList.add(imageList.size()-1, obj);
         }
         deleteLastOne();
+        tv_remains_image.setText(String.format("%s/1",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
 
     private void deleteLastOne() {
-        if (imageList.size() > 6) {
+        if (imageList.size() > 1) {
             imageList.remove(imageList.size() - 1);
         }
     }
@@ -296,14 +321,10 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private void deleteImageNew(int position) {
         imageStringList.remove(position);
         imageList.remove(position);
-        if (imageList.size() >= 2) {
-            UploadPictureBean bean = imageList.get(imageList.size() - 1);
-            if (bean.getType() != 1) {
-                UploadPictureBean addBean = new UploadPictureBean();
-                addBean.setType(1);
-                imageList.add(imageList.size(), addBean);
-            }
-        }
+        UploadPictureBean addBean = new UploadPictureBean();
+        addBean.setType(1);
+        imageList.add(addBean);
+        tv_remains_image.setText(String.format("%s/1",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 

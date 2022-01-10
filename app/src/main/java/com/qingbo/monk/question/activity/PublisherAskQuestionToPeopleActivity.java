@@ -256,14 +256,9 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
     private void deleteImageNew(int position) {
         imageStringList.remove(position);
         imageList.remove(position);
-        if (imageList.size() >= 2) {
-            UploadPictureBean bean = imageList.get(imageList.size() - 1);
-            if (bean.getType() != 1) {
-                UploadPictureBean addBean = new UploadPictureBean();
-                addBean.setType(1);
-                imageList.add(imageList.size(), addBean);
-            }
-        }
+        UploadPictureBean addBean = new UploadPictureBean();
+        addBean.setType(1);
+        imageList.add(addBean);
         tv_remains_image.setText(String.format("%s/1",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
