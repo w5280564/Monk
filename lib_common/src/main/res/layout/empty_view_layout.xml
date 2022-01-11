@@ -20,7 +20,7 @@
         android:id="@+id/tv_noData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="@string/Common_no_date"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
