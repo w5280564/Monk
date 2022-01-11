@@ -32,7 +32,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.AppBarStateChangeListener;
+import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;

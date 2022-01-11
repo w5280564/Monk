@@ -247,7 +247,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private void rotate(ImageView view) {
+    private void rotate(View view) {
         Long animateTime = 500L;
         RotateAnimation animation = new RotateAnimation(0f, 360f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);

@@ -11,4 +11,5 @@
         <attr name="itemWidth" format="dimension"/>
         <attr name="itemHeight" format="dimension"/>
     </declare-styleable>
+
 </resources>

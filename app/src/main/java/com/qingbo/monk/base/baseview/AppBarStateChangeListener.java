@@ -1,4 +1,4 @@
-package com.qingbo.monk.base;
+package com.qingbo.monk.base.baseview;
 
 import com.google.android.material.appbar.AppBarLayout;
 

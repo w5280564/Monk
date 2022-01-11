@@ -1,4 +1,4 @@
-package com.qingbo.monk.base;
+package com.qingbo.monk.base.baseview;
 
 import android.content.Context;
 import android.graphics.Rect;
