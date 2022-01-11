@@ -60,14 +60,15 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
+        <activity
+            android:name=".person.activity.MyAndOtherEdit_Card"
+            android:exported="false" />
         <activity
             android:name=".person.activity.MyGroupList_Activity"
             android:exported="false" />
         <activity
             android:name=".person.activity.MyInterestList_Activity"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.MyAndOther_Card"
             android:exported="false" />

@@ -133,6 +133,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private String isShowTop;
     private String type;
     boolean isReply = false;
+    boolean isExpanded = false; //是否展开
 
     /**
      * @param context
@@ -248,10 +249,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     /**
      * 是否是自己
+     *
      * @param authorId2
      * @return
      */
-    public boolean isMy(String authorId2){
+    public boolean isMy(String authorId2) {
         String id = PrefUtil.getUser().getId();
         String authorId = authorId2;
         if (TextUtils.equals(id, authorId)) {//是自己不能评论
@@ -398,8 +400,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         Integer followStatus = followStateBena.getFollowStatus();
                         homeFoucsDetail_bean.getData().getDetail().setFollowStatus(followStatus);
                         String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();
-                        isFollow(followStatus, follow_Tv, send_Mes, isAnonymous);
-                        isFollow(followStatus, titleFollow_Tv, titleSend_Mes, isAnonymous);
+                        if (isExpanded) {
+                            isFollow(followStatus, follow_Tv, send_Mes, isAnonymous);
+                        } else {
+                            isFollow(followStatus, titleFollow_Tv, titleSend_Mes, isAnonymous);
+                        }
                     }
                 }
             }
@@ -640,6 +645,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             homeFoucsDetail_bean.getData().getDetail().setIsJoin("1");
         }
         isJoinGroup(homeFoucsDetail_bean.getData().getDetail().getIsJoin());
+        appLayout.setExpanded(false);
     }
 
     /**
@@ -650,6 +656,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         public void onStateChanged(AppBarLayout appBarLayout, State state) {
             if (state == State.EXPANDED) {
                 //展开状态
+                isExpanded = true;
                 title_Img.setVisibility(View.GONE);
                 titleNickName_Tv.setVisibility(View.GONE);
                 center_Tv.setVisibility(View.VISIBLE);
@@ -658,6 +665,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 titleSeek_Img.setVisibility(View.VISIBLE);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
+                isExpanded = false;
                 title_Img.setVisibility(View.VISIBLE);
                 titleNickName_Tv.setVisibility(View.VISIBLE);
                 center_Tv.setVisibility(View.GONE);
@@ -669,6 +677,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 }
             } else {
                 //中间状态
+                isExpanded = true;
                 title_Img.setVisibility(View.GONE);
                 titleNickName_Tv.setVisibility(View.GONE);
                 center_Tv.setVisibility(View.GONE);
@@ -684,6 +693,26 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void isChangeFold() {
         if (TextUtils.equals(isShowTop, "1")) {
             appLayout.setExpanded(false);
+        }
+    }
+
+
+    /**
+     * 判断AppBarLayout         伸展状态
+     *
+     * @param scrollRange    滚动范围，根据屏幕大小的滚动范围决定，比如最终值为300\494
+     * @param verticalOffset 垂直偏移量
+     * @return true 展开状态； false 收缩状态
+     */
+    public static boolean isExpanded(int scrollRange, int verticalOffset) {
+        if (verticalOffset == 0) {
+            //展开状态
+            return true;
+        } else if (scrollRange >= verticalOffset) {
+            //收缩状态
+            return false;
+        } else {
+            return true;
         }
     }
 

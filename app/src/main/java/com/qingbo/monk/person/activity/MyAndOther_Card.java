@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -27,11 +28,15 @@ import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
+import com.qingbo.monk.bean.MessageRecordBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.UserBean;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
+import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.fragment.MyArchives_Fragment;
 import com.qingbo.monk.person.fragment.MyDynamic_Fragment;
 import com.qingbo.monk.question.activity.MyGroupListActivity;
@@ -50,6 +55,8 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnClickListener {
+    @BindView(R.id.mesHomepage_Tv)
+    TextView mesHomepage_Tv;
     @BindView(R.id.back_Btn)
     Button back_Btn;
     @BindView(R.id.brief_Tv)
@@ -86,6 +93,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     ConstraintLayout group_Con;
     @BindView(R.id.interest_Con)
     ConstraintLayout interest_Con;
+    @BindView(R.id.editUser_Tv_)
+    TextView editUser_Tv_;
+    @BindView(R.id.follow_Tv)
+    TextView follow_Tv;
+    @BindView(R.id.send_Mes)
+    TextView send_Mes;
 
 
     private String userID;
@@ -132,7 +145,6 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         headLayout.setmMoveView(top_Src, bot_Lin);
         headLayout.setmZoomView(iv_img);
 
-
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
         initMenuData();
 
@@ -153,7 +165,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         brief_Tv.setOnClickListener(this);
         group_Con.setOnClickListener(this);
         interest_Con.setOnClickListener(this);
-
+        follow_Tv.setOnClickListener(this);
+        editUser_Tv_.setOnClickListener(this);
     }
 
     @SuppressLint("WrongConstant")
@@ -176,6 +189,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     }
 
+    UserBean userBean;
 
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -188,7 +202,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 //                    refresh_layout.setRefreshing(false);
 //                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCoverImage());
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
@@ -202,7 +216,13 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                         originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
                         originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
 
-
+                        if (isMe()) {
+                            mesHomepage_Tv.setText("我的社交主页");
+                            editUser_Tv_.setVisibility(View.VISIBLE);
+                        } else {
+                            mesHomepage_Tv.setText("他的社交主页");
+                            isFollow(userBean.getFollowStatus(), follow_Tv, send_Mes);
+                        }
                     }
                 }
             }
@@ -271,6 +291,26 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         httpSender.sendGet();
     }
 
+    private void postFollowData(String otherUserId, TextView followView, View sendView) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("otherUserId", otherUserId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                    if (userBean != null) {
+                        Integer followStatus = followStateBena.getFollowStatus();
+                        userBean.setFollowStatus(followStatus);
+                        isFollow(followStatus, follow_Tv, send_Mes);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
 
     /**
      * 是否是我自己
@@ -324,6 +364,19 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (isMe()) {
                     MyInterestList_Activity.actionStart(mActivity, userID);
                 }
+                break;
+            case R.id.follow_Tv:
+                String id = userBean.getId();
+                postFollowData(id, follow_Tv, send_Mes);
+                break;
+            case R.id.send_Mes:
+                if (userBean == null) {
+                    return;
+                }
+                ChatActivity.actionStart(mActivity, userBean.getId(), userBean.getNickname(), userBean.getAvatar());
+                break;
+            case R.id.editUser_Tv_:
+                MyAndOtherEdit_Card.actionStart(mActivity,userID);
                 break;
 
         }
@@ -397,5 +450,37 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             tv.setText(hint + (CharSequence) value);
         }
     }
+
+    /**
+     * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
+     * @param follow_Tv
+     * @param send_Mes
+     */
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+        String s = String.valueOf(follow_status);
+        if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "1")) {
+            follow_Tv.setVisibility(View.GONE);
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "2")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("已关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "4")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("互相关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 }

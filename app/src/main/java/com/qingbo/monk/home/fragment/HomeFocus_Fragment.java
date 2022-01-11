@@ -20,6 +20,8 @@ import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -54,7 +56,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0,false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0, false);
     }
 
     @Override
@@ -111,7 +113,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
             String action = item.getAction();//1是社群 2是兴趣圈 3是个人
             String articleId = item.getArticleId();
             String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         });
 
     }
@@ -122,23 +124,34 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (homeFllowBean == null) {
+                HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
+                        String otherUserId = item.getAuthorId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        String likeId = item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
                         String articleId = item.getArticleId();
                         String type = item.getType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
+                        break;
+                    case R.id.send_Mes:
+                        HomeFllowBean item1 = (HomeFllowBean) adapter.getItem(position);
+                        if (item1 == null) {
+                            return;
+                        }
+                        ChatActivity.actionStart(mActivity, item1.getAuthorId(), item1.getAuthorName(), item1.getAvatar());
+                        break;
+                    case R.id.group_Img:
+                        String id = item.getAuthorId();
+                        MyAndOther_Card.actionStart(mActivity, id);
                         break;
                 }
             }

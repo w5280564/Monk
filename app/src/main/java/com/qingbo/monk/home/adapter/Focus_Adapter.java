@@ -94,6 +94,8 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.send_Mes);
+        helper.addOnClickListener(R.id.group_Img);
     }
 
     /**
