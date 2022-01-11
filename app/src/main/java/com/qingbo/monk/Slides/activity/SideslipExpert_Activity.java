@@ -88,7 +88,6 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
             String type = item.getType();
             ArticleDetail_Activity.startActivity(this, articleId, "0", type);
         });
-
     }
 
 

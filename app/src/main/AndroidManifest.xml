@@ -54,12 +54,20 @@
         android:icon="@drawable/app_logo"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/app_logo"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:replace="android:theme,allowBackup">
+
+        <activity
+            android:name=".person.activity.MyGroupList_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyInterestList_Activity"
+            android:exported="false" />
+
         <activity
             android:name=".person.activity.MyAndOther_Card"
             android:exported="false" />

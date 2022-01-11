@@ -1,50 +1,32 @@
 package com.qingbo.monk.Slides.activity;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Character_Adapter;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
-import com.qingbo.monk.Slides.fragment.PersonDetail_Fragment;
-import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
-import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.bean.CharacterDetail_Bean;
 import com.qingbo.monk.bean.CharacterList_Bean;
 import com.qingbo.monk.bean.Character_Bean;
-import com.qingbo.monk.bean.HomeInsiderBean;
-import com.qingbo.monk.bean.InsiderListBean;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
-import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.view.SearchEditText;
 
 import java.util.HashMap;
@@ -79,7 +61,7 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
     protected void initView() {
         mRecyclerView = findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无人物", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无人物", 0, false);
     }
 
     @Override
@@ -176,8 +158,6 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
             return false;
         }
     }
-
-
 
 
 }

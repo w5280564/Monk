@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 
@@ -26,10 +27,14 @@ import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.UserBean;
 import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
+import com.qingbo.monk.person.fragment.MyArchives_Fragment;
+import com.qingbo.monk.person.fragment.MyDynamic_Fragment;
+import com.qingbo.monk.question.activity.MyGroupListActivity;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -75,6 +80,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView interestName_Tv;
     @BindView(R.id.interestJoinCount_Tv)
     TextView interestJoinCount_Tv;
+    @BindView(R.id.interestHead_Lin)
+    LinearLayout interestHead_Lin;
+    @BindView(R.id.group_Con)
+    ConstraintLayout group_Con;
+    @BindView(R.id.interest_Con)
+    ConstraintLayout interest_Con;
 
 
     private String userID;
@@ -140,6 +151,9 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         super.initEvent();
         back_Btn.setOnClickListener(this);
         brief_Tv.setOnClickListener(this);
+        group_Con.setOnClickListener(this);
+        interest_Con.setOnClickListener(this);
+
     }
 
     @SuppressLint("WrongConstant")
@@ -156,10 +170,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        String titleType = "";
-        fragments.add(HomeFocus_Fragment.newInstance(titleType));
-        fragments.add(HomeFocus_Fragment.newInstance(titleType));
+        fragments.add(MyDynamic_Fragment.newInstance(userID));
+        fragments.add(MyArchives_Fragment.newInstance(userID));
         initViewPager(0);
+
     }
 
 
@@ -233,7 +247,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userid", id);
         requestMap.put("page", "1");
-        requestMap.put("limit", "1");
+        requestMap.put("limit", "3");
         HttpSender httpSender = new HttpSender(HttpUrl.Interest_My, "我的兴趣圈", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -249,6 +263,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                     interestName_Tv.setText(groupString);
                     String format = String.format("加入%1$s个兴趣圈", interestList_bean.getCount());
                     interestJoinCount_Tv.setText(format);
+                    InterestHeadFlow(interestHead_Lin, mActivity, interestList_bean);
                 }
             }
         }, isShow);
@@ -300,6 +315,17 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                     brief_Tv.setMaxLines(2);
                 }
                 break;
+            case R.id.group_Con:
+                if (isMe()) {
+                    MyGroupList_Activity.actionStart(mActivity, userID);
+                }
+                break;
+            case R.id.interest_Con:
+                if (isMe()) {
+                    MyInterestList_Activity.actionStart(mActivity, userID);
+                }
+                break;
+
         }
     }
 
@@ -337,31 +363,23 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     /**
      * 我的兴趣圈
+     *
      * @param myFlow
      * @param mContext
-     * @param tag
      */
-    public void InterestHeadFlow(LinearLayout myFlow, Context mContext, String tag) {
+    public void InterestHeadFlow(LinearLayout myFlow, Context mContext, InterestList_Bean interestList_bean) {
         if (myFlow != null) {
             myFlow.removeAllViews();
         }
-        if (TextUtils.isEmpty(tag)) {
-            return;
-        }
-        String[] tagS = tag.split(",");
-        int length = tagS.length;
-        if (length > 2) {
-            length = 2;
-        }
+        int length = interestList_bean.getList().size();
         for (int i = 0; i < length; i++) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.group_label, null);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.interest_head, null);
             LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             itemParams.setMargins(0, 0, 0, 0);
             view.setLayoutParams(itemParams);
-            TextView label_Name = view.findViewById(R.id.label_Name);
-            StringUtil.setColor(mContext, i, label_Name);
-            label_Name.setText(tagS[i]);
-            label_Name.setTag(i);
+            ImageView head_Img = view.findViewById(R.id.head_Img);
+            String groupImage = interestList_bean.getList().get(i).getGroupImage();
+            GlideUtils.loadRoundImage(mContext, head_Img, groupImage, 5);
             myFlow.addView(view);
         }
     }

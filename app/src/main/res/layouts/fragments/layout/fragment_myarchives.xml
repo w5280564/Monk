@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:background="@drawable/base_gradual"
+            android:paddingBottom="@dimen/dp_15"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/xingqu"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="我对这些感兴趣"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.xunda.lib.common.view.flowlayout.FlowLayout
+                android:id="@+id/interest_Flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <View
+                android:id="@+id/label_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/interest_Flow"
+                app:layout_constraintStart_toStartOf="@id/interest_Flow"
+                app:layout_constraintTop_toBottomOf="@id/interest_Flow" />
+
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/shanchang"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="擅长领域/方向"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_Line" />
+
+            <TextView
+                android:id="@+id/good_Tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:text="暂未填写"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <View
+                android:id="@+id/good_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/good_Tv"
+                app:layout_constraintStart_toStartOf="@id/good_Tv"
+                app:layout_constraintTop_toBottomOf="@id/good_Tv" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/ziyuan"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="可以提供什么资源/可以问我"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/good_Line" />
+
+            <TextView
+                android:id="@+id/resources_Tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:text="暂未填写"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+            <View
+                android:id="@+id/resources_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/resources_Tv"
+                app:layout_constraintStart_toStartOf="@id/resources_Tv"
+                app:layout_constraintTop_toBottomOf="@id/resources_Tv" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/yanjiu"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="最有成就感的事"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/resources_Line" />
+
+            <TextView
+                android:id="@+id/achievement_Tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:text="暂未填写"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <View
+                android:id="@+id/achievement_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/achievement_Tv"
+                app:layout_constraintStart_toStartOf="@id/achievement_Tv"
+                app:layout_constraintTop_toBottomOf="@id/achievement_Tv" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/xuexi"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="最近在学习/研究的方向"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/achievement_Line" />
+
+            <TextView
+                android:id="@+id/learn_Tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:text="暂未填写"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <View
+                android:id="@+id/learn_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/learn_Tv"
+                app:layout_constraintStart_toStartOf="@id/learn_Tv"
+                app:layout_constraintTop_toBottomOf="@id/learn_Tv" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_15"
+                android:drawableLeft="@mipmap/shouhuo"
+                android:drawablePadding="@dimen/dp_10"
+                android:text="希望收获什么/需求资源"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/learn_Line" />
+
+            <TextView
+                android:id="@+id/harvest_Tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_42"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:text="暂未填写"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+            <View
+                android:id="@+id/harvest_Line"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_13"
+                app:layout_constraintEnd_toEndOf="@+id/harvest_Tv"
+                app:layout_constraintStart_toStartOf="@id/harvest_Tv"
+                app:layout_constraintTop_toBottomOf="@id/harvest_Tv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
