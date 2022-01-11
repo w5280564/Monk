@@ -28,6 +28,8 @@ public class Constants {
 
     public static final int MIN_CLICK_DELAY_TIME = 1000;
 
+    public static final int NORMAL_IMAGE_UPLOAD_SIZE = 500;//图片默认压缩大小
+
     public static final String BRAND_XIAOMI = "xiaomi";
     public static final String BRAND_HONOR = "HONOR";
     public static final String BRAND_HUAWEI = "Huawei";

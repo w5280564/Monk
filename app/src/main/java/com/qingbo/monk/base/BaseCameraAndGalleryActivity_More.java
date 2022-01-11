@@ -15,6 +15,7 @@ import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.permission.PermissionManager;
+import com.xunda.lib.common.common.utils.CompressUtils;
 import com.xunda.lib.common.common.utils.FileUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
@@ -27,6 +28,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,10 +185,12 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
                     if (data != null) {
                         List<String> mSelectedImagePath = Matisse.obtainPathResult(data);//图片集合
                         if (!ListUtils.isEmpty(mSelectedImagePath)) {
-                            Map<String, File> files = new HashMap<>();
+                            List<File> files = new ArrayList<>();
                             for (int i = 0; i < mSelectedImagePath.size(); i++) {
                                 File mFile = new File(mSelectedImagePath.get(i));
-                                files.put(String.format("file[%s]",i),mFile);
+                                if (mFile!=null) {
+                                    files.add(mFile);
+                                }
                             }
                             uploadImage(files);
                         }
@@ -203,7 +207,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
     /**
      * 多文件上传
      */
-    private void uploadImage( Map<String, File> files) {
+    private void uploadImage(List<File> files) {
         HashMap<String, String> baseMap = new HashMap<>();
         HttpSender sender = new HttpSender(HttpUrl.uploadFiles, "多文件上传", baseMap,
                 new MyOnHttpResListener() {

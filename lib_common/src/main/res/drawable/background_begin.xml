@@ -5,8 +5,8 @@
         android:drawable="@color/white"/>
 
 
-    <item android:top="153dip">
-        <bitmap android:src="@drawable/app_logo"
+    <item android:top="127dip">
+        <bitmap android:src="@drawable/begin_logo"
             android:gravity="center_horizontal|top"/>
     </item>
 

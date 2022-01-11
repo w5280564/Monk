@@ -25,9 +25,11 @@ import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.LoadingDialog;
 import com.xunda.lib.common.dialog.TokenDialog;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import okhttp3.Call;
 import okhttp3.MediaType;
@@ -107,7 +109,7 @@ public class HttpSender {
 	/**
 	 * 上传多个文件
 	 */
-	public void sendPostImages(Map<String, File> files) {
+	public void sendPostImages(List<File> files) {
 		this.dialogMessage = "努力上传中...";
 		requestPostFiles(files);
 	}
@@ -179,27 +181,32 @@ public class HttpSender {
 	/**
 	 * POST 上传多个文件 调用此方法
 	 *
-	 * @param files
+	 * @param fileList
 	 */
-	private void requestPostFiles(Map<String, File> files) {
+	private void requestPostFiles(List<File> fileList) {
 		if (StringUtil.isBlank(requestUrl)) {
 			L.e(requestName + "POST请求 Url为空");
 			return;
 		}
 
-		for (String key : files.keySet()) {
-			File fileParams = files.get(key);
-			if(fileParams!=null){
-				L.i(key + " = " + fileParams.getName());
-			}
-		}
-
 		L.i("POST请求名称：" + requestName);
 		L.i("POST请求Url：" + requestUrl);
 
-		OkHttpUtils.post().url(requestUrl)
-				.headers(headerMap)
-				.files("file[]",files).build().execute(new StringDialogCallback(isShowLoadAnimal));
+		PostFormBuilder builder = OkHttpUtils.post();
+		builder.url(requestUrl);
+		for (int i = 0; i < fileList.size(); i++) {
+			File file = fileList.get(i);
+			String filename = file.getName();
+			L.i(String.format("file[%s]",i)+ " = " + file.getName());
+//			if (!file.exists()) {
+//				MyToast.showMessage("文件不存在，请修改文件路径");
+//				return;
+//			}
+			builder.addFile(String.format("file[%s]",i), filename, file);
+		}
+
+		builder.headers(headerMap)
+				.build().execute(new StringDialogCallback(isShowLoadAnimal));
 	}
 
 

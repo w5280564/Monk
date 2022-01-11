@@ -12,7 +12,7 @@ public class CompressUtils {
         L.e("原图的大小是"+FileUtil.getReadableFileSize(oldFile.length()));
         if (oldFile.length() >= times * 1024) {
             File newFile = new CompressHelper.Builder(mContext)
-                    .setQuality(90)
+                    .setQuality(80)
                     .build()
                     .compressToFile(oldFile);
             L.e("压缩后的图的大小是"+FileUtil.getReadableFileSize(newFile.length()));
