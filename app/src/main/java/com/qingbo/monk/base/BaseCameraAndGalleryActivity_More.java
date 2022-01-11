@@ -218,7 +218,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
                             UploadImageFileBean mUploadImageFileBean = GsonUtil.getInstance().json2Bean(data, UploadImageFileBean.class);
                             if (mUploadImageFileBean!=null) {
-                                onUploadSuccess(mUploadImageFileBean.getUrlList());
+                                onUploadSuccess(mUploadImageFileBean.getUrlList(),files);
                             }
                         }else{
                             onUploadFailure(description);
@@ -235,7 +235,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
     /**
      * 上传图片成功的回调
      */
-    protected abstract void onUploadSuccess(List<String> urlList);
+    protected abstract void onUploadSuccess(List<String> urlList,List<File> fileList);
 
 
     /**

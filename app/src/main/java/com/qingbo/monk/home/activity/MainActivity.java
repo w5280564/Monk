@@ -46,6 +46,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
@@ -430,6 +431,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     @Override
     public void onReceiveMessage(ReceiveMessageBean receiveObj) {
+        L.e("websocket","首页接收消息");
         getAllUnreadNumber();
     }
 }

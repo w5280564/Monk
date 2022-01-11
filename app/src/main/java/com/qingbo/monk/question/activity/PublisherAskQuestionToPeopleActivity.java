@@ -27,6 +27,7 @@ import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -265,7 +266,7 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
 
 
     @Override
-    protected void onUploadSuccess(List<String> urlList) {
+    protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
         imageStringList.addAll(urlList);
         showImageListImages(urlList);
     }

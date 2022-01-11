@@ -29,6 +29,8 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -368,7 +370,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
 
     @Override
-    protected void onUploadSuccess(List<String> urlList) {
+    protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
         imageStringList.addAll(urlList);
         showImageListImages(urlList);
     }

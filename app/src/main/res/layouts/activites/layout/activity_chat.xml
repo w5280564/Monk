@@ -13,7 +13,7 @@
         android:layout_height="@dimen/title_height"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightShowType="TEXT"
-        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarShowBottomLine="false"
         app:titleBarRightTxt="取消"
       />

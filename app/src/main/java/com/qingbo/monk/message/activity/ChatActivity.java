@@ -296,6 +296,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     public void onReceiveMessage(ReceiveMessageBean receiveObj) {
+        L.e("websocket","聊天页接收消息");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -305,7 +306,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                 receiveObj.setFromHeader(header);
                 if (id.equals(receiveObj.getFrom())) {
                     mAdapter.addData(receiveObj);
-                    mRecyclerView.scrollToPosition(0);
+                    mRecyclerView.scrollToPosition(mAdapter.getData().size()-1);
                 }
             }
         });
@@ -328,6 +329,13 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         }
         return super .onTouchEvent(event);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        WebSocketHelper.getInstance().removeReceiveMessageListener();
     }
 }
 
