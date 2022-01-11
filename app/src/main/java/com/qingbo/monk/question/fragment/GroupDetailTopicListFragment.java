@@ -15,7 +15,6 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
@@ -93,7 +92,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无话题",R.mipmap.zhuti, true);
+        initSwipeRefreshLayoutAndAdapter("暂无话题",R.mipmap.icon_no_date, true);
     }
 
     private void initRecyclerView() {

@@ -13,14 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.webview.WebviewActivity;
-import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
@@ -230,7 +227,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         if (imgResource != 0) {
             iv_noData.setImageResource(imgResource);
         } else {
-            iv_noData.setImageResource(R.mipmap.icon_ty);
+            iv_noData.setImageResource(R.mipmap.icon_no_date);
         }
 
         return emptyView;

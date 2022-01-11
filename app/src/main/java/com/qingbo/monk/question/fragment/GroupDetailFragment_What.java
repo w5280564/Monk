@@ -64,7 +64,7 @@ public class GroupDetailFragment_What extends BaseLazyFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new GroupDetailListAdapterWhat();
-        mAdapter.setEmptyView(addEmptyView("暂无提问", R.mipmap.zhuti));
+        mAdapter.setEmptyView(addEmptyView("暂无提问", R.mipmap.icon_no_date));
         mRecyclerView.setAdapter(mAdapter);
     }
 

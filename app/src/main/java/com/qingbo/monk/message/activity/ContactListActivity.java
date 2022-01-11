@@ -54,6 +54,7 @@ public class ContactListActivity extends BaseActivity {
     @Override
     protected void initView() {
         mContactListAdapter = new ContactListAdapter(mList);
+        mContactListAdapter.setEmptyView(addEmptyView("暂无好友",0));
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mContactListAdapter);

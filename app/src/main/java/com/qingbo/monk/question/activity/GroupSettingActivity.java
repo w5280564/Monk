@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.bean.GroupMoreInfoBean;
-import com.qingbo.monk.bean.MyGroupBean;
 import com.xunda.lib.common.bean.NameIdBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
@@ -20,7 +19,7 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.EditStringDialog;
-import com.xunda.lib.common.dialog.GridDialog;
+import com.qingbo.monk.dialog.GridDialog;
 import com.xunda.lib.common.view.RadiusImageWidget;
 import org.greenrobot.eventbus.EventBus;
 

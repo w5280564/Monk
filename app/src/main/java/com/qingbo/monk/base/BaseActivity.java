@@ -327,7 +327,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
         if (imgResource != 0) {
             iv_noData.setImageResource(imgResource);
         } else {
-            iv_noData.setImageResource(R.mipmap.icon_ty);
+            iv_noData.setImageResource(R.mipmap.icon_no_date);
         }
 
         return emptyView;

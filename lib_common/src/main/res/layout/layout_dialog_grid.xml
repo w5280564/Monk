@@ -6,14 +6,20 @@
     android:background="@drawable/shape_background_white_radius9_all"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
+
+    <GridView
+        android:id="@+id/gridview_choose"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/dp_34"
         android:paddingRight="@dimen/dp_34"
         android:paddingBottom="@dimen/dp_26"
         android:paddingTop="@dimen/dp_26"
+        android:verticalSpacing="15dp"
+        android:horizontalSpacing="15dp"
+        android:listSelector="@color/white"
+        android:numColumns="3"
+        android:scrollbars="none"
         />
 
 </LinearLayout>

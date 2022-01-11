@@ -6,17 +6,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
-import com.qingbo.monk.bean.HaveBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.question.adapter.GroupDetailThemeListAdapterChoose;
-import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -26,7 +23,6 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.ToastDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -64,7 +60,7 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无主题",R.mipmap.zhuti, true);
+        initSwipeRefreshLayoutAndAdapter("暂无主题",R.mipmap.icon_no_date, true);
     }
 
     private void initRecyclerView() {

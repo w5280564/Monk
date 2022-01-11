@@ -10,7 +10,6 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseWaitGroupAnswerBean;
 import com.qingbo.monk.bean.WaitGroupAnswerBean;
 import com.qingbo.monk.question.activity.PublisherAnswerQuestionToPeopleActivity;
-import com.qingbo.monk.question.activity.PublisherAskQuestionToPeopleActivity;
 import com.qingbo.monk.question.adapter.GroupDetailWaitAnswerAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -63,7 +62,7 @@ public class GroupDetailWaitAnswerListFragment extends BaseRecyclerViewSplitFrag
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无提问",R.mipmap.zhuti, true);
+        initSwipeRefreshLayoutAndAdapter("暂无提问",R.mipmap.icon_no_date, true);
     }
 
     private void initRecyclerView() {

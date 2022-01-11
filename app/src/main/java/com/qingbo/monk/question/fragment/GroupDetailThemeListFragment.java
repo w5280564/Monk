@@ -18,11 +18,8 @@ import com.xunda.lib.common.common.http.HttpBaseList;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
-import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +77,7 @@ public class GroupDetailThemeListFragment extends BaseLazyFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new GroupDetailThemeListAdapter(role);
-        mAdapter.setEmptyView(addEmptyView("暂无主题", R.mipmap.zhuti));
+        mAdapter.setEmptyView(addEmptyView("暂无主题", R.mipmap.icon_no_date));
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -1,21 +1,18 @@
-package com.xunda.lib.common.dialog;
+package com.qingbo.monk.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.question.adapter.GridChooseAdapter;
 import com.xunda.lib.common.R;
-import com.xunda.lib.common.base.GridAdapter;
 import com.xunda.lib.common.bean.NameIdBean;
-import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.AndroidUtil;
-import com.xunda.lib.common.common.utils.DisplayUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class GridDialog extends Dialog {
     private Context mContext;
     private List<NameIdBean> mList = new ArrayList<>();
     private OnSelectItemListener mOnSelectItemListener;
-    private GridAdapter mAdapter;
+    private GridChooseAdapter mAdapter;
 
     public GridDialog(Context context, List<NameIdBean> mTempList,OnSelectItemListener mOnSelectItemListener) {
         super(context, R.style.CenterDialogStyle);
@@ -44,7 +41,7 @@ public class GridDialog extends Dialog {
     public void resetList(List<NameIdBean> mTempList){
         mList.clear();
         mList.addAll(mTempList);
-        mAdapter.setNewData(mList);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void initView() {
@@ -55,18 +52,13 @@ public class GridDialog extends Dialog {
         layoutParams.width = parentWidth;
         llParent.setLayoutParams(layoutParams);
 
-        RecyclerView mRecyclerView = findViewById(R.id.mRecyclerView);
-        mAdapter= new GridAdapter();
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext,3);
-        mRecyclerView.addItemDecoration(new GridDividerItemDecoration(DisplayUtil.dip2px(mContext, 15), mContext.getResources().getColor(R.color.white)));
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setNewData(mList);
-
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        GridView gridView = findViewById(R.id.gridview_choose);
+        mAdapter = new GridChooseAdapter((BaseActivity) mContext, mList);
+        gridView.setAdapter(mAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                NameIdBean mNameIdBean = (NameIdBean) adapter.getItem(position);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                NameIdBean mNameIdBean = mList.get(position);
                 if (mNameIdBean!=null) {
                     mOnSelectItemListener.onSelectItem(position);
                     dismiss();
