@@ -88,7 +88,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             getUserData(id, true);
         }
     }
-
+    UserBean userBean;
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
@@ -100,7 +100,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     refresh_layout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
@@ -201,7 +201,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_qrcode:
-                skipAnotherActivity(MyAndOther_Card.class);
+                if(userBean != null){
+                    String id = userBean.getId();
+                    MyAndOther_Card.actionStart(mActivity,id);
+                }
                 break;
         }
     }
