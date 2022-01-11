@@ -59,17 +59,10 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private String submitRequestUrl,shequn_id;
     private boolean isEdit;
 
-
-    public static void actionStart(Context context, String shequn_id, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
+    public static void actionStart(Context context, String shequn_id, String shequn_name) {
         Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
         intent.putExtra("shequn_id",shequn_id);
-        intent.putExtra("obj",mQuestionBeanMy);
-        intent.putExtra("isEdit",isEdit);
-        context.startActivity(intent);
-    }
-    public static void actionStart(Context context, String shequn_id) {
-        Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
-        intent.putExtra("shequn_id",shequn_id);
+        intent.putExtra("shequn_name",shequn_name);
         context.startActivity(intent);
     }
 
@@ -83,7 +76,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     protected void initLocalData() {
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
-        title = "社群话题";
+        title = getIntent().getStringExtra("shequn_name");
         shequn_id = getIntent().getStringExtra("shequn_id");
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑

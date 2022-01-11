@@ -199,7 +199,7 @@ public class GroupDetailActivity extends BaseTabLayoutActivity {
                 GroupDetailMoreInfoActivity.actionStart(mActivity,id);
                 break;
             case R.id.iv_bianji:
-                PublisherGroupTopicActivity.actionStart(mActivity,id);
+                PublisherGroupTopicActivity.actionStart(mActivity,id,sheQunBean.getShequnName());
                 break;
             case R.id.ll_choose_theme:
                 ChooseThemeActivity.actionStart(mActivity,id);

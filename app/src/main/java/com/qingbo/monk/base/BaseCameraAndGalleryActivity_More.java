@@ -188,6 +188,7 @@ public abstract class BaseCameraAndGalleryActivity_More extends BaseActivity imp
                             List<File> files = new ArrayList<>();
                             for (int i = 0; i < mSelectedImagePath.size(); i++) {
                                 File mFile = new File(mSelectedImagePath.get(i));
+                                L.e("原图的大小是"+FileUtil.getReadableFileSize(mFile.length()));
                                 if (mFile!=null) {
                                     files.add(mFile);
                                 }

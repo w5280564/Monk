@@ -101,24 +101,12 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     ImageView mes_Img;
     @BindView(R.id.mes_Count)
     TextView mes_Count;
-    @BindView(R.id.groupHead_Img)
-    ImageView groupHead_Img;
-    @BindView(R.id.groupName_Tv)
-    TextView groupName_Tv;
-    @BindView(R.id.groupDes_Tv)
-    TextView groupDes_Tv;
-    @BindView(R.id.join_Tv)
-    TextView join_Tv;
-    @BindView(R.id.headListView)
-    DiscussionAvatarView headListView;
     @BindView(R.id.card_Tab)
     TabLayout card_Tab;
     @BindView(R.id.card_ViewPager)
     ViewPager card_ViewPager;
     @BindView(R.id.appLayout)
     AppBarLayout appLayout;
-    @BindView(R.id.group_Con)
-    ConstraintLayout group_Con;
     @BindView(R.id.title_Img)
     ImageView title_Img;
     @BindView(R.id.titleNickName_Tv)
@@ -369,7 +357,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     protected void initEvent() {
         follow_Tv.setOnClickListener(this);
         follow_Img.setOnClickListener(this);
-        join_Tv.setOnClickListener(this);
         titleFollow_Tv.setOnClickListener(this);
         appLayout.addOnOffsetChangedListener(new appLayoutListener());
         mes_Img.setOnClickListener(this);
@@ -400,24 +387,11 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
                 postLikedData(likeId);
                 break;
-            case R.id.join_Tv:
-                if (homeFoucsDetail_bean.getData().getDetail().getExtra() == null) {
-                    return;
-                }
-                String action = homeFoucsDetail_bean.getData().getDetail().getAction();//1是社群 2是兴趣圈
-                String id = homeFoucsDetail_bean.getData().getDetail().getExtra().getId();
-                if (TextUtils.equals(action, "1")) {
-                    getJoinSheQun(id);
-                } else if (TextUtils.equals(action, "2")) {
-                    getJoinGroup(id);
-                }
-                break;
             case R.id.titleFollow_Tv:
                 String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
                 postFollowData(authorId1, titleFollow_Tv, titleSend_Mes);
                 break;
             case R.id.mes_Img:
-                String authorId2 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
                 showInput(sendComment_Et, false);
                 sendComment_Et.setHint("");
                 break;
@@ -533,20 +507,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
-
-                        String action = detailData.getAction();
-                        if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣圈
-                            group_Con.setVisibility(View.GONE);
-                        } else {
-                            group_Con.setVisibility(View.VISIBLE);
-                            if (detailData.getExtra() != null) {
-                                GlideUtils.loadCircleImage(mContext, groupHead_Img, detailData.getExtra().getImage(), R.mipmap.icon_logo);
-                                groupName_Tv.setText(detailData.getExtra().getName());
-                                groupDes_Tv.setText(detailData.getExtra().getDes());
-                                groupHead(detailData.getExtra().getUserAvatar());
-                                isJoinGroup(detailData.getExtra().getIsJoin());
-                            }
-                        }
                         initTab();
                         isChangeFold();
                     }
@@ -608,41 +568,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         httpSender.sendPost();
     }
 
-    private void getJoinSheQun(String ID) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.joinGroup, "加入/退出社群", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
-                    String isJoin = homeFoucsDetail_bean.getData().getDetail().getIsJoin();
-                    changeJoinGroup(isJoin);
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
 
-    private void getJoinGroup(String ID) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣圈", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
-                    String isJoin = homeFoucsDetail_bean.getData().getDetail().getIsJoin();
-                    changeJoinGroup(isJoin);
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
 
     public void addComment(String articleId, String type, String comment) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -742,54 +668,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         }
     }
 
-
-    /**
-     * 横向多个头像
-     *
-     * @param userS
-     */
-    private void groupHead(String userS) {
-        if (!TextUtils.isEmpty(userS)) {
-            String[] imgS = userS.split(",");
-//            List<String> mList = Arrays.asList(imgS);
-            List<String> mList = new ArrayList<>();
-            int length = imgS.length;
-            if (length > 3) {
-                length = 3;
-            }
-            for (int i = 0; i < length; i++) {
-                mList.add(imgS[i]);
-            }
-            headListView.initDatas(mList);
-        }
-    }
-
-    /**
-     * 是否加入群或圈
-     *
-     * @param isJoin 1已加入，其它都是未加入
-     */
-    private void isJoinGroup(String isJoin) {
-        if (TextUtils.equals(isJoin, "1")) {
-            join_Tv.setText("已加入");
-            join_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
-            changeShapColor(join_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
-        } else {
-            join_Tv.setText("加入");
-            join_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
-            changeShapColor(join_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
-        }
-    }
-
-
-    private void changeJoinGroup(String isJoin) {
-        if (TextUtils.equals(isJoin, "1")) {
-            homeFoucsDetail_bean.getData().getDetail().setIsJoin("0");
-        } else {
-            homeFoucsDetail_bean.getData().getDetail().setIsJoin("1");
-        }
-        isJoinGroup(homeFoucsDetail_bean.getData().getDetail().getIsJoin());
-    }
 
     /**
      * 处理详情折叠状态

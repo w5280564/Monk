@@ -22,7 +22,7 @@ public class HideIMEUtil {
         wrap(contentParent);
     }
     public static void wrap(Activity activity,EditText editText) {
-        editText.setHint("");
+//        editText.setHint("");
         ViewGroup contentParent = (ViewGroup) activity.findViewById(android.R.id.content);
         wrap(contentParent);
     }

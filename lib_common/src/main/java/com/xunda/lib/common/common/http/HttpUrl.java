@@ -64,7 +64,7 @@ public class HttpUrl {
     /**
      * 多文件上传
      */
-    public static final String uploadFiles = "login/login/upload-files";
+    public static final String uploadFiles = "login/login/upload-files-app";
 
 
 

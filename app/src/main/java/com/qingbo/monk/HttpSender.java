@@ -14,12 +14,8 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.AESEncrypt;
-import com.xunda.lib.common.common.utils.Base64;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
-import com.xunda.lib.common.common.utils.RSAUtils;
-import com.xunda.lib.common.common.utils.RsaEncodeMethod;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.LoadingDialog;
@@ -204,70 +200,12 @@ public class HttpSender {
 //			}
 			builder.addFile(String.format("file[%s]",i), filename, file);
 		}
-
+		headerMap.put("Content-Disposition", "multipart/form-data");
 		builder.headers(headerMap)
 				.build().execute(new StringDialogCallback(isShowLoadAnimal));
 	}
 
 
-
-
-	/**
-	 * POST请求(旧加密)
-	 */
-	private void requestPostEncryptOld() {
-		setRequestData_POST();
-//		L.e("加密前"+GsonUtil.getInstance().toJson(paramsMap));
-		String encrypt_data = encryptRequestData(GsonUtil.getInstance().toJson(paramsMap));
-		if (!StringUtil.isBlank(encrypt_data)) {
-			OkHttpUtils.postString()
-					.url(requestUrl)
-					.content(encrypt_data)
-					.mediaType(MediaType.parse("application/json; charset=utf-8"))
-					.headers(headerMap)
-					.build().execute(new StringDialogCallback(isShowLoadAnimal));
-		}
-	}
-
-
-
-	/**
-	 * POST请求(新加密)
-	 */
-	private void requestPostEncryptNew() {
-		setRequestData_POST();
-		String aesKey = AESEncrypt.getAesKey();
-		String contentStr = AESEncrypt.encrypt(GsonUtil.getInstance().toJson(paramsMap), aesKey);
-		String rsaKey = RsaEncodeMethod.rsaEncode(aesKey);
-		Map<String, String> finalMap = new HashMap<>();
-		finalMap.put("key",rsaKey);
-		finalMap.put("content",contentStr);
-
-		String request_data = GsonUtil.getInstance().toJson(finalMap);
-		if (!StringUtil.isBlank(request_data)) {
-			OkHttpUtils.postString()
-					.url(requestUrl)
-					.content(request_data)
-					.mediaType(MediaType.parse("application/json; charset=utf-8"))
-					.headers(headerMap)
-					.build().execute(new StringDialogCallback(isShowLoadAnimal));
-		}
-	}
-
-
-
-
-
-	private String encryptRequestData(String request_data) {
-		//用公钥加密
-		try {
-			byte[] encrypt = RSAUtils.encryptByPublicKey(request_data.getBytes(), Base64.decode(RSAUtils.PUBLIC_KEY));
-			return Base64.encode(encrypt);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
-		}
-	}
 
 
 

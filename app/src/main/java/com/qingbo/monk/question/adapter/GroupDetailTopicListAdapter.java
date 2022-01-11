@@ -46,6 +46,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OwnPublishBean item) {
+        LinearLayout ll_bottom = helper.getView(R.id.ll_bottom);
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_role = helper.getView(R.id.tv_role);
@@ -73,6 +74,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
 
         if (type==0) {
+            ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
 
@@ -108,18 +110,22 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             tv_answer.setVisibility(View.GONE);
             String status = item.getStatus();//0待审核 1通过 2未通过
             if (TextUtils.equals(status, "0")) {
+                ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.VISIBLE);
                 tv_status.setText("待审核");
                 setDrawableLeft(R.mipmap.weishenhe,tv_status);
             } else if(TextUtils.equals(status, "1")){
+                ll_bottom.setVisibility(View.VISIBLE);
                 tv_status.setVisibility(View.VISIBLE);
                 tv_status.setText("审核通过");
                 setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
             } else if(TextUtils.equals(status, "2")){
+                ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.VISIBLE);
                 setDrawableLeft(R.mipmap.weitongguo,tv_status);
                 tv_status.setText("未通过");
             } else{
+                ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.GONE);
             }
         }
