@@ -213,6 +213,7 @@ public class HttpUrl {
     public static final String setAdmins = "square/set/add-admins";//添加管理员/合伙人
     public static final String Interest_AllMember = "square/interested/member-all";//添加管理员/合伙人
     public static final String User_Info = "user/user/info";//用户信息
+    public static final String My_SheQun_Pc = "square/detail/my-shequns-pc";//我的社群
 
 
 }
