@@ -33,6 +33,7 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -370,7 +371,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
 
 
     @Override
-    protected void onUploadSuccess(List<String> urlList) {
+    protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
         imageStringList.addAll(urlList);
         showImageListImages(urlList);
     }

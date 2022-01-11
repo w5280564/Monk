@@ -23,6 +23,7 @@ public class WebSocketHelper {
     private static final String TAG = "websocket";
     static private WebSocketHelper instance = null;
     private WebSocketService webSocketService;
+    private boolean isBind;
 
     private WebSocketHelper() {
     }
@@ -39,13 +40,17 @@ public class WebSocketHelper {
     }
 
 
+    public boolean judgeIsBind(){
+        return isBind;
+    }
+
     /**
      * 初始化和绑定WebSocket
      * @param mContext
      * @param BIND_AUTO_CREATE
      */
     public void initWebSocketService(Context mContext, int BIND_AUTO_CREATE) {
-        mContext.bindService(new Intent(mContext, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
+        isBind = mContext.bindService(new Intent(mContext, WebSocketService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
 
@@ -54,7 +59,7 @@ public class WebSocketHelper {
      * @param mContext
      */
     public void unbindWebSocketService(Context mContext) {
-        mContext.unbindService(serviceConnection);
+//        mContext.unbindService(serviceConnection);
     }
 
 
@@ -148,5 +153,9 @@ public class WebSocketHelper {
 
     public void setReceiveMessageListener(OnReceiveMessageListener mOnReceiveMessageListener){
         this.mOnReceiveMessageListener = mOnReceiveMessageListener;
+    }
+
+    public void removeReceiveMessageListener(){
+        this.mOnReceiveMessageListener = null;
     }
 }

@@ -17,6 +17,8 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
+
 import java.util.HashMap;
 import butterknife.OnClick;
 
@@ -130,6 +132,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
 
     @Override
     public void onReceiveMessage(ReceiveMessageBean receiveObj) {
+        L.e("websocket","会话列表页接收消息");
         page = 1;
         conversationList(false);
     }
