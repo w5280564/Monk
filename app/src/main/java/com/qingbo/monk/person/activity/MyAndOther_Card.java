@@ -46,6 +46,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import butterknife.BindView;
 
+/**
+ * 我/他人 个人详情页面
+ */
 public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnClickListener {
     @BindView(R.id.mesHomepage_Tv)
     TextView mesHomepage_Tv;
@@ -201,7 +204,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCover_image());
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image());
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, mActivity, userBean.getTagName());

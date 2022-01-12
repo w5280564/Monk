@@ -1,15 +1,13 @@
 package com.qingbo.monk.person.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -27,26 +25,29 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 修改昵称
+ * 我的社交主页
  */
-public class Edit_ChangeName extends BaseActivity {
-    @BindView(R.id.changeName_Edit)
-    EditText changeName_Edit;
-    @BindView(R.id.title_bar)
-    CustomTitleBar title_bar;
+public class Edit_ChangePage extends BaseActivity implements View.OnClickListener {
+
+    @BindView(R.id.addPage_Tv)
+    TextView addPage_Tv;
 
     private String nickname;
 
     public static void actionStart(Context context, String nickname) {
-        Intent intent = new Intent(context, Edit_ChangeName.class);
+        Intent intent = new Intent(context, Edit_ChangePage.class);
         intent.putExtra("nickname", nickname);
         context.startActivity(intent);
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_edit_changename;
+        return R.layout.activity_edit_changpage;
     }
+
+
+
+
 
     @Override
     protected void initLocalData() {
@@ -55,7 +56,7 @@ public class Edit_ChangeName extends BaseActivity {
 
     @Override
     protected void initEvent() {
-
+        addPage_Tv.setOnClickListener(this);
     }
 
 
@@ -67,7 +68,6 @@ public class Edit_ChangeName extends BaseActivity {
 
     private void edit_Info() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("nickname", changeName_Edit.getText().toString());
         HttpSender httpSender = new HttpSender(HttpUrl.Edit_Info, "修改个人信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -95,6 +95,14 @@ public class Edit_ChangeName extends BaseActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.addPage_Tv:
+                Edit_ChangePage_Add.actionStart(mActivity,nickname);
+                break;
+        }
+    }
 }
 
 
