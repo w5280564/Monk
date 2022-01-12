@@ -14,21 +14,17 @@ public class Constants {
     public static final int REQUEST_FAILURE_SERVER = -8885;//服务器错误(OKhttp报的错)
     public static final int REQUEST_FAILURE_INTERNET = -8884;//网络错误（网络连接不上）
 
-    public static final String WEB_SITE_URL = "http://www.shandongdayi.com/";
+    public static final String WEB_SITE_URL = "";
 
     public static final String WECHAT_APPID = "wx9891dbe23d8ce255"; //微信开发者账号appid
 
     public static final String TANCENT_BUGLY_APPID = "e702e5c066"; //腾讯云bugly的AppId
 
-    public static final String SYSTEM_NOTICE_CONVERSATION_ID = "888888888888888888"; //系统公告会话id
-
-    public static final String SYSTEM_NOTICE_USER_CONVERSATION_ID = "southnotifyadmin"; //系统通知会话id
 
     public static final String APP_PKG = "com.qingbo.monk";
 
     public static final int MIN_CLICK_DELAY_TIME = 1000;
 
-    public static final int NORMAL_IMAGE_UPLOAD_SIZE = 500;//图片默认压缩大小
 
     public static final String BRAND_XIAOMI = "xiaomi";
     public static final String BRAND_HONOR = "HONOR";
@@ -36,13 +32,6 @@ public class Constants {
     public static final String BRAND_OPPO = "OPPO";
     public static final String BRAND_VIVO = "vivo";
 
-
-    public static final String endPoint = "obs.cn-east-3.myhuaweicloud.com";
-    public static final String ak = "MAU13JILTZHVEIEY7CXY";
-    public static final String sk = "vuVi643UlB6bSSQg0Grq3exlgjkrhim33xz3Hk95";
-
-    //腾讯刷脸
-    public static final String keyLicence_fresh_face = "Rx4oUaaUkuBWmflc7PqpPBJgYZ0uB5XoXknmZZ1Rtg24+U5nIcgIDlaZ+ZBVc2/pDGvsdP1BsHVkJ7ICh7c6AKw/Zx+gcibLEmIx7q2mWkcCKmFQN0LMVyCAbq/iGOM1Ns4LiiS2B4caRT0ktv4fUJrt0XBZUKuI3nCW8VtMwGuvLU63GY6l/3KJPETTtYCGLlfmK8Z8DeXIbgwBRHVTj7OO5k3l11ebVP9NDfOfpPDtx4yII7ykdwlAllITvlEU6uflZ2NV1JLSDgUgA1o7xnkef6UqSd7umWG/NT7MIk5xJQ9dXF4kRe46UzmJoY9NnjErwC4PqO5myI0xG4vD6A==";
 
 
     /**
@@ -80,9 +69,6 @@ public class Constants {
     public static final int PHOTO_REQUEST_GALLERY = 1101;// 从相册中选择
 
 
-
-    public static final int SCAN_CODE_PASS = 100;//展会扫码通过
-    public static final int SCAN_CODE_WARNING = 101;//扫码警告
 
 
 }

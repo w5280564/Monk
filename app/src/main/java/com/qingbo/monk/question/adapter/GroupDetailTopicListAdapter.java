@@ -137,7 +137,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId(),item.getStatusNum()
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId(),answerObj.getStatusNum()
                 ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
                 createQuestionList(ll_container_answer,item);
             }else{

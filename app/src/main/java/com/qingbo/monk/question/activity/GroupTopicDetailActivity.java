@@ -49,6 +49,7 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
@@ -67,6 +68,10 @@ import butterknife.BindView;
  * 社群话题详情
  */
 public class GroupTopicDetailActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.ll_bottom)
+    LinearLayout ll_bottom;
+    @BindView(R.id.read_number_Tv)
+    TextView read_number_Tv;
     @BindView(R.id.group_Img)
     ImageView person_Img;
     @BindView(R.id.group_Name)
@@ -186,51 +191,39 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
         if (topicType==0) {
+            ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
-
-//            String publish_user_id = item.getAuthorId();
-//            if (SharePref.user().getUserId().equals(publish_user_id)) {
-//                iv_delete.setVisibility(View.VISIBLE);
-//                viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-//            }else{
-//                String publish_role = item.getRole();
-//                if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
-//                    iv_delete.setVisibility(View.VISIBLE);
-//                    viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-//                }else if ("2".equals(role_self)) {
-//                    if ("1".equals(publish_role)||"0".equals(publish_role)) {
-//                        iv_delete.setVisibility(View.VISIBLE);
-//                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-//                    }
-//                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
-//                    if ("0".equals(publish_role)) {
-//                        iv_delete.setVisibility(View.VISIBLE);
-//                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-//                    }
-//                }else{
-//                    iv_delete.setVisibility(View.GONE);
-//                }
-//            }
+            read_number_Tv.setVisibility(View.VISIBLE);
+            read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
         }else{
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
-//            String status = item.getStatus();//0待审核 1通过 2未通过
-//            if (TextUtils.equals(status, "0")) {
-//                tv_status.setVisibility(View.VISIBLE);
-//                tv_status.setText("待审核");
-//                setDrawableLeft(R.mipmap.weishenhe,tv_status);
-//            } else if(TextUtils.equals(status, "1")){
-//                tv_status.setVisibility(View.VISIBLE);
-//                tv_status.setText("审核通过");
-//                setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
-//            } else if(TextUtils.equals(status, "2")){
-//                tv_status.setVisibility(View.VISIBLE);
-//                setDrawableLeft(R.mipmap.weitongguo,tv_status);
-//                tv_status.setText("未通过");
-//            } else{
-//                tv_status.setVisibility(View.GONE);
-//            }
+            String status = item.getStatus();//0待审核 1通过 2未通过
+            if (TextUtils.equals(status, "0")) {
+                ll_bottom.setVisibility(View.GONE);
+                tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.GONE);
+                tv_status.setText("待审核");
+                setDrawableLeft(R.mipmap.weishenhe,tv_status);
+            } else if(TextUtils.equals(status, "1")){
+                ll_bottom.setVisibility(View.VISIBLE);
+                tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.VISIBLE);
+                tv_status.setText("审核通过");
+                setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
+                read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
+            } else if(TextUtils.equals(status, "2")){
+                ll_bottom.setVisibility(View.GONE);
+                tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.GONE);
+                setDrawableLeft(R.mipmap.weitongguo,tv_status);
+                tv_status.setText("未通过");
+            } else{
+                ll_bottom.setVisibility(View.GONE);
+                tv_status.setVisibility(View.GONE);
+                read_number_Tv.setVisibility(View.GONE);
+            }
         }
 
 
@@ -242,7 +235,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             }else{
                 title_Tv.setVisibility(View.GONE);
             }
-            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole());
+            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum());
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
@@ -251,10 +244,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole());
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId(),answerObj.getStatusNum());
                 createQuestionList(ll_container_answer,item);
             }else{
-                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole());
+                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum());
                 handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
@@ -262,11 +255,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     }
 
 
-    private void handleCommonData(String headImg,String headName,String content,String role) {
+
+    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
         GlideUtils.loadCircleImage(mContext, person_Img, headImg);
         person_Name.setText(headName);
-        GlideUtils.loadCircleImage(mContext, title_Img, headImg);
-        titleNickName_Tv.setText(headName);
 
         if (!StringUtil.isBlank(content)) {
             content_Tv.setVisibility(View.VISIBLE);
@@ -290,6 +282,28 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         }else{
             tv_role.setVisibility(View.GONE);
             person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+        }
+
+        if (topicType==0) {
+            if (SharePref.user().getUserId().equals(publish_user_id)) {
+                iv_delete.setVisibility(View.VISIBLE);
+            }else{
+                if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    iv_delete.setVisibility(View.VISIBLE);
+                }else if ("2".equals(role_self)) {
+                    if ("1".equals(role)||"0".equals(role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                    }
+                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    if ("0".equals(role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    iv_delete.setVisibility(View.GONE);
+                }
+            }
+
+            isFollow(follow_status, follow_Tv, send_Mes);
         }
     }
 

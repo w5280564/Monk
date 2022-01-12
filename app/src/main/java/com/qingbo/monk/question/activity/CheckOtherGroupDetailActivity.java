@@ -33,6 +33,7 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.common.utils.WXPayUtils;
+import com.xunda.lib.common.dialog.ToastDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -115,13 +116,26 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             int errCode = event.errCode;//0	成功  -1	错误  -2	用户取消
             L.e("wechat>>"+errCode);
             if (errCode == 0) {
-//                jumpToSuccessActivity();
+                showSuccessToastDialog();
             } else if (errCode == -1) {
-//                jumpToFailureActivity(getString(R.string.Pay_SB));
+                showCommonToastDialog("支付失败",0);
             } else {
-//                jumpToFailureActivity(getString(R.string.Pay_QX));
+                showCommonToastDialog("用户取消了支付",0);
             }
         }
+    }
+
+
+    protected void showSuccessToastDialog() {//1 点击确定会返回， 0 只是弹窗消失
+        ToastDialog mDialog = new ToastDialog(this, getString(R.string.toast_warm_prompt), "支付成功", getString(R.string.Sure), new ToastDialog.DialogConfirmListener() {
+            @Override
+            public void onConfirmClick() {
+                EventBus.getDefault().post(new FinishEvent(FinishEvent.JOIN_GROUP));
+                GroupDetailActivity.actionStart(mActivity, id);
+                finish();
+            }
+        });
+        mDialog.show();
     }
 
 

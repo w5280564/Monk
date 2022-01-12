@@ -132,7 +132,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 
 	@Override
 	public void onResp(BaseResp resp) {
-		L.e("wechat>>"+resp.getType());
 		if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
 			String result = "";
 			switch (resp.errCode) {//ERR_OK = 0(用户同意) ERR_AUTH_DENIED = -4（用户拒绝授权） ERR_USER_CANCEL = -2（用户取消）
@@ -153,9 +152,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 					break;
 			}
 		}else if(resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
-			finish();
-		}else if(resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			EventBus.getDefault().post(new WechatPayEvent(WechatPayEvent.WECHAT_PAY_RESULT,resp.errCode));
 			finish();
 		}
 
