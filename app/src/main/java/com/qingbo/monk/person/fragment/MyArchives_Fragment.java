@@ -6,40 +6,22 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.BaseLazyFragment;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.FollowListBean;
-import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.UserBean;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
-
 import java.util.HashMap;
-import java.util.List;
-
 import butterknife.BindView;
 
 /**

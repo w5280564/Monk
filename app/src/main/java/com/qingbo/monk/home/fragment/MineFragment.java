@@ -9,28 +9,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.UserBean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 /**
@@ -72,6 +69,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initView() {
+        refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         viewTouchDelegate.expandViewTouchDelegate(iv_qrcode,50);
     }
 
@@ -81,17 +79,17 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         refresh_layout.setOnRefreshListener(this);
     }
 
+
     @Override
-    protected void getServerData() {
-        String id = PrefUtil.getUser().getId();
-        if (!TextUtils.isEmpty(id)) {
-            getUserData(id, true);
-        }
+    public void onResume() {
+        super.onResume();
+        getUserData();
     }
-    UserBean userBean;
-    private void getUserData(String userId, boolean isShow) {
+
+    ;
+    private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("userId", userId + "");
+        requestMap.put("userId", SharePref.user().getUserId());
         HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -100,8 +98,9 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     refresh_layout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
+                        PrefUtil.saveUser(userBean,"");
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, requireActivity(), userBean.getTagName());
@@ -117,7 +116,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     }
                 }
             }
-        }, isShow);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
@@ -191,20 +190,14 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        String id = PrefUtil.getUser().getId();
-        if (!TextUtils.isEmpty(id)) {
-            getUserData(id, false);
-        }
+        getUserData();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_qrcode:
-                if(userBean != null){
-                    String id = userBean.getId();
-                    MyAndOther_Card.actionStart(mActivity,id);
-                }
+                MyAndOther_Card.actionStart(mActivity,SharePref.user().getUserId());
                 break;
         }
     }

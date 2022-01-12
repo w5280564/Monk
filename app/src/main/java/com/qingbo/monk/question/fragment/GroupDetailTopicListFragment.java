@@ -159,7 +159,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     }
 
     private void showToastDialog(String id,int position) {
-        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条话题吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条主题吗？","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
                 deleteQuestion(id,position);

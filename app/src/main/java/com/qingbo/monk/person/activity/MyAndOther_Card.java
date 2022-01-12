@@ -29,18 +29,12 @@ import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
-import com.qingbo.monk.bean.MessageRecordBean;
-import com.qingbo.monk.bean.MyGroupBean;
-import com.qingbo.monk.bean.UserBean;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
-import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.fragment.MyArchives_Fragment;
 import com.qingbo.monk.person.fragment.MyDynamic_Fragment;
-import com.qingbo.monk.question.activity.MyGroupListActivity;
 import com.xunda.lib.common.bean.AppMenuBean;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -48,10 +42,8 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnClickListener {
@@ -204,7 +196,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCoverImage());
+                        GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCover_image());
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
@@ -221,7 +213,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                             editUser_Tv_.setVisibility(View.VISIBLE);
                         } else {
                             mesHomepage_Tv.setText("他的社交主页");
-                            isFollow(userBean.getFollowStatus(), follow_Tv, send_Mes);
+                            isFollow(userBean.getFollow_status(), follow_Tv, send_Mes);
                         }
                     }
                 }
@@ -302,7 +294,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     if (userBean != null) {
                         Integer followStatus = followStateBena.getFollowStatus();
-                        userBean.setFollowStatus(followStatus);
+                        userBean.setFollow_status(followStatus);
                         isFollow(followStatus, follow_Tv, send_Mes);
                     }
                 }

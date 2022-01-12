@@ -28,6 +28,8 @@ public class UserBean {
     private String visitor_num;
     private String follow_num;
     private String fans_num;
+    private int follow_status;
+    private String cover_image;
     private int band_wx;
 
 
@@ -117,5 +119,17 @@ public class UserBean {
 
     public int getBand_wx() {
         return band_wx;
+    }
+
+    public int getFollow_status() {
+        return follow_status;
+    }
+
+    public String getCover_image() {
+        return cover_image;
+    }
+
+    public void setFollow_status(int follow_status) {
+        this.follow_status = follow_status;
     }
 }

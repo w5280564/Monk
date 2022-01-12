@@ -393,7 +393,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.mes_Img:
                 showInput(sendComment_Et, false);
-                sendComment_Et.setHint("");
                 break;
             case R.id.release_Tv:
                 String s = sendComment_Et.getText().toString();
@@ -583,7 +582,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
-                    sendComment_Et.setHint("");
                 }
             }
         }, true);

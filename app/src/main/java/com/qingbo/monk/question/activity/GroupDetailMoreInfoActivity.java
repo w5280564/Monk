@@ -172,7 +172,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
             role = sheQunBean.getRole();
 
             if ("1".equals(role)||"2".equals(role)) {//1管理员2合伙人0一般用户3群主
-                arrowItemViewManager.setVisibility(View.VISIBLE);
+                arrowItemViewManager.setVisibility(View.GONE);
                 arrowItemViewEdit.getArrow().setVisibility(View.VISIBLE);
                 arrowItemViewNumber.getArrow().setVisibility(View.VISIBLE);
                 ll_invite.setVisibility(View.GONE);

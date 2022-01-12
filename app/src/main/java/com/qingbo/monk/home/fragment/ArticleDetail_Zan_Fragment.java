@@ -111,12 +111,13 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
 
     public void initRecyclerView() {
-        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
-        mMangaer.setOrientation(RecyclerView.VERTICAL);
-        mRecyclerView.setLayoutManager(mMangaer);
+        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+        mManager.setOrientation(RecyclerView.VERTICAL);
+        mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleZan_Adapter();
+        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);

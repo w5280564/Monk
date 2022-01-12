@@ -121,12 +121,12 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     ArticleComment_Adapter mAdapter;
 
     public void initRecyclerView() {
-        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
-        mMangaer.setOrientation(RecyclerView.VERTICAL);
-        mRecyclerView.setLayoutManager(mMangaer);
+        LinearLayoutManager mManager = new LinearLayoutManager(mContext);
+        mManager.setOrientation(RecyclerView.VERTICAL);
+        mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleComment_Adapter(articleId, type);
-        mAdapter.setEmptyView(addEmptyView("暂无评论", 0));
+        mAdapter.setEmptyView(addEmptyView("暂无评论", R.mipmap.wupinglun));
         mAdapter.setLoadMoreView(new CustomLoadMoreView());
         mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
