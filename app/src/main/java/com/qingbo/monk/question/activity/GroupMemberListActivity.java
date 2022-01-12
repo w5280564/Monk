@@ -51,14 +51,15 @@ public class GroupMemberListActivity extends BaseActivity {
     EditText et_search;
     @BindView(R.id.ll_cancel)
     LinearLayout ll_cancel;
-    private String id;
+    private String id,role;
     private List<GroupMemberBean> allMemberList = new ArrayList<>();
     private List<GroupMemberBean> resultMemberList = new ArrayList<>();
     private GroupMemberListAdapter mGroupMemberListAdapter;
 
-    public static void actionStart(Context context, String id) {
+    public static void actionStart(Context context, String id,String role) {
         Intent intent = new Intent(context, GroupMemberListActivity.class);
         intent.putExtra("id",id);
+        intent.putExtra("role",role);
         context.startActivity(intent);
     }
 
@@ -71,6 +72,7 @@ public class GroupMemberListActivity extends BaseActivity {
     @Override
     protected void initLocalData() {
         id = getIntent().getStringExtra("id");
+        role = getIntent().getStringExtra("role");
     }
 
     @Override
@@ -84,7 +86,7 @@ public class GroupMemberListActivity extends BaseActivity {
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mManager);
         mRecyclerView.setHasFixedSize(true);
-        mGroupMemberListAdapter = new GroupMemberListAdapter();
+        mGroupMemberListAdapter = new GroupMemberListAdapter(role);
         mRecyclerView.setAdapter(mGroupMemberListAdapter);
     }
 
@@ -218,7 +220,12 @@ public class GroupMemberListActivity extends BaseActivity {
                 }else if("1".equals(current_personal_role)){
                     content = "确定取消该成员的管理员身份吗？";
                 }else{
-                    content = "确定把该成员设置成管理员吗？";
+                    if("1".equals(submit_type)){//1添加管理员 2添加合伙人
+                        content = "确定把该成员设置成管理员吗？";
+                    }else{
+                        content = "确定把该成员设置成合伙人吗？";
+                    }
+
                 }
                 showCancelRoleDialog(user_id,submit_type,position,content);
             }

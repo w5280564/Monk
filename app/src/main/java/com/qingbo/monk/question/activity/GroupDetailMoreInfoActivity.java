@@ -173,18 +173,12 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
 
             if ("1".equals(role)||"2".equals(role)) {//1管理员2合伙人0一般用户3群主
                 arrowItemViewManager.setVisibility(View.GONE);
-                arrowItemViewEdit.getArrow().setVisibility(View.VISIBLE);
-                arrowItemViewNumber.getArrow().setVisibility(View.VISIBLE);
                 ll_invite.setVisibility(View.GONE);
             }else if ("3".equals(role)) {
                 arrowItemViewManager.setVisibility(View.VISIBLE);
-                arrowItemViewEdit.getArrow().setVisibility(View.VISIBLE);
-                arrowItemViewNumber.getArrow().setVisibility(View.VISIBLE);
                 ll_invite.setVisibility(View.VISIBLE);
             } else {
                 arrowItemViewManager.setVisibility(View.GONE);
-                arrowItemViewEdit.getArrow().setVisibility(View.GONE);
-                arrowItemViewNumber.getArrow().setVisibility(View.GONE);
                 ll_invite.setVisibility(View.GONE);
             }
 
@@ -207,16 +201,10 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.arrowItemView_edit:
-                if ("0".equals(role)|| StringUtil.isBlank(role)){
-                    return;
-                }
                 GroupSettingActivity.actionStart(mActivity, sheQunBean);
                 break;
             case R.id.arrowItemView_number:
-                if ("0".equals(role)|| StringUtil.isBlank(role)){
-                    return;
-                }
-                GroupMemberListActivity.actionStart(mActivity,id);
+                GroupMemberListActivity.actionStart(mActivity,id,role);
                 break;
             case R.id.arrowItemView_manager:
                 GroupManagerActivity.actionStart(mActivity,sheQunBean);

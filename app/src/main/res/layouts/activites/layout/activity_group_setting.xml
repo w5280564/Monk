@@ -10,7 +10,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:titleBarTitle="编辑资料"
+        app:titleBarTitle="社群资料"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightShowType="TEXT"

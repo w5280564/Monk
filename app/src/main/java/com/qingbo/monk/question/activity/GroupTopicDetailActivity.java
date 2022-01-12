@@ -20,7 +20,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -37,7 +36,6 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
@@ -55,7 +53,6 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -179,7 +176,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     }
 
     private void showDetailData(OwnPublishBean item) {
-        followStatus = item.getStatusNum();
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
@@ -260,6 +256,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
+        followStatus = follow_status;
         AuthorId = publish_user_id;
         GlideUtils.loadCircleImage(mContext, person_Img, headImg);
         person_Name.setText(headName);
@@ -309,7 +306,8 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 }
             }
 
-            isFollow(follow_status, follow_Tv, send_Mes);
+            handleFollowStatus(followStatus, follow_Tv, send_Mes);
+            handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
         }
     }
 
@@ -512,11 +510,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
                     followStatus = followStateBena.getFollowStatus();
-                    if (isExpanded) {
-                        isFollow(followStatus, follow_Tv, send_Mes);
-                    } else {
-                        isFollow(followStatus, titleFollow_Tv, titleSend_Mes);
+                    if (!isExpanded) {
+                        handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
                     }
+                    handleFollowStatus(followStatus, follow_Tv, send_Mes);
                 }
             }
         }, true);
@@ -581,7 +578,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
      * @param follow_Tv
      * @param send_Mes
      */
-    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+    public void handleFollowStatus(int follow_status, TextView follow_Tv, View send_Mes) {
         String s = String.valueOf(follow_status);
         if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
             follow_Tv.setVisibility(View.VISIBLE);
@@ -675,7 +672,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 titleNickName_Tv.setVisibility(View.VISIBLE);
                 center_Tv.setVisibility(View.GONE);
                 titleSeek_Img.setVisibility(View.GONE);
-                isFollow(followStatus, titleFollow_Tv, titleSend_Mes);
+                handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
             } else {
                 //中间状态
                 isExpanded = true;

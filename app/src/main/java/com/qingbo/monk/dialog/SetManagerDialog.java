@@ -24,8 +24,9 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
     private ConfirmListener listener;
     private Context mContext;
     private GroupMemberBean obj;
-    private TextView tv_submit, tv_join_time, tv_name;
+    private TextView tv_submit_manager, tv_submit_partner,tv_join_time, tv_name;
     private ImageView iv_header;
+    private View line_partner;
     private String submit_type;//1添加管理员 2添加合伙人 3设置为一般用户
     private String role;
 
@@ -50,8 +51,10 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
     private void initView() {
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
         getWindow().setGravity(Gravity.BOTTOM);// 弹出框在底部位置
+        line_partner = findViewById(R.id.line_partner);
         iv_header = findViewById(R.id.iv_header);
-        tv_submit = findViewById(R.id.tv_submit);
+        tv_submit_manager = findViewById(R.id.tv_submit_manager);
+        tv_submit_partner = findViewById(R.id.tv_submit_partner);
         tv_join_time = findViewById(R.id.tv_join_time);
         tv_name = findViewById(R.id.tv_name);
         tv_name.setText(StringUtil.isBlank(obj.getNickname())?"":obj.getNickname());
@@ -60,19 +63,27 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
 
         role = obj.getRole();
         if ("0".equals(role)) {//1管理员2合伙人0一般用户3群主
-            tv_submit.setText("设置成管理员");
-            submit_type ="1";//1添加管理员 2添加合伙人 3设置为一般用户
-        }else if("2".equals(role)) {
-            tv_submit.setText("取消合伙人");
+            tv_submit_manager.setVisibility(View.VISIBLE);
+            tv_submit_partner.setVisibility(View.VISIBLE);
+            line_partner.setVisibility(View.VISIBLE);
+        }else if("2".equals(role)) {//合伙人
+            tv_submit_manager.setVisibility(View.GONE);
+            tv_submit_partner.setVisibility(View.VISIBLE);
+            line_partner.setVisibility(View.GONE);
+            tv_submit_partner.setText("取消合伙人");
             submit_type ="3";
-        }else{
-            tv_submit.setText("取消管理员");
+        }else{//管理员
+            tv_submit_partner.setVisibility(View.GONE);
+            tv_submit_manager.setVisibility(View.VISIBLE);
+            line_partner.setVisibility(View.GONE);
+            tv_submit_manager.setText("取消管理员");
             submit_type ="3";
         }
     }
 
     private void initEvent() {
-        tv_submit.setOnClickListener(this);
+        tv_submit_manager.setOnClickListener(this);
+        tv_submit_partner.setOnClickListener(this);
         findViewById(R.id.tv_cancel).setOnClickListener(this);
     }
 
@@ -88,7 +99,12 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
         int id = arg0.getId();
         if (id == R.id.tv_cancel) {
             dismiss();
-        } else if (id == R.id.tv_submit) {
+        } else if (id == R.id.tv_submit_manager) {
+            submit_type ="1";
+            listener.onSet(obj.getId(),submit_type,role);
+            dismiss();
+        } else if (id == R.id.tv_submit_partner) {
+            submit_type ="2";
             listener.onSet(obj.getId(),submit_type,role);
             dismiss();
         }

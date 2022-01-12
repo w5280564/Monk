@@ -43,13 +43,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_main_color"
                 android:textSize="@dimen/text_title_size" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="（不含免费体验成员数量）"
-                android:textColor="@color/text_color_6f6f6f"
-                android:textSize="@dimen/sp_10" />
         </LinearLayout>
         <!-- 右侧按钮结束 -->
 

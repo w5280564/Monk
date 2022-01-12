@@ -21,8 +21,11 @@ import com.xunda.lib.common.common.glide.GlideUtils;
  * ================================================
  */
 public class GroupMemberListAdapter extends BaseQuickAdapter<GroupMemberBean, BaseViewHolder> {
-    public GroupMemberListAdapter() {
+    private String role_self;
+
+    public GroupMemberListAdapter(String role_self) {
         super(R.layout.item_group_member_list);
+        this.role_self = role_self;
     }
 
     @Override
@@ -34,23 +37,41 @@ public class GroupMemberListAdapter extends BaseQuickAdapter<GroupMemberBean, Ba
         helper.setText(R.id.tv_name,item.getNickname());
         GlideUtils.loadCircleImage(mContext, iv_header, item.getAvatar());
 
-        String role = item.getRole();
-        if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
-            iv_more.setVisibility(View.VISIBLE);
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("管理员");
-        }else if("2".equals(role)) {
-            iv_more.setVisibility(View.VISIBLE);
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("合伙人");
-        }else if("3".equals(role)) {
-            iv_more.setVisibility(View.GONE);
-            tv_role.setVisibility(View.VISIBLE);
-            tv_role.setText("群主");
+        if ("3".equals(role_self)) {
+            String role = item.getRole();
+            if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
+                iv_more.setVisibility(View.VISIBLE);
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("管理员");
+            }else if("2".equals(role)) {
+                iv_more.setVisibility(View.VISIBLE);
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("合伙人");
+            }else if("3".equals(role)) {
+                iv_more.setVisibility(View.GONE);
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("群主");
+            }else{
+                iv_more.setVisibility(View.VISIBLE);
+                tv_role.setVisibility(View.GONE);
+            }
         }else{
-            iv_more.setVisibility(View.VISIBLE);
-            tv_role.setVisibility(View.GONE);
+            iv_more.setVisibility(View.GONE);
+            String role = item.getRole();
+            if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("管理员");
+            }else if("2".equals(role)) {
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("合伙人");
+            }else if("3".equals(role)) {
+                tv_role.setVisibility(View.VISIBLE);
+                tv_role.setText("群主");
+            }else{
+                tv_role.setVisibility(View.GONE);
+            }
         }
+
     }
 
 }

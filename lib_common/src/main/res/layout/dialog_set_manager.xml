@@ -44,7 +44,7 @@
            android:layout_marginTop="@dimen/dp_13"/>
 
        <TextView
-           android:id="@+id/tv_submit"
+           android:id="@+id/tv_submit_manager"
            android:layout_width="match_parent"
            android:layout_height="@dimen/dp_44"
            android:background="@drawable/background_white_shape"
@@ -52,7 +52,25 @@
            android:textSize="@dimen/sp_16"
            android:textColor="@color/text_color_1F8FE5"
            android:textStyle="bold"
-           android:text="设置成管理员"/>
+           android:text="设置成管理员"
+           android:visibility="gone"/>
+
+
+       <View style="@style/app_line"
+           android:id="@+id/line_partner"
+           android:visibility="gone"/>
+
+       <TextView
+           android:id="@+id/tv_submit_partner"
+           android:layout_width="match_parent"
+           android:layout_height="@dimen/dp_44"
+           android:background="@drawable/background_white_shape"
+           android:gravity="center"
+           android:textSize="@dimen/sp_16"
+           android:textColor="@color/text_color_1F8FE5"
+           android:textStyle="bold"
+           android:text="设置成合伙人"
+           android:visibility="gone"/>
 
    </LinearLayout>
 

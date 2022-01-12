@@ -122,7 +122,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_47"
                             app:arrowItemShowDivider="false"
-                            app:arrowItemTitle="编辑资料" />
+                            app:arrowItemTitle="社群资料" />
 
                         <com.xunda.lib.common.view.MyArrowItemView
                             android:id="@+id/arrowItemView_number"

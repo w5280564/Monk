@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
@@ -42,6 +44,14 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     TextView tv_group_name;
     @BindView(R.id.tv_group_des)
     TextView tv_group_des;
+
+    @BindView(R.id.ll_tag)
+    LinearLayout ll_tag;
+    @BindView(R.id.shangchuan)
+    ImageView shangchuan;
+    @BindView(R.id.ll_des)
+    LinearLayout ll_des;
+
     private String id,tag;
     private GroupMoreInfoBean sheQunBean;
     private List<NameIdBean> tagList = new ArrayList<>();
@@ -79,6 +89,19 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
                 iv_header_group.setImageResource(R.mipmap.bg_create_group);
             }else{
                 GlideUtils.loadImage(mContext,iv_header_group,sheQunBean.getShequnImage());
+            }
+
+            String role = sheQunBean.getRole();
+            if ("1".equals(role)||"2".equals(role)||"3".equals(role)) {//1管理员2合伙人0一般用户3群主
+                ll_tag.setEnabled(true);
+                shangchuan.setEnabled(true);
+                ll_des.setEnabled(true);
+                tv_group_name.setEnabled(true);
+            }else {
+                ll_tag.setEnabled(false);
+                shangchuan.setEnabled(false);
+                ll_des.setEnabled(false);
+                tv_group_name.setEnabled(false);
             }
         }
     }
