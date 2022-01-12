@@ -27,6 +27,8 @@ import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
@@ -128,11 +130,33 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type,mQuestionBean,topicType,role);
                         break;
                     case R.id.follow_Tv:
-                        String otherUserId = mQuestionBean.getAuthorId();
-                        postFollowData(otherUserId, position);
+                        if ("1".equals(mQuestionBean.getTopicType())) {//1是话题2是问答
+                            String otherUserId = mQuestionBean.getAuthorId();
+                            postFollowData(otherUserId, position);
+                        }else{
+                            List<OwnPublishBean.DetailDTO> details = mQuestionBean.getDetail();
+                            if (!ListUtils.isEmpty(details)) {
+                                OwnPublishBean.DetailDTO answerObj = details.get(0);
+                                String otherUserId = answerObj.getAuthorId();
+                                postFollowData(otherUserId, position);
+                            }else{
+                                String otherUserId = mQuestionBean.getAuthorId();
+                                postFollowData(otherUserId, position);
+                            }
+                        }
                         break;
                     case R.id.send_Mes:
-                        ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
+                        if ("1".equals(mQuestionBean.getTopicType())) {//1是话题2是问答
+                            ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
+                        }else{
+                            List<OwnPublishBean.DetailDTO> details = mQuestionBean.getDetail();
+                            if (!ListUtils.isEmpty(details)) {
+                                OwnPublishBean.DetailDTO answerObj = details.get(0);
+                                ChatActivity.actionStart(mActivity, answerObj.getAuthorId(), answerObj.getNickname(), answerObj.getAvatar());
+                            }else{
+                                ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
+                            }
+                        }
                         break;
                     case R.id.iv_delete:
                         showToastDialog(mQuestionBean.getArticleId(),position);
