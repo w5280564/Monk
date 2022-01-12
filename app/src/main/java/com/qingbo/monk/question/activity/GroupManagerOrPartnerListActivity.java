@@ -21,6 +21,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -121,7 +122,12 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      */
     private void clickItem(int position) {
         if (memberList.get(position).getType() == 1) {//添加
-            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,1,12-mAdapter.getData().size());
+            int remains_count = 12-mAdapter.getData().size();
+            if (remains_count==0) {
+                T.ss("最多只能添加10人");
+                return;
+            }
+            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,1,remains_count);
         }else if(memberList.get(position).getType() == 2){//踢人
             SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,2);
         }
