@@ -6,20 +6,22 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.google.gson.Gson;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.message.activity.WebSocketService;
+import com.xunda.lib.common.common.eventbus.EditGroupEvent;
+import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * WebSocket封装类
  */
 public class WebSocketHelper {
-    private OnReceiveMessageListener mOnReceiveMessageListener;
     private static final String TAG = "websocket";
     static private WebSocketHelper instance = null;
     private WebSocketService webSocketService;
@@ -40,10 +42,6 @@ public class WebSocketHelper {
     }
 
 
-    public boolean judgeIsBind(){
-        return isBind;
-    }
-
     /**
      * 初始化和绑定WebSocket
      * @param mContext
@@ -59,7 +57,9 @@ public class WebSocketHelper {
      * @param mContext
      */
     public void unbindWebSocketService(Context mContext) {
-//        mContext.unbindService(serviceConnection);
+//        if (isBind) {
+//            mContext.unbindService(serviceConnection);
+//        }
     }
 
 
@@ -95,10 +95,8 @@ public class WebSocketHelper {
                 return;
             }
 
-            if (mOnReceiveMessageListener==null) {
-                return;
-            }
-            mOnReceiveMessageListener.onReceiveMessage(receiveObj);
+
+            EventBus.getDefault().post(new ReceiveSocketMessageEvent(ReceiveSocketMessageEvent.RECEIVE_MESSAGE,receiveObj));
         }
 
         @Override
@@ -145,17 +143,5 @@ public class WebSocketHelper {
         }
     }
 
-    public interface OnReceiveMessageListener{
-        //接收消息
-        void onReceiveMessage(ReceiveMessageBean receiveObj);
-    }
 
-
-    public void setReceiveMessageListener(OnReceiveMessageListener mOnReceiveMessageListener){
-        this.mOnReceiveMessageListener = mOnReceiveMessageListener;
-    }
-
-    public void removeReceiveMessageListener(){
-        this.mOnReceiveMessageListener = null;
-    }
 }

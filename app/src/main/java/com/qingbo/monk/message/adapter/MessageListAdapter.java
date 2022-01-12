@@ -8,7 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.MessageRecordBean;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 

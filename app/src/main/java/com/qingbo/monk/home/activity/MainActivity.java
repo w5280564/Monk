@@ -30,7 +30,7 @@ import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
@@ -41,6 +41,7 @@ import com.qingbo.monk.login.activity.BindPhoneNumberActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -52,13 +53,16 @@ import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.view.MyArrowItemView;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
 import butterknife.BindView;
 
 /**
  * 主首页
  */
-public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener, WebSocketHelper.OnReceiveMessageListener {
+public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     @BindView(R.id.mBottomNavigationView)
     BottomNavigationView mBottomNavigationView;
     private int fragmentId = R.id.act_main_fragment;
@@ -99,6 +103,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     private long clickTime;
     private TextView tv_unread_msg_number;
+    private HomeFragment homeFragment;
 
     @Override
     protected int getLayoutId() {
@@ -126,10 +131,19 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
         addTabBadge();
+        registerEventBus();
     }
 
 
-    HomeFragment homeFragment;
+    @Subscribe
+    public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
+        if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
+            L.e("websocket","首页接收消息");
+            getAllUnreadNumber();
+        }
+    }
+
+
 
     private void initFragment() {
         homeFragment = new HomeFragment();
@@ -157,7 +171,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
         wen_MyView.setOnClickListener(this);
         Interest_MyView.setOnClickListener(this);
-        WebSocketHelper.getInstance().setReceiveMessageListener(this);
     }
 
     @Override
@@ -429,9 +442,4 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         itemTab.addView(badge);
     }
 
-    @Override
-    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
-        L.e("websocket","首页接收消息");
-        getAllUnreadNumber();
-    }
 }

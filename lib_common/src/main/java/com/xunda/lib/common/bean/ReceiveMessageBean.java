@@ -1,4 +1,4 @@
-package com.qingbo.monk.bean;
+package com.xunda.lib.common.bean;
 
 
 public class ReceiveMessageBean {

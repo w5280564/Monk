@@ -9,15 +9,18 @@ import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseMessageRecordBean;
 import com.qingbo.monk.bean.MessageRecordBean;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.message.adapter.MessageListAdapter;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import butterknife.OnClick;
@@ -25,7 +28,7 @@ import butterknife.OnClick;
 /**
  * 会话列表
  */
-public class MessageFragment extends BaseRecyclerViewSplitFragment implements BaseQuickAdapter.OnItemClickListener, WebSocketHelper.OnReceiveMessageListener {
+public class MessageFragment extends BaseRecyclerViewSplitFragment implements BaseQuickAdapter.OnItemClickListener{
 
     @Override
     protected int getLayoutId() {
@@ -51,9 +54,22 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     }
 
     @Override
+    protected void initLocalData() {
+        registerEventBus();
+    }
+
+    @Subscribe
+    public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
+        if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
+            L.e("websocket","会话列表页接收消息");
+            page = 1;
+            conversationList(false);
+        }
+    }
+
+    @Override
     protected void initEvent() {
         mAdapter.setOnItemClickListener(this);
-        WebSocketHelper.getInstance().setReceiveMessageListener(this);
     }
 
     @OnClick({R.id.seek_Tv, R.id.ll_contact})
@@ -127,13 +143,6 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     @Override
     protected void onLoadMoreData() {
         page++;
-        conversationList(false);
-    }
-
-    @Override
-    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
-        L.e("websocket","会话列表页接收消息");
-        page = 1;
         conversationList(false);
     }
 }

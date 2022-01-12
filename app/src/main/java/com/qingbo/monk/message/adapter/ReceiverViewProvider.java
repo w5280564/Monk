@@ -3,16 +3,13 @@ package com.qingbo.monk.message.adapter;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.imgloader.ImgLoader;
-import com.xunda.lib.common.common.preferences.SharePref;
-import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.XunDaImageView;
 

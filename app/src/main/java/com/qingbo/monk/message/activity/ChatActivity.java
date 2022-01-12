@@ -18,9 +18,11 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.bean.BaseReceiveMessageBean;
-import com.qingbo.monk.bean.ReceiveMessageBean;
+import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.EditGroupEvent;
+import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
@@ -30,6 +32,9 @@ import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +45,7 @@ import butterknife.OnClick;
 /**
  * 聊天页
  */
-public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener, WebSocketHelper.OnReceiveMessageListener {
+public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements SwipeRefreshLayout.OnRefreshListener{
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.refresh_layout)
@@ -64,6 +69,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         intent.putExtra("header",header);
         context.startActivity(intent);
     }
+
 
 
 
@@ -93,6 +99,29 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         if (!ListUtils.isEmpty(objList)) {
             mSensitiveWordList.clear();
             mSensitiveWordList.addAll(objList);
+        }
+        registerEventBus();
+    }
+
+
+    @Subscribe
+    public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
+        if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
+            L.e("websocket","聊天页接收消息");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ReceiveMessageBean receiveObj = event.receiveObj;
+                    if (receiveObj==null) {
+                        return;
+                    }
+                    receiveObj.setFromHeader(header);
+                    if (id.equals(receiveObj.getFrom())) {
+                        mAdapter.addData(receiveObj);
+                        mRecyclerView.scrollToPosition(mAdapter.getData().size()-1);
+                    }
+                }
+            });
         }
     }
 
@@ -126,7 +155,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void initEvent() {
-        WebSocketHelper.getInstance().setReceiveMessageListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -295,25 +323,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
 
     @Override
-    public void onReceiveMessage(ReceiveMessageBean receiveObj) {
-        L.e("websocket","聊天页接收消息");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (receiveObj==null) {
-                    return;
-                }
-                receiveObj.setFromHeader(header);
-                if (id.equals(receiveObj.getFrom())) {
-                    mAdapter.addData(receiveObj);
-                    mRecyclerView.scrollToPosition(mAdapter.getData().size()-1);
-                }
-            }
-        });
-
-    }
-
-    @Override
     public void onRefresh() {
         page++;
         getMessageList(false);
@@ -329,13 +338,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         }
         return super .onTouchEvent(event);
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        WebSocketHelper.getInstance().removeReceiveMessageListener();
     }
 }
 
