@@ -133,12 +133,14 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private String articleId;
+    private String AuthorId;
     private String isShowTop;
     private String type;
     boolean isReply = false;
-
+    boolean isExpanded = false; //是否展开
     private int topicType;
     private String role_self;
+    private Integer followStatus;
 
     /**
      * @param context
@@ -177,6 +179,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     }
 
     private void showDetailData(OwnPublishBean item) {
+        followStatus = item.getStatusNum();
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
@@ -257,8 +260,11 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
+        AuthorId = publish_user_id;
         GlideUtils.loadCircleImage(mContext, person_Img, headImg);
         person_Name.setText(headName);
+        GlideUtils.loadCircleImage(mContext, title_Img, headImg);
+        titleNickName_Tv.setText(headName);
 
         if (!StringUtil.isBlank(content)) {
             content_Tv.setVisibility(View.VISIBLE);
@@ -376,34 +382,28 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
         back_Tv.setOnClickListener(this);
+        viewTouchDelegate.expandViewTouchDelegate(back_Tv, 100);
         iv_delete.setOnClickListener(this);
     }
 
     @Override
     protected void getServerData() {
-        getUserDetail(false);
+        initTab();
+        isChangeFold();
     }
 
     @Override
     public void onClick(View v) {
-        if (homeFoucsDetail_bean == null) {
-            return;
-        }
         switch (v.getId()) {
             case R.id.back_Tv:
                 finish();
                 break;
             case R.id.follow_Tv:
-                String authorId = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                postFollowData(authorId, follow_Tv, send_Mes);
+            case R.id.titleFollow_Tv:
+                postFollowData(AuthorId);
                 break;
             case R.id.follow_Img:
-                String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
-                postLikedData(likeId);
-                break;
-            case R.id.titleFollow_Tv:
-                String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                postFollowData(authorId1, titleFollow_Tv, titleSend_Mes);
+                postLikedData(articleId);
                 break;
             case R.id.mes_Img:
                 showInput(sendComment_Et, false);
@@ -476,8 +476,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
         }
-        String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
-        String type = homeFoucsDetail_bean.getData().getDetail().getType();
         tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
@@ -503,34 +501,8 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     }
 
 
-    HomeFoucsDetail_Bean homeFoucsDetail_bean;
 
-    private void getUserDetail(boolean isShow) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId);
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
-                    if (homeFoucsDetail_bean != null) {
-                        HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-                        isFollow(detailData.getFollowStatus(), follow_Tv, send_Mes);
-                        follow_Count.setText(detailData.getLikedNum());
-                        mes_Count.setText(detailData.getCommentNum());
-                        isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
-                        initTab();
-                        isChangeFold();
-                    }
-                }
-            }
-        }, isShow);
-        httpSender.setContext(mActivity);
-        httpSender.sendGet();
-    }
-
-    private void postFollowData(String otherUserId, TextView followView, View sendView) {
+    private void postFollowData(String otherUserId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
@@ -539,10 +511,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    if (homeFoucsDetail_bean != null) {
-                        Integer followStatus = followStateBena.getFollowStatus();
-                        homeFoucsDetail_bean.getData().getDetail().setFollowStatus(followStatus);
+                    followStatus = followStateBena.getFollowStatus();
+                    if (isExpanded) {
                         isFollow(followStatus, follow_Tv, send_Mes);
+                    } else {
                         isFollow(followStatus, titleFollow_Tv, titleSend_Mes);
                     }
                 }
@@ -689,6 +661,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         public void onStateChanged(AppBarLayout appBarLayout, State state) {
             if (state == State.EXPANDED) {
                 //展开状态
+                isExpanded = true;
                 title_Img.setVisibility(View.GONE);
                 titleNickName_Tv.setVisibility(View.GONE);
                 center_Tv.setVisibility(View.VISIBLE);
@@ -697,16 +670,20 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 titleSeek_Img.setVisibility(View.VISIBLE);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
+                isExpanded = false;
                 title_Img.setVisibility(View.VISIBLE);
                 titleNickName_Tv.setVisibility(View.VISIBLE);
                 center_Tv.setVisibility(View.GONE);
                 titleSeek_Img.setVisibility(View.GONE);
-                if (homeFoucsDetail_bean != null) {
-                    Integer followStatus = homeFoucsDetail_bean.getData().getDetail().getFollowStatus();
-                    isFollow(followStatus, titleFollow_Tv, titleSend_Mes);
-                }
+                isFollow(followStatus, titleFollow_Tv, titleSend_Mes);
             } else {
                 //中间状态
+                isExpanded = true;
+                title_Img.setVisibility(View.GONE);
+                titleNickName_Tv.setVisibility(View.GONE);
+                center_Tv.setVisibility(View.GONE);
+                titleFollow_Tv.setVisibility(View.GONE);
+                titleSend_Mes.setVisibility(View.GONE);
             }
         }
     }

@@ -363,39 +363,40 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
                         <TextView
                             android:id="@+id/titleFollow_Tv"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dp_22"
-                            android:layout_marginEnd="@dimen/dp_20"
+                            android:layout_marginEnd="@dimen/dp_15"
                             android:background="@drawable/interest_lable"
                             android:gravity="center"
                             android:paddingStart="@dimen/dp_11"
                             android:paddingEnd="@dimen/dp_11"
                             android:text="关注"
                             android:textColor="@color/text_color_444444"
-                            android:textSize="12sp"
+                            android:textSize="@dimen/sp_11"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"  />
 
                         <TextView
                             android:id="@+id/titleSend_Mes"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dp_22"
-                            android:layout_marginTop="@dimen/dp_5"
                             android:background="@drawable/interest_lable"
                             android:gravity="center"
                             android:paddingStart="@dimen/dp_8"
                             android:paddingEnd="@dimen/dp_8"
                             android:text="私信"
+                            android:visibility="gone"
                             android:textColor="@color/text_color_a1a1a1"
                             android:textSize="10sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/titleFollow_Tv"
-                            app:layout_constraintStart_toStartOf="@+id/titleFollow_Tv"
-                            app:layout_constraintTop_toBottomOf="@+id/titleFollow_Tv" />
+                            android:layout_marginEnd="@dimen/dp_8"
+                            app:layout_constraintEnd_toStartOf="@id/titleFollow_Tv"
+                            app:layout_constraintTop_toTopOf="@id/titleFollow_Tv"
+                            app:layout_constraintBottom_toBottomOf="@id/titleFollow_Tv" />
 
 
                         <androidx.constraintlayout.widget.Group

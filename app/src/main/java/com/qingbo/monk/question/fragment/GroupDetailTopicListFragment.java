@@ -193,10 +193,12 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((GroupDetailTopicListAdapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-
+                    if(followStateBena!=null){
+                        ((GroupDetailTopicListAdapter) mAdapter).getData().get(position).setStatusNum(followStateBena.getFollowStatus());
+                        TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+                        TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
+                        ((GroupDetailTopicListAdapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    }
                 }
             }
         }, true);
