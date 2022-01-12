@@ -59,7 +59,7 @@ public class HttpSender {
 
 		if (!StringUtil.isBlank(SharePref.user().getToken())){
 			headerMap.put("Authorization", SharePref.user().getToken());
-			L.e("Authorization+Token>"+SharePref.user().getToken());
+//			L.e("Authorization+Token>"+SharePref.user().getToken());
 		}
 	}
 

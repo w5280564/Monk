@@ -62,6 +62,8 @@ public class OwnPublishBean implements Serializable {
 
         @SerializedName("answer_content")
         private String answerContent;
+        @SerializedName("author_id")
+        private String authorId;
         @SerializedName("nickname")
         private String nickname;
         @SerializedName("create_time")

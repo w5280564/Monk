@@ -20,12 +20,16 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.WechatPayEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -128,6 +132,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 
 	@Override
 	public void onResp(BaseResp resp) {
+		L.e("wechat>>"+resp.getType());
 		if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
 			String result = "";
 			switch (resp.errCode) {//ERR_OK = 0(用户同意) ERR_AUTH_DENIED = -4（用户拒绝授权） ERR_USER_CANCEL = -2（用户取消）
@@ -148,6 +153,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 					break;
 			}
 		}else if(resp.getType() == ConstantsAPI.COMMAND_SENDMESSAGE_TO_WX){
+			finish();
+		}else if(resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+			EventBus.getDefault().post(new WechatPayEvent(WechatPayEvent.WECHAT_PAY_RESULT,resp.errCode));
 			finish();
 		}
 

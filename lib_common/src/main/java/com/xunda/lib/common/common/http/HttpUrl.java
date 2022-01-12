@@ -133,6 +133,11 @@ public class HttpUrl {
     public static final String Login_Logout = "login/login/logout"; //退出登录
 
 
+    public static final String createOrder = "pay/wx-pay/create-order";//APP下单，获取预支付交易会话标识
+    public static final String getWXPaySign = "pay/wx-pay/sign";//获取签名
+
+
+
     /**
      * 问答广场(全部)
      */

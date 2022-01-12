@@ -16,20 +16,27 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.CheckOtherGroupBean;
 import com.qingbo.monk.bean.ThemeBean;
+import com.qingbo.monk.bean.WechatPayReturnBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.eventbus.WechatPayEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.common.utils.WXPayUtils;
+
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -93,6 +100,28 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     @Override
     protected void initLocalData() {
         id = getIntent().getStringExtra("id");
+        registerEventBus();
+    }
+
+
+    /**
+     * 微信支付结果回调
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onWechatPayEvent(WechatPayEvent event) {
+        if (event.event_type == WechatPayEvent.WECHAT_PAY_RESULT) {
+            int errCode = event.errCode;//0	成功  -1	错误  -2	用户取消
+            L.e("wechat>>"+errCode);
+            if (errCode == 0) {
+//                jumpToSuccessActivity();
+            } else if (errCode == -1) {
+//                jumpToFailureActivity(getString(R.string.Pay_SB));
+            } else {
+//                jumpToFailureActivity(getString(R.string.Pay_QX));
+            }
+        }
     }
 
 
@@ -284,9 +313,10 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         if ("0".equals(fee_type)) {
             joinGroup();
         }else{
-            T.ss("微信支付");
+            createOrder();
         }
     }
+
 
     /**
      * 加入社群
@@ -309,4 +339,83 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         sender.setContext(mActivity);
         sender.sendPost();
     }
+
+
+    /**
+     * APP下单，获取预支付交易会话标识
+     */
+    private void createOrder() {
+        HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("shequnId", id);
+        HttpSender sender = new HttpSender(HttpUrl.createOrder, "APP下单，获取预支付交易会话标识", baseMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            String prepay_id = GsonUtil.getInstance().getValue(json_data,"prepay_id");
+                            toPay(prepay_id);
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+
+
+    //-------------------------------------------微信支付-------------------------------------------------------------
+
+
+    /**
+     * 去支付
+     */
+    private void toPay(String prepay_id) {
+        HashMap<String, String> baseMap = new HashMap<String, String>();
+        baseMap.put("prepayId", prepay_id);
+        HttpSender sender = new HttpSender(HttpUrl.getWXPaySign, "去支付", baseMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int code, String description, String data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {//成功
+                            WechatPayReturnBean wechatPayObj = GsonUtil.getInstance().json2Bean(data, WechatPayReturnBean.class);
+                            toWeChatPay(wechatPayObj);
+                        } else {
+//                            jumpToFailureActivity(description);
+                        }
+                    }
+
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+    /**
+     * 调起微信支付
+     *
+     * @param wechatPayObj
+     */
+    private void toWeChatPay(WechatPayReturnBean wechatPayObj) {
+        if (wechatPayObj != null) {
+            WXPayUtils.WXPayBuilder builder = new WXPayUtils.WXPayBuilder();
+            builder.setAppId(Constants.WECHAT_APPID)
+                    .setPartnerId(wechatPayObj.getMerchantId())
+                    .setPrepayId(wechatPayObj.getPrepayid())
+                    .setPackageValue("Sign=WXPay")
+                    .setNonceStr(wechatPayObj.getNonceStr())
+                    .setTimeStamp(wechatPayObj.getTimeStamp())
+                    .setSign(wechatPayObj.getPaySign())
+                    .build().toWXPayNotSign(mActivity);
+        } else {
+            T.ss("参数错误");
+        }
+
+    }
+
+
+
+
+
 }

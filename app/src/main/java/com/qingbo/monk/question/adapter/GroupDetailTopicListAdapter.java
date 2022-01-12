@@ -61,6 +61,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
         ImageView iv_delete = helper.getView(R.id.iv_delete);
+        viewTouchDelegate.expandViewTouchDelegate(iv_delete, 100);
+        helper.addOnClickListener(R.id.iv_delete);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -77,34 +79,6 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
-
-            String publish_user_id = item.getAuthorId();
-            if (id_self.equals(publish_user_id)) {
-                iv_delete.setVisibility(View.VISIBLE);
-                viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-                helper.addOnClickListener(R.id.iv_delete);
-            }else{
-                String publish_role = item.getRole();
-                if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
-                    iv_delete.setVisibility(View.VISIBLE);
-                    viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-                    helper.addOnClickListener(R.id.iv_delete);
-                }else if ("2".equals(role_self)) {
-                    if ("1".equals(publish_role)||"0".equals(publish_role)) {
-                        iv_delete.setVisibility(View.VISIBLE);
-                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-                        helper.addOnClickListener(R.id.iv_delete);
-                    }
-                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
-                    if ("0".equals(publish_role)) {
-                        iv_delete.setVisibility(View.VISIBLE);
-                        viewTouchDelegate.expandViewTouchDelegate(iv_delete,100);
-                        helper.addOnClickListener(R.id.iv_delete);
-                    }
-                }else{
-                    iv_delete.setVisibility(View.GONE);
-                }
-            }
         }else{
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
@@ -140,8 +114,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             }else{
                 title_Tv.setVisibility(View.GONE);
             }
-            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
-                    ,group_Img,group_Name,content_Tv,tv_role);
+            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId()
+                    ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
@@ -150,12 +124,12 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole()
-                ,group_Img,group_Name,content_Tv,tv_role);
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId()
+                ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
                 createQuestionList(ll_container_answer,item);
             }else{
-                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
-                        ,group_Img,group_Name,content_Tv,tv_role);
+                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId()
+                        ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
                 handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
@@ -164,8 +138,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         helper.addOnClickListener(R.id.follow_Img);
     }
 
-    private void handleCommonData(String headImg,String headName,String content,String role
-            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role) {
+    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id
+            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role,ImageView iv_delete) {
         GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
         tv_headName.setText(headName);
 
@@ -191,6 +165,26 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         }else{
             tv_role.setVisibility(View.GONE);
             tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+        }
+
+        if (type==0) {
+            if (id_self.equals(publish_user_id)) {
+                iv_delete.setVisibility(View.VISIBLE);
+            }else{
+                if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    iv_delete.setVisibility(View.VISIBLE);
+                }else if ("2".equals(role_self)) {
+                    if ("1".equals(role)||"0".equals(role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                    }
+                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                    if ("0".equals(role)) {
+                        iv_delete.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    iv_delete.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
