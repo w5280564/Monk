@@ -87,7 +87,6 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             tv_answer.setVisibility(View.GONE);
             read_number_Tv.setVisibility(View.VISIBLE);
             read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
-            isFollow(item.getStatusNum(), follow_Tv, send_Mes);
         }else{
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
@@ -128,8 +127,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             }else{
                 title_Tv.setVisibility(View.GONE);
             }
-            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId()
-                    ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
+            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum()
+                    ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
@@ -138,12 +137,12 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId()
-                ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
+                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId(),item.getStatusNum()
+                ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
                 createQuestionList(ll_container_answer,item);
             }else{
-                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId()
-                        ,group_Img,group_Name,content_Tv,tv_role,iv_delete);
+                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum()
+                        ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
                 handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
@@ -151,8 +150,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
     }
 
-    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id
-            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role,ImageView iv_delete) {
+    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status
+            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role,ImageView iv_delete,TextView tv_follow,TextView tv_send_mes) {
         GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
         tv_headName.setText(headName);
 
@@ -198,6 +197,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
                     iv_delete.setVisibility(View.GONE);
                 }
             }
+
+            isFollow(follow_status, tv_follow, tv_send_mes);
         }
     }
 
