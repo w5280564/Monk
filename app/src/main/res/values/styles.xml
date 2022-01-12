@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardItemView">
+       <attr name="cardTitle" format="string|reference"/>
+        <attr name="cardDrawStartImg" format="reference"/>
+        <attr name="cardTitleColor" format="color|reference"/>
+        <attr name="cardTitleSize" format="dimension|reference"/>
+       <attr name="cardContent" format="string|reference"/>
+        <attr name="cardContentColor" format="color|reference"/>
+        <attr name="cardContentSize" format="dimension|reference"/>
+        <attr name="ShowLine" format="boolean"/>
+        <attr name="ShowEditTv" format="boolean"/>
+
+
+    </declare-styleable>
+
+
+<!--    <declare-styleable name="ArrowItemView">-->
+<!--        <attr name="arrowItemTitle" format="string|reference" />-->
+<!--        <attr name="arrowItemTitleColor" format="color|reference" />-->
+<!--        <attr name="arrowItemTitleSize" format="dimension|reference" />-->
+<!--        <attr name="arrowItemContent" format="string|reference" />-->
+<!--        <attr name="arrowItemContentColor" format="color|reference" />-->
+<!--        <attr name="arrowItemContentSize" format="dimension|reference" />-->
+<!--        <attr name="arrowItemShowDivider" format="boolean" />-->
+<!--        <attr name="arrowItemShowArrow" format="boolean" />-->
+<!--        <attr name="arrowItemShowtvImg" format="boolean" />-->
+<!--        <attr name="arrowItemShowAvatar" format="boolean" />-->
+<!--        <attr name="arrowItemAvatarSrc" format="reference" />-->
+<!--        <attr name="arrowItemAvatarHeight" format="dimension|reference" />-->
+<!--        <attr name="arrowItemAvatarWidth" format="dimension|reference" />-->
+<!--        <attr name="arrowItemShowTip" format="boolean" />-->
+<!--        <attr name="arrowItemTip" format="string|reference" />-->
+<!--    </declare-styleable>-->
+
+
+
+</resources>

@@ -135,8 +135,7 @@ public class StackCardsView extends FrameLayout {
     public StackCardsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setChildrenDrawingOrderEnabled(true);
-        final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.StackCardsView, defStyleAttr, 0);
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.StackCardsView, defStyleAttr, 0);
         mItemWidth = a.getDimensionPixelSize(R.styleable.StackCardsView_itemWidth, INVALID_SIZE);
         if (mItemWidth == INVALID_SIZE) {
             throw new IllegalArgumentException("itemWidth must be specified");

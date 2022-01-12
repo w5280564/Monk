@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_18"
+        android:drawableStart="@mipmap/shanchang"
+        android:drawablePadding="@dimen/dp_10"
+        android:text="擅长领域/方向"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/content_Tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_42"
+        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:text="暂未填写"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_Tv" />
+
+    <View
+        android:id="@+id/line_View"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/background_bg_efefef"
+        app:layout_constraintEnd_toEndOf="@+id/content_Tv"
+        app:layout_constraintStart_toStartOf="@id/content_Tv"
+        app:layout_constraintTop_toBottomOf="@id/content_Tv" />
+
+    <TextView
+        android:id="@+id/edit_Tv"
+        android:layout_width="@dimen/dp_67"
+        android:layout_height="@dimen/dp_28"
+        android:text="编辑"
+        android:gravity="center_vertical"
+        android:drawableStart="@mipmap/bianji_pen"
+        android:paddingStart="@dimen/dp_10"
+        android:drawablePadding="@dimen/dp_10"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/title_Tv"
+        app:layout_constraintBottom_toBottomOf="@id/title_Tv"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="12sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

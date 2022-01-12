@@ -9,12 +9,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.bean.UserBean;
@@ -26,8 +29,11 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
+
 import java.util.HashMap;
+
 import butterknife.BindView;
 
 /**
@@ -45,22 +51,24 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView tv_follow_number;
     @BindView(R.id.tv_fans_number)
     TextView tv_fans_number;
-    @BindView(R.id.interest_Flow)
-    FlowLayout interest_Flow;
-    @BindView(R.id.good_Tv)
-    TextView good_Tv;
-    @BindView(R.id.resources_Tv)
-    TextView resources_Tv;
-    @BindView(R.id.achievement_Tv)
-    TextView achievement_Tv;
-    @BindView(R.id.learn_Tv)
-    TextView learn_Tv;
-    @BindView(R.id.harvest_Tv)
-    TextView harvest_Tv;
     @BindView(R.id.iv_qrcode)
     TextView iv_qrcode;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refresh_layout;
+
+    @BindView(R.id.interest_Flow)
+    FlowLayout interest_Flow;
+    @BindView(R.id.good_EditView)
+    MyCardEditView good_EditView;
+    @BindView(R.id.resources_EditView)
+    MyCardEditView resources_EditView;
+    @BindView(R.id.achievement_EditView)
+    MyCardEditView achievement_EditView;
+    @BindView(R.id.learn_EditView)
+    MyCardEditView learn_EditView;
+    @BindView(R.id.harvest_EditView)
+    MyCardEditView harvest_EditView;
+
 
     @Override
     protected int getLayoutId() {
@@ -70,7 +78,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     protected void initView() {
         refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
-        viewTouchDelegate.expandViewTouchDelegate(iv_qrcode,50);
+        viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
     }
 
     @Override
@@ -79,14 +87,12 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         refresh_layout.setOnRefreshListener(this);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         getUserData();
     }
 
-    ;
     private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", SharePref.user().getUserId());
@@ -100,7 +106,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        PrefUtil.saveUser(userBean,"");
+                        PrefUtil.saveUser(userBean, "");
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, requireActivity(), userBean.getTagName());
@@ -108,11 +114,11 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         tv_fans_number.setText(userBean.getFansNum());
                         interestLabelFlow(interest_Flow, requireActivity(), userBean.getInterested());
 
-                        originalValue(userBean.getDomain(), "暂未填写", good_Tv);
-                        originalValue(userBean.getResource(), "暂未填写", resources_Tv);
-                        originalValue(userBean.getAchievement(), "暂未填写", achievement_Tv);
-                        originalValue(userBean.getResearch(), "暂未填写", learn_Tv);
-                        originalValue(userBean.getGetResource(), "暂未填写", harvest_Tv);
+                        originalValue(userBean.getDomain(), "暂未填写", good_EditView.getContent_Tv());
+                        originalValue(userBean.getResource(), "暂未填写", resources_EditView.getContent_Tv());
+                        originalValue(userBean.getAchievement(), "暂未填写", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getResearch(), "暂未填写", learn_EditView.getContent_Tv());
+                        originalValue(userBean.getGetResource(), "暂未填写", harvest_EditView.getContent_Tv());
                     }
                 }
             }
@@ -197,7 +203,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_qrcode:
-                MyAndOther_Card.actionStart(mActivity,SharePref.user().getUserId());
+                String id = SharePref.user().getUserId();
+                MyAndOther_Card.actionStart(mActivity, id);
                 break;
         }
     }
