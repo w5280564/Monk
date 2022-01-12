@@ -121,7 +121,7 @@ public class GroupManagerOrPartnerListActivity extends BaseActivity {
      */
     private void clickItem(int position) {
         if (memberList.get(position).getType() == 1) {//添加
-            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,1);
+            SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,1,12-mAdapter.getData().size());
         }else if(memberList.get(position).getType() == 2){//踢人
             SetGroupManagerOrPartnerListActivity.actionStart(mActivity,id,type,2);
         }

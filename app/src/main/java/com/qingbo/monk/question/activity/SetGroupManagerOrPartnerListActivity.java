@@ -55,11 +55,22 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
     SideBarLayout sideBarLayout;
     private String id,type;//3是管理员 4是合伙人
     private int edit_type;//1添加 2删除
+    private int remains_count;//剩余可添加数
     private String getRequestType,setRequestType;
     private List<GroupMemberBean> mChooseList = new ArrayList<>();
     private List<GroupMemberBean> mList = new ArrayList();
     private List<GroupMemberBean> resultMemberList = new ArrayList<>();
     private GroupManagerOrPartnerBigAdapter mGroupMemberListAdapter;
+
+    public static void actionStart(Context context, String id, String type,int edit_type,int remains_count) {
+        Intent intent = new Intent(context, SetGroupManagerOrPartnerListActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("type", type);
+        intent.putExtra("edit_type", edit_type);
+        intent.putExtra("remains_count", remains_count);
+        context.startActivity(intent);
+    }
+
 
     public static void actionStart(Context context, String id, String type,int edit_type) {
         Intent intent = new Intent(context, SetGroupManagerOrPartnerListActivity.class);
@@ -95,6 +106,7 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
         type = getIntent().getStringExtra("type");
         edit_type = getIntent().getIntExtra("edit_type",1);
+        remains_count = getIntent().getIntExtra("remains_count",0);
 
         if (edit_type==1) {//添加
             getRequestType = "1";
@@ -184,16 +196,6 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
 
 
 
-
-    @OnClick({R.id.et_search})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.et_search:
-                break;
-
-        }
-    }
-
     @Override
     protected void initEvent() {
         sideBarLayout.setSideBarLayout(new SideBarLayout.OnSideBarLayoutListener() {
@@ -224,6 +226,10 @@ public class SetGroupManagerOrPartnerListActivity extends BaseActivity {
                 }
 
                 if (!obj.isCheck()) {
+                    if (edit_type==1&&mChooseList.size()==remains_count) {//添加
+                        T.ss("本次最多只能添加"+remains_count+"人");
+                        return;
+                    }
                     obj.setCheck(true);
                     mChooseList.add(obj);
                     addHeaderView(obj);
