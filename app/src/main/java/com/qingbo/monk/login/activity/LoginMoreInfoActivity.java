@@ -169,7 +169,6 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
         if (userObj!=null) {
             PrefUtil.saveUser(userObj,"");
         }
-
     }
 
     @Override

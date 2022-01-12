@@ -31,8 +31,11 @@ public class UserBean {
     private int follow_status;
     private String cover_image;
     private int band_wx;
+    private String province;
 
-
+    public String getProvince() {
+        return province;
+    }
     public String getId() {
         return id;
     }

@@ -145,9 +145,15 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     @Override
     protected void getServerData() {
-        getUserData(userID, true);
+
         getMyGroup(userID, false);
         getInterestData(userID, false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserData(userID, true);
     }
 
     @Override
@@ -178,7 +184,6 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         fragments.add(MyDynamic_Fragment.newInstance(userID));
         fragments.add(MyArchives_Fragment.newInstance(userID));
         initViewPager(0);
-
     }
 
     UserBean userBean;

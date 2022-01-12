@@ -61,6 +61,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".person.activity.Edit_ChangeName"
+            android:exported="false" />
+        <activity
             android:name=".person.activity.MyAndOtherEdit_Card"
             android:exported="false" />
         <activity

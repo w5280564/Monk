@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_f5f5f5"
+    tools:context=".person.activity.Edit_ChangeName"
+    tools:ignore="MissingConstraints">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowType="TEXT"
+        app:titleBarRightTxt="保存"
+        app:titleBarRightTxtColor="@color/text_color_1F8FE5"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="编辑名字" />
+
+
+    <EditText
+        android:id="@+id/changeName_Edit"
+        android:layout_width="346dp"
+        android:layout_height="@dimen/dp_43"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@drawable/base_gradual"
+        android:hint="添加一个名字"
+        android:maxLength="6"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="14sp"
+        android:lines="1"
+        android:paddingStart="@dimen/dp_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

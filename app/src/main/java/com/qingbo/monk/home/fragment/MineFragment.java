@@ -29,7 +29,6 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
@@ -68,7 +67,6 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     MyCardEditView learn_EditView;
     @BindView(R.id.harvest_EditView)
     MyCardEditView harvest_EditView;
-
 
     @Override
     protected int getLayoutId() {

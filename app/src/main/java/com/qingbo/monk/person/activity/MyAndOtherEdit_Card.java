@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.xunda.lib.common.bean.UserBean;
@@ -24,18 +24,18 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.dialog.EditStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.BindViews;
-import butterknife.ButterKnife;
 
-public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickListener {
+public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single implements View.OnClickListener {
     @BindView(R.id.back_Btn)
     Button back_Btn;
     @BindView(R.id.iv_img)
@@ -49,6 +49,8 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
     @BindView(R.id.brief_Tv)
     TextView brief_Tv;
 
+    @BindView(R.id.interestEdit_Tv_)
+    TextView interestEdit_Tv_;
     @BindView(R.id.interest_Flow)
     FlowLayout interest_Flow;
     @BindView(R.id.good_EditView)
@@ -64,6 +66,8 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
 
 
     private String userID;
+    private boolean isHead = true;
+    HashMap<String, String> requestMap = new HashMap<>();
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyAndOtherEdit_Card.class);
@@ -99,20 +103,29 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
     @Override
     protected void initView() {
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
+        interestEdit_Tv_.setVisibility(View.VISIBLE);
+        good_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
+        resources_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
+        achievement_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
+        learn_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
+        harvest_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void initEvent() {
         back_Btn.setOnClickListener(this);
+        head_Img.setOnClickListener(this);
+        iv_img.setOnClickListener(this);
+        nickName_MyView.setOnClickListener(this);
     }
 
     @Override
-    protected void getServerData() {
+    protected void onResume() {
+        super.onResume();
         getUserData(userID, true);
     }
 
     UserBean userBean;
-
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
@@ -129,15 +142,11 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
                         GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCover_image());
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         nickName_MyView.getTvContent().setText(userBean.getNickname());
-                        String s = userBean.getCountry() + userBean.getCity() + userBean.getCounty();
+                        String s = userBean.getProvince() + " " + userBean.getCity() + " " + userBean.getCounty();
                         address_MyView.getTvContent().setText(s);
-//                        brief_Tv.setText(userBean.getDescription());
                         originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
                         interestLabelFlow(interest_Flow, mActivity, userBean.getInterested());
-//                        labelFlow(label_Lin, mActivity, userBean.getTagName());
-//                        tv_follow_number.setText(userBean.getFollowNum());
-//                        tv_fans_number.setText(userBean.getFansNum());
-//
+
                         originalValue(userBean.getDomain(), "暂未填写", "", good_EditView.getContent_Tv());
                         originalValue(userBean.getResource(), "暂未填写", "", resources_EditView.getContent_Tv());
                         originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
@@ -149,6 +158,25 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+
+    private void edit_Info() {
+//        requestMap.put("userId",userId +"");
+        requestMap.put("nickname", userBean.getNickname());
+        HttpSender httpSender = new HttpSender(HttpUrl.Edit_Info, "修改个人信息", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    UserBean obj = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    saveUserInfo(obj);
+                    onResume();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
     /**
@@ -186,6 +214,17 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * 保存用户信息
+     *
+     * @param userObj 用户对象
+     */
+    private void saveUserInfo(UserBean userObj) {
+        if (userObj != null) {
+            PrefUtil.saveUser(userObj, "");
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -193,7 +232,44 @@ public class MyAndOtherEdit_Card extends BaseActivity implements View.OnClickLis
             case R.id.back_Btn:
                 finish();
                 break;
+            case R.id.head_Img:
+                isHead = true;
+                checkGalleryPermission();
+                break;
+            case R.id.iv_img:
+                isHead = false;
+                checkGalleryPermission();
+                break;
+            case R.id.nickName_MyView:
+                Edit_ChangeName.actionStart(mActivity,userBean.getNickname());
+                break;
+
         }
     }
+
+    @Override
+    protected void onUploadSuccess(String imageString) {
+        if (isHead) {
+            requestMap.put("avatar", imageString);
+        } else {
+            requestMap.put("cover_image", imageString);
+        }
+        edit_Info();
+    }
+
+    @Override
+    protected void onUploadFailure(String error_info) {
+    }
+
+    private void showEditStringDialog(String title,String content,String hint,String key) {
+        EditStringDialog mEditStringDialog = new EditStringDialog(this, title, content, hint, new EditStringDialog.OnCompleteListener() {
+            @Override
+            public void OnComplete(String value) {
+//                editShequn(key,value);
+            }
+        });
+        mEditStringDialog.show();
+    }
+
 
 }

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseLazyFragment;
+import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -30,16 +31,16 @@ import butterknife.BindView;
 public class MyArchives_Fragment extends BaseLazyFragment {
     @BindView(R.id.interest_Flow)
     FlowLayout interest_Flow;
-    @BindView(R.id.good_Tv)
-    TextView good_Tv;
-    @BindView(R.id.resources_Tv)
-    TextView resources_Tv;
-    @BindView(R.id.achievement_Tv)
-    TextView achievement_Tv;
-    @BindView(R.id.learn_Tv)
-    TextView learn_Tv;
-    @BindView(R.id.harvest_Tv)
-    TextView harvest_Tv;
+    @BindView(R.id.good_EditView)
+    MyCardEditView good_EditView;
+    @BindView(R.id.resources_EditView)
+    MyCardEditView resources_EditView;
+    @BindView(R.id.achievement_EditView)
+    MyCardEditView achievement_EditView;
+    @BindView(R.id.learn_EditView)
+    MyCardEditView learn_EditView;
+    @BindView(R.id.harvest_EditView)
+    MyCardEditView harvest_EditView;
 
     private String userID;
 
@@ -91,11 +92,12 @@ public class MyArchives_Fragment extends BaseLazyFragment {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         interestLabelFlow(interest_Flow, requireActivity(), userBean.getInterested());
-                        originalValue(userBean.getDomain(), "暂未填写", good_Tv);
-                        originalValue(userBean.getResource(), "暂未填写", resources_Tv);
-                        originalValue(userBean.getAchievement(), "暂未填写", achievement_Tv);
-                        originalValue(userBean.getResearch(), "暂未填写", learn_Tv);
-                        originalValue(userBean.getGetResource(), "暂未填写", harvest_Tv);
+
+                        originalValue(userBean.getDomain(), "暂未填写", good_EditView.getContent_Tv());
+                        originalValue(userBean.getResource(), "暂未填写", resources_EditView.getContent_Tv());
+                        originalValue(userBean.getAchievement(), "暂未填写", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getResearch(), "暂未填写", learn_EditView.getContent_Tv());
+                        originalValue(userBean.getGetResource(), "暂未填写", harvest_EditView.getContent_Tv());
                     }
                 }
             }
