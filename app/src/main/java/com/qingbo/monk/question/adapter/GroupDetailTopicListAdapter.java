@@ -47,6 +47,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OwnPublishBean item) {
         LinearLayout ll_bottom = helper.getView(R.id.ll_bottom);
+        TextView follow_Tv = helper.getView(R.id.follow_Tv);
+        TextView send_Mes = helper.getView(R.id.send_Mes);
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_role = helper.getView(R.id.tv_role);
@@ -55,6 +57,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         TextView tv_status = helper.getView(R.id.tv_status);
         TextView tv_answer = helper.getView(R.id.tv_answer);
         TextView time_Tv = helper.getView(R.id.time_Tv);
+        TextView read_number_Tv = helper.getView(R.id.read_number_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
@@ -63,6 +66,9 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         ImageView iv_delete = helper.getView(R.id.iv_delete);
         viewTouchDelegate.expandViewTouchDelegate(iv_delete, 100);
         helper.addOnClickListener(R.id.iv_delete);
+        helper.addOnClickListener(R.id.follow_Tv);
+        helper.addOnClickListener(R.id.send_Mes);
+        helper.addOnClickListener(R.id.follow_Img);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -79,6 +85,9 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
+            read_number_Tv.setVisibility(View.VISIBLE);
+            read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
+            isFollow(item.getStatusNum(), follow_Tv, send_Mes);
         }else{
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
@@ -86,21 +95,26 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             if (TextUtils.equals(status, "0")) {
                 ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.GONE);
                 tv_status.setText("待审核");
                 setDrawableLeft(R.mipmap.weishenhe,tv_status);
             } else if(TextUtils.equals(status, "1")){
                 ll_bottom.setVisibility(View.VISIBLE);
                 tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.VISIBLE);
                 tv_status.setText("审核通过");
                 setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
+                read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
             } else if(TextUtils.equals(status, "2")){
                 ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.VISIBLE);
+                read_number_Tv.setVisibility(View.GONE);
                 setDrawableLeft(R.mipmap.weitongguo,tv_status);
                 tv_status.setText("未通过");
             } else{
                 ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.GONE);
+                read_number_Tv.setVisibility(View.GONE);
             }
         }
 
@@ -134,8 +148,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
                 ll_container_answer.setVisibility(View.GONE);
             }
         }
-        helper.addOnClickListener(R.id.follow_Tv);
-        helper.addOnClickListener(R.id.follow_Img);
+
     }
 
     private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id
@@ -188,6 +201,36 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         }
     }
 
+    /**
+     * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
+     * @param follow_Tv
+     * @param send_Mes
+     */
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+        String s = String.valueOf(follow_status);
+        if (TextUtils.equals(s, "0")|| TextUtils.equals(s, "3")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "1")) {
+            follow_Tv.setVisibility(View.GONE);
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "2")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("已关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "4")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("互相关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.VISIBLE);
+        }
+    }
 
     /**
      * 提问

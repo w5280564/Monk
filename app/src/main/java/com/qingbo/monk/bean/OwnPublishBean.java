@@ -37,10 +37,14 @@ public class OwnPublishBean implements Serializable {
     private String avatar;
     @SerializedName("tag_name")
     private String tagName;
+    @SerializedName("read_num")
+    private String readNum;
     @SerializedName("role")
     private String role;
     @SerializedName("status")
     private String status;
+    @SerializedName("status_num")
+    private int statusNum;
     @SerializedName("is_hot")
     private String isHot;
     @SerializedName("like")

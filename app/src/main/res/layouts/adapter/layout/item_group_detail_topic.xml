@@ -21,7 +21,7 @@
         android:id="@+id/group_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_10"
         android:maxLength="10"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_12"
@@ -57,6 +57,18 @@
         android:textSize="@dimen/sp_10"
         app:layout_constraintStart_toStartOf="@+id/group_Name"
         app:layout_constraintTop_toBottomOf="@+id/group_Name" />
+
+    <TextView
+        android:id="@+id/read_number_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintStart_toEndOf="@+id/time_Tv"
+        app:layout_constraintTop_toTopOf="@+id/time_Tv"
+        app:layout_constraintBottom_toBottomOf="@+id/time_Tv"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -98,7 +110,7 @@
         android:id="@+id/follow_Tv"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_22"
-        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/interest_lable"
         android:gravity="center"
         android:paddingStart="@dimen/dp_11"
@@ -120,12 +132,12 @@
         android:paddingEnd="@dimen/dp_8"
         android:text="私信"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/dp_5"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/follow_Tv"
-        app:layout_constraintStart_toStartOf="@+id/follow_Tv"
-        app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
+        android:layout_marginEnd="@dimen/dp_8"
+        app:layout_constraintEnd_toStartOf="@id/follow_Tv"
+        app:layout_constraintTop_toTopOf="@id/follow_Tv"
+        app:layout_constraintBottom_toBottomOf="@id/follow_Tv" />
 
 
 
@@ -247,7 +259,9 @@
         android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/dp_20"
         android:background="@color/text_color_CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/ll_bottom" />
+        app:layout_constraintTop_toBottomOf="@id/ll_bottom"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_15"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

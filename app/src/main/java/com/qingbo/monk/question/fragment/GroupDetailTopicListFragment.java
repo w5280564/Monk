@@ -13,8 +13,11 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
+import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.home.adapter.Follow_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
@@ -124,9 +127,12 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         String type = mQuestionBean.getTopicType();
                         GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type,mQuestionBean,topicType,role);
                         break;
-                    case R.id.more_Img:
-                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                        showPopMenu(more_Img,mQuestionBean,position);
+                    case R.id.follow_Tv:
+                        String otherUserId = mQuestionBean.getAuthorId();
+                        postFollowData(otherUserId, position);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
                         break;
                     case R.id.iv_delete:
                         showToastDialog(mQuestionBean.getArticleId(),position);
@@ -157,6 +163,29 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
             }
         });
     }
+
+
+    private void postFollowData(String otherUserId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("otherUserId", otherUserId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
+                    ((GroupDetailTopicListAdapter)mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
 
     private void showToastDialog(String id,int position) {
         TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条主题吗？","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
@@ -225,27 +254,6 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         httpSender.sendPost();
     }
 
-
-    private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){
-        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
-        boolean haveEdit = false;
-        if(TextUtils.equals(status, "2")){//审核未通过才能删除
-            haveEdit = true;
-        }
-        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
-            @Override
-            public void onClickEdit() {
-                PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);
-            }
-
-            @Override
-            public void onClickDelete() {
-//                showDeleteDialog(mQuestionBean.getId(),position);
-            }
-
-        });
-        morePopWindow.showPopupWindow(more_Img);
-    }
 
 
     @Override
