@@ -17,6 +17,7 @@ import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialog;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialogAgain;
@@ -158,6 +159,7 @@ public class BeginActivity extends FragmentActivity {
         UserBean mUserBean = SharePref.user().getUserInfo();
         if (mUserBean!=null) {
             String interested = mUserBean.getInterested();
+            L.d("interest",PrefUtil.getUser().getInterested());
             Intent intent = new Intent();
             if(StringUtil.isBlank(interested)) {//首次登陆
                 intent.setClass(this,WelcomeActivity.class);

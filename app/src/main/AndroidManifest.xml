@@ -61,6 +61,16 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".person.activity.Edit_ChangePage_Add"
+            android:exported="false" />
+                <activity
+            android:name=".person.activity.Edit_ChangePage"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.Edit_ChangeExplain"
+            android:exported="false" />
+
+        <activity
             android:name=".person.activity.Edit_ChangeName"
             android:exported="false" />
         <activity
@@ -214,7 +224,8 @@
 
 
     <queries>
-        <package android:name="com.tencent.mm" />   // Android 11-第三方应用无法拉起微信适配 指定微信包名
+        <package android:name="com.tencent.mm" />
+        // Android 11-第三方应用无法拉起微信适配 指定微信包名
     </queries>
 
 </manifest>

@@ -11,9 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.gyf.barlibrary.ImmersionBar;
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
@@ -35,6 +42,9 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
+/**
+ * 编辑自己资料页
+ */
 public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single implements View.OnClickListener {
     @BindView(R.id.back_Btn)
     Button back_Btn;
@@ -48,6 +58,10 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     MyArrowItemView address_MyView;
     @BindView(R.id.brief_Tv)
     TextView brief_Tv;
+    @BindView(R.id.explain_Con)
+    ConstraintLayout explain_Con;
+    @BindView(R.id.home_Con)
+    ConstraintLayout home_Con;
 
     @BindView(R.id.interestEdit_Tv_)
     TextView interestEdit_Tv_;
@@ -109,6 +123,8 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         achievement_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         learn_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         harvest_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
+
+        initCity();
     }
 
     @Override
@@ -117,6 +133,9 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         head_Img.setOnClickListener(this);
         iv_img.setOnClickListener(this);
         nickName_MyView.setOnClickListener(this);
+        address_MyView.setOnClickListener(this);
+        explain_Con.setOnClickListener(this);
+        home_Con.setOnClickListener(this);
     }
 
     @Override
@@ -139,7 +158,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadCircleImage(mActivity, iv_img, userBean.getCover_image());
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image());
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         nickName_MyView.getTvContent().setText(userBean.getNickname());
                         String s = userBean.getProvince() + " " + userBean.getCity() + " " + userBean.getCounty();
@@ -243,6 +262,15 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             case R.id.nickName_MyView:
                 Edit_ChangeName.actionStart(mActivity,userBean.getNickname());
                 break;
+            case R.id.address_MyView:
+                mPicker.showCityPicker();
+                break;
+            case R.id.explain_Con:
+                Edit_ChangeExplain.actionStart(mActivity,userBean.getNickname());
+                break;
+            case R.id.home_Con:
+                Edit_ChangePage.actionStart(mActivity,userBean.getNickname());
+                break;
 
         }
     }
@@ -261,15 +289,36 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     protected void onUploadFailure(String error_info) {
     }
 
-    private void showEditStringDialog(String title,String content,String hint,String key) {
-        EditStringDialog mEditStringDialog = new EditStringDialog(this, title, content, hint, new EditStringDialog.OnCompleteListener() {
-            @Override
-            public void OnComplete(String value) {
-//                editShequn(key,value);
-            }
-        });
-        mEditStringDialog.show();
+    CityPickerView mPicker = new CityPickerView();
+    private void initCity() {
+        //等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
+        //预先加载仿iOS滚轮实现的全部数据
+        mPicker.init(this);
+        //添加默认的配置，不需要自己定义，当然也可以自定义相关熟悉，详细属性请看demo
+        CityConfig cityConfig = new CityConfig.Builder().build();
+        mPicker.setConfig(cityConfig);
+        mPicker.setOnCityItemClickListener(new mPickerCityItemClick());
     }
+
+    private class mPickerCityItemClick extends OnCityItemClickListener {
+        @Override
+        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+            //省份province 城市city 地区district
+            String cityStr = province + " " + city + " " + district;
+
+            requestMap.put("province", province.getName());
+            requestMap.put("city", city.getName());
+            requestMap.put("county", district.getName());
+            edit_Info();
+        }
+
+        @Override
+        public void onCancel() {
+//            ToastUtils.showLongToast(UserDetail_Set.this, "已取消");
+        }
+    }
+
+
 
 
 }

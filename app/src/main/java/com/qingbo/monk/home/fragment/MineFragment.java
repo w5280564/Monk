@@ -28,6 +28,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
@@ -105,6 +106,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         PrefUtil.saveUser(userBean, "");
+
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, requireActivity(), userBean.getTagName());

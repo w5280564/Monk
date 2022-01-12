@@ -22,8 +22,7 @@
             <ImageView
                 android:id="@+id/iv_img"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/card_bg"
+                android:layout_height="@dimen/dp_150"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
 
