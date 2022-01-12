@@ -1,5 +1,7 @@
 package com.qingbo.monk.bean;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,7 @@ public class UploadPictureBean implements Serializable {
 
 
     private String imageUrl;//图片地址
-    private String imageUri;//图片地址
+    private Uri imageUri;//本地图片路径
 
     public int getType() {
         return type;
@@ -31,11 +33,11 @@ public class UploadPictureBean implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getImageUri() {
+    public Uri getImageUri() {
         return imageUri;
     }
 
-    public void setImageUri(String imageUri) {
+    public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
     }
 }

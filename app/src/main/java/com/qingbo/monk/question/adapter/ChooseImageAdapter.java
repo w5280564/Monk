@@ -46,10 +46,14 @@ public class ChooseImageAdapter extends BaseQuickAdapter<UploadPictureBean, Base
 
         helper.addOnClickListener(R.id.ll_delete);
 
+
         if (item.getType() == 1) {//添加照片
             iv_image.setImageResource(R.mipmap.tianjia);
             ll_delete.setVisibility(View.GONE);
-        }else {//网络图片
+        } else if (item.getType() == 2) {//本地图片
+            Glide.with(mContext).load(item.getImageUri()).into(iv_image);
+            ll_delete.setVisibility(View.VISIBLE);
+        } else {//网络图片
             ImgLoader.getInstance().displayCrop(mContext,iv_image,item.getImageUrl(),R.mipmap.img_pic_none_square);
             ll_delete.setVisibility(View.VISIBLE);
         }
