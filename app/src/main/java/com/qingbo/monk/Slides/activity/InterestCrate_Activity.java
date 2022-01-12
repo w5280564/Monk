@@ -3,6 +3,7 @@ package com.qingbo.monk.Slides.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -23,6 +24,7 @@ import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.fileprovider.FileProvider7;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
@@ -133,8 +135,15 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
         String images = mQuestionBeanMy.getImages();
         if (!StringUtil.isBlank(images)) {
-            List<String> urlList = StringUtil.stringToList(images);
-            imageStringList.addAll(urlList);
+            List<String> tempStringUrlList = StringUtil.stringToList(images);
+            List<UploadPictureBean> urlList = new ArrayList<>();
+            for (String imageUrl:tempStringUrlList) {
+                UploadPictureBean obj = new UploadPictureBean();
+                obj.setImageUrl(imageUrl);
+                obj.setType(0);
+                urlList.add(obj);
+            }
+            imageStringList.addAll(tempStringUrlList);
             showImageListImages(urlList);
         }
     }
@@ -264,20 +273,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     private void getPramsValue() {
         mTitle = StringUtil.getEditText(et_title);
         mContent = StringUtil.getEditText(et_content);
-
-        StringBuilder result = new StringBuilder();
-        boolean flag = false;
-        for (UploadPictureBean mImageObj : imageList) {
-            if (mImageObj.getType() != 1) {
-                if (flag) {
-                    result.append(",");
-                } else {
-                    flag = true;
-                }
-                result.append(mImageObj.getImageUrl());
-            }
-        }
-        images = result.toString();
+        images = StringUtil.listToString(imageStringList);
     }
 
     /**
@@ -335,12 +331,8 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     /**
      * 展示选择的图片
      */
-    private void showImageListImages(List<String> urlList) {
-        for (int i = 0; i < urlList.size(); i++) {
-            UploadPictureBean obj = new UploadPictureBean();
-            obj.setImageUrl(urlList.get(i));
-            imageList.add(imageList.size() - 1, obj);
-        }
+    private void showImageListImages(List<UploadPictureBean> mTempList) {
+        imageList.addAll(imageList.size()-1, mTempList);
         deleteLastOne();
         tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
         mAdapter.notifyDataSetChanged();
@@ -372,8 +364,16 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
 
     @Override
     protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
+        List<UploadPictureBean> uriList = new ArrayList<>();
+        for (File mFile:fileList) {
+            Uri filePath = FileProvider7.getUriForFile(mContext,mFile);
+            UploadPictureBean obj = new UploadPictureBean();
+            obj.setImageUri(filePath);
+            obj.setType(2);
+            uriList.add(obj);
+        }
         imageStringList.addAll(urlList);
-        showImageListImages(urlList);
+        showImageListImages(uriList);
     }
 
     @Override

@@ -268,10 +268,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
     private void getPramsValue() {
         mTitle = StringUtil.getEditText(et_title);
-
         mContent = StringUtil.getEditText(et_content);
-
-
         images = StringUtil.listToString(imageStringList);
     }
 
@@ -370,7 +367,6 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         List<UploadPictureBean> uriList = new ArrayList<>();
         for (File mFile:fileList) {
             Uri filePath = FileProvider7.getUriForFile(mContext,mFile);
-            L.e("ouyang", "name" + filePath.getPath());
             UploadPictureBean obj = new UploadPictureBean();
             obj.setImageUri(filePath);
             obj.setType(2);
