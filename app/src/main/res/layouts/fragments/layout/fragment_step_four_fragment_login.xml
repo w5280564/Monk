@@ -19,7 +19,7 @@
             android:id="@+id/iv_header"
             android:layout_width="@dimen/dp_56"
             android:layout_height="@dimen/dp_56"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -86,12 +86,11 @@
     </RelativeLayout>
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp_48"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dp_48"
         android:orientation="horizontal">
 
         <TextView
@@ -102,24 +101,21 @@
             android:gravity="center"
             android:text="返回"
             android:textColor="@color/text_color_444444"
-            android:textSize="@dimen/sp_16"/>
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:id="@+id/tv_save"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_height"
             android:layout_marginLeft="@dimen/dp_11"
-            android:gravity="center"
             android:background="@drawable/selector_btn_rectangle"
+            android:gravity="center"
             android:text="完成"
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_16" />
 
 
-
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

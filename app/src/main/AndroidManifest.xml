@@ -48,6 +48,11 @@
     <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" /> <!-- 华为推送角标 -->
     <uses-permission android:name="${applicationId}.permission.MIPUSH_RECEIVE" />
 
+    <queries>
+        <package android:name="com.tencent.mm" />
+        // Android 11-第三方应用无法拉起微信适配 指定微信包名
+    </queries>
+
     <application
         android:name=".base.MonkApplication"
         android:allowBackup="true"
@@ -60,16 +65,35 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
+
+        <activity
+            android:name=".person.activity.Edit_Change_Achievement"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.Edit_Change_Learn"
+            android:exported="false" />
+
+
+        <activity
+            android:name=".person.activity.Edit_Change_Resources"
+            android:exported="false" />
+
+        <activity
+            android:name=".person.activity.Edit_Change_Industry"
+            android:exported="false" />
+
+        <activity
+            android:name=".person.activity.Edit_Change_Interest"
+            android:exported="false" />
         <activity
             android:name=".person.activity.Edit_ChangePage_Add"
             android:exported="false" />
-                <activity
+        <activity
             android:name=".person.activity.Edit_ChangePage"
             android:exported="false" />
         <activity
             android:name=".person.activity.Edit_ChangeExplain"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.Edit_ChangeName"
             android:exported="false" />
@@ -207,7 +231,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" /> <!-- 微信支付结束… -->
-
         <service android:name=".message.activity.WebSocketService" />
 
         <provider
@@ -221,11 +244,5 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
-
-    <queries>
-        <package android:name="com.tencent.mm" />
-        // Android 11-第三方应用无法拉起微信适配 指定微信包名
-    </queries>
 
 </manifest>

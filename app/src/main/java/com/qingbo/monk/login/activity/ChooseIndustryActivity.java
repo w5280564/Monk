@@ -95,7 +95,7 @@ public class ChooseIndustryActivity extends BaseActivity {
             choiceList.add(true);
             questionTxt.setTag(i);
             topic_lin.addView(myView);
-            lableChoiceList(choice_flex, mList.get(i));
+            labelChoiceList(choice_flex, mList.get(i));
             questionTxt.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
                 boolean onChoice = choiceList.get(tag);
@@ -114,18 +114,18 @@ public class ChooseIndustryActivity extends BaseActivity {
     }
 
 
-    public void lableChoiceList(FlowLayout myFlex , IndustryBean model) {
+    public void labelChoiceList(FlowLayout myFlex , IndustryBean model) {
         if (myFlex != null) {
             myFlex.removeAllViews();
         }
         int size = model.getChildren().size();
         for (int i = 0; i < size; i++) {
             View myView = LayoutInflater.from(mContext).inflate(R.layout.topic_lable, null);
-            TextView lable_Txt = myView.findViewById(R.id.lable_Txt);
+            TextView label_Txt = myView.findViewById(R.id.lable_Txt);
             String name = model.getChildren().get(i).getName();
-            lable_Txt.setText(name);
+            label_Txt.setText(name);
             myFlex.addView(myView);
-            lable_Txt.setOnClickListener(v -> {
+            label_Txt.setOnClickListener(v -> {
                 Intent mIntent = new Intent();
                 mIntent.putExtra("name",name);
                 setResult(RESULT_OK,mIntent);

@@ -1,5 +1,6 @@
 package com.qingbo.monk.person.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -36,14 +37,17 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.EditStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 编辑自己资料页
@@ -141,6 +145,11 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         address_MyView.setOnClickListener(this);
         explain_Con.setOnClickListener(this);
         home_Con.setOnClickListener(this);
+        interestEdit_Tv_.setOnClickListener(this);
+        good_EditView.getEdit_Tv().setOnClickListener(this);
+        resources_EditView.getEdit_Tv().setOnClickListener(this);
+        achievement_EditView.getEdit_Tv().setOnClickListener(this);
+        learn_EditView.getEdit_Tv().setOnClickListener(this);
     }
 
     @Override
@@ -253,8 +262,12 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
+        if (userBean == null){
+            return;
+        }
         switch (v.getId()) {
             case R.id.back_Btn:
                 finish();
@@ -279,9 +292,27 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             case R.id.home_Con:
                 Edit_ChangePage.actionStart(mActivity,userBean.getNickname());
                 break;
-
+            case R.id.interestEdit_Tv_:
+                String interested = userBean.getInterested();
+                Edit_Change_Interest.actionStart(mActivity,userBean.getNickname(),interested);
+                break ;
+        }
+        if (v.equals(good_EditView.getEdit_Tv())){
+            String domain = userBean.getDomain();
+            Edit_Change_Industry.actionStart(mActivity,userBean.getNickname(),domain);
+        }else if (v.equals(resources_EditView.getEdit_Tv())){
+            String resource = userBean.getResource();
+            Edit_Change_Resources.actionStart(mActivity,userBean.getNickname(),resource);
+        }else if (v.equals(achievement_EditView.getEdit_Tv())){
+            String achievement = userBean.getAchievement();
+            Edit_Change_Achievement.actionStart(mActivity, userBean.getNickname(), achievement);
+        }else if (v.equals(learn_EditView.getEdit_Tv())){
+            String research = userBean.getResearch();
+            Edit_Change_Learn.actionStart(mActivity,userBean.getNickname(),research);
         }
     }
+
+
 
     @Override
     protected void onUploadSuccess(String imageString) {
