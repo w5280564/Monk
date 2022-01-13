@@ -13,6 +13,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -26,7 +27,10 @@ import butterknife.BindView;
  * 添加社交主页
  */
 public class Edit_ChangePage_Add extends BaseActivity {
-
+    @BindView(R.id.name_Tv)
+    TextView name_Tv;
+    @BindView(R.id.pageUrl_edit)
+    TextView pageUrl_edit;
 
     private String nickname;
 
@@ -40,8 +44,6 @@ public class Edit_ChangePage_Add extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_edit_changadd;
     }
-
-
 
 
 
@@ -61,9 +63,43 @@ public class Edit_ChangePage_Add extends BaseActivity {
         edit_Info();
     }
 
+    @Override
+    protected void getServerData() {
+        getUserData("",false);
+    }
+
+    UserBean userBean;
+    private void getUserData(String userId, boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userId", userId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+//                if (refresh_layout.isRefreshing()) {
+//                    refresh_layout.setRefreshing(false);
+//                }
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    if (userBean != null) {
+//                        interestLabelFlow(interest_Flow, mActivity, userBean.getInterested());
+
+                        String s = userBean.getColumn().toString();
+                    }
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+
+
     private void edit_Info() {
         HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender httpSender = new HttpSender(HttpUrl.Edit_Info, "修改个人信息", requestMap, new MyOnHttpResListener() {
+        requestMap.put("columnName",name_Tv.getText().toString());
+        requestMap.put("columnUrl",pageUrl_edit.getText().toString());
+        HttpSender httpSender = new HttpSender(HttpUrl.UserColumn_AddOrUpdate, "添加/更新专栏", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

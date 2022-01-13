@@ -222,6 +222,8 @@ public class HttpUrl {
     public static final String My_SheQun_Pc = "square/detail/my-shequns-pc";//我的社群
     public static final String UserCenter_Article = "user/user/originator-center";//个人中心文章列表
     public static final String UserColumn_List = "login/login/column-list";//专栏名称列表
+    public static final String UserColumn_AddOrUpdate = "user/user/edit-column";//添加/更新专栏
+
 
 
 
