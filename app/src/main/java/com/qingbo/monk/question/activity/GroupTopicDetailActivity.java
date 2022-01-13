@@ -43,6 +43,7 @@ import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -53,6 +54,9 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -424,9 +428,44 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 }
                 break;
             case R.id.iv_delete:
-
+                showToastDialog();
                 break;
         }
+    }
+
+    private void showToastDialog() {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this,"确定删除该条主题吗？","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                deleteQuestion();
+            }
+
+            @Override
+            public void onClickLeft() {
+            }
+        });
+        mDialog.show();
+    }
+
+
+    /**
+     * 删除话题
+     */
+    private void deleteQuestion() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id",  articleId);
+        HttpSender httpSender = new HttpSender(HttpUrl.deleteTopic, "删除话题", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_TOPIC));
+                    back();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 

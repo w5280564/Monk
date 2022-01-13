@@ -176,6 +176,7 @@ public class HttpUrl {
     public static final String messageList = "user/chat-online/message-list";//聊天记录
     public static final String getAllUnreadNumber = "user/chat-online/get-unread";//获取所有未读消息数量
     public static final String conversationList = "user/chat-online/chat-list";//会话列表
+    public static final String appVersion = "index/app-version/version";//获取当前版本
 
     /**
      * 编辑话题

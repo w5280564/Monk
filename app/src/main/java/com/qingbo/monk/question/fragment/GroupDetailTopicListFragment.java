@@ -229,7 +229,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
      */
     private void deleteQuestion(String mQuestionId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("id", mQuestionId + "");
+        requestMap.put("id", mQuestionId);
         HttpSender httpSender = new HttpSender(HttpUrl.deleteTopic, "删除话题", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
