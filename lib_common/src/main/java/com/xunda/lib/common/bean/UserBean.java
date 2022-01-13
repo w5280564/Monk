@@ -3,10 +3,11 @@ package com.xunda.lib.common.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class UserBean {
+public class UserBean implements Serializable {
     @SerializedName("id")
     private String id;
     @SerializedName("avatar")
@@ -298,7 +299,7 @@ public class UserBean {
         this.followStatus = followStatus;
     }
 
-    public static class ColumnDTO {
+    public static class ColumnDTO implements Serializable{
         @SerializedName("id")
         private String id;
         @SerializedName("user_id")

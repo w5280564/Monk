@@ -41,9 +41,12 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -94,6 +97,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView follow_Tv;
     @BindView(R.id.send_Mes)
     TextView send_Mes;
+    @BindView(R.id.urlLabel_Lin)
+    LinearLayout urlLabel_Lin;
 
 
     private String userID;
@@ -223,6 +228,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                             mesHomepage_Tv.setText("他的社交主页");
                             isFollow(userBean.getFollow_status(), follow_Tv, send_Mes);
                         }
+                        List<UserBean.ColumnDTO> column = userBean.getColumn();
+                        urlLabelFlow(urlLabel_Lin, mActivity, column);
                     }
                 }
             }
@@ -481,6 +488,27 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             send_Mes.setVisibility(View.VISIBLE);
         }
     }
+
+    /**
+     * 我的专栏
+     */
+    public void urlLabelFlow(LinearLayout myFlow, Context mContext, List<UserBean.ColumnDTO> urlList) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        if (ListUtils.isEmpty(urlList)) {
+            return;
+        }
+        for (UserBean.ColumnDTO columnDTO : urlList) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.user_page, null);
+            TextView name_Tv = view.findViewById(R.id.name_Tv);
+            TextView contentUrl_Tv = view.findViewById(R.id.contentUrl_Tv);
+            name_Tv.setText(columnDTO.getColumnName());
+            contentUrl_Tv.setText(columnDTO.getColumnUrl());
+            myFlow.addView(view);
+        }
+    }
+
 
 
 }

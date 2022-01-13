@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -33,12 +34,14 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.EditStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -62,6 +65,8 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     ConstraintLayout explain_Con;
     @BindView(R.id.home_Con)
     ConstraintLayout home_Con;
+    @BindView(R.id.urlLabel_Lin)
+    LinearLayout urlLabel_Lin;
 
     @BindView(R.id.interestEdit_Tv_)
     TextView interestEdit_Tv_;
@@ -171,6 +176,9 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                         originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
                         originalValue(userBean.getResearch(), "暂未填写", "", learn_EditView.getContent_Tv());
                         originalValue(userBean.getGetResource(), "暂未填写", "", harvest_EditView.getContent_Tv());
+
+                        List<UserBean.ColumnDTO> column = userBean.getColumn();
+                        urlLabelFlow(urlLabel_Lin, mActivity, column);
                     }
                 }
             }
@@ -318,6 +326,26 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         }
     }
 
+    /**
+     * 我的专栏
+     */
+    public void urlLabelFlow(LinearLayout myFlow, Context mContext, List<UserBean.ColumnDTO> urlList) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        if (ListUtils.isEmpty(urlList)) {
+            return;
+        }
+        for (UserBean.ColumnDTO columnDTO : urlList) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.user_page, null);
+            TextView name_Tv = view.findViewById(R.id.name_Tv);
+            TextView contentUrl_Tv = view.findViewById(R.id.contentUrl_Tv);
+
+            name_Tv.setText(columnDTO.getColumnName());
+            contentUrl_Tv.setText(columnDTO.getColumnUrl());
+            myFlow.addView(view);
+        }
+    }
 
 
 
