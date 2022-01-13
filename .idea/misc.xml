@@ -334,6 +334,7 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/btn_press_shape.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/btn_selector_round.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_dialog.xml" value="0.3111111111111111" />
+        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_dialog_radious.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_dialog_update_version.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_text_version.xml" value="0.35520833333333335" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/progress_bar_color.xml" value="0.3111111111111111" />
@@ -367,6 +368,7 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_privacy_policy.xml" value="0.15" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_privacy_policy_again.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_quit.xml" value="0.2722222222222222" />
+        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_set_manager.xml" value="0.3482051282051282" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_success.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_take_photo.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/layout/dialog_token.xml" value="0.19635416666666666" />

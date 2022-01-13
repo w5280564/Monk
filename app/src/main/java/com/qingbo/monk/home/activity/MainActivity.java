@@ -458,7 +458,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     @Override
     protected void getServerData() {
-        checkUpdate();//版本更新检测
+//        checkUpdate();//版本更新检测
     }
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>版本更新开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

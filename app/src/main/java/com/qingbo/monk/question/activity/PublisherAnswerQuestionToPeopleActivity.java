@@ -77,7 +77,7 @@ public class PublisherAnswerQuestionToPeopleActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+                tv_remains_text.setText(String.format("%s/120",StringUtil.getEditText(et_content).length()));
             }
 
             @Override

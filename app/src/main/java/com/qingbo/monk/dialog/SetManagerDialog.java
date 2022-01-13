@@ -71,13 +71,11 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
             tv_submit_partner.setVisibility(View.VISIBLE);
             line_partner.setVisibility(View.GONE);
             tv_submit_partner.setText("取消合伙人");
-            submit_type ="3";
         }else{//管理员
             tv_submit_partner.setVisibility(View.GONE);
             tv_submit_manager.setVisibility(View.VISIBLE);
             line_partner.setVisibility(View.GONE);
             tv_submit_manager.setText("取消管理员");
-            submit_type ="3";
         }
     }
 
@@ -100,11 +98,19 @@ public class SetManagerDialog extends Dialog implements View.OnClickListener {
         if (id == R.id.tv_cancel) {
             dismiss();
         } else if (id == R.id.tv_submit_manager) {
-            submit_type ="1";
+            if("1".equals(role)) {
+                submit_type ="3";
+            }else{
+                submit_type ="1";
+            }
             listener.onSet(obj.getId(),submit_type,role);
             dismiss();
         } else if (id == R.id.tv_submit_partner) {
-            submit_type ="2";
+            if("2".equals(role)) {
+                submit_type ="3";
+            }else{
+                submit_type ="2";
+            }
             listener.onSet(obj.getId(),submit_type,role);
             dismiss();
         }
