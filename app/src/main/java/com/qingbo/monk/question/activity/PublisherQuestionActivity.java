@@ -104,6 +104,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+        tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
         String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
             tvTag.setText("匿名");

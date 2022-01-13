@@ -70,7 +70,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
     public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
-        Intent intent = new Intent(context, PublisherQuestionActivity.class);
+        Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
         intent.putExtra("obj",mQuestionBeanMy);
         intent.putExtra("isEdit",isEdit);
         context.startActivity(intent);
@@ -106,6 +106,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+        tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
     }
 
     private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
