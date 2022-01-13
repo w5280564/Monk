@@ -223,6 +223,7 @@ public class HttpUrl {
     public static final String UserCenter_Article = "user/user/originator-center";//个人中心文章列表
     public static final String UserColumn_List = "login/login/column-list";//专栏名称列表
     public static final String UserColumn_AddOrUpdate = "user/user/edit-column";//添加/更新专栏
+    public static final String UserColumn_Del = "user/user/del-column";//删除专栏
 
 
 

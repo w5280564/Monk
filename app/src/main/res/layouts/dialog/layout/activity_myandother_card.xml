@@ -267,9 +267,10 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/home_Con"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_50"
+                        android:layout_height="wrap_content"
                         android:background="@color/white"
-                        app:layout_constraintTop_toBottomOf="@id/lineView">
+                        app:layout_constraintTop_toBottomOf="@id/lineView"
+                        android:paddingBottom="@dimen/dp_30">
 
                         <View
                             android:id="@+id/view4"
@@ -293,6 +294,13 @@
                             app:layout_constraintBottom_toBottomOf="@id/view4"
                             app:layout_constraintStart_toEndOf="@+id/view4"
                             app:layout_constraintTop_toTopOf="@id/view4" />
+
+                        <LinearLayout
+                            android:id="@+id/urlLabel_Lin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/mesHomepage_Tv"
+                            android:orientation="vertical"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
