@@ -3,6 +3,7 @@ package com.qingbo.monk.home.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -30,6 +33,8 @@ import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.xunda.lib.common.bean.ApkBean;
+import com.xunda.lib.common.bean.AppMarketBean;
 import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
@@ -45,18 +50,26 @@ import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ChooseAppMarketDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
+import com.xunda.lib.common.dialog.VersionDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -440,6 +453,196 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         View badge = LayoutInflater.from(mContext).inflate(R.layout.layout_home_badge, menuView, false);
         tv_unread_msg_number = badge.findViewById(R.id.tv_unread_msg_number);
         itemTab.addView(badge);
+    }
+
+
+    @Override
+    protected void getServerData() {
+        checkUpdate();//版本更新检测
+    }
+
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>版本更新开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    private ChooseAppMarketDialog mChooseAppMarketDialog;
+
+
+    /**
+     * 版本更新检测
+     */
+    private void checkUpdate() {
+        HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("version", String.valueOf(AndroidUtil.getVersionName(mContext)));
+        HttpSender sender = new HttpSender(HttpUrl.appVersion, "版本更新检测",
+                baseMap, new OnHttpResListener() {
+            @Override
+            public void onComplete(String json, int status, String description, String data) {
+                if (status == Constants.REQUEST_SUCCESS_CODE) {
+                    ApkBean apkObj = GsonUtil.getInstance().json2Bean(data, ApkBean.class);
+                    if (apkObj != null) {
+                        String tempIsForceUpdate = apkObj.getIs_force_update();//0不需要强制更新，1强制更新，2不需要更新
+                        String remark = apkObj.getRemark();
+                        if (!StringUtil.isBlank(tempIsForceUpdate)) {
+                            int isForceUpdate = Integer.parseInt(tempIsForceUpdate);
+                            if(isForceUpdate!=2){
+                                showVersionDialog(remark,isForceUpdate,apkObj.getPlatform());
+                            }
+                        }
+
+                    }
+                }
+            }
+        }, false);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+
+    private void showVersionDialog(String remark,int isForceUpdate,String platform) {
+        VersionDialog dialog = new VersionDialog(this, remark,isForceUpdate,
+                new VersionDialog.VersionConfirmListener() {
+                    @Override
+                    public void onDownload() {
+                        if (!StringUtil.isBlank(platform)){
+                            List<String> mPlatformList = StringUtil.stringToList(platform);
+                            if (!ListUtils.isEmpty(mPlatformList)) {
+                                if (mPlatformList.size()==1) {
+                                    jumpToWebsite();//只有一个平台时，点击下载直接跳官网
+                                }else{//否则弹出平台选择弹窗
+                                    handlePlatformList(isForceUpdate,mPlatformList);
+                                }
+                            }
+                        }
+                    }
+
+                });
+        dialog.show();
+    }
+
+
+
+    private void handlePlatformList(int isForceUpdate,List<String> mPlatformList){
+        String deviceBrandName = android.os.Build.BRAND;
+        List<AppMarketBean> mMarketList = new ArrayList<>();
+        for (int i = 0; i < mPlatformList.size(); i++) {
+            String name = mPlatformList.get(i);
+            AppMarketBean obj = new AppMarketBean();
+            obj.setMarketName(name);
+
+            if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_OPPO)&&"OPPO".equals(name)){
+                obj.setMarketPakageName("com.heytap.market");
+                obj.setIconResource(R.mipmap.icon_oppo);
+                obj.setBrandName(Constants.BRAND_OPPO);
+                mMarketList.add(obj);
+                break;
+            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_VIVO)&&"VIVO".equals(name)){
+                obj.setMarketPakageName("com.bbk.appstore");
+                obj.setIconResource(R.mipmap.icon_vivo);
+                obj.setBrandName(Constants.BRAND_VIVO);
+                mMarketList.add(obj);
+                break;
+            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_HUAWEI)&&"华为".equals(name)){
+                obj.setMarketPakageName("com.huawei.appmarket");
+                obj.setIconResource(R.mipmap.icon_huawei);
+                obj.setBrandName(Constants.BRAND_HUAWEI);
+                mMarketList.add(obj);
+                break;
+            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_HONOR)&&"华为".equals(name)){
+                obj.setMarketPakageName("com.huawei.appmarket");
+                obj.setIconResource(R.mipmap.icon_huawei);
+                obj.setBrandName(Constants.BRAND_HUAWEI);
+                mMarketList.add(obj);
+                break;
+            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_XIAOMI)&&"小米".equals(name)){
+                obj.setMarketPakageName("com.xiaomi.market");
+                obj.setIconResource(R.mipmap.icon_xiaomi);
+                obj.setBrandName(Constants.BRAND_XIAOMI);
+                mMarketList.add(obj);
+                break;
+            }
+        }
+
+        if (mPlatformList.contains("应用宝")) {
+            AppMarketBean obj = new AppMarketBean();
+            obj.setMarketName("应用宝");
+            obj.setMarketPakageName("com.tencent.android.qqdownloader");
+            obj.setIconResource(R.mipmap.icon_yyb);
+            mMarketList.add(obj);
+        }
+
+        showChooseMarketDialog(isForceUpdate,mMarketList);
+    }
+
+    /**
+     * 弹出选择市场框
+     */
+    public void showChooseMarketDialog(int isForceUpdate,List<AppMarketBean> mMarketList) {
+
+
+        if (mChooseAppMarketDialog == null) {
+            mChooseAppMarketDialog = new ChooseAppMarketDialog(this,mMarketList , isForceUpdate,new ChooseAppMarketDialog.DialogItemChooseListener() {
+                @Override
+                public void onItemChooseClick(AppMarketBean obj) {
+                    if (obj != null) {
+                        if ("官网".equals(obj.getMarketName())) {
+                            jumpToWebsite();
+                        } else if ("应用宝".equals(obj.getMarketName())) {
+                            openTencentYingYongBao(obj.getMarketPakageName());
+                        } else {
+                            launchAppDetail(obj.getMarketPakageName());
+                        }
+                    }
+
+                }
+            });
+        }
+
+        if (!mChooseAppMarketDialog.isShowing()) {
+            mChooseAppMarketDialog.show();
+        }
+    }
+
+    private void jumpToWebsite(){
+        Uri uri = Uri.parse(Constants.WEB_SITE_URL);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+    }
+
+
+    /**
+     * 跳转到应用市场app详情界面
+     * @param marketPkg 应用市场包名
+     */
+    public void launchAppDetail(String marketPkg) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + Constants.APP_PKG);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!StringUtil.isBlank(marketPkg)){
+                intent.setPackage(marketPkg);
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //打开应用宝
+    private void openTencentYingYongBao(String marketPkg) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + Constants.APP_PKG);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (!StringUtil.isBlank(marketPkg)) {
+                intent.setPackage(marketPkg);
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "请先安装应用宝", Toast.LENGTH_SHORT).show();
+            Uri uri = Uri.parse("https://a.app.qq.com/o/simple.jsp?pkgname=com.qingbo.monk");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
 }

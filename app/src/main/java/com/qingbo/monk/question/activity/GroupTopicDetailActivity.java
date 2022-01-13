@@ -42,6 +42,7 @@ import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
+import com.qingbo.monk.message.activity.ChatActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -134,7 +135,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private String articleId;
-    private String AuthorId;
+    private String AuthorId,userName,userHeader;
     private String isShowTop;
     private String type;
     boolean isReply = false;
@@ -262,6 +263,8 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
         followStatus = follow_status;
         AuthorId = publish_user_id;
+        userName = headName;
+        userHeader = headImg;
         GlideUtils.loadCircleImage(mContext, person_Img, headImg);
         person_Name.setText(headName);
         GlideUtils.loadCircleImage(mContext, title_Img, headImg);
@@ -386,6 +389,8 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         back_Tv.setOnClickListener(this);
         viewTouchDelegate.expandViewTouchDelegate(back_Tv, 100);
         iv_delete.setOnClickListener(this);
+        send_Mes.setOnClickListener(this);
+        titleSend_Mes.setOnClickListener(this);
     }
 
     @Override
@@ -429,6 +434,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.iv_delete:
                 showToastDialog();
+                break;
+            case R.id.send_Mes:
+            case R.id.titleSend_Mes:
+                ChatActivity.actionStart(mActivity, AuthorId, userName, userHeader);
                 break;
         }
     }

@@ -33,7 +33,6 @@ public class Constants {
     public static final String BRAND_VIVO = "vivo";
 
 
-
     /**
      * 写入权限的请求code,提示语，和权限码
      */
