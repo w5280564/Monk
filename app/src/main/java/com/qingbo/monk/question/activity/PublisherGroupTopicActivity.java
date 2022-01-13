@@ -69,6 +69,13 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         context.startActivity(intent);
     }
 
+    public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
+        Intent intent = new Intent(context, PublisherQuestionActivity.class);
+        intent.putExtra("obj",mQuestionBeanMy);
+        intent.putExtra("isEdit",isEdit);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected int getLayoutId() {

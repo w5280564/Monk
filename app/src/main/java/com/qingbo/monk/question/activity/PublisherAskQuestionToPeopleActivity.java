@@ -195,7 +195,7 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            showToastDialog("发布成功！");
+                            showToastDialog("提交成功！");
                         }
                     }
                 }, true);

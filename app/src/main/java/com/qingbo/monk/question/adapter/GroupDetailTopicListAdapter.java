@@ -46,6 +46,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, OwnPublishBean item) {
+        ImageView more_Img = helper.getView(R.id.more_Img);
         LinearLayout ll_bottom = helper.getView(R.id.ll_bottom);
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
@@ -69,6 +70,8 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.more_Img);
+        viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -82,12 +85,14 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
 
         if (type==0) {
+            more_Img.setVisibility(View.GONE);
             ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
             read_number_Tv.setVisibility(View.VISIBLE);
             read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
         }else{
+            more_Img.setVisibility(View.VISIBLE);
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
             String status = item.getStatus();//0待审核 1通过 2未通过

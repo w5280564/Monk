@@ -257,11 +257,22 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_15"
         android:background="@color/text_color_CCCCCC"
         app:layout_constraintTop_toBottomOf="@id/ll_bottom"
         android:layout_marginEnd="@dimen/dp_15"
-        android:layout_marginStart="@dimen/dp_15"/>
+        android:layout_marginStart="@dimen/dp_15"
+        android:id="@+id/bottom_line"/>
+
+    <ImageView
+        android:id="@+id/more_Img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:background="@mipmap/icon_gnegduo"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_line"
+        android:layout_marginBottom="@dimen/dp_12"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

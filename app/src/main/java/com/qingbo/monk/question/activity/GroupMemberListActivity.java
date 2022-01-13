@@ -269,6 +269,11 @@ public class GroupMemberListActivity extends BaseActivity {
                                 tv_role.setVisibility(View.VISIBLE);
                                 tv_role.setText("管理员");
                                 mGroupMemberListAdapter.getItem(position).setRole("1");
+                            }else if("2".equals(submit_type)){
+                                iv_more.setVisibility(View.VISIBLE);
+                                tv_role.setVisibility(View.VISIBLE);
+                                tv_role.setText("合伙人");
+                                mGroupMemberListAdapter.getItem(position).setRole("2");
                             }
                         }
                     }

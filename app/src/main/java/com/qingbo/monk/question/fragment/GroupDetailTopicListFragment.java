@@ -18,6 +18,8 @@ import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
+import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
+import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.GroupDetailTopicListAdapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
@@ -26,6 +28,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
@@ -154,7 +157,11 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         }
                         break;
                     case R.id.iv_delete:
-                        showToastDialog(mQuestionBean.getArticleId(),position);
+                        showDeleteDialog(mQuestionBean.getArticleId(),position);
+                        break;
+                    case R.id.more_Img:
+                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                        showPopMenu(more_Img,mQuestionBean,position);
                         break;
                 }
             }
@@ -184,6 +191,28 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     }
 
 
+    private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){
+        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+        boolean haveEdit = false;
+        if(TextUtils.equals(status, "2")){//审核未通过才能删除
+            haveEdit = true;
+        }
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
+            @Override
+            public void onClickEdit() {
+                PublisherGroupTopicActivity.actionStart(mActivity,mQuestionBean,true);
+            }
+
+            @Override
+            public void onClickDelete() {
+                showDeleteDialog(mQuestionBean.getArticleId(),position);
+            }
+
+        });
+        morePopWindow.showPopupWindow(more_Img);
+    }
+
+
     private void postFollowData(String otherUserId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
@@ -208,7 +237,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
 
 
 
-    private void showToastDialog(String id,int position) {
+    private void showDeleteDialog(String id,int position) {
         TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity,"确定删除该条主题吗？","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
