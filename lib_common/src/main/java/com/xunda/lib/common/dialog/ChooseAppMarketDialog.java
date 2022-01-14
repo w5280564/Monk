@@ -36,7 +36,7 @@ public class ChooseAppMarketDialog extends Dialog{
 		this.mContext = context;
         this.not_renew = not_renew;
         this.mMarketList = mList;
-        addWBServiceApk();//
+//        addWBServiceApk();
 	}
 
 	private void addWBServiceApk() {

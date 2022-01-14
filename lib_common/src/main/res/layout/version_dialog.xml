@@ -10,16 +10,16 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="296dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/iv_bag"
-            android:layout_width="296dp"
+            android:layout_width="@dimen/dp_340"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            android:src="@mipmap/version_shape_bg"
+            android:src="@mipmap/version_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="left|top"
-                    android:text="1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n"
+                    android:text="1.修复已知错误\n1.修复已知错误\n1.修复已知错误"
                     android:lineSpacingExtra="4dp"
                     android:scrollbars="vertical"
                     android:textColor="@color/text_color_6f6f6f"

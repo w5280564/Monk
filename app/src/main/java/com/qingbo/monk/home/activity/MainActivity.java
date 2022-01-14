@@ -462,6 +462,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>版本更新开始>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
     private ChooseAppMarketDialog mChooseAppMarketDialog;
 
 
