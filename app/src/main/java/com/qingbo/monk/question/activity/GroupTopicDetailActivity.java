@@ -261,7 +261,6 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
-        followStatus = follow_status;
         AuthorId = publish_user_id;
         userName = headName;
         userHeader = headImg;
@@ -295,6 +294,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         }
 
         if (fragmentType==0) {
+            followStatus = follow_status;
             if (SharePref.user().getUserId().equals(publish_user_id)) {
                 iv_delete.setVisibility(View.VISIBLE);
             }else{
@@ -315,6 +315,8 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
             handleFollowStatus(followStatus, follow_Tv, send_Mes);
             handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
+        }else{
+            followStatus = 1;//自己
         }
     }
 

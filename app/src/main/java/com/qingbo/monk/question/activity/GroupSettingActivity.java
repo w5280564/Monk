@@ -2,6 +2,7 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -51,6 +53,8 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
     ImageView shangchuan;
     @BindView(R.id.ll_des)
     LinearLayout ll_des;
+    @BindView(R.id.iv_more)
+    ImageView iv_more;
 
     private String id,tag;
     private GroupMoreInfoBean sheQunBean;
@@ -97,14 +101,36 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
                 shangchuan.setEnabled(true);
                 ll_des.setEnabled(true);
                 tv_group_name.setEnabled(true);
+                shangchuan.setVisibility(View.VISIBLE);
+                iv_more.setVisibility(View.VISIBLE);
+                setTextViewDrawableRight(tv_group_name,true,R.mipmap.bianji_pen,9);
+                setTextViewDrawableRight(tv_group_tag,true,R.mipmap.icon_jiantou_down_hui,5);
             }else {
                 ll_tag.setEnabled(false);
                 shangchuan.setEnabled(false);
                 ll_des.setEnabled(false);
                 tv_group_name.setEnabled(false);
+                shangchuan.setVisibility(View.GONE);
+                iv_more.setVisibility(View.GONE);
+                setTextViewDrawableRight(tv_group_name,false,0,0);
+                setTextViewDrawableRight(tv_group_tag,false,0,0);
             }
         }
     }
+
+
+    protected void setTextViewDrawableRight(TextView mTextview, boolean isHave, int resource, int padding) {
+        if (isHave) {
+            Drawable drawableRight = getResources().getDrawable(resource);
+            mTextview.setCompoundDrawablesWithIntrinsicBounds(null,
+                    null, drawableRight, null);
+            mTextview.setCompoundDrawablePadding(DisplayUtil.dip2px(mContext,padding));
+        }else{
+            mTextview.setCompoundDrawablesWithIntrinsicBounds(null,
+                    null, null, null);
+        }
+    }
+
 
     @Override
     protected void getServerData() {

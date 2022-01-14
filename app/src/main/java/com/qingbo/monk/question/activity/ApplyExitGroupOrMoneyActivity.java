@@ -50,10 +50,10 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
         back = getIntent().getStringExtra("back");
         id = getIntent().getStringExtra("id");
         if ("1".equals(back)){//申请退款
-            tvToast1.setText("申请确定后宇宙币自动退回APP钱包");
+            tvToast1.setText("申请确定后入群费用自动退回至APP钱包");
             tvConfirm.setText("申请确认");
         }else{
-            tvToast1.setText("申请确定后宇宙币概不退还");
+            tvToast1.setText("申请确定后入群费用概不退还");
             tvConfirm.setText("退出社群");
         }
     }

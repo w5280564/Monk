@@ -32,8 +32,6 @@
                 android:id="@+id/tv_group_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@mipmap/bianji_pen"
-                android:drawablePadding="@dimen/dp_9"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/text_color_444444"
@@ -55,8 +53,6 @@
                     android:id="@+id/tv_group_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/dp_5"
-                    android:drawableRight="@mipmap/icon_jiantou_down_hui"
                     android:textColor="@color/text_color_6f6f6f"
                     android:textSize="@dimen/sp_12"/>
 
@@ -92,7 +88,8 @@
                 android:layout_marginRight="@dimen/dp_5"
                 android:src="@mipmap/shangchuan"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -135,10 +132,12 @@
                 android:textColorHint="@color/text_color_a1a1a1"/>
 
             <ImageView
+                android:id="@+id/iv_more"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_6"
-                android:src="@mipmap/icon_youjiantou"/>
+                android:src="@mipmap/icon_youjiantou"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

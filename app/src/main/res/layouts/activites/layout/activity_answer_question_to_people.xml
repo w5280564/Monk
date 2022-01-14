@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:gravity="left"
-                    android:hint="请输入回答内容"
+                    android:hint="提问被回答后，将公开显示在社群内"
                     android:paddingTop="@dimen/dp_12"
                     android:paddingBottom="@dimen/dp_12"
                     android:ellipsize="end"
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_60"
                     android:layout_gravity="right"
-                    android:text="0/2000"
+                    android:text="0/120"
                     android:textColor="@color/text_color_6f6f6f"
                     android:textSize="@dimen/sp_12"/>
 

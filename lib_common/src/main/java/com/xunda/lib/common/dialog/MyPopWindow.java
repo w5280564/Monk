@@ -90,7 +90,7 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
     public void showPopupWindow(View parent) {
         if (!isShowing()) {
             // 以下拉方式显示popupwindow
-            showAsDropDown(parent, -DisplayUtil.dp2px(context, 20), DisplayUtil.dp2px(context, 3));
+            showAsDropDown(parent, DisplayUtil.dp2px(context, -20), DisplayUtil.dp2px(context, -50));
         } else {
             dismiss();
         }
