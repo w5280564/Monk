@@ -38,7 +38,6 @@
             android:background="@null"
             android:gravity="start"
             android:hint="请输入内容"
-            android:lines="1"
             android:maxLength="100"
             android:paddingStart="@dimen/dp_15"
             android:paddingTop="@dimen/dp_15"

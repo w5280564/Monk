@@ -274,23 +274,23 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 break;
             case R.id.head_Img:
                 isHead = true;
-                checkGalleryPermission();
+                checkGalleryPermission(); //修改头像
                 break;
             case R.id.iv_img:
                 isHead = false;
-                checkGalleryPermission();
+                checkGalleryPermission();//修改背景
                 break;
             case R.id.nickName_MyView:
-                Edit_ChangeName.actionStart(mActivity,userBean.getNickname());
+                Edit_ChangeName.actionStart(mActivity,userBean.getNickname()); //修改昵称
                 break;
             case R.id.address_MyView:
-                mPicker.showCityPicker();
+                mPicker.showCityPicker();//修改居住地
                 break;
             case R.id.explain_Con:
-                Edit_ChangeExplain.actionStart(mActivity,userBean.getNickname());
+                Edit_ChangeExplain.actionStart(mActivity,userBean.getNickname());//修改个人说明
                 break;
             case R.id.home_Con:
-                Edit_ChangePage.actionStart(mActivity,userBean.getNickname());
+                Edit_ChangePage.actionStart(mActivity,userBean.getNickname());//修改头像
                 break;
             case R.id.interestEdit_Tv_:
                 String interested = userBean.getInterested();
@@ -304,8 +304,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             String resource = userBean.getResource();
             Edit_Change_Resources.actionStart(mActivity,userBean.getNickname(),resource);
         }else if (v.equals(achievement_EditView.getEdit_Tv())){
-            String achievement = userBean.getAchievement();
-            Edit_Change_Achievement.actionStart(mActivity, userBean.getNickname(), achievement);
+            Edit_Change_Achievement.actionStart(mActivity,userBean);
         }else if (v.equals(learn_EditView.getEdit_Tv())){
             String research = userBean.getResearch();
             Edit_Change_Learn.actionStart(mActivity,userBean.getNickname(),research);

@@ -212,7 +212,7 @@ public class Edit_Change_Learn extends BaseActivity {
         }
     }
 
-    private void edit_Info(String interest) {
+    private void edit_Info(String research) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("nickname", nickname);
         requestMap.put("research", research);
