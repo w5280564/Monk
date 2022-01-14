@@ -140,7 +140,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     private String type;
     boolean isReply = false;
     boolean isExpanded = false; //是否展开
-    private int topicType;
+    private int fragmentType;
     private String role_self;
     private Integer followStatus;
 
@@ -149,13 +149,13 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
      * @param articleId
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String articleId, String isShowTop, String type, OwnPublishBean topicDetailBean,int topicType,String role_self) {
+    public static void startActivity(Context context, String articleId, String isShowTop, String type, OwnPublishBean topicDetailBean,int fragmentType,String role_self) {
         Intent intent = new Intent(context, GroupTopicDetailActivity.class);
         intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
         intent.putExtra("type", type);
         intent.putExtra("topicDetailBean", topicDetailBean);
-        intent.putExtra("topicType", topicType);
+        intent.putExtra("fragmentType", fragmentType);
         intent.putExtra("role_self", role_self);
         context.startActivity(intent);
     }
@@ -173,7 +173,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         isShowTop = getIntent().getStringExtra("isShowTop");
         type = getIntent().getStringExtra("type");
         OwnPublishBean topicDetailBean = (OwnPublishBean) getIntent().getSerializableExtra("topicDetailBean");
-        topicType = getIntent().getIntExtra("topicType",0);
+        fragmentType = getIntent().getIntExtra("fragmentType",0);
         role_self = getIntent().getStringExtra("role_self");
         if (topicDetailBean!=null) {
             showDetailData(topicDetailBean);
@@ -194,7 +194,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
 
-        if (topicType==0) {
+        if (fragmentType==0) {
             ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
@@ -294,7 +294,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             person_Name.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
         }
 
-        if (topicType==0) {
+        if (fragmentType==0) {
             if (SharePref.user().getUserId().equals(publish_user_id)) {
                 iv_delete.setVisibility(View.VISIBLE);
             }else{

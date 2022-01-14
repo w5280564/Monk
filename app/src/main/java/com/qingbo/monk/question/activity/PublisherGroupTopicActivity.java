@@ -69,10 +69,12 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         context.startActivity(intent);
     }
 
-    public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
+    public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit, String shequn_id, String shequn_name) {
         Intent intent = new Intent(context, PublisherGroupTopicActivity.class);
         intent.putExtra("obj",mQuestionBeanMy);
         intent.putExtra("isEdit",isEdit);
+        intent.putExtra("shequn_id",shequn_id);
+        intent.putExtra("shequn_name",shequn_name);
         context.startActivity(intent);
     }
 

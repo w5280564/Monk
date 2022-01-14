@@ -38,8 +38,8 @@ import java.util.List;
  * 社群详情话题列表
  */
 public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment {
-    private int topicType;//0全部 1我的发布
-    private String id,role,requestUrl;
+    private int fragmentType;//0全部 1我的发布
+    private String id,role,shequnName,requestUrl;
 
     /**
      *
@@ -48,10 +48,11 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
      * @param role 0是待审核
      * @return
      */
-    public static GroupDetailTopicListFragment NewInstance(int type, String id,String role) {
+    public static GroupDetailTopicListFragment NewInstance(int type, String id,String role,String shequnName) {
         Bundle args = new Bundle();
         args.putInt("type", type);
         args.putString("id", id);
+        args.putString("shequnName", shequnName);
         args.putString("role", role);
         GroupDetailTopicListFragment fragment = new GroupDetailTopicListFragment();
         fragment.setArguments(args);
@@ -68,12 +69,13 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     protected void initLocalData() {
         Bundle mBundle = getArguments();
         if (mBundle != null) {
-            topicType = mBundle.getInt("type", 0);
+            fragmentType = mBundle.getInt("type", 0);
             id = mBundle.getString("id");
+            shequnName = mBundle.getString("shequnName");
             role = mBundle.getString("role");
-            if (topicType==0) {
+            if (fragmentType==0) {
                 requestUrl = HttpUrl.groupDetailAllTab;
-            }else if(topicType==1){
+            }else if(fragmentType==1){
                 requestUrl = HttpUrl.getOwnPublishList;
             }
         }
@@ -104,7 +106,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 
-        mAdapter = new GroupDetailTopicListAdapter(topicType,role);
+        mAdapter = new GroupDetailTopicListAdapter(fragmentType,role);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -125,7 +127,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                         break;
                     case R.id.mes_Img:
                         String type = mQuestionBean.getTopicType();
-                        GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type,mQuestionBean,topicType,role);
+                        GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type,mQuestionBean,fragmentType,role);
                         break;
                     case R.id.follow_Tv:
                         if ("1".equals(mQuestionBean.getTopicType())) {//1是话题2是问答
@@ -177,7 +179,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                 }
 
                 String type = mQuestionBean.getTopicType();
-                GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type,mQuestionBean,topicType,role);
+                GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type,mQuestionBean,fragmentType,role);
             }
         });
 
@@ -200,7 +202,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-                PublisherGroupTopicActivity.actionStart(mActivity,mQuestionBean,true);
+                PublisherGroupTopicActivity.actionStart(mActivity,mQuestionBean,true,id,shequnName);
             }
 
             @Override

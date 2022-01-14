@@ -63,10 +63,8 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
     MyArrowItemView arrowItemViewApplyExit;
     @BindView(R.id.ll_invite)
     LinearLayout ll_invite;
-    private String id;
+    private String id,back,role,shareUrl_group,groupImage;
     private GroupMoreInfoBean sheQunBean;
-    private String back;
-    private String role;
 
 
     public static void actionStart(Context context, String id) {
@@ -170,7 +168,9 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
 
 
             role = sheQunBean.getRole();
-
+            groupImage = sheQunBean.getShequnImage();
+            shareUrl_group = sheQunBean.getShareUrl();
+//            shareUrl_partner = sheQunBean.getShareUrl();
             if ("1".equals(role)||"2".equals(role)) {//1管理员2合伙人0一般用户3群主
                 arrowItemViewManager.setVisibility(View.GONE);
                 ll_invite.setVisibility(View.GONE);
@@ -231,7 +231,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
         if (sheQunBean==null) {
             return;
         }
-        ShareDialog mShareDialog = new ShareDialog(this,"https://www.baidu.com/","",sheQunBean.getShequnName(),sheQunBean.getShequnDes(),"分享社群");
+        ShareDialog mShareDialog = new ShareDialog(this,shareUrl_group,groupImage,sheQunBean.getShequnName(),sheQunBean.getShequnDes(),"分享社群");
         mShareDialog.show();
     }
 }
