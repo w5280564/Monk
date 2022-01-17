@@ -8,13 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xunda.lib.common.R;
-import java.util.List;
-
 import q.rorbin.badgeview.DisplayUtil;
 
 /**
@@ -90,7 +84,7 @@ public class MyPopWindow extends PopupWindow implements View.OnClickListener {
     public void showPopupWindow(View parent) {
         if (!isShowing()) {
             // 以下拉方式显示popupwindow
-            showAsDropDown(parent, DisplayUtil.dp2px(context, -20), DisplayUtil.dp2px(context, -60));
+            showAsDropDown(parent, DisplayUtil.dp2px(context, -20), DisplayUtil.dp2px(context, -50));
         } else {
             dismiss();
         }

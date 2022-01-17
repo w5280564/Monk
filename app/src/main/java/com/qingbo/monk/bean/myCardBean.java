@@ -1,4 +1,4 @@
-package com.qingbo.monk.base;
+package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 

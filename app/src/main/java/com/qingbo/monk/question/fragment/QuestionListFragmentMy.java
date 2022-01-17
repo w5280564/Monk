@@ -166,7 +166,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
 
             @Override
             public void onClickDelete() {
-                showDeleteDialog(mQuestionBean.getId(),position);
+                showDeleteDialog(mQuestionBean.getArticleId(),position);
             }
 
         });

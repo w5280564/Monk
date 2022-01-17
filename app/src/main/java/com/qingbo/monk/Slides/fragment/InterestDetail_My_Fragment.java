@@ -193,7 +193,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
             @Override
             public void onClickDelete() {
-                showDeleteDialog(mQuestionBean.getId(), position);
+                showDeleteDialog(mQuestionBean.getArticleId(), position);
             }
 
         });

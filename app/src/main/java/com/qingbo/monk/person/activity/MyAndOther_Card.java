@@ -26,7 +26,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
-import com.qingbo.monk.base.myCardBean;
+import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
