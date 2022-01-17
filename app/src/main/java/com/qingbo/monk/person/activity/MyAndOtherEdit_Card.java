@@ -150,6 +150,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         resources_EditView.getEdit_Tv().setOnClickListener(this);
         achievement_EditView.getEdit_Tv().setOnClickListener(this);
         learn_EditView.getEdit_Tv().setOnClickListener(this);
+        harvest_EditView.getEdit_Tv().setOnClickListener(this);
     }
 
     @Override
@@ -308,6 +309,9 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         }else if (v.equals(learn_EditView.getEdit_Tv())){
             String research = userBean.getResearch();
             Edit_Change_Learn.actionStart(mActivity,userBean.getNickname(),research);
+        }else if (v.equals(harvest_EditView.getEdit_Tv())){
+            String getResource = userBean.getGetResource();
+            Edit_Change_Harvest.actionStart(mActivity,userBean.getNickname(),getResource);
         }
     }
 

@@ -7,6 +7,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
@@ -15,6 +17,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
@@ -31,7 +34,12 @@ import butterknife.OnClick;
 public class Edit_Change_Achievement extends BaseActivity {
     @BindView(R.id.change_Edit)
     EditText change_Edit;
-    private String nickname, achievement;
+    @BindView(R.id.iv_header)
+    ImageView iv_header;
+    @BindView(R.id.tv_nickName)
+    TextView tv_nickName;
+
+    private String nickname;
     private UserBean userBean;
 
     @Override
@@ -61,6 +69,10 @@ public class Edit_Change_Achievement extends BaseActivity {
             nickname = userBean.getNickname();
             String achievement = userBean.getAchievement();
             change_Edit.setText(achievement);
+            String avatar = userBean.getAvatar();
+            GlideUtils.loadCircleImage(mActivity,iv_header,avatar);
+            String nickname = userBean.getNickname();
+            tv_nickName.setText(nickname);
         }
     }
 
@@ -84,7 +96,7 @@ public class Edit_Change_Achievement extends BaseActivity {
                 Editable editable = change_Edit.getText();
                 int len = editable.length();
                 //显示还可以输入多少字
-                change_Edit.setText(len + "/200");
+                change_Edit.setText(len + "/100");
             }
 
             @Override

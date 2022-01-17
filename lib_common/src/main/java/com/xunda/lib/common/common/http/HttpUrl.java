@@ -224,6 +224,10 @@ public class HttpUrl {
     public static final String UserColumn_List = "login/login/column-list";//专栏名称列表
     public static final String UserColumn_AddOrUpdate = "user/user/edit-column";//添加/更新专栏
     public static final String UserColumn_Del = "user/user/del-column";//删除专栏
+    public static final String User_Comment = "user/user/my-comment";//我的评论
+    public static final String User_History = "user/user/look-history";//浏览记录
+    public static final String User_History_All = "user/user/look-history-all";//浏览全部记录
+
 
 
 

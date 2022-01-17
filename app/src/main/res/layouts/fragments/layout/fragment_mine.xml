@@ -179,11 +179,11 @@
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@id/tv_view"
+                        app:layout_constraintEnd_toStartOf="@id/tv_history"
                         app:layout_constraintStart_toEndOf="@+id/tv_my_wallet" />
 
                     <TextView
-                        android:id="@+id/tv_view"
+                        android:id="@+id/tv_history"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:drawableTop="@mipmap/liulan"
@@ -209,7 +209,7 @@
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/tv_view" />
+                        app:layout_constraintStart_toEndOf="@id/tv_history" />
 
 
                     <TextView

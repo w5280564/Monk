@@ -20,6 +20,9 @@ import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.person.activity.MyComment_Activity;
+import com.qingbo.monk.person.activity.MyGroupList_Activity;
+import com.qingbo.monk.person.activity.MyHistory_Activity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -68,6 +71,13 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     MyCardEditView learn_EditView;
     @BindView(R.id.harvest_EditView)
     MyCardEditView harvest_EditView;
+    @BindView(R.id.tv_comment)
+    TextView tv_comment;
+    @BindView(R.id.tv_history)
+    TextView tv_history;
+
+    @BindView(R.id.tv_group)
+    TextView tv_group;
 
     @Override
     protected int getLayoutId() {
@@ -84,6 +94,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     protected void initEvent() {
         iv_qrcode.setOnClickListener(this);
         refresh_layout.setOnRefreshListener(this);
+        tv_comment.setOnClickListener(this);
+        tv_history.setOnClickListener(this);
+
+        tv_group.setOnClickListener(this);
     }
 
     @Override
@@ -201,11 +215,22 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onClick(View v) {
+        String id = SharePref.user().getUserId();
         switch (v.getId()) {
             case R.id.iv_qrcode:
-                String id = SharePref.user().getUserId();
                 MyAndOther_Card.actionStart(mActivity, id);
                 break;
+            case R.id.tv_comment:
+                skipAnotherActivity(MyComment_Activity.class);
+                break;
+            case R.id.tv_history:
+                skipAnotherActivity(MyHistory_Activity.class);
+                break;
+
+            case R.id.tv_group:
+                MyGroupList_Activity.actionStart(mActivity, id);
+                break;
+
         }
     }
 }

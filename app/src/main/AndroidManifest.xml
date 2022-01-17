@@ -65,23 +65,30 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
+        <activity
+            android:name=".person.activity.MyFeedBack_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyHistory_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyComment_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.Edit_Change_Harvest"
+            android:exported="false" />
         <activity
             android:name=".person.activity.Edit_Change_Achievement"
             android:exported="false" />
         <activity
             android:name=".person.activity.Edit_Change_Learn"
             android:exported="false" />
-
-
         <activity
             android:name=".person.activity.Edit_Change_Resources"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.Edit_Change_Industry"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.Edit_Change_Interest"
             android:exported="false" />
