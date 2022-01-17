@@ -47,7 +47,7 @@ public class VersionDialog extends Dialog implements
 //		LinearLayout ll_parent = findViewById(R.id.ll_parent);
 //		int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
 //		int parentWidth = (int) (screenWidth /5f * 4);//弹出框的宽度
-//		int parentHeight = (int) (parentWidth*1.32f);//弹出框的高度
+//		int parentHeight = (int) (parentWidth*1f);//弹出框的高度
 //		ViewGroup.LayoutParams layoutParams = ll_parent.getLayoutParams();
 //		layoutParams.width = parentWidth;
 //		layoutParams.height = parentHeight;

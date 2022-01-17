@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_12"
-                android:hint="请简要描述提供的内容和服务"
+                android:hint="群主暂未添加任何介绍"
                 android:textColorHint="@color/text_color_a1a1a1"/>
 
             <ImageView
