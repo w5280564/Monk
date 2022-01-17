@@ -169,6 +169,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_red.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_share.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_white.xml" value="0.3697916666666667" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_yellow.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_chat_input.xml" value="0.35520833333333335" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_dot_a1a1a1.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_group_bottom.xml" value="0.3697916666666667" />
@@ -233,7 +234,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_manager.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_manager_or_partner_list_set.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_member_list.xml" value="0.3536458333333333" />
-        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_setting.xml" value="0.25" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_setting.xml" value="0.67" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_group_topic_detail.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_home_focus.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/activites/layout/activity_login.xml" value="0.5" />
@@ -272,6 +273,7 @@
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_all.xml" value="0.67" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_bottom.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_topic.xml" value="0.3536458333333333" />
+        <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_wait_answer.xml" value="0.3482051282051282" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_what.xml" value="0.33" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_member_list.xml" value="0.3536458333333333" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/layouts/adapter/layout/item_group_member_list_main.xml" value="0.3536458333333333" />
@@ -343,6 +345,7 @@
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/btn_press_shape.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/btn_selector_round.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_dialog.xml" value="0.3111111111111111" />
+        <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/layout_shape_dialog_radius.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/progress_bar_color.xml" value="0.3111111111111111" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/rp_sidebar_background.xml" value="0.3111111111111111" />
         <entry key="..\:/MonkWorkBase/Monk/lib_common/src/main/res/drawable/selector_btn_rectangle.xml" value="0.3111111111111111" />

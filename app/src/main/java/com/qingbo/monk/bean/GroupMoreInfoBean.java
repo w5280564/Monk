@@ -42,4 +42,8 @@ public class GroupMoreInfoBean implements Serializable {
     private String shequnFee;
     @SerializedName("show_theme")
     private String showTheme;
+    @SerializedName("partner_url")
+    private String partnerUrl;
+    @SerializedName("member_url")
+    private String memberUrl;
 }

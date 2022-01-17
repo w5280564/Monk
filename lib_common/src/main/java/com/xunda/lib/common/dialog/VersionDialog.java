@@ -44,18 +44,10 @@ public class VersionDialog extends Dialog implements
 	}
 
 	private void initView() {
-//		LinearLayout ll_parent = findViewById(R.id.ll_parent);
-//		int screenWidth = AndroidUtil.getScreenWidth(mContext);//屏幕的宽度
-//		int parentWidth = (int) (screenWidth /5f * 4);//弹出框的宽度
-//		int parentHeight = (int) (parentWidth*1f);//弹出框的高度
-//		ViewGroup.LayoutParams layoutParams = ll_parent.getLayoutParams();
-//		layoutParams.width = parentWidth;
-//		layoutParams.height = parentHeight;
-//		ll_parent.setLayoutParams(layoutParams);
 		iv_cancel =  findViewById(R.id.iv_cancel);
 		tv_update =  findViewById(R.id.tv_update);
 		tv_content = findViewById(R.id.tv_content);
-//		tv_content.setText(StringUtil.isBlank(update_content)?"":update_content);
+		tv_content.setText(StringUtil.isBlank(update_content)?"":update_content);
 		iv_cancel.setVisibility(isForceUpdate==0?View.VISIBLE:View.GONE);//0推荐更新1强制
 	}
 	

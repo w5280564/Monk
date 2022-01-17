@@ -75,7 +75,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="left|top"
-                    android:text="1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n1.修复已知错误\n"
                     android:lineSpacingExtra="4dp"
                     android:scrollbars="vertical"
                     android:textColor="@color/text_color_6f6f6f"

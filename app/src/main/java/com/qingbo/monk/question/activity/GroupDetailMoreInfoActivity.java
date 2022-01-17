@@ -63,7 +63,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
     MyArrowItemView arrowItemViewApplyExit;
     @BindView(R.id.ll_invite)
     LinearLayout ll_invite;
-    private String id,back,role,shareUrl_group,groupImage;
+    private String id,back,role,shareUrl_group,shareUrl_partner,groupImage;
     private GroupMoreInfoBean sheQunBean;
 
 
@@ -170,7 +170,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
             role = sheQunBean.getRole();
             groupImage = sheQunBean.getShequnImage();
             shareUrl_group = sheQunBean.getShareUrl();
-//            shareUrl_partner = sheQunBean.getShareUrl();
+            shareUrl_partner = sheQunBean.getPartnerUrl();
             if ("1".equals(role)||"2".equals(role)) {//1管理员2合伙人0一般用户3群主
                 arrowItemViewManager.setVisibility(View.GONE);
                 ll_invite.setVisibility(View.GONE);
@@ -210,7 +210,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 GroupManagerActivity.actionStart(mActivity,sheQunBean);
                 break;
             case R.id.arrowItemView_invite_partner:
-                skipAnotherActivity(InvitePartnerActivity.class);
+                InvitePartnerActivity.actionStart(mActivity,shareUrl_partner);
                 break;
             case R.id.arrowItemView_invite_member:
                 SelectMemberListActivity.actionStart(mActivity,id,1);

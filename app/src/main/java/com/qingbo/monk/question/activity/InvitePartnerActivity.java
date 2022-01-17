@@ -1,5 +1,7 @@
 package com.qingbo.monk.question.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.gyf.barlibrary.ImmersionBar;
@@ -13,9 +15,23 @@ import butterknife.OnClick;
  * 邀请合伙人
  */
 public class InvitePartnerActivity extends BaseActivity {
+    private String shareUrl_partner;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_invite_partner;
+    }
+
+
+    public static void actionStart(Context context, String shareUrl) {
+        Intent intent = new Intent(context, InvitePartnerActivity.class);
+        intent.putExtra("shareUrl", shareUrl);
+        context.startActivity(intent);
+    }
+
+    @Override
+    protected void initLocalData() {
+        shareUrl_partner = getIntent().getStringExtra("shareUrl");
     }
 
     @Override
@@ -35,7 +51,7 @@ public class InvitePartnerActivity extends BaseActivity {
 
 
     private void showShareDialog() {
-        ShareDialog mShareDialog = new ShareDialog(this,"https://www.baidu.com/","","邀请合伙人","快加入扫地僧吧","邀请合伙人");
+        ShareDialog mShareDialog = new ShareDialog(this,shareUrl_partner,"","邀请合伙人","快加入扫地僧吧","邀请合伙人");
         mShareDialog.show();
     }
 }
