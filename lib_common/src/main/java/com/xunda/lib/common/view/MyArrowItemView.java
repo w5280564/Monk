@@ -31,6 +31,12 @@ public class MyArrowItemView extends ConstraintLayout {
     private ImageView tv_img;
     private ImageView avatar;
 
+    public TextView getCount_Tv() {
+        return count_Tv;
+    }
+
+    private TextView count_Tv;
+
     public MyArrowItemView(Context context) {
         this(context, null);
     }
@@ -44,6 +50,10 @@ public class MyArrowItemView extends ConstraintLayout {
         init(context, attrs);
     }
 
+    public TextView getTv_tip() {
+        return tv_tip;
+    }
+
     public void init(Context context, AttributeSet attrs) {
         root = LayoutInflater.from(context).inflate(R.layout.my_arrowitemview, this);
         avatar = findViewById(R.id.avatar);
@@ -53,6 +63,7 @@ public class MyArrowItemView extends ConstraintLayout {
         ivArrow = findViewById(R.id.iv_arrow);
         viewDivider = findViewById(R.id.view_divider);
         tv_img = findViewById(R.id.tv_img);
+        count_Tv = findViewById(R.id.count_Tv);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ArrowItemView);
 
@@ -126,6 +137,9 @@ public class MyArrowItemView extends ConstraintLayout {
 
         boolean showTvImg = a.getBoolean(R.styleable.ArrowItemView_arrowItemShowtvImg, false);
         tv_img.setVisibility(showTvImg ? VISIBLE : GONE);
+
+        boolean showCountTv = a.getBoolean(R.styleable.ArrowItemView_arrowItemCountTv, false);
+        count_Tv.setVisibility(showCountTv ? VISIBLE : GONE);
 
 
 

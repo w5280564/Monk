@@ -99,7 +99,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     /**
      * 初始化view
      */
-    protected void initView() {
+    protected void initView()  {
 
     }
 

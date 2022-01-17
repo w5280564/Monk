@@ -25,25 +25,25 @@
         android:textSize="@dimen/sp_15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/avatar"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
         android:id="@+id/tv_tip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_18"
         android:ellipsize="end"
+        android:gravity="end"
         android:maxLength="80"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="@dimen/sp_14"
-        android:gravity="end"
-        android:layout_marginEnd="@dimen/dp_18"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
         app:layout_constraintRight_toLeftOf="@id/tv_img"
         app:layout_constraintStart_toEndOf="@id/tv_title"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
@@ -62,7 +62,7 @@
         app:layout_constraintRight_toLeftOf="@id/tv_img"
         app:layout_constraintStart_toEndOf="@id/tv_title"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginRight="@dimen/dp_18"/>
+        app:layout_goneMarginRight="@dimen/dp_18" />
 
 
     <ImageView
@@ -92,10 +92,24 @@
         android:id="@+id/view_divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/text_color_EFEFEF"
         android:layout_marginStart="15dp"
+        android:background="@color/text_color_EFEFEF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/count_Tv"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/radius_red"
+        app:layout_constraintEnd_toStartOf="@id/iv_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:textSize="10sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

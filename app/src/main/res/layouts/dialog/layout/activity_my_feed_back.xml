@@ -4,85 +4,155 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".person.activity.MyFeedBack_Activity"
     tools:ignore="MissingConstraints">
 
-    <com.xunda.lib.common.common.titlebar.CustomTitleBar
-        android:id="@+id/title_bar"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_height"
-        app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarShowBottomLine="false"
-        app:titleBarTitle="帮助反馈" />
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/topBg_Img"
-        android:layout_width="@dimen/dp_118"
-        android:layout_height="@dimen/dp_118"
-        android:layout_marginTop="@dimen/dp_10"
-        android:background="@mipmap/jianyi_chahua"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
-
-    <TextView
-        android:id="@+id/question_Txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="您的详细问题"
-        android:textColor="@color/text_color_444444"
-        android:layout_marginStart="@dimen/dp_15"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBg_Img" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/explain_Con"
-        android:layout_width="346dp"
-        android:layout_height="@dimen/dp_152"
-        android:layout_marginTop="@dimen/dp_15"
-        android:background="@drawable/base_gradual"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/question_Txt">
-
-
-        <EditText
-            android:id="@+id/change_Edit"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="start"
-            android:hint="请输入内容"
-            android:maxLength="100"
-            android:paddingStart="@dimen/dp_15"
-            android:paddingTop="@dimen/dp_15"
-            android:textColor="@color/text_color_a1a1a1"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/changeCount_Tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0/100"
-            android:layout_marginBottom="@dimen/dp_9"
-            android:layout_marginEnd="@dimen/dp_13"
-            android:textColor="@color/text_color_6f6f6f"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleView_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_14"
-        app:layout_constraintTop_toBottomOf="@id/explain_Con"
-        android:nestedScrollingEnabled="false"/>
+            android:layout_height="match_parent">
 
 
+            <com.xunda.lib.common.common.titlebar.CustomTitleBar
+                android:id="@+id/title_bar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/title_height"
+                app:titleBarLeftImg="@mipmap/icon_back"
+                app:titleBarShowBottomLine="false"
+                app:titleBarTitle="帮助反馈" />
+
+            <ImageView
+                android:id="@+id/topBg_Img"
+                android:layout_width="@dimen/dp_118"
+                android:layout_height="@dimen/dp_118"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@mipmap/jianyi_chahua"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+            <TextView
+                android:id="@+id/question_Txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:text="您的详细问题"
+                android:textColor="@color/text_color_444444"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topBg_Img" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/explain_Con"
+                android:layout_width="346dp"
+                android:layout_height="@dimen/dp_152"
+                android:layout_marginTop="@dimen/dp_15"
+                android:background="@drawable/base_gradual"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/question_Txt">
+
+
+                <EditText
+                    android:id="@+id/change_Edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:hint="请输入内容"
+                    android:maxLength="100"
+                    android:paddingStart="@dimen/dp_15"
+                    android:paddingTop="@dimen/dp_15"
+                    android:textColor="@color/text_color_a1a1a1"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/changeCount_Tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_13"
+                    android:layout_marginBottom="@dimen/dp_9"
+                    android:text="0/200"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/explain_Con" />
+
+            <TextView
+                android:id="@+id/tv_remains_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginEnd="@dimen/dp_32"
+                android:text="0/4"
+                android:textColor="@color/text_color_6f6f6f"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recycleView_image" />
+
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15"
+                android:text="联系方式（必填）"
+                android:textColor="@color/text_color_444444"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_remains_image" />
+
+            <EditText
+                android:id="@+id/changePhone_Edit"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_43"
+                android:background="@drawable/base_gradual"
+                android:layout_marginStart="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:layout_marginTop="@dimen/dp_10"
+                android:lines="1"
+                android:paddingStart="@dimen/dp_15"
+                android:textColor="@color/text_color_a1a1a1"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginLeft="@dimen/dp_11"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_marginBottom="@dimen/dp_30"
+                app:layout_constraintTop_toBottomOf="@id/changePhone_Edit"
+                android:background="@drawable/selector_btn_rectangle"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="@color/text_color_444444"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_f5f5f5"
+    tools:context=".person.activity.MySet_Activity"
+    tools:ignore="MissingConstraints">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="设置中心" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dp_15"
+        android:text="账号"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="12sp" />
+
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/phone_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemShowAvatar="false"
+        app:arrowItemTitle="手机号码"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/wechat_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent="你"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemTitle="微信"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/phone_MyView" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dp_15"
+        android:text="系统"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/wechat_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/clean_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemShowAvatar="false"
+        app:arrowItemTitle="清理缓存"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/about_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemShowAvatar="false"
+        app:arrowItemTitle="关于扫地僧"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/clean_MyView" />
+
+
+    <TextView
+        android:id="@+id/quit_Tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="退出登录"
+        android:textColor="@color/text_color_ff5f2e"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/about_MyView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

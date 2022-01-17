@@ -416,6 +416,7 @@
         <attr name="arrowItemAvatarWidth" format="dimension|reference" />
         <attr name="arrowItemShowTip" format="boolean" />
         <attr name="arrowItemTip" format="string|reference" />
+        <attr name="arrowItemCountTv" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SwitchItemView">

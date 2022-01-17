@@ -21,8 +21,10 @@ import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyComment_Activity;
+import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.person.activity.MyHistory_Activity;
+import com.qingbo.monk.person.activity.MySet_Activity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -75,6 +77,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView tv_comment;
     @BindView(R.id.tv_history)
     TextView tv_history;
+    @BindView(R.id.tv_fankui)
+    TextView tv_fankui;
+    @BindView(R.id.tv_shezhi)
+    TextView tv_shezhi;
 
     @BindView(R.id.tv_group)
     TextView tv_group;
@@ -96,6 +102,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         refresh_layout.setOnRefreshListener(this);
         tv_comment.setOnClickListener(this);
         tv_history.setOnClickListener(this);
+        tv_fankui.setOnClickListener(this);
+        tv_shezhi.setOnClickListener(this);
 
         tv_group.setOnClickListener(this);
     }
@@ -225,6 +233,12 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 break;
             case R.id.tv_history:
                 skipAnotherActivity(MyHistory_Activity.class);
+                break;
+            case R.id.tv_fankui:
+                skipAnotherActivity(MyFeedBack_Activity.class);
+                break;
+            case R.id.tv_shezhi:
+                skipAnotherActivity(MySet_Activity.class);
                 break;
 
             case R.id.tv_group:

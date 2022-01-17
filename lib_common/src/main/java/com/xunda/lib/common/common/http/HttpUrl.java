@@ -227,6 +227,7 @@ public class HttpUrl {
     public static final String User_Comment = "user/user/my-comment";//我的评论
     public static final String User_History = "user/user/look-history";//浏览记录
     public static final String User_History_All = "user/user/look-history-all";//浏览全部记录
+    public static final String User_FeedBack = "user/feedback/feedback-save";//发布意见反馈
 
 
 
