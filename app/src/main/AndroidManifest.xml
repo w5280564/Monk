@@ -84,9 +84,6 @@
             android:name=".person.activity.MySet_AboutMe_Update"
             android:exported="false" />
         <activity
-            android:name=".person.activity.MyAgreement_Activity"
-            android:exported="false" />
-        <activity
             android:name=".person.activity.MySet_AboutMe_Activity"
             android:exported="false" />
         <activity

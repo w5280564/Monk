@@ -1,26 +1,21 @@
 package com.qingbo.monk.person.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.xunda.lib.common.bean.ApkBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.MyArrowItemView;
-
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 public class MySet_AboutMe_Activity extends BaseActivity implements View.OnClickListener {
@@ -67,12 +62,10 @@ public class MySet_AboutMe_Activity extends BaseActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.service_Tv:
-                String url = "http://shjr.gsdata.cn/userAgreement";
-                MyAgreement_Activity.actionStart(mActivity, url);
+                jumpToWebView("用户协议", H5Url.H5UserPolicy);
                 break;
             case R.id.privacy_Tv:
-                String s = "http://shjr.gsdata.cn/privacyPolicy";
-                MyAgreement_Activity.actionStart(mActivity, s);
+                jumpToWebView("隐私政策", H5Url.H5PrivatePolicy);
                 break;
             case R.id.update_MyView:
                 skipAnotherActivity(MySet_AboutMe_Update.class);

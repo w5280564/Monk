@@ -133,7 +133,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                         }
                     }
 
-                }, true);
+                }, false);
 
         sender.setContext(mActivity);
         sender.sendGet();

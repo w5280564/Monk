@@ -18,12 +18,12 @@ public class H5Url {
     /**
      * 隐私政策H5
      */
-    public static final String H5PrivatePolicy = server + "privacy.html";
+    public static final String H5PrivatePolicy = "http://shjr.gsdata.cn/privacyPolicy";
 
     /**
      * 用户协议H5
      */
-    public static final String H5UserPolicy = server + "protocol.html";
+    public static final String H5UserPolicy = "http://shjr.gsdata.cn/userAgreement";
 
 
 }
