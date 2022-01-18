@@ -18,6 +18,7 @@ import com.qingbo.monk.Slides.adapter.InterestDetail_All_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.bean.InterestDetailAll_Bean;
 import com.qingbo.monk.bean.InterestDetailAll_ListBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
@@ -115,7 +116,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter = new InterestDetail_All_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+            InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
             String articleId = item.getArticleId();
 //            String type = item.getType();
             String type = "2";//1是社群 2是兴趣圈 3是个人
@@ -142,9 +143,9 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                        InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
                         String articleId = item.getArticleId();
-                        String type = item.getType();
+                        String type = item.getTopicType();
                         ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
                         break;
                 }

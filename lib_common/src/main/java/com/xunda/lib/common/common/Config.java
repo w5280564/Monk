@@ -22,9 +22,7 @@ public class Config {
 
 
         // 图片保存地址
-        public static final String IMG_CACHE = "huan" + File.separator
-
-                + "Download";
+        public static final String IMG_CACHE = "huan" + File.separator + "Download";
     }
 
 

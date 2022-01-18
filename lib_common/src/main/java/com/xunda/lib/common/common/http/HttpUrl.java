@@ -224,6 +224,8 @@ public class HttpUrl {
     public static final String User_Post_Article = "user/user/post-article";//创作者发表文章
     public static final String User_Drafts = "square/square/drafts";//查看草稿箱
     public static final String User_wallet = "pay/wallet/balance";//我的余额
+    public static final String User_Follow_List = "user/user/follow-list";//关注列表
+
 
 
 }

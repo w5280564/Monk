@@ -125,7 +125,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
 
     @Override
     protected void initView() {
-        viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
+        viewTouchDelegate.expandViewTouchDelegate(back_Btn, 200);
         interestEdit_Tv_.setVisibility(View.VISIBLE);
         good_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         resources_EditView.getEdit_Tv().setVisibility(View.VISIBLE);

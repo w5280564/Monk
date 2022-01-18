@@ -25,6 +25,7 @@ import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.activity.MyDrafts_Activity;
 import com.qingbo.monk.person.activity.MyDynamic_Activity;
 import com.qingbo.monk.person.activity.MyFeedBack_Activity;
+import com.qingbo.monk.person.activity.MyFollowActivity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.person.activity.MyHistory_Activity;
 import com.qingbo.monk.person.activity.MySet_Activity;
@@ -39,6 +40,7 @@ import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
@@ -105,6 +107,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     protected void initView() {
         refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
+        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
     }
 
     @Override
@@ -120,6 +123,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         tv_caogao.setOnClickListener(this);
         tv_dongtai.setOnClickListener(this);
         tv_group.setOnClickListener(this);
+        tv_follow_number.setOnClickListener(this);
     }
 
     @Override
@@ -238,14 +242,16 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onClick(View v) {
         String id = SharePref.user().getUserId();
         switch (v.getId()) {
-
+            case R.id.tv_follow_number:
+                skipAnotherActivity(MyFollowActivity.class);
+                break;
             case R.id.tv_my_wallet:
                 skipAnotherActivity(MyWallet_Activity.class);
                 break;
+
             case R.id.iv_qrcode:
                 MyAndOther_Card.actionStart(mActivity, id);
                 break;
-
             case R.id.tv_comment:
                 skipAnotherActivity(MyComment_Activity.class);
                 break;
@@ -259,7 +265,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 skipAnotherActivity(MySet_Activity.class);
                 break;
             case R.id.tv_fabu:
-                MyCrateArticle_Avtivity.actionStart(mActivity);
+                T.s("功能开发中", 3000);
+//                MyCrateArticle_Avtivity.actionStart(mActivity);
                 break;
             case R.id.tv_caogao:
                 skipAnotherActivity(MyDrafts_Activity.class);
@@ -270,7 +277,6 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case R.id.tv_group:
                 MyGroupList_Activity.actionStart(mActivity, id);
                 break;
-
         }
     }
 }
