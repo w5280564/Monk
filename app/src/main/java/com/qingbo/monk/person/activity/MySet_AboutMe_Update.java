@@ -29,15 +29,15 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MySet_AboutMe_Update extends BaseActivity {
+public class MySet_AboutMe_Update extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.tv_version)
     TextView tv_version;
     @BindView(R.id.changeUpdate_Tv)
     TextView changeUpdate_Tv;
     @BindView(R.id.updateContent_Tv)
     TextView updateContent_Tv;
-    @BindView(R.id.next_TV)
-    TextView next_TV;
+    @BindView(R.id.next_Tv)
+    TextView next_Tv;
 
     @Override
     protected int getLayoutId() {
@@ -51,11 +51,27 @@ public class MySet_AboutMe_Update extends BaseActivity {
     }
 
     @Override
-    protected void getServerData() {
+    protected void initEvent() {
+        next_Tv.setOnClickListener(this);
+    }
 
+    @Override
+    protected void getServerData() {
         checkUpdate();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.next_Tv:
+                if (apkObj != null){
+                    int isForceUpdate = Integer.parseInt(apkObj.getIs_force_update());
+                    isChange(apkObj.getRemark(),isForceUpdate,apkObj.getPlatform());
+                }
+                break;
+        }
+    }
+    ApkBean apkObj;
     /**
      * 版本更新检测
      */
@@ -67,7 +83,7 @@ public class MySet_AboutMe_Update extends BaseActivity {
             @Override
             public void onComplete(String json, int status, String description, String data) {
                 if (status == Constants.REQUEST_SUCCESS_CODE) {
-                    ApkBean apkObj = GsonUtil.getInstance().json2Bean(data, ApkBean.class);
+                     apkObj = GsonUtil.getInstance().json2Bean(data, ApkBean.class);
                     if (apkObj != null) {
                         String tempIsForceUpdate = apkObj.getIs_force_update();//0不需要强制更新，1强制更新，2不需要更新
                         if (!StringUtil.isBlank(tempIsForceUpdate)) {
@@ -76,7 +92,7 @@ public class MySet_AboutMe_Update extends BaseActivity {
                             updateContent_Tv.setText(apkObj.getRemark());
                             int isForceUpdate = Integer.parseInt(tempIsForceUpdate);
                             if (isForceUpdate != 2) {
-                                isChange(apkObj.getRemark(),isForceUpdate,apkObj.getPlatform());
+//                                isChange(apkObj.getRemark(),isForceUpdate,apkObj.getPlatform());
                             }
                         }
 
@@ -225,6 +241,7 @@ public class MySet_AboutMe_Update extends BaseActivity {
             e.printStackTrace();
         }
     }
+
 
 
 }

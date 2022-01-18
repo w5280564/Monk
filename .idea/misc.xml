@@ -64,12 +64,14 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/insider_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/interest_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_choose_image.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_drafts.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_fundshares.xml" value="0.334375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_member_list_main.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_my.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_shequn.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_interest_my.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_nine_grid.xml" value="0.30104166666666665" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_all.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_shares.xml" value="0.30104166666666665" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/mycomment_adapter.xml" value="0.35052083333333334" />

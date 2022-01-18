@@ -21,6 +21,8 @@ import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyComment_Activity;
+import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
+import com.qingbo.monk.person.activity.MyDrafts_Activity;
 import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.person.activity.MyHistory_Activity;
@@ -81,6 +83,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView tv_fankui;
     @BindView(R.id.tv_shezhi)
     TextView tv_shezhi;
+    @BindView(R.id.tv_fabu)
+    TextView tv_fabu;
+    @BindView(R.id.tv_caogao)
+    TextView tv_caogao;
 
     @BindView(R.id.tv_group)
     TextView tv_group;
@@ -104,6 +110,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         tv_history.setOnClickListener(this);
         tv_fankui.setOnClickListener(this);
         tv_shezhi.setOnClickListener(this);
+        tv_fabu.setOnClickListener(this);
+        tv_caogao.setOnClickListener(this);
 
         tv_group.setOnClickListener(this);
     }
@@ -239,6 +247,12 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 break;
             case R.id.tv_shezhi:
                 skipAnotherActivity(MySet_Activity.class);
+                break;
+            case R.id.tv_fabu:
+                MyCrateArticle_Avtivity.actionStart(mActivity);
+                break;
+            case R.id.tv_caogao:
+                skipAnotherActivity(MyDrafts_Activity.class);
                 break;
 
             case R.id.tv_group:

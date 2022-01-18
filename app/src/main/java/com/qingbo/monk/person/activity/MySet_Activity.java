@@ -30,6 +30,9 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
+/**
+ * 我的设置
+ */
 public class MySet_Activity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.phone_MyView)
     MyArrowItemView phone_MyView;

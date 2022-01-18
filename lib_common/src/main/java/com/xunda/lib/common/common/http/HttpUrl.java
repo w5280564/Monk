@@ -228,6 +228,9 @@ public class HttpUrl {
     public static final String User_History = "user/user/look-history";//浏览记录
     public static final String User_History_All = "user/user/look-history-all";//浏览全部记录
     public static final String User_FeedBack = "user/feedback/feedback-save";//发布意见反馈
+    public static final String User_Post_Article = "user/user/post-article";//创作者发表文章
+    public static final String User_Drafts= "square/square/drafts";//查看草稿箱
+
 
 
 

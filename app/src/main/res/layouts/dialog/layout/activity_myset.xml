@@ -46,7 +46,7 @@
         android:layout_height="@dimen/dp_43"
         android:background="@color/white"
         app:arrowItemAvatarHeight="@dimen/dp_12"
-        app:arrowItemContent="你"
+        app:arrowItemContent=""
         app:arrowItemShowArrow="false"
         app:arrowItemShowAvatar="false"
         app:arrowItemTitle="微信"
