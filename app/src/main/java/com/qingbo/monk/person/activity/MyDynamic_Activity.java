@@ -134,10 +134,11 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
                     if (myDynamicListBean != null) {
-                        atrCount_Tv.setText(myDynamicListBean.getCount());
-                        readCount_Tv.setText(myDynamicListBean.getReadTotal());
-                        CommentCount_Tv.setText(myDynamicListBean.getCommentTotal());
-                        focusCount_Tv.setText(myDynamicListBean.getLikedTotal());
+                        originalValue(myDynamicListBean.getCount(), "0","", atrCount_Tv);
+                        originalValue(myDynamicListBean.getReadTotal(), "0","", readCount_Tv);
+                        originalValue(myDynamicListBean.getCommentTotal(), "0","", CommentCount_Tv);
+                        originalValue(myDynamicListBean.getLikedTotal(), "0","", focusCount_Tv);
+
                         handleSplitListData(myDynamicListBean, mAdapter, limit);
                     }
                 }
@@ -303,4 +304,20 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
 
         }
     }
+
+    /**
+     * 没有数据添加默认值
+     *
+     * @param value
+     * @param originalStr
+     */
+    private void originalValue(Object value, String originalStr, String hint, TextView tv) {
+        if (TextUtils.isEmpty((CharSequence) value)) {
+            tv.setText(hint + originalStr);
+        } else {
+            tv.setText(hint + (CharSequence) value);
+        }
+    }
+
+
 }

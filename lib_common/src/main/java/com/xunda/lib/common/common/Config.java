@@ -15,10 +15,10 @@ public class Config {
     public static class Setting {
 
         // 开发环境
-        public static final boolean DEBUG = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
+        public static final boolean DEBUG = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
 
         // 是否输出日志
-        public static final boolean IS_LOG = true;
+        public static final boolean IS_LOG = false;
 
 
         // 图片保存地址
@@ -47,7 +47,7 @@ public class Config {
          */
         static {
             if (!Setting.DEBUG) {
-                URL_WHOLE = "https://shjr.gstai.com/";
+                URL_WHOLE = "https://shjr.gsdata.cn/";
             }
         }
 

@@ -1,18 +1,33 @@
 package com.qingbo.monk.bean;
 
-import com.google.gson.annotations.SerializedName;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-@Data
 public class MyDynamicListBean extends BaseSplitIndexBean<MyDynamic_Bean> {
-    @SerializedName("read_total")
+    public String getReadTotal() {
+        return readTotal;
+    }
+
+    public String getCommentTotal() {
+        return commentTotal;
+    }
+
+    public String getLikedTotal() {
+        return likedTotal;
+    }
+
+    public void setReadTotal(String readTotal) {
+        this.readTotal = readTotal;
+    }
+
+    public void setCommentTotal(String commentTotal) {
+        this.commentTotal = commentTotal;
+    }
+
+    public void setLikedTotal(String likedTotal) {
+        this.likedTotal = likedTotal;
+    }
+
     private String readTotal;
-    @SerializedName("comment_total")
     private String commentTotal;
-    @SerializedName("liked_total")
     private String likedTotal;
 }
