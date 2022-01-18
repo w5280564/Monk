@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,6 +34,9 @@ import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.person.activity.MyFeedBack_Activity;
+import com.qingbo.monk.person.activity.MySet_Activity;
 import com.xunda.lib.common.bean.ApkBean;
 import com.xunda.lib.common.bean.AppMarketBean;
 import com.xunda.lib.common.bean.ReceiveMessageBean;
@@ -75,7 +79,7 @@ import butterknife.BindView;
 /**
  * 主首页
  */
-public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+public class MainActivity extends BaseActivityWithFragment implements BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     @BindView(R.id.mBottomNavigationView)
     BottomNavigationView mBottomNavigationView;
     private int fragmentId = R.id.act_main_fragment;
@@ -113,6 +117,12 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     MyArrowItemView wen_MyView;
     @BindView(R.id.Interest_MyView)
     MyArrowItemView Interest_MyView;
+    @BindView(R.id.gen_MyView)
+    MyArrowItemView gen_MyView;
+    @BindView(R.id.yijian_MyView)
+    MyArrowItemView yijian_MyView;
+    @BindView(R.id.set_MyView)
+    MyArrowItemView set_MyView;
 
     private long clickTime;
     private TextView tv_unread_msg_number;
@@ -123,17 +133,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         return R.layout.activity_main;
     }
 
-    public static void actionStart(Context context,String openid,int isFromType) {
+    public static void actionStart(Context context, String openid, int isFromType) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("isFromType",isFromType);
-        intent.putExtra("openid",openid);
+        intent.putExtra("isFromType", isFromType);
+        intent.putExtra("openid", openid);
         context.startActivity(intent);
     }
 
-    public static void actionStart(Context context,int band_wx,int isFromType) {
+    public static void actionStart(Context context, int band_wx, int isFromType) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("isFromType",isFromType);
-        intent.putExtra("band_wx",band_wx);
+        intent.putExtra("isFromType", isFromType);
+        intent.putExtra("band_wx", band_wx);
         context.startActivity(intent);
     }
 
@@ -150,12 +160,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     @Subscribe
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
-        if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
-            L.e("websocket","首页接收消息");
+        if (event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE) {
+            L.e("websocket", "首页接收消息");
             getAllUnreadNumber();
         }
     }
-
 
 
     private void initFragment() {
@@ -181,9 +190,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         fund_MyView.setOnClickListener(this);
         cang_MyView.setOnClickListener(this);
         person_MyView.setOnClickListener(this);
-
         wen_MyView.setOnClickListener(this);
         Interest_MyView.setOnClickListener(this);
+        gen_MyView.setOnClickListener(this);
+        yijian_MyView.setOnClickListener(this);
+        set_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -220,21 +231,21 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void initLocalData() {
         super.initLocalData();
-        int isFromType = getIntent().getIntExtra("isFromType",0);//1来自绑定微信  2来自绑定手机号  0从启动页进来
-        if (isFromType==1) {
+        int isFromType = getIntent().getIntExtra("isFromType", 0);//1来自绑定微信  2来自绑定手机号  0从启动页进来
+        if (isFromType == 1) {
             String openid = getIntent().getStringExtra("openid");
             if (!StringUtil.isBlank(openid)) {
                 showBindPhoneNumberDialog(openid);
             }
-        }else if(isFromType==2){
-            int band_wx = getIntent().getIntExtra("band_wx",0);
-            if (band_wx==0) {
+        } else if (isFromType == 2) {
+            int band_wx = getIntent().getIntExtra("band_wx", 0);
+            if (band_wx == 0) {
                 showBindWechatDialog();
             }
-        }else{
-            if (PrefUtil.getUser()!=null) {
+        } else {
+            if (PrefUtil.getUser() != null) {
                 int isBindWechat = PrefUtil.getUser().getBand_wx();
-                if (isBindWechat==0) {
+                if (isBindWechat == 0) {
                     showBindWechatDialog();
                 }
             }
@@ -253,10 +264,10 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     private void showBindPhoneNumberDialog(String openid) {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定手机号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this, "为了您在扫地僧获得更好的用户体验，请绑定手机号。", "退出登录", "去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
-                BindPhoneNumberActivity.actionStart(mActivity,openid);
+                BindPhoneNumberActivity.actionStart(mActivity, openid);
             }
 
             @Override
@@ -268,7 +279,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     private void showBindWechatDialog() {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定微信。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this, "为了您在扫地僧获得更好的用户体验，请绑定微信。", "退出登录", "去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
                 wechatThirdLogin();
@@ -372,6 +383,19 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 closeLeft();
                 SideslipInterest_Activity.startActivity(mActivity);
                 break;
+            case R.id.gen_MyView:
+                closeLeft();
+                String id = PrefUtil.getUser().getId();
+                MyAndOther_Card.actionStart(mActivity, id);
+                break;
+            case R.id.yijian_MyView:
+                closeLeft();
+                skipAnotherActivity(MyFeedBack_Activity.class);
+                break;
+            case R.id.set_MyView:
+                closeLeft();
+                skipAnotherActivity(MySet_Activity.class);
+                break;
         }
     }
 
@@ -399,8 +423,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -417,15 +439,15 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    String tempNum = GsonUtil.getInstance().getValue(json_data,"num");
+                    String tempNum = GsonUtil.getInstance().getValue(json_data, "num");
                     if (StringUtil.isBlank(tempNum)) {
                         return;
                     }
 
                     int unreadNum = Integer.parseInt(tempNum);
-                    if (unreadNum==0) {
+                    if (unreadNum == 0) {
                         tv_unread_msg_number.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         tv_unread_msg_number.setVisibility(View.VISIBLE);
                         tv_unread_msg_number.setText(handleUnreadNum(unreadNum));
                     }
@@ -437,9 +459,9 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     private String handleUnreadNum(int unreadMsgCount) {
-        if(unreadMsgCount <= 99) {
+        if (unreadMsgCount <= 99) {
             return String.valueOf(unreadMsgCount);
-        }else {
+        } else {
             return "99+";
         }
     }
@@ -484,8 +506,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                         String remark = apkObj.getRemark();
                         if (!StringUtil.isBlank(tempIsForceUpdate)) {
                             int isForceUpdate = Integer.parseInt(tempIsForceUpdate);
-                            if(isForceUpdate!=2){
-                                showVersionDialog(remark,isForceUpdate,apkObj.getPlatform());
+                            if (isForceUpdate != 2) {
+                                showVersionDialog(remark, isForceUpdate, apkObj.getPlatform());
                             }
                         }
 
@@ -498,18 +520,18 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
 
-    private void showVersionDialog(String remark,int isForceUpdate,String platform) {
-        VersionDialog dialog = new VersionDialog(this, remark,isForceUpdate,
+    private void showVersionDialog(String remark, int isForceUpdate, String platform) {
+        VersionDialog dialog = new VersionDialog(this, remark, isForceUpdate,
                 new VersionDialog.VersionConfirmListener() {
                     @Override
                     public void onDownload() {
-                        if (!StringUtil.isBlank(platform)){
+                        if (!StringUtil.isBlank(platform)) {
                             List<String> mPlatformList = StringUtil.stringToList(platform);
                             if (!ListUtils.isEmpty(mPlatformList)) {
-                                if (mPlatformList.size()==1) {
+                                if (mPlatformList.size() == 1) {
                                     jumpToWebsite();//只有一个平台时，点击下载直接跳官网
-                                }else{//否则弹出平台选择弹窗
-                                    handlePlatformList(isForceUpdate,mPlatformList);
+                                } else {//否则弹出平台选择弹窗
+                                    handlePlatformList(isForceUpdate, mPlatformList);
                                 }
                             }
                         }
@@ -520,8 +542,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
 
-
-    private void handlePlatformList(int isForceUpdate,List<String> mPlatformList){
+    private void handlePlatformList(int isForceUpdate, List<String> mPlatformList) {
         String deviceBrandName = android.os.Build.BRAND;
         List<AppMarketBean> mMarketList = new ArrayList<>();
         for (int i = 0; i < mPlatformList.size(); i++) {
@@ -529,31 +550,31 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             AppMarketBean obj = new AppMarketBean();
             obj.setMarketName(name);
 
-            if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_OPPO)&&"OPPO".equals(name)){
+            if (deviceBrandName.equalsIgnoreCase(Constants.BRAND_OPPO) && "OPPO".equals(name)) {
                 obj.setMarketPakageName("com.heytap.market");
                 obj.setIconResource(R.mipmap.icon_oppo);
                 obj.setBrandName(Constants.BRAND_OPPO);
                 mMarketList.add(obj);
                 break;
-            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_VIVO)&&"VIVO".equals(name)){
+            } else if (deviceBrandName.equalsIgnoreCase(Constants.BRAND_VIVO) && "VIVO".equals(name)) {
                 obj.setMarketPakageName("com.bbk.appstore");
                 obj.setIconResource(R.mipmap.icon_vivo);
                 obj.setBrandName(Constants.BRAND_VIVO);
                 mMarketList.add(obj);
                 break;
-            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_HUAWEI)&&"华为".equals(name)){
+            } else if (deviceBrandName.equalsIgnoreCase(Constants.BRAND_HUAWEI) && "华为".equals(name)) {
                 obj.setMarketPakageName("com.huawei.appmarket");
                 obj.setIconResource(R.mipmap.icon_huawei);
                 obj.setBrandName(Constants.BRAND_HUAWEI);
                 mMarketList.add(obj);
                 break;
-            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_HONOR)&&"华为".equals(name)){
+            } else if (deviceBrandName.equalsIgnoreCase(Constants.BRAND_HONOR) && "华为".equals(name)) {
                 obj.setMarketPakageName("com.huawei.appmarket");
                 obj.setIconResource(R.mipmap.icon_huawei);
                 obj.setBrandName(Constants.BRAND_HUAWEI);
                 mMarketList.add(obj);
                 break;
-            }else if(deviceBrandName.equalsIgnoreCase(Constants.BRAND_XIAOMI)&&"小米".equals(name)){
+            } else if (deviceBrandName.equalsIgnoreCase(Constants.BRAND_XIAOMI) && "小米".equals(name)) {
                 obj.setMarketPakageName("com.xiaomi.market");
                 obj.setIconResource(R.mipmap.icon_xiaomi);
                 obj.setBrandName(Constants.BRAND_XIAOMI);
@@ -570,17 +591,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             mMarketList.add(obj);
         }
 
-        showChooseMarketDialog(isForceUpdate,mMarketList);
+        showChooseMarketDialog(isForceUpdate, mMarketList);
     }
 
     /**
      * 弹出选择市场框
      */
-    public void showChooseMarketDialog(int isForceUpdate,List<AppMarketBean> mMarketList) {
+    public void showChooseMarketDialog(int isForceUpdate, List<AppMarketBean> mMarketList) {
 
 
         if (mChooseAppMarketDialog == null) {
-            mChooseAppMarketDialog = new ChooseAppMarketDialog(this,mMarketList , isForceUpdate,new ChooseAppMarketDialog.DialogItemChooseListener() {
+            mChooseAppMarketDialog = new ChooseAppMarketDialog(this, mMarketList, isForceUpdate, new ChooseAppMarketDialog.DialogItemChooseListener() {
                 @Override
                 public void onItemChooseClick(AppMarketBean obj) {
                     if (obj != null) {
@@ -602,7 +623,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         }
     }
 
-    private void jumpToWebsite(){
+    private void jumpToWebsite() {
         Uri uri = Uri.parse(Constants.WEB_SITE_URL);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
@@ -611,13 +632,14 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
     /**
      * 跳转到应用市场app详情界面
+     *
      * @param marketPkg 应用市场包名
      */
     public void launchAppDetail(String marketPkg) {
         try {
             Uri uri = Uri.parse("market://details?id=" + Constants.APP_PKG);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            if (!StringUtil.isBlank(marketPkg)){
+            if (!StringUtil.isBlank(marketPkg)) {
                 intent.setPackage(marketPkg);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

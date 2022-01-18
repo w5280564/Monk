@@ -65,18 +65,24 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
+        <activity
+            android:name=".person.activity.MyWallet_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyDynamicCrate_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyDynamic_Activity"
+            android:exported="false" />
         <activity
             android:name=".person.activity.MyDrafts_Activity"
             android:exported="false" />
-                <activity
+        <activity
             android:name=".person.activity.MyCrateArticle_Avtivity"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.MySet_AboutMe_Update"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.MyAgreement_Activity"
             android:exported="false" />

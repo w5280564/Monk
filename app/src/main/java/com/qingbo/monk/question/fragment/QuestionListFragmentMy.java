@@ -103,11 +103,9 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
             if (mQuestionBean == null) {
                 return;
             }
-
             String type = mQuestionBean.getTopicType();
             ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type);
         });

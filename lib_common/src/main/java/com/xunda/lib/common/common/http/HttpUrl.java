@@ -8,8 +8,6 @@ package com.xunda.lib.common.common.http;
 public class HttpUrl {
 
 
-
-
     /**
      * 获取区号列表
      */
@@ -32,9 +30,6 @@ public class HttpUrl {
      * 绑定手机号并登录
      */
     public static final String mobileBandLogin = "login/login/band-login";
-
-
-
 
 
     /**
@@ -67,7 +62,6 @@ public class HttpUrl {
     public static final String uploadFiles = "login/login/upload-files-app";
 
 
-
     /**
      * 收获列表
      */
@@ -90,17 +84,17 @@ public class HttpUrl {
 
 
     /**
-     * 	发送问题请求
+     * 发送问题请求
      */
     public static final String sendQuestion = "app/chat/sendQuestion";
 
     /**
-     * 	全部社群
+     * 全部社群
      */
     public static final String allGroup = "square/detail/allshequn";
 
     /**
-     * 	我的社群
+     * 我的社群
      */
     public static final String myGroup = "square/detail/my-shequns";
 
@@ -135,7 +129,6 @@ public class HttpUrl {
 
     public static final String createOrder = "pay/wx-pay/create-order";//APP下单，获取预支付交易会话标识
     public static final String getWXPaySign = "pay/wx-pay/sign";//获取签名
-
 
 
     /**
@@ -229,11 +222,8 @@ public class HttpUrl {
     public static final String User_History_All = "user/user/look-history-all";//浏览全部记录
     public static final String User_FeedBack = "user/feedback/feedback-save";//发布意见反馈
     public static final String User_Post_Article = "user/user/post-article";//创作者发表文章
-    public static final String User_Drafts= "square/square/drafts";//查看草稿箱
-
-
-
-
+    public static final String User_Drafts = "square/square/drafts";//查看草稿箱
+    public static final String User_wallet = "pay/wallet/balance";//我的余额
 
 
 }

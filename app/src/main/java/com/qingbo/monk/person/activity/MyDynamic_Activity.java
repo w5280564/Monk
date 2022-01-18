@@ -1,9 +1,9 @@
-package com.qingbo.monk.Slides.fragment;
+package com.qingbo.monk.person.activity;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,92 +12,119 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestCrate_Activity;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseOwnPublishBean;
+import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.FollowListBean;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.MyDynamicListBean;
+import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
-import com.qingbo.monk.question.activity.PublisherQuestionActivity;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.OnClick;
+import butterknife.BindView;
+import butterknife.BindViews;
 
 /**
- * 兴趣圈-我的发布
+ * 我的动态
  */
-public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
-    private String id;
-    public static InterestDetail_My_Fragment newInstance(String id) {
-        Bundle args = new Bundle();
-        args.putString("id", id);
-        InterestDetail_My_Fragment fragment = new InterestDetail_My_Fragment();
-        fragment.setArguments(args);
-        return fragment;
+public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements View.OnClickListener {
+    @BindView(R.id.mRecyclerView)
+    RecyclerView mRecyclerView;
+    @BindView(R.id.back_Btn)
+    Button back_Btn;
+    @BindView(R.id.iv_bianji)
+    ImageView iv_bianji;
+    @BindView(R.id.atrCount_Tv)
+    TextView atrCount_Tv;
+    @BindView(R.id.readCount_Tv)
+    TextView readCount_Tv;
+    @BindView(R.id.CommentCount_Tv)
+    TextView CommentCount_Tv;
+    @BindView(R.id.focusCount_Tv)
+    TextView focusCount_Tv;
+
+
+    /**
+     * 设置状态栏
+     */
+    private void setBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(false)
+                .statusBarDarkFont(true)
+                .init();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        setBar();
     }
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_question_list;
-    }
-
-
-    @Override
-    protected void initLocalData() {
-        id = getArguments().getString("id");
+        return R.layout.activity_my_dynamic;
     }
 
     @Override
-    protected void initView(View mView) {
-        mRecyclerView = mView.findViewById(R.id.mRecyclerView);
-        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
+    protected void onRefreshData() {
+        page = 1;
+        getListData(false);
+    }
+
+    @Override
+    protected void onLoadMoreData() {
+        page++;
+        getListData(false);
+    }
+
+    @Override
+    protected void initEvent() {
+        back_Btn.setOnClickListener(this);
+        iv_bianji.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initView() {
+        viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
+
+        mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
+        mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未发布任何话题", 0, true);
-        registerEventBus();
-    }
-
-    @Subscribe
-    public void onPublishSuccessEvent(FinishEvent event) {
-        if (event.type == FinishEvent.PUBLISH_QUESTION) {
-            page = 1;
-            getSquareList(false);
-        }
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
-    protected void loadData() {
-        getSquareList(true);
+    protected void onResume() {
+        super.onResume();
+        getListData(true);
     }
 
 
-    /**
-     * 默认是1 1是社群,2是兴趣圈 3是问答广场
-     * @param isShowAnimal
-     */
-    private void getSquareList(boolean isShowAnimal) {
+    MyDynamicListBean myDynamicListBean;
+
+    private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        requestMap.put("action", "2");
-        requestMap.put("id", id);
-
-        HttpSender httpSender = new HttpSender(HttpUrl.getOwnPublishList, "兴趣圈-我的发布", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.UserCenter_Article, "社交主页-我/他的动态", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -105,77 +132,70 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseOwnPublishBean.class);
-                    handleSplitListData(obj, mAdapter, limit);
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+                    if (myDynamicListBean != null) {
+                        atrCount_Tv.setText(myDynamicListBean.getCount());
+                        readCount_Tv.setText(myDynamicListBean.getReadTotal());
+                        CommentCount_Tv.setText(myDynamicListBean.getCommentTotal());
+                        focusCount_Tv.setText(myDynamicListBean.getLikedTotal());
+                        handleSplitListData(myDynamicListBean, mAdapter, limit);
+                    }
                 }
             }
-        }, isShowAnimal);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
 
-
-
     private void initRecyclerView() {
-        LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
-        mManager.setOrientation(RecyclerView.VERTICAL);
-        mRecyclerView.setLayoutManager(mManager);
+        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
+        mMangaer.setOrientation(RecyclerView.VERTICAL);
+        mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new QuestionListAdapterMy();
+        mAdapter = new MyDynamic_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
-            if (mQuestionBean == null) {
-                return;
-            }
-
-            String type = mQuestionBean.getTopicType();
-            ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0", type);
+            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+            String articleId = item.getArticleId();
+            String type = item.getType();
+            ArticleDetail_Activity.startActivity(mActivity, articleId, "0", type);
         });
 
-    }
-
-
-    @Override
-    protected void initEvent() {
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
-                if (mQuestionBean == null) {
-                    return;
-                }
-                switch (view.getId()) {
-                    case R.id.follow_Img:
-                        String likeId = mQuestionBean.getArticleId();
-                        postLikedData(likeId, position);
-                        break;
-                    case R.id.more_Img:
-                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                        showPopMenu(more_Img, mQuestionBean, position);
-                        break;
-                    case R.id.mes_Img:
-                        String type = mQuestionBean.getTopicType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1", type);
-                        break;
-                }
-            }
-        });
-
-
-        ((QuestionListAdapterMy) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+        ((MyDynamic_Adapter) mAdapter).setOnItemImgClickLister(new MyDynamic_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+
+                if (item == null) {
+                    return;
+                }
+                switch (view.getId()) {
+                    case R.id.follow_Img:
+                        String likeId = item.getArticleId();
+                        postLikedData(likeId, position);
+                        break;
+                    case R.id.more_Img:
+                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                        showPopMenu(more_Img, item, position);
+                        break;
+                    case R.id.mes_Img:
+                        String type = item.getType();
+                        ArticleDetail_Activity.startActivity(mActivity, item.getArticleId(), "1", type);
+                        break;
+                }
+            }
+        });
     }
 
-
-    private void showPopMenu(ImageView more_Img, OwnPublishBean mQuestionBean, int position) {
+    private void showPopMenu(ImageView more_Img, MyDynamic_Bean mQuestionBean, int position) {
         String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
         boolean haveEdit = false;
         if (TextUtils.equals(status, "2")) {//审核未通过才能删除
@@ -184,8 +204,8 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-                String shequnId = mQuestionBean.getShequnId();
-                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
+//                String shequnId = mQuestionBean.getShequnId();
+//                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
             }
 
             @Override
@@ -270,20 +290,17 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
 
     @Override
-    protected void onRefreshData() {
-        page = 1;
-        getSquareList(false);
-    }
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back_Btn:
+                finish();
+                break;
+            case R.id.iv_bianji:
+//                String id = PrefUtil.getUser().getId();
+//                MyDynamicCrate_Activity.actionStart(mActivity, id);
+                MyCrateArticle_Avtivity.actionStart(mActivity);
+                break;
 
-    @Override
-    protected void onLoadMoreData() {
-        page++;
-        getSquareList(false);
-    }
-
-
-    @OnClick(R.id.iv_bianji)
-    public void onClick() {
-        InterestCrate_Activity.actionStart(mActivity,id);
+        }
     }
 }

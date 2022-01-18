@@ -23,10 +23,12 @@ import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyComment_Activity;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.activity.MyDrafts_Activity;
+import com.qingbo.monk.person.activity.MyDynamic_Activity;
 import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.person.activity.MyHistory_Activity;
 import com.qingbo.monk.person.activity.MySet_Activity;
+import com.qingbo.monk.person.activity.MyWallet_Activity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -87,9 +89,12 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView tv_fabu;
     @BindView(R.id.tv_caogao)
     TextView tv_caogao;
-
+    @BindView(R.id.tv_dongtai)
+    TextView tv_dongtai;
     @BindView(R.id.tv_group)
     TextView tv_group;
+    @BindView(R.id.tv_my_wallet)
+    TextView tv_my_wallet;
 
     @Override
     protected int getLayoutId() {
@@ -104,6 +109,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     protected void initEvent() {
+        tv_my_wallet.setOnClickListener(this);
         iv_qrcode.setOnClickListener(this);
         refresh_layout.setOnRefreshListener(this);
         tv_comment.setOnClickListener(this);
@@ -112,7 +118,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         tv_shezhi.setOnClickListener(this);
         tv_fabu.setOnClickListener(this);
         tv_caogao.setOnClickListener(this);
-
+        tv_dongtai.setOnClickListener(this);
         tv_group.setOnClickListener(this);
     }
 
@@ -136,7 +142,6 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         PrefUtil.saveUser(userBean, "");
-
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, requireActivity(), userBean.getTagName());
@@ -233,9 +238,14 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onClick(View v) {
         String id = SharePref.user().getUserId();
         switch (v.getId()) {
+
+            case R.id.tv_my_wallet:
+                skipAnotherActivity(MyWallet_Activity.class);
+                break;
             case R.id.iv_qrcode:
                 MyAndOther_Card.actionStart(mActivity, id);
                 break;
+
             case R.id.tv_comment:
                 skipAnotherActivity(MyComment_Activity.class);
                 break;
@@ -254,7 +264,9 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case R.id.tv_caogao:
                 skipAnotherActivity(MyDrafts_Activity.class);
                 break;
-
+            case R.id.tv_dongtai:
+                skipAnotherActivity(MyDynamic_Activity.class);
+                break;
             case R.id.tv_group:
                 MyGroupList_Activity.actionStart(mActivity, id);
                 break;
