@@ -114,7 +114,7 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+            String action = item.getAction();//1是社群 2是兴趣组 3是个人
             String articleId = item.getArticleId();
             String type = item.getType();
             ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);

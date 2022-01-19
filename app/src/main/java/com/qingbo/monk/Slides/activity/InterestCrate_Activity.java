@@ -44,7 +44,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 兴趣圈话题发布页
+ * 兴趣组话题发布页
  */
 public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     @BindView(R.id.tv_tag)
@@ -94,7 +94,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     protected void initLocalData() {
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
-        title = "兴趣圈话题";
+        title = "兴趣组话题";
         shequn_id = getIntent().getStringExtra("shequn_id");
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {//编辑
@@ -290,7 +290,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
             baseMap.put("id", questionId);
         } else {
             baseMap.put("type", "1"); //1是话题，2是提问
-            baseMap.put("action", "2");//1是社群 2是兴趣圈 3是问答广场
+            baseMap.put("action", "2");//1是社群 2是兴趣组 3是问答广场
             baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }
 

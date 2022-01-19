@@ -38,6 +38,8 @@ public class Edit_Change_Achievement extends BaseActivity {
     ImageView iv_header;
     @BindView(R.id.tv_nickName)
     TextView tv_nickName;
+    @BindView(R.id.changeCount_Tv)
+    TextView changeCount_Tv;
 
     private String nickname;
     private UserBean userBean;
@@ -96,7 +98,7 @@ public class Edit_Change_Achievement extends BaseActivity {
                 Editable editable = change_Edit.getText();
                 int len = editable.length();
                 //显示还可以输入多少字
-                change_Edit.setText(len + "/100");
+                changeCount_Tv.setText(len + "/100");
             }
 
             @Override

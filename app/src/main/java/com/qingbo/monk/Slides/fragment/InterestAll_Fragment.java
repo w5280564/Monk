@@ -27,7 +27,7 @@ import com.xunda.lib.common.common.utils.T;
 import java.util.HashMap;
 
 /**
- * 侧边栏-兴趣圈-全部
+ * 侧边栏-兴趣组-全部
  */
 public class InterestAll_Fragment extends BaseRecyclerViewSplitFragment {
 
@@ -59,9 +59,10 @@ public class InterestAll_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
-        mRecyclerView = mView.findViewById(R.id.card_Recycler);
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
+        mRecyclerView = mView.findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
@@ -76,10 +77,14 @@ public class InterestAll_Fragment extends BaseRecyclerViewSplitFragment {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_All, "全部兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_All, "全部兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+
                 interestList_bean = new Gson().fromJson(json_data, InterestList_Bean.class);
                 if (interestList_bean != null) {
                     handleSplitListData(interestList_bean, mAdapter, limit);
@@ -93,7 +98,8 @@ public class InterestAll_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -138,7 +144,7 @@ public class InterestAll_Fragment extends BaseRecyclerViewSplitFragment {
     private void getJoin(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

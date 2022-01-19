@@ -54,9 +54,10 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0, false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0, true);
     }
 
     @Override
@@ -74,6 +75,9 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
@@ -89,7 +93,8 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -110,7 +115,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+            String action = item.getAction();//1是社群 2是兴趣组 3是个人
             String articleId = item.getArticleId();
             String type = item.getType();
             ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
@@ -153,6 +158,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                         String id = item.getAuthorId();
                         MyAndOther_Card.actionStart(mActivity, id);
                         break;
+
                 }
             }
         });

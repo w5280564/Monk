@@ -39,10 +39,14 @@ import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -119,8 +123,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView titleFollow_Tv;
     @BindView(R.id.titleSend_Mes)
     TextView titleSend_Mes;
-    @BindView(R.id.titleSeek_Img)
-    ImageView titleSeek_Img;
     @BindView(R.id.sendComment_Et)
     EditText sendComment_Et;
     @BindView(R.id.release_Tv)
@@ -181,6 +183,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
         back_Tv.setOnClickListener(this);
+        person_Img.setOnClickListener(this);
+        send_Mes.setOnClickListener(this);
     }
 
     @Override
@@ -209,10 +213,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 if (homeFoucsDetail_bean.getData().getDetail().getExtra() == null) {
                     return;
                 }
-                String action = homeFoucsDetail_bean.getData().getDetail().getAction();//1是社群 2是兴趣圈
+                String action = homeFoucsDetail_bean.getData().getDetail().getAction();//1是社群 2是兴趣组
                 String id = homeFoucsDetail_bean.getData().getDetail().getExtra().getId();
                 if (TextUtils.equals(action, "1")) {
-                    getJoinSheQun(id);
+//                    getJoinSheQun(id);
+                    GroupDetailActivity.actionStart(mActivity, id);
                 } else if (TextUtils.equals(action, "2")) {
                     getJoinGroup(id);
                 }
@@ -242,6 +247,16 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 } else {
                     addComment(articleId, type, s);
                 }
+                break;
+            case R.id.person_Img:
+                String authorId4 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
+                MyAndOther_Card.actionStart(mActivity, authorId4);
+                break;
+            case R.id.send_Mes:
+                String authorId3 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
+                String authorName = homeFoucsDetail_bean.getData().getDetail().getAuthorName();
+                String avatar = homeFoucsDetail_bean.getData().getDetail().getAvatar();
+                ChatActivity.actionStart(mActivity, authorId3, authorName, avatar);
                 break;
         }
     }
@@ -365,7 +380,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
 
                         String action = detailData.getAction();
-                        if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣圈
+                        if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣组
                             group_Con.setVisibility(View.GONE);
                         } else {
                             group_Con.setVisibility(View.VISIBLE);
@@ -463,7 +478,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void getJoinGroup(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -662,14 +677,12 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 center_Tv.setVisibility(View.VISIBLE);
                 titleFollow_Tv.setVisibility(View.GONE);
                 titleSend_Mes.setVisibility(View.GONE);
-                titleSeek_Img.setVisibility(View.VISIBLE);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
                 isExpanded = false;
                 title_Img.setVisibility(View.VISIBLE);
                 titleNickName_Tv.setVisibility(View.VISIBLE);
                 center_Tv.setVisibility(View.GONE);
-                titleSeek_Img.setVisibility(View.GONE);
                 if (homeFoucsDetail_bean != null) {
                     Integer followStatus = homeFoucsDetail_bean.getData().getDetail().getFollowStatus();
                     String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();

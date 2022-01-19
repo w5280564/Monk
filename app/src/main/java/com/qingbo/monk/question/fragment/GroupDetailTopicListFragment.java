@@ -44,7 +44,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
     /**
      *
      * @param type 0全部 1我的发布
-     * @param id 社群/兴趣圈 id
+     * @param id 社群/兴趣组 id
      * @param role 0是待审核
      * @return
      */

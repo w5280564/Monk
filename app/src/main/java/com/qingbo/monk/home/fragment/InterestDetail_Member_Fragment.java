@@ -22,6 +22,8 @@ import com.qingbo.monk.bean.InterestMember_Bean;
 import com.qingbo.monk.bean.InterestMember_ListBean;
 import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
 import com.qingbo.monk.home.adapter.InterestMember_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -31,14 +33,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 兴趣圈详情-成员
+ * 兴趣组详情-成员
  */
 public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragment {
     private String id;
     private TabLayout tab;
 
     /**
-     * @param id 兴趣圈ID
+     * @param id 兴趣组ID
      * @return
      */
     public static InterestDetail_Member_Fragment newInstance(String id) {
@@ -79,7 +81,7 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_AllMember, "兴趣圈成员", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_AllMember, "兴趣组成员", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -136,6 +138,13 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
                     case R.id.follow_Tv:
                         String likeId = item.getId();
                         postFollowData(likeId, position);
+                        break;
+                    case R.id.head_Img:
+                        String id = item.getId();
+                        MyAndOther_Card.actionStart(mActivity, id);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
                         break;
                 }
             }

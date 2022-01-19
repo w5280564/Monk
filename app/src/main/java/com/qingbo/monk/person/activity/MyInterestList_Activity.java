@@ -42,7 +42,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 我/他的兴趣圈
+ * 我/他的兴趣组
  */
 public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.mRecyclerView)
@@ -85,9 +85,9 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void initView() {
         if (isMe()){
-            title_bar.setTitle("我的兴趣圈");
+            title_bar.setTitle("我的兴趣组");
         }else {
-            title_bar.setTitle("他的兴趣圈");
+            title_bar.setTitle("他的兴趣组");
         }
 
         mRecyclerView = findViewById(R.id.mRecyclerView);
@@ -128,7 +128,7 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
         requestMap.put("userID", userID);
-        HttpSender sender = new HttpSender(HttpUrl.Interest_My, "我的兴趣圈", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.Interest_My, "我的兴趣组", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {

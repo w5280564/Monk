@@ -127,14 +127,13 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<OwnPublishBean, Base
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
+        helper.addOnClickListener(R.id.group_Img);
     }
 
 
     private void setDrawableLeft(int mipmap,TextView status) {
-        Drawable drawableLeft = mContext.getResources().getDrawable(
-                mipmap);
-        status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
-                null, null, null);
+        Drawable drawableLeft = mContext.getResources().getDrawable(mipmap);
+        status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,null, null, null);
     }
 
 

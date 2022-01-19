@@ -80,7 +80,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         mes_Count.setText(item.getCommentNum());
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
-        String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+        String action = item.getAction();//1是社群 2是兴趣组 3是个人
         if (TextUtils.equals(is_anonymous, "1")) {
             if (TextUtils.equals(action, "3")) {
                 personHead_Img.setVisibility(View.GONE);
@@ -125,6 +125,8 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.send_Mes);
     }
 
     /**

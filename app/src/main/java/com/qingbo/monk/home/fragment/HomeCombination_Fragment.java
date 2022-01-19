@@ -53,9 +53,10 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,true);
     }
 
     @Override
@@ -73,6 +74,9 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
                     if (combinationListBean != null) {
@@ -88,7 +92,8 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override

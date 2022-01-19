@@ -279,7 +279,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         requestMap.put("userid", id);
         requestMap.put("page", "1");
         requestMap.put("limit", "3");
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_My, "我的兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_My, "我的兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -287,12 +287,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (interestList_bean != null) {
                     String groupString = "";
                     if (isMe()) {
-                        groupString = "我的兴趣圈";
+                        groupString = "我的兴趣组";
                     } else {
-                        groupString = "他的兴趣圈";
+                        groupString = "他的兴趣组";
                     }
                     interestName_Tv.setText(groupString);
-                    String format = String.format("加入%1$s个兴趣圈", interestList_bean.getCount());
+                    String format = String.format("加入%1$s个兴趣组", interestList_bean.getCount());
                     interestJoinCount_Tv.setText(format);
                     InterestHeadFlow(interestHead_Lin, mActivity, interestList_bean);
                 }
@@ -432,7 +432,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     }
 
     /**
-     * 我的兴趣圈
+     * 我的兴趣组
      *
      * @param myFlow
      * @param mContext

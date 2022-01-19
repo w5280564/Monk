@@ -22,6 +22,8 @@ import com.qingbo.monk.bean.InterestDetailAll_Bean;
 import com.qingbo.monk.bean.InterestDetailAll_ListBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -31,10 +33,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 兴趣圈-全部
+ * 兴趣组-全部
  */
 public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     private String id;
+
     public static InterestDetail_All_Fragment newInstance(String id) {
         Bundle args = new Bundle();
         args.putString("id", id);
@@ -50,10 +53,25 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
     @Override
+    protected void onRefreshData() {
+        page = 1;
+        getListData(false);
+    }
+
+    @Override
+    protected void onLoadMoreData() {
+        page++;
+        getListData(false);
+    }
+
+
+
+    @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无话题", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无话题", 0, true);
     }
 
     @Override
@@ -69,21 +87,25 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     InterestDetailAll_ListBean interestDetailAll_listBean;
 
     /**
-     *   action 1是社群 2是兴趣圈 3是问答广场
+     * action 1是社群 2是兴趣组 3是问答广场
+     *
      * @param isShow
      */
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("action",  "2");
+        requestMap.put("action", "2");
         requestMap.put("id", id + "");
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.groupDetailAllTab, "兴趣圈详情-全部", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.groupDetailAllTab, "兴趣组详情-全部", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                     interestDetailAll_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestDetailAll_ListBean.class);
+                    interestDetailAll_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestDetailAll_ListBean.class);
                     if (interestDetailAll_listBean != null) {
                         handleSplitListData(interestDetailAll_listBean, mAdapter, limit);
                     }
@@ -95,16 +117,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-    @Override
-    protected void onRefreshData() {
 
-    }
-
-    @Override
-    protected void onLoadMoreData() {
-        page++;
-        getListData(false);
-    }
 
 
     public void initRecyclerView() {
@@ -119,8 +132,8 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
             InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
             String articleId = item.getArticleId();
 //            String type = item.getType();
-            String type = "2";//1是社群 2是兴趣圈 3是个人
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
+            String type = "2";//1是社群 2是兴趣组 3是个人
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         });
     }
 
@@ -130,23 +143,30 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (interestDetailAll_listBean == null) {
+                InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = interestDetailAll_listBean.getList().get(position).getAuthorId();
+                        String otherUserId = item.getAuthorId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = interestDetailAll_listBean.getList().get(position).getArticleId();
+                        String likeId = item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
                         String articleId = item.getArticleId();
                         String type = item.getTopicType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
+                        break;
+                    case R.id.group_Img:
+                        String id = item.getAuthorId();
+                        MyAndOther_Card.actionStart(mActivity, id);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, item.getAuthorId(), item.getNickname(), item.getAvatar());
                         break;
                 }
             }

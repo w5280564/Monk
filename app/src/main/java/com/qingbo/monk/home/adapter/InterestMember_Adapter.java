@@ -44,6 +44,8 @@ public class InterestMember_Adapter extends BaseQuickAdapter<InterestMember_Bean
         content_Tv.setText(format);
 
         helper.addOnClickListener(R.id.follow_Tv);
+        helper.addOnClickListener(R.id.head_Img);
+        helper.addOnClickListener(R.id.send_Mes);
     }
 
     /**

@@ -35,7 +35,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 兴趣圈详情
+ * 兴趣组详情
  */
 public class InterestDetail_Activity extends BaseTabLayoutActivity implements View.OnClickListener {
 
@@ -118,7 +118,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
     private void getDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_Detail, "兴趣圈详情", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_Detail, "兴趣组详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -130,9 +130,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
                         String s = interestDetail_bean.getCount() + "人加入";
                         add_Tv.setText(s);
                         content_Tv.setText(interestDetail_bean.getGroupDes());
-
                         isJoin(interestDetail_bean.getStatus_num(), join_Tv);
-
                     }
                 }
             }
@@ -191,7 +189,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
     private void getJoin(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

@@ -94,7 +94,7 @@ public class MyDynamicCrate_Activity extends BaseCameraAndGalleryActivity_More {
     protected void initLocalData() {
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
-        title = "兴趣圈话题";
+        title = "兴趣组话题";
         shequn_id = getIntent().getStringExtra("shequn_id");
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {//编辑

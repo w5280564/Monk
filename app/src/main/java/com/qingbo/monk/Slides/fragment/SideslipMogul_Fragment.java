@@ -21,6 +21,8 @@ import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -53,14 +55,15 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0,false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0, true);
     }
 
     @Override
     protected void initLocalData() {
-         tagId = getArguments().getString("tagId");
+        tagId = getArguments().getString("tagId");
     }
 
     @Override
@@ -79,6 +82,9 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
@@ -94,7 +100,8 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -115,10 +122,10 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-            String action = item.getAction();//1是社群 2是兴趣圈 3是个人
+            String action = item.getAction();//1是社群 2是兴趣组 3是个人
             String articleId = item.getArticleId();
             String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         });
 
     }
@@ -129,24 +136,33 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (homeFllowBean == null) {
+                HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
+                        String otherUserId = item.getAuthorId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        String likeId =item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
                         String articleId = item.getArticleId();
                         String type = item.getType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
                         break;
+                    case R.id.send_Mes:
+                        HomeFllowBean item1 = (HomeFllowBean) adapter.getItem(position);
+                        ChatActivity.actionStart(mActivity, item1.getAuthorId(), item1.getAuthorName(), item1.getAvatar());
+                        break;
+                    case R.id.group_Img:
+                        String id = item.getAuthorId();
+                        MyAndOther_Card.actionStart(mActivity, id);
+                        break;
+
                 }
             }
         });
@@ -173,10 +189,10 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
                     ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
+//                    if (followStateBena.getFollowStatus() == 0) {
+//                        mAdapter.remove(position);
+//                        mAdapter.notifyItemChanged(position);
+//                    }
                 }
             }
         }, true);

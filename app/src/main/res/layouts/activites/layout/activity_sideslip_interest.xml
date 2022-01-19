@@ -15,7 +15,7 @@
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="兴趣圈"
+        app:titleBarTitle="兴趣组"
         app:titleBarRightShowFlag="VISIBLE"
         app:titleBarRightImg="@mipmap/icon_sousuo" />
 

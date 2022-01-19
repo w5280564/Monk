@@ -26,9 +26,11 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.HomeInterestBean;
+import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -84,17 +86,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void getServerData() {
-        super.getServerData();
+    public void onResume() {
+        super.onResume();
         getInterestLab();
     }
-
 
     private void getInterestLab() {
         HashMap<String, String> requestMap = new HashMap<>();
 //        requestMap.put("page", page + "");
         requestMap.put("limit", "3");
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_Group, "推荐--兴趣圈列表", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_Group, "推荐--兴趣组列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -128,7 +129,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     /**
-     * 首页我的兴趣圈
+     * 首页我的兴趣组
      * @param context
      * @param myFlex
      * @param model
@@ -154,14 +155,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             add_Tv.setText(data.getJoinNum() + "加入");
             int state = data.getJoinStatus();
             joinState(state, join_Tv);
+            myView.setTag(i);
             join_Tv.setTag(i);
             myFlex.addView(myView);
+            myView.setOnClickListener(v -> {
+                int tag = (Integer) v.getTag();
+                String id = model.getList().get(tag).getId();
+                InterestDetail_Activity.startActivity(requireActivity(),"0",id);
+            });
             join_Tv.setOnClickListener(v -> {
-//                v.setEnabled(false);
                 int tag = (Integer) v.getTag();
                 int stateIndex = model.getList().get(tag).getJoinStatus();
                 changeState(stateIndex, join_Tv, model);
-
                 getJoin(model.getList().get(tag).getId());
             });
         }
@@ -250,7 +255,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private void getJoin(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", ID);
-        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣圈", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Join_Group, "加入/退出兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

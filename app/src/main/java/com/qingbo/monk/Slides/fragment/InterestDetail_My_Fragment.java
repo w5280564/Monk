@@ -20,6 +20,7 @@ import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
@@ -39,7 +40,7 @@ import java.util.List;
 import butterknife.OnClick;
 
 /**
- * 兴趣圈-我的发布
+ * 兴趣组-我的发布
  */
 public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
     private String id;
@@ -87,7 +88,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
 
     /**
-     * 默认是1 1是社群,2是兴趣圈 3是问答广场
+     * 默认是1 1是社群,2是兴趣组 3是问答广场
      * @param isShowAnimal
      */
     private void getSquareList(boolean isShowAnimal) {
@@ -97,7 +98,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         requestMap.put("action", "2");
         requestMap.put("id", id);
 
-        HttpSender httpSender = new HttpSender(HttpUrl.getOwnPublishList, "兴趣圈-我的发布", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.getOwnPublishList, "兴趣组-我的发布", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -144,7 +145,6 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
                 if (mQuestionBean == null) {
                     return;
                 }
@@ -160,6 +160,10 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
                     case R.id.mes_Img:
                         String type = mQuestionBean.getTopicType();
                         ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1", type);
+                        break;
+                    case R.id.group_Img:
+                        String id = mQuestionBean.getAuthorId();
+                        MyAndOther_Card.actionStart(mActivity, id);
                         break;
                 }
             }

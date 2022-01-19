@@ -17,7 +17,7 @@
         app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="兴趣圈" />
+        app:titleBarTitle="兴趣组" />
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -51,8 +51,8 @@
 
                 <TextView
                     android:id="@+id/Interest_Name"
-                    android:layout_width="96dp"
-                    android:layout_height="22dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_9"
                     android:textColor="@color/text_color_6f6f6f"
                     android:textSize="16sp"

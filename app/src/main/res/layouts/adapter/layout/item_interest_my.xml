@@ -60,7 +60,7 @@
             android:background="@drawable/shape_bag_join_group"
             android:layout_marginLeft="@dimen/dp_10"
             android:gravity="center"
-            android:text="进入兴趣圈"
+            android:text="进入兴趣组"
             android:paddingLeft="@dimen/dp_10"
             android:paddingRight="@dimen/dp_10"
             android:textColor="@color/text_color_a1a1a1"

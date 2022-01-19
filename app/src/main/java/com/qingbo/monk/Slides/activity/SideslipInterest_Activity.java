@@ -14,7 +14,7 @@ import com.qingbo.monk.Slides.fragment.InterestAll_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 
 /**
- * 侧边栏-兴趣圈
+ * 侧边栏-兴趣组
  */
 public class SideslipInterest_Activity extends BaseTabLayoutActivity {
     /**
@@ -48,7 +48,7 @@ public class SideslipInterest_Activity extends BaseTabLayoutActivity {
                 bean.setName("全部");
             } else {
                 fragments.add(InterestMy_Fragment.newInstance("2"));
-                bean.setName("我的兴趣圈");
+                bean.setName("我的兴趣组");
             }
             menuList.add(bean);
         }

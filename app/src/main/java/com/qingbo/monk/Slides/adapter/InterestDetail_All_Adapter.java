@@ -94,6 +94,8 @@ public class InterestDetail_All_Adapter extends BaseQuickAdapter<InterestDetailA
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.send_Mes);
     }
 
     /**
