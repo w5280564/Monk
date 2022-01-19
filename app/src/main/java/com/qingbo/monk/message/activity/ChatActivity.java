@@ -148,7 +148,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatAdapter(mList);
-        mAdapter.setEmptyView(addEmptyView("暂无消息", 0));
         mRecyclerView.setAdapter(mAdapter);
     }
 

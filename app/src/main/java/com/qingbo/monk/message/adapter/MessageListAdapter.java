@@ -44,13 +44,13 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageRecordBean, Base
         if (lastMsg!=null) {
             tv_time.setText(StringUtil.getStringValue(lastMsg.getTime()));
             if (ReceiveMessageBean.MESSAGE_TYPE_TEXT.equals(lastMsg.getMsgType())) {
-                tv_content.setText(StringUtil.getStringValue(lastMsg.getMessage()));
+                tv_content.setText(StringUtil.isBlank(lastMsg.getMessage())?"暂无消息":lastMsg.getMessage());
             }else{
                 tv_content.setText("[图片]");
             }
         }else{
             tv_time.setText("");
-            tv_content.setText("");
+            tv_content.setText("暂无消息");
         }
         GlideUtils.loadCircleImage(mContext, iv_header, item.getAvatar());
     }
