@@ -146,6 +146,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         headLayout.setmZoomView(iv_img);
 
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
+        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
+        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
         initMenuData();
 
 
@@ -173,6 +175,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         interest_Con.setOnClickListener(this);
         follow_Tv.setOnClickListener(this);
         editUser_Tv_.setOnClickListener(this);
+        tv_follow_number.setOnClickListener(this);
+        tv_fans_number.setOnClickListener(this);
     }
 
     @SuppressLint("WrongConstant")
@@ -352,6 +356,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_follow_number:
+                skipAnotherActivity(MyFollowActivity.class);
+                break;
+            case R.id.tv_fans_number:
+                skipAnotherActivity(MyFansActivity.class);
+                break;
             case R.id.back_Btn:
                 finish();
                 break;

@@ -299,7 +299,8 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
             case R.id.iv_bianji:
 //                String id = PrefUtil.getUser().getId();
 //                MyDynamicCrate_Activity.actionStart(mActivity, id);
-                MyCrateArticle_Avtivity.actionStart(mActivity);
+                String isOriginator = PrefUtil.getUser().getIsOriginator();
+                MyCrateArticle_Avtivity.actionStart(mActivity,isOriginator);
                 break;
 
         }

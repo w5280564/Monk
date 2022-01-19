@@ -127,12 +127,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-
+    /**
+     * 首页我的兴趣圈
+     * @param context
+     * @param myFlex
+     * @param model
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void labelList(Context context, LinearLayout myFlex, HomeInterestBean.DataDTO model) {
         if (myFlex != null) {
             myFlex.removeAllViews();
-        }else {
+        } else {
             return;
         }
         int size = model.getList().size();
@@ -148,34 +153,46 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             shares_Tv.setText(data.getGroupName());
             add_Tv.setText(data.getJoinNum() + "加入");
             int state = data.getJoinStatus();
-            if (state == 1) { //1已加入 其他都是未加入
-                join_Tv.setText("已加入");
-                join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_a1a1a1));
-                changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.text_color_F5F5F5));
-            } else {
-                join_Tv.setText("加入");
-                join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_444444));
-                changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.app_main_color));
-            }
+            joinState(state, join_Tv);
             join_Tv.setTag(i);
             myFlex.addView(myView);
             join_Tv.setOnClickListener(v -> {
 //                v.setEnabled(false);
                 int tag = (Integer) v.getTag();
                 int stateIndex = model.getList().get(tag).getJoinStatus();
-                if (stateIndex == 1) {//1已加入 其他都是未加入
-                    model.getList().get(tag).setJoinStatus(0);
-                    join_Tv.setText("加入");
-                    join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_444444));
-                    changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.app_main_color));
-                } else {
-                    model.getList().get(tag).setJoinStatus(1);
-                    join_Tv.setText("已加入");
-                    join_Tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_a1a1a1));
-                    changeShapColor(join_Tv, ContextCompat.getColor(context, R.color.text_color_F5F5F5));
-                }
+                changeState(stateIndex, join_Tv, model);
+
                 getJoin(model.getList().get(tag).getId());
             });
+        }
+    }
+
+    //加入的状态
+    private void joinState(int state, TextView joinTv) {
+        if (state == 1) { //1已加入 其他都是未加入
+            joinTv.setText("已加入");
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+        } else {
+            joinTv.setText("加入");
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.app_main_color));
+        }
+    }
+
+    //修改加入状态
+    private void changeState(int state, TextView joinTv, HomeInterestBean.DataDTO model) {
+        int tag = (Integer) joinTv.getTag();
+        if (state == 1) {//1已加入 其他都是未加入
+            model.getList().get(tag).setJoinStatus(0);
+            joinTv.setText("加入");
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.app_main_color));
+        } else {
+            model.getList().get(tag).setJoinStatus(1);
+            joinTv.setText("已加入");
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
         }
     }
 
@@ -262,9 +279,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     /**
      * 修改导航页数
+     *
      * @param index
      */
-    public void changePager(int index){
+    public void changePager(int index) {
         card_ViewPager.setCurrentItem(index);
     }
 

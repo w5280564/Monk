@@ -24,6 +24,7 @@ import com.qingbo.monk.person.activity.MyComment_Activity;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.activity.MyDrafts_Activity;
 import com.qingbo.monk.person.activity.MyDynamic_Activity;
+import com.qingbo.monk.person.activity.MyFansActivity;
 import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MyFollowActivity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
@@ -108,6 +109,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
+        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
     }
 
     @Override
@@ -124,6 +126,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         tv_dongtai.setOnClickListener(this);
         tv_group.setOnClickListener(this);
         tv_follow_number.setOnClickListener(this);
+        tv_fans_number.setOnClickListener(this);
     }
 
     @Override
@@ -131,6 +134,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         super.onResume();
         getUserData();
     }
+
+    UserBean userBean;
 
     private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -143,7 +148,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                     refresh_layout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    UserBean userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         PrefUtil.saveUser(userBean, "");
                         GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
@@ -245,6 +250,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case R.id.tv_follow_number:
                 skipAnotherActivity(MyFollowActivity.class);
                 break;
+            case R.id.tv_fans_number:
+                skipAnotherActivity(MyFansActivity.class);
+                break;
+
             case R.id.tv_my_wallet:
                 skipAnotherActivity(MyWallet_Activity.class);
                 break;
@@ -265,8 +274,10 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 skipAnotherActivity(MySet_Activity.class);
                 break;
             case R.id.tv_fabu:
-                T.s("功能开发中", 3000);
-//                MyCrateArticle_Avtivity.actionStart(mActivity);
+                if (userBean != null) {
+                    String isOriginator = userBean.getIsOriginator();
+                    MyCrateArticle_Avtivity.actionStart(mActivity,isOriginator);
+                }
                 break;
             case R.id.tv_caogao:
                 skipAnotherActivity(MyDrafts_Activity.class);

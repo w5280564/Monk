@@ -77,9 +77,11 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     ArticleLikedListBean articleLikedListBean;
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId + "");
-        requestMap.put("type", type);
-        HttpSender httpSender = new HttpSender(HttpUrl.Article_LikedList, "文章点赞列表", requestMap, new MyOnHttpResListener() {
+        requestMap.put("id", articleId + "");
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
+//        requestMap.put("type", type);
+        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like_List, "文章点赞列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

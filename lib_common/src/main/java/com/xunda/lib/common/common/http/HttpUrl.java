@@ -225,6 +225,9 @@ public class HttpUrl {
     public static final String User_Drafts = "square/square/drafts";//查看草稿箱
     public static final String User_wallet = "pay/wallet/balance";//我的余额
     public static final String User_Follow_List = "user/user/follow-list";//关注列表
+    public static final String Topic_Like_List = "square/position/topic-like-list";//仓位组合点赞列表
+    public static final String fans_Like_List = "user/user/fans-list";//粉丝列表
+    public static final String User_apply = "user/user/apply-originator";//申请成为创作者
 
 
 

@@ -24,7 +24,6 @@
         android:maxLength="6"
         android:layout_marginTop="@dimen/dp_11"
         android:maxLines="1"
-        android:text="沧桑离月沧桑离月沧桑离月"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/head_Img"
@@ -38,9 +37,10 @@
         android:layout_marginEnd="@dimen/dp_15"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="讨论6条，粉丝10人，关注107人"
+        app:layout_constraintEnd_toStartOf="@id/send_Mes"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="12sp"
+        app:layout_goneMarginEnd="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="@id/nickName_Tv"
         app:layout_constraintTop_toBottomOf="@+id/nickName_Tv" />
 
@@ -64,18 +64,19 @@
         android:id="@+id/send_Mes"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_22"
-        android:background="@drawable/interest_lable"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:background="@drawable/message_bg"
         android:gravity="center"
         android:paddingStart="@dimen/dp_8"
         android:paddingEnd="@dimen/dp_8"
         android:text="私信"
         android:visibility="gone"
-        android:layout_marginTop="@dimen/dp_5"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/follow_Tv"
-        app:layout_constraintStart_toStartOf="@+id/follow_Tv"
-        app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
+        app:layout_constraintBottom_toBottomOf="@+id/follow_Tv"
+        app:layout_constraintEnd_toStartOf="@+id/follow_Tv"
+        app:layout_constraintTop_toTopOf="@+id/follow_Tv"
+        app:layout_goneMarginEnd="@dimen/dp_5" />
 
 
     <View

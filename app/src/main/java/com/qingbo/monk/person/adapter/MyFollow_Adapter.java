@@ -35,13 +35,14 @@ public class MyFollow_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseVie
         TextView send_Mes = helper.getView(R.id.send_Mes);
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
-
         GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
         nickName_Tv.setText(item.getNickname());
         isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
-        String format = String.format("发布%1$s条，粉丝%2$s人，关注%3$s人", item.getArticleNum(), item.getFansNum(), item.getFollowerNum());
-        content_Tv.setText(format);
+//        String format = String.format("发布%1$s条，粉丝%2$s人，关注%3$s人", item.getArticleNum(), item.getFansNum(), item.getFollowerNum());
+        content_Tv.setText(item.getDescription());
 
+        helper.addOnClickListener(R.id.head_Img);
+        helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Tv);
     }
 

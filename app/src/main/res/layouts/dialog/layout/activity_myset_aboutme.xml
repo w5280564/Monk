@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="扫地僧"
+        android:text="发现扫地僧"
         android:textColor="@color/text_color_444444"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -160,6 +160,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     }
 
     UserBean userBean;
+
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
@@ -266,7 +267,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if (userBean == null){
+        if (userBean == null) {
             return;
         }
         switch (v.getId()) {
@@ -282,39 +283,38 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 checkGalleryPermission();//修改背景
                 break;
             case R.id.nickName_MyView:
-                Edit_ChangeName.actionStart(mActivity,userBean.getNickname()); //修改昵称
+                Edit_ChangeName.actionStart(mActivity, userBean.getNickname()); //修改昵称
                 break;
             case R.id.address_MyView:
                 mPicker.showCityPicker();//修改居住地
                 break;
             case R.id.explain_Con:
-                Edit_ChangeExplain.actionStart(mActivity,userBean.getNickname());//修改个人说明
+                Edit_ChangeExplain.actionStart(mActivity, userBean.getNickname());//修改个人说明
                 break;
             case R.id.home_Con:
-                Edit_ChangePage.actionStart(mActivity,userBean.getNickname());//修改头像
+                Edit_ChangePage.actionStart(mActivity, userBean.getNickname());//修改头像
                 break;
             case R.id.interestEdit_Tv_:
                 String interested = userBean.getInterested();
-                Edit_Change_Interest.actionStart(mActivity,userBean.getNickname(),interested);
-                break ;
+                Edit_Change_Interest.actionStart(mActivity, userBean.getNickname(), interested);
+                break;
         }
-        if (v.equals(good_EditView.getEdit_Tv())){
+        if (v.equals(good_EditView.getEdit_Tv())) {
             String domain = userBean.getDomain();
-            Edit_Change_Industry.actionStart(mActivity,userBean.getNickname(),domain);
-        }else if (v.equals(resources_EditView.getEdit_Tv())){
+            Edit_Change_Industry.actionStart(mActivity, userBean.getNickname(), domain);
+        } else if (v.equals(resources_EditView.getEdit_Tv())) {
             String resource = userBean.getResource();
-            Edit_Change_Resources.actionStart(mActivity,userBean.getNickname(),resource);
-        }else if (v.equals(achievement_EditView.getEdit_Tv())){
-            Edit_Change_Achievement.actionStart(mActivity,userBean);
-        }else if (v.equals(learn_EditView.getEdit_Tv())){
+            Edit_Change_Resources.actionStart(mActivity, userBean.getNickname(), resource);
+        } else if (v.equals(achievement_EditView.getEdit_Tv())) {
+            Edit_Change_Achievement.actionStart(mActivity, userBean);
+        } else if (v.equals(learn_EditView.getEdit_Tv())) {
             String research = userBean.getResearch();
-            Edit_Change_Learn.actionStart(mActivity,userBean.getNickname(),research);
-        }else if (v.equals(harvest_EditView.getEdit_Tv())){
+            Edit_Change_Learn.actionStart(mActivity, userBean.getNickname(), research);
+        } else if (v.equals(harvest_EditView.getEdit_Tv())) {
             String getResource = userBean.getGetResource();
-            Edit_Change_Harvest.actionStart(mActivity,userBean.getNickname(),getResource);
+            Edit_Change_Harvest.actionStart(mActivity, userBean.getNickname(), getResource);
         }
     }
-
 
 
     @Override
@@ -332,6 +332,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     }
 
     CityPickerView mPicker = new CityPickerView();
+
     private void initCity() {
         //等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
         //预先加载仿iOS滚轮实现的全部数据
@@ -380,7 +381,6 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             myFlow.addView(view);
         }
     }
-
 
 
 }

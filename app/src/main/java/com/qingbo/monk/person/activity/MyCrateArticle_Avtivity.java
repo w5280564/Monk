@@ -46,7 +46,7 @@ import butterknife.OnClick;
 /**
  * 创作者发表文章
  */
-public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
+public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More implements View.OnClickListener {
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.ll_tag)
@@ -61,6 +61,10 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
     TextView tv_remains_text;
     @BindView(R.id.tv_remains_image)
     TextView tv_remains_image;
+    @BindView(R.id.tv_next)
+    TextView tv_next;
+
+
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
@@ -68,6 +72,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
     private String mTitle, mContent, images, questionId;
     private String submitRequestUrl, shequn_id;
     private boolean isEdit;
+    private String isOriginator;
 
 
     public static void actionStart(Context context, String shequn_id, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
@@ -78,15 +83,24 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
         context.startActivity(intent);
     }
 
-    public static void actionStart(Context context) {
+    /**
+     * @param context
+     * @param isOriginator 1是创作者
+     */
+    public static void actionStart(Context context, String isOriginator) {
         Intent intent = new Intent(context, MyCrateArticle_Avtivity.class);
+        intent.putExtra("isOriginator", isOriginator);
         context.startActivity(intent);
     }
 
+    @Override
+    protected void initLocalData() {
+        isOriginator = getIntent().getStringExtra("isOriginator");
+    }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_publisher_question;
+        return R.layout.mycrate_center;
     }
 
     @Override
@@ -102,8 +116,6 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
         tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }
-
-
 
 
     /**
@@ -132,7 +144,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
             tvTag.setText("匿名");
             setDrawableLeft(R.mipmap.niming);
             llTag.setTag("1");
-        }else{
+        } else {
             tvTag.setText("公开");
             setDrawableLeft(R.mipmap.gongkai);
             llTag.setTag("0");
@@ -163,7 +175,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+                tv_remains_text.setText(String.format("%s/2000", StringUtil.getEditText(et_content).length()));
             }
 
             @Override
@@ -171,6 +183,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
 
             }
         });
+
+        tv_next.setOnClickListener(this);
     }
 
 
@@ -217,14 +231,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
 
     @Override
     public void onRightClick() {
-        getPramsValue();
 
-        if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
-            return;
-        }
-
-        createOrEditSaveQuestion("0");
     }
 
     private void getPramsValue() {
@@ -278,9 +285,9 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
      * 展示选择的图片
      */
     private void showImageListImages(List<UploadPictureBean> mTempList) {
-        imageList.addAll(imageList.size()-1, mTempList);
+        imageList.addAll(imageList.size() - 1, mTempList);
         deleteLastOne();
-        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/6", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -303,16 +310,16 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
                 imageList.add(imageList.size(), addBean);
             }
         }
-        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/6", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
 
     @Override
-    protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
+    protected void onUploadSuccess(List<String> urlList, List<File> fileList) {
         List<UploadPictureBean> uriList = new ArrayList<>();
-        for (File mFile:fileList) {
-            Uri filePath = FileProvider7.getUriForFile(mContext,mFile);
+        for (File mFile : fileList) {
+            Uri filePath = FileProvider7.getUriForFile(mContext, mFile);
             UploadPictureBean obj = new UploadPictureBean();
             obj.setImageUri(filePath);
             obj.setType(2);
@@ -327,4 +334,40 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More {
 
     }
 
+    /**
+     * 申请成为创作者
+     */
+    private void applyCrate() {
+        HashMap<String, String> baseMap = new HashMap<>();
+        HttpSender sender = new HttpSender(HttpUrl.User_apply, "申请成为创作者", baseMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json, int status, String description, String data) {
+                        if (status == Constants.REQUEST_SUCCESS_CODE) {
+                            finish();
+                        }
+                    }
+                }, true);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_next:
+                if (TextUtils.equals(isOriginator, "1")) {
+                    getPramsValue();
+                    if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+                        T.ss("标题、内容、图片必须填写一项");
+                        return;
+                    }
+                    createOrEditSaveQuestion("0");
+                } else {
+                    applyCrate();
+                }
+                break;
+        }
+    }
 }

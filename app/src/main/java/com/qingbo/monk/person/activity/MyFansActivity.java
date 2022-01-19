@@ -1,14 +1,12 @@
 package com.qingbo.monk.person.activity;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
@@ -17,10 +15,7 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.MyCommentList_Bean;
-import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
-import com.qingbo.monk.person.adapter.MyComment_Adapter;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -33,9 +28,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 我的关注列表
+ * 我的粉丝列表
  */
-public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
+public class MyFansActivity extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.title_bar)
     CustomTitleBar titleBar;
     @BindView(R.id.mRecyclerView)
@@ -49,7 +44,7 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initView() {
-        titleBar.setTitle("我关注的人");
+        titleBar.setTitle("我的粉丝");
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
@@ -75,12 +70,11 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
     }
 
     ArticleLikedListBean articleLikedListBean;
-
     private void getExpertList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        HttpSender sender = new HttpSender(HttpUrl.User_Follow_List, "关注列表", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.fans_Like_List, "粉丝列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {

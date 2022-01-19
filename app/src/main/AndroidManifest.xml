@@ -65,9 +65,15 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
+
         <activity
+            android:name=".person.activity.MyFansActivity"
+            android:exported="false" />
+                <activity
             android:name=".person.activity.MyFollowActivity"
             android:exported="false" />
+
+
         <activity
             android:name=".person.activity.MyWallet_Activity"
             android:exported="false" />
