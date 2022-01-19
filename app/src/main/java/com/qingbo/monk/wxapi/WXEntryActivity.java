@@ -20,6 +20,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.WechatLoginEvent;
 import com.xunda.lib.common.common.eventbus.WechatPayEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -61,6 +62,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				case LOGIN_FAILURE:
 					String openid = (String) msg.obj;
 					WelcomeActivity.actionStart(WXEntryActivity.this,openid,1);
+					WXEntryActivity.this.finish();
 					break;
 
 			}
@@ -86,6 +88,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				}else{
 					MainActivity.actionStart(WXEntryActivity.this,"",1);
 				}
+				EventBus.getDefault().post(new WechatLoginEvent(WechatLoginEvent.WECHAT_Login_RESULT));
+				WXEntryActivity.this.finish();
 			}
 
 		}

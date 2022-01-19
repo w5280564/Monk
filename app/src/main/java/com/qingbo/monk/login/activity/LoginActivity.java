@@ -14,14 +14,19 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.WechatLoginEvent;
+import com.xunda.lib.common.common.eventbus.WechatPayEvent;
 import com.xunda.lib.common.common.http.H5Url;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +50,22 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
         cbAgreement.setOnCheckedChangeListener(this);
     }
 
+    @Override
+    protected void initView() {
+        registerEventBus();
+    }
+
+    /**
+     * 微信登录成功结果回调
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onWechatLoginEvent(WechatLoginEvent event) {
+        if (event.event_type == WechatLoginEvent.WECHAT_Login_RESULT) {
+            finish();
+        }
+    }
 
     @OnClick({R.id.ll_wechat_login, R.id.ll_phone_login, R.id.tv_agreement})
     public void onViewClicked(View view) {
