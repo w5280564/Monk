@@ -61,7 +61,6 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     @Subscribe
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
         if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
-            L.e("websocket","会话列表页接收消息");
             page = 1;
             conversationList(false);
         }

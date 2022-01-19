@@ -32,9 +32,6 @@ public class BaseApplication extends MultiDexApplication {
         }
     }
 
-    public List<FragmentActivity> getActivityList(){
-        return activityList;
-    }
 
 
     /**

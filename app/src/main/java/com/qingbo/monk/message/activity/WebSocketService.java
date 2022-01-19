@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.Nullable;
+
+import com.xunda.lib.common.common.utils.L;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -42,6 +45,7 @@ public class WebSocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        L.e(TAG,"onCreate");
         webSocket = connect();
     }
 
@@ -53,20 +57,21 @@ public class WebSocketService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        L.e(TAG,"onDestroy");
         if (webSocket != null) {
             close();
         }
     }
 
     private WebSocket connect() {
-        Log.d(TAG, "connect " + WS);
+        L.e(TAG,"connect " + WS);
         OkHttpClient client = new OkHttpClient.Builder().build();
         Request request = new Request.Builder().url(WS).build();
         return client.newWebSocket(request, new WebSocketHandler());
     }
 
     public void send(String text) {
-        Log.d(TAG, "发送的消息 " + text);
+        L.e(TAG, "发送的消息 " + text);
         if (webSocket != null) {
             webSocket.send(text);
         }
@@ -75,7 +80,7 @@ public class WebSocketService extends Service {
     public void close() {
         if (webSocket != null) {
             boolean shutDownFlag = webSocket.close(1000, "manual close");
-            Log.d(TAG, "shutDownFlag " + shutDownFlag);
+            L.e(TAG, "shutDownFlag " + shutDownFlag);
             webSocket = null;
         }
     }
@@ -84,7 +89,7 @@ public class WebSocketService extends Service {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, "reconnect...");
+                L.e(TAG, "reconnect...");
                 if (!connected) {
                     connect();
                 }
@@ -125,7 +130,7 @@ public class WebSocketService extends Service {
          */
         @Override
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-            Log.d(TAG, "onFailure " + t.getMessage());
+            L.e(TAG,"onFailure " + t.getMessage());
             connected = false;
             reconnect();
         }

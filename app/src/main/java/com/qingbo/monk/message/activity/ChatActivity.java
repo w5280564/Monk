@@ -107,7 +107,6 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
     @Subscribe
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
         if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
-            L.e("websocket","聊天页接收消息");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -148,6 +148,7 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
                             EventBus.getDefault().post(new FinishEvent(FinishEvent.CREATE_GROUP));
                             String shequn_id = GsonUtil.getInstance().getValue(json_data,"shequn_id");
                             GroupDetailActivity.actionStart(mActivity, shequn_id);
+                            finish();
                         }
                     }
 

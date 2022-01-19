@@ -161,7 +161,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Subscribe
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
         if (event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE) {
-            L.e("websocket", "首页接收消息");
             getAllUnreadNumber();
         }
     }
