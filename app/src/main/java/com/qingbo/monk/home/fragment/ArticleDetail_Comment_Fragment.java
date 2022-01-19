@@ -65,8 +65,10 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         tab = requireActivity().findViewById(R.id.card_Tab);
         sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
 //        release_Tv = requireActivity().findViewById(R.id.release_Tv);
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
@@ -91,6 +93,9 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
                     if (articleCommentListBean != null) {
@@ -108,7 +113,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -118,23 +124,21 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
 
-    ArticleComment_Adapter mAdapter;
+
 
     public void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
-        mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleComment_Adapter(articleId, type);
-        mAdapter.setEmptyView(addEmptyView("暂无评论", R.mipmap.wupinglun));
-        mAdapter.setLoadMoreView(new CustomLoadMoreView());
-        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
+//        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int pos, ArticleCommentBean data) {
-                if (data != null) {
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), data, articleId, type);
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+                if (item != null) {
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type);
                 }
             }
         });

@@ -58,8 +58,9 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         tab = requireActivity().findViewById(R.id.card_Tab);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,true);
     }
 
     @Override
@@ -85,6 +86,9 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                      articleLikedListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleLikedListBean.class);
                     if (articleLikedListBean != null) {
@@ -102,7 +106,8 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -116,10 +121,8 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleZan_Adapter();
-        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
+//        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
