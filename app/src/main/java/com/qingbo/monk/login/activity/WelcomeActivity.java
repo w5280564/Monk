@@ -16,6 +16,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 
@@ -51,8 +52,10 @@ public class WelcomeActivity extends BaseActivity {
         int isFromType = getIntent().getIntExtra("isFromType",0);//1来自绑定微信  2来自绑定手机号  3正常
         if (isFromType==1) {
             String openid = getIntent().getStringExtra("openid");
-            if (!StringUtil.isBlank(openid)) {
-                showBindPhoneNumberDialog(openid);
+            if (!StringUtil.isBlank(openid)) {//说明第一次绑定微信
+                if (!PrefUtil.isLogin()) {//首次直接使用微信登录，不是先手机号登录（未登录状态），才弹出绑定手机号弹窗
+                    showBindPhoneNumberDialog(openid);
+                }
             }
         }else if(isFromType==2){
             int band_wx = getIntent().getIntExtra("band_wx",0);
