@@ -228,6 +228,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             for (ThemeBean item:mList) {
                 View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_detail_bottom, null);
                 TextView tv_group_host_name = itemView.findViewById(R.id.tv_group_host_name);
+                TextView tv_title = itemView.findViewById(R.id.tv_title);
                 TextView tv_des = itemView.findViewById(R.id.tv_des);
                 TextView tv_create_time = itemView.findViewById(R.id.tv_create_time);
                 ImageView iv_header_host = itemView.findViewById(R.id.iv_header_host);
@@ -243,11 +244,18 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
 
                 String topicType = item.getTopicType();
                 if ("1".equals(topicType)) {//1是话题2是问答
+                    if (!StringUtil.isBlank(item.getTitle())) {
+                        tv_title.setVisibility(View.VISIBLE);
+                        tv_title.setText(item.getTitle());
+                    }else{
+                        tv_title.setVisibility(View.GONE);
+                    }
                     handleCommonData(item.getAvatar(),item.getNickname(),item.getContent()
                             ,iv_header_host,tv_group_host_name,tv_des);
                     handleImageList(item, mNineView);
                     ll_container_answer.setVisibility(View.GONE);
                 }else{
+                    tv_title.setVisibility(View.GONE);
                     List<ThemeBean.DetailDTO> details = item.getDetail();
                     if (!ListUtils.isEmpty(details)) {
                         ll_container_answer.setVisibility(View.VISIBLE);

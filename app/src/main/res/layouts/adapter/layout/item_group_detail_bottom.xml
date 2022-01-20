@@ -48,6 +48,21 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_header_host"/>
 
     <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="@dimen/dp_4"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textColor="@color/text_color_444444"
+        android:textStyle="bold"
+        android:textSize="@dimen/sp_15"
+        android:maxLines="2"
+        app:layout_constraintTop_toBottomOf="@id/iv_header_host"
+        app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
         android:id="@+id/tv_des"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,7 +71,7 @@
         android:text="我一向待人实诚、厚道，但为何到40多岁了，却没有做出什么成就来?而我看社会上很多成功的人士，为人并不真诚，也不厚道，却比我混得好的多。那我这样做是不是错了?是不是也应该像他们那样才对呢?我想说的是......"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintTop_toBottomOf="@id/iv_header_host"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintStart_toStartOf="@id/tv_group_host_name"
         app:layout_constraintEnd_toEndOf="parent"/>
 

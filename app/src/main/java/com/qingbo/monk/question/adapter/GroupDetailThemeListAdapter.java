@@ -43,6 +43,7 @@ public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, Bas
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_role = helper.getView(R.id.tv_role);
+        TextView title_Tv = helper.getView(R.id.title_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
@@ -66,11 +67,18 @@ public class GroupDetailThemeListAdapter extends BaseQuickAdapter<ThemeBean, Bas
         LinearLayout ll_container_answer = helper.getView(R.id.ll_container_answer);
         String topicType = item.getTopicType();
         if ("1".equals(topicType)) {//1是话题2是问答
+            if (!StringUtil.isBlank(item.getTitle())) {
+                title_Tv.setVisibility(View.VISIBLE);
+                title_Tv.setText(item.getTitle());
+            }else{
+                title_Tv.setVisibility(View.GONE);
+            }
             handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole()
                     ,group_Img,group_Name,content_Tv,tv_role);
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
         }else{
+            title_Tv.setVisibility(View.GONE);
             List<ThemeBean.DetailDTO> details = item.getDetail();
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
