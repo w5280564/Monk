@@ -26,6 +26,7 @@ import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -172,6 +173,13 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                         setHint(isAnonymous, authorName, sendComment_Et);
                     }
                     break;
+                case R.id.head_Img:
+                    String authorId1 = item.getAuthorId();
+                    String id1 = PrefUtil.getUser().getId();
+                    if (!TextUtils.equals(authorId1, id1)) {
+                        MyAndOther_Card.actionStart(mActivity, authorId1);
+                    }
+                    break;
             }
         });
     }
@@ -196,6 +204,13 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                 break;
             case R.id.release_Tv:
                 sendMes();
+                break;
+            case R.id.head_Img:
+                String authorId1 = item.getAuthorId();
+                String id1 = PrefUtil.getUser().getId();
+                if (!TextUtils.equals(authorId1, id1)) {
+                    MyAndOther_Card.actionStart(mActivity, authorId1);
+                }
                 break;
         }
     }
@@ -241,6 +256,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         viewTouchDelegate.expandViewTouchDelegate(topMes_Img, 50);
         topFollow_Img.setOnClickListener(this);
         topMes_Img.setOnClickListener(this);
+        head_Img.setOnClickListener(this);
         mAdapter.addHeaderView(myView);
         if (commentListBean != null) {
             CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();

@@ -26,9 +26,11 @@ import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.CustomLoadMoreView;
@@ -124,8 +126,6 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     }
 
 
-
-
     public void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mManager.setOrientation(RecyclerView.VERTICAL);
@@ -170,6 +170,13 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                         setHint(item, sendComment_Et);
                     }
 //                    ((ArticleDetail_Activity)requireActivity()).addComment();
+                    break;
+                case R.id.head_Img:
+                    String authorId1 = item.getAuthorId();
+                    String id1 = PrefUtil.getUser().getId();
+                    if (!TextUtils.equals(authorId1, id1)) {
+                        MyAndOther_Card.actionStart(mActivity, authorId1);
+                    }
                     break;
             }
         });

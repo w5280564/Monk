@@ -57,7 +57,7 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
         mHaveAdapter = new HaveAdapter();
         GridLayoutManager layoutManager = new GridLayoutManager(mActivity, 2);
         mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.addItemDecoration(new GridDividerItemDecoration(DisplayUtil.dip2px(mActivity,23), getResources().getColor(R.color.app_background)));
+        mRecyclerView.addItemDecoration(new GridDividerItemDecoration(DisplayUtil.dip2px(mActivity, 23), getResources().getColor(R.color.app_background)));
         mRecyclerView.setAdapter(mHaveAdapter);
     }
 
@@ -101,12 +101,12 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ZERO));
                 break;
             case R.id.tv_next:
-                if (mChooseGetResourceList.size()<3){
+                if (mChooseGetResourceList.size() < 3) {
                     T.ss("至少选择三个方向");
                     return;
                 }
 
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO,true, StringUtil.listToString(mChooseGetResourceList)));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO, true, StringUtil.listToString(mChooseGetResourceList)));
                 break;
 
         }
@@ -115,11 +115,11 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         HaveBean obj = (HaveBean) adapter.getItem(position);
-        if (obj!=null) {
+        if (obj != null) {
             if (!obj.isCheck()) {
                 mChooseGetResourceList.add(obj.getName());
                 obj.setCheck(true);
-            }else{
+            } else {
                 mChooseGetResourceList.remove(obj.getName());
                 obj.setCheck(false);
             }

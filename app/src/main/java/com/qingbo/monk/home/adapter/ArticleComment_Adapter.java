@@ -92,6 +92,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.commentMore_Tv);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.head_Img);
     }
 
 

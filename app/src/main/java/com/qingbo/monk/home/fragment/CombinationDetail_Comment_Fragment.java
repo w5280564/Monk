@@ -24,9 +24,11 @@ import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.CustomLoadMoreView;
@@ -156,6 +158,13 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     if (!my) {
                         ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
                         setHint(item, sendComment_Et);
+                    }
+                    break;
+                case R.id.head_Img:
+                    String authorId1 = item.getAuthorId();
+                    String id1 = PrefUtil.getUser().getId();
+                    if (!TextUtils.equals(authorId1, id1)) {
+                        MyAndOther_Card.actionStart(mActivity, authorId1);
                     }
                     break;
             }

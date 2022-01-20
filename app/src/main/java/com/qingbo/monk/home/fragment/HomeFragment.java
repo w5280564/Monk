@@ -116,7 +116,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.change_Tv:
                 rotate(change_Img);
-                getServerData();
+                getInterestLab();
         }
     }
 

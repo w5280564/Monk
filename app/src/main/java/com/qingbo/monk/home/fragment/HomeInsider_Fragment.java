@@ -69,7 +69,7 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getListData(true);
+        getListData(false);
     }
 
     InsiderListBean insiderListBean;

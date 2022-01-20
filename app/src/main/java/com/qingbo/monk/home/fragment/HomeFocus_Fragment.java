@@ -62,7 +62,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getListData(true);
+        getListData(false);
     }
 
     FollowListBean homeFllowBean;
@@ -191,7 +191,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                     }
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

@@ -677,6 +677,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 center_Tv.setVisibility(View.VISIBLE);
                 titleFollow_Tv.setVisibility(View.GONE);
                 titleSend_Mes.setVisibility(View.GONE);
+                if (homeFoucsDetail_bean != null) {
+                    Integer followStatus = homeFoucsDetail_bean.getData().getDetail().getFollowStatus();
+                    String isAnonymous = homeFoucsDetail_bean.getData().getDetail().getIsAnonymous();
+                    isFollow(followStatus, follow_Tv, send_Mes, isAnonymous);
+                }
             } else if (state == State.COLLAPSED) {
                 //折叠状态
                 isExpanded = false;

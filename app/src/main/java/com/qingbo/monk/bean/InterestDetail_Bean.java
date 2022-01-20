@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class InterestDetail_Bean {
-
+    @SerializedName("id")
+    private String id;
     @SerializedName("group_id")
     private String groupId;
     @SerializedName("group_name")
@@ -31,4 +32,5 @@ public class InterestDetail_Bean {
     private String count;
     @SerializedName("status_num")
     private String status_num;
+
 }

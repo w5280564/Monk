@@ -177,10 +177,10 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
         switch (v.getId()) {
             case R.id.join_Tv:
                 if (interestDetail_bean != null) {
-                    String groupId = interestDetail_bean.getGroupId();
+                    String id = interestDetail_bean.getId();
                     String statusJoin = interestDetail_bean.getStatusJoin();
                     changeJoin(statusJoin);
-                    getJoin(groupId);
+                    getJoin(id);
                 }
                 break;
         }

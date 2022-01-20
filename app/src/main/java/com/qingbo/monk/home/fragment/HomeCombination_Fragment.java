@@ -61,7 +61,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getListData(true);
+        getListData(false);
     }
 
     CombinationListBean combinationListBean;
@@ -166,7 +166,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                     }
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

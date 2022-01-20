@@ -65,7 +65,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getListData(true);
+        getListData(false);
     }
 
     FollowListBean homeFllowBean;
@@ -236,7 +236,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                     }
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

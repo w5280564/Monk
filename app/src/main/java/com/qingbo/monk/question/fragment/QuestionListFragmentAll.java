@@ -152,10 +152,10 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                     TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
                     TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
                     ((QuestionListAdapterAll) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.getData().remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
+//                    if (followStateBena.getFollowStatus() == 0) {
+//                        mAdapter.getData().remove(position);
+//                        mAdapter.notifyItemChanged(position);
+//                    }
                 }
             }
         }, true);
