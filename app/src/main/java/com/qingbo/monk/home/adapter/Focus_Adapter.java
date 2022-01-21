@@ -5,6 +5,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +34,6 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
     public Focus_Adapter() {
         super(R.layout.foucs_adapter);
     }
-
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HomeFllowBean item) {
@@ -96,6 +96,7 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.group_Img);
+
     }
 
     /**

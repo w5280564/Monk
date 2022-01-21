@@ -4,8 +4,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,6 +38,8 @@ import butterknife.BindView;
 public class MySet_Activity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.phone_MyView)
     MyArrowItemView phone_MyView;
+    @BindView(R.id.wechatContent_Tv)
+    TextView wechatContent_Tv;
     @BindView(R.id.about_MyView)
     MyArrowItemView about_MyView;
     @BindView(R.id.clean_MyView)
@@ -49,8 +53,19 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
+    protected void initLocalData() {
+        String username = PrefUtil.getUser().getUsername();
+        phone_MyView.getTvContent().setText(username);
+
+        String auth_nickname = PrefUtil.getUser().getAuth_nickname();
+        if (TextUtils.isEmpty(auth_nickname)) {
+            wechatContent_Tv.setText("空");
+        }
+        wechatContent_Tv.setText(auth_nickname);
+    }
+
+    @Override
     protected void initView() {
-//        phone_MyView.getTvContent().setText();
 
         setData();
     }

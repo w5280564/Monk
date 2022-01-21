@@ -66,6 +66,17 @@ public class UserBean implements Serializable {
     private Integer bandWx;
     @SerializedName("follow_status")
     private Integer followStatus;
+    @SerializedName("auth_nickname")
+    private String auth_nickname;
+
+
+    public String getAuth_nickname() {
+        return auth_nickname;
+    }
+
+    public void setAuth_nickname(String auth_nickname) {
+        this.auth_nickname = auth_nickname;
+    }
 
     public String getId() {
         return id;
