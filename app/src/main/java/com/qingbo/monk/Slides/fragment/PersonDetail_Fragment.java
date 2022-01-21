@@ -78,6 +78,8 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
     TextView Keywords_Tv;
     @BindView(R.id.stock_Con)
     ConstraintLayout stock_Con;
+    @BindView(R.id.stockContent_Con)
+    ConstraintLayout stockContent_Con;
 
     /**
      * @param
@@ -143,11 +145,15 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
                         String avatar = listDTO.getAvatar();
                         GlideUtils.loadCircleImage(mActivity, head_Img, avatar, R.mipmap.icon_logo);
 
-                        nickName_Tv.setText(listDTO.getNickname());
-                        company_Tv.setText(listDTO.getCompanyName());
-                        brief_Tv.setText(listDTO.getDescription());
+//                        nickName_Tv.setText(listDTO.getNickname());
+//                        company_Tv.setText(listDTO.getCompanyName());
+                        originalValue(listDTO.getNickname(), "暂未填写", "", nickName_Tv);
+                        originalValue(listDTO.getCompanyName(), "暂未填写", "", company_Tv);
+                        originalValue(listDTO.getDescription(), "暂未填写", "", brief_Tv);
+//                        brief_Tv.setText(listDTO.getDescription());
                         labelFlow(lable_Flow, mActivity, listDTO.getTagName());
-                        Keywords_Tv.setText(listDTO.getKeywords());
+//                        Keywords_Tv.setText(listDTO.getKeywords());
+                        originalValue(listDTO.getKeywords(), "暂未填写", "", Keywords_Tv);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         mNineView.setLayoutManager(linearLayoutManager);
@@ -162,8 +168,9 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
                             persomCombination_shares_adapter.setNewData(list);
                             setData(0, listDTO);
                         }else {
-                            stock_Con.setVisibility(View.GONE);
-                            chart.setVisibility(View.GONE);
+                            stock_Con.setVisibility(View.VISIBLE);
+                            stockContent_Con.setVisibility(View.GONE);
+                            chart.setVisibility(View.VISIBLE);
                         }
                     }
                 }
@@ -330,4 +337,19 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
                 break;
         }
     }
+
+    /**
+     * 没有数据添加默认值
+     *
+     * @param value
+     * @param originalStr
+     */
+    private void originalValue(Object value, String originalStr, String hint, TextView tv) {
+        if (TextUtils.isEmpty((CharSequence) value)) {
+            tv.setText(hint + originalStr);
+        } else {
+            tv.setText(hint + (CharSequence) value);
+        }
+    }
+
 }

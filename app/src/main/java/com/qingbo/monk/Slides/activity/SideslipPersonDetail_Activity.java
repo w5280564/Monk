@@ -21,7 +21,7 @@ import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import butterknife.BindView;
 
 /**
- * 侧边栏 人物
+ * 侧边栏
  */
 public class SideslipPersonDetail_Activity extends BaseTabLayoutActivity {
     private String nickname, id;

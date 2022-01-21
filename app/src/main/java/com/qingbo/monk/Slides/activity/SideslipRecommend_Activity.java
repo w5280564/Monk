@@ -131,7 +131,7 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     HomeInterestBean interestBean = new Gson().fromJson(json_root, HomeInterestBean.class);
                     if (interestBean != null) {
-                        labelList(mContext, interest_Lin, interestBean.getData());
+                        labelList(mActivity, interest_Lin, interestBean.getData());
                     }
                 }
             }

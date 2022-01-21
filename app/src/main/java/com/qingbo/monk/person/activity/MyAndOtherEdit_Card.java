@@ -179,14 +179,6 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                         address_MyView.getTvContent().setText(s);
                         originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
 
-//                        interestLabelFlow(interest_Flow, mActivity, userBean.getInterested());
-//
-//                        originalValue(userBean.getDomain(), "暂未填写", "", good_EditView.getContent_Tv());
-//                        originalValue(userBean.getResource(), "暂未填写", "", resources_EditView.getContent_Tv());
-//                        originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
-//                        originalValue(userBean.getResearch(), "暂未填写", "", learn_EditView.getContent_Tv());
-//                        originalValue(userBean.getGetResource(), "暂未填写", "", harvest_EditView.getContent_Tv());
-
                         interestLabelFlow(interest_EditView.getLabel_Flow(), mActivity, userBean.getInterested());
                         interestLabelFlow(good_EditView.getLabel_Flow(), mActivity, userBean.getDomain());
                         interestLabelFlow(resources_EditView.getLabel_Flow(), mActivity, userBean.getResource());

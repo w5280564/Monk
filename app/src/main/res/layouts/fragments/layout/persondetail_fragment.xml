@@ -193,14 +193,13 @@
                     android:drawableStart="@mipmap/icon_jiantou"
                     android:drawablePadding="@dimen/dp_3"
                     android:gravity="bottom"
-                    android:text="2021-中报"
                     android:textColor="@color/text_color_444444"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
+                    android:id="@+id/stockContent_Con"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_11"

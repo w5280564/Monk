@@ -87,7 +87,6 @@
             app:layout_constraintTop_toTopOf="@+id/view2" />
 
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
