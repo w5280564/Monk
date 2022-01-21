@@ -13,6 +13,8 @@
         android:layout_marginStart="@dimen/dp_7"
         android:background="@drawable/lable_txt_radius"
         android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/dp_10"
         android:paddingStart="@dimen/dp_4"
         android:paddingEnd="@dimen/dp_4"
         android:text="我"

@@ -51,8 +51,8 @@ public class Edit_Change_Industry extends BaseActivity {
 
     /**
      * @param context
-     * @param nickname   修改资料必须携带
-     * @param domain 擅长方向
+     * @param nickname 修改资料必须携带
+     * @param domain   擅长方向
      */
     public static void actionStart(Context context, String nickname, String domain) {
         Intent intent = new Intent(context, Edit_Change_Industry.class);
@@ -81,7 +81,11 @@ public class Edit_Change_Industry extends BaseActivity {
                     T.s("至少选择三个", 3000);
                     return;
                 }
-                StringBuilder stringBuilder = new StringBuilder();
+                if (choice_LableMap.size() > 7){
+                    T.s("不能多于7个", 3000);
+                    return;
+                }
+                    StringBuilder stringBuilder = new StringBuilder();
                 for (Iterator i = choice_LableMap.keySet().iterator(); i.hasNext(); ) {
                     Object obj = i.next();
                     stringBuilder.append(choice_LableMap.get(obj) + ",");
@@ -187,7 +191,7 @@ public class Edit_Change_Industry extends BaseActivity {
             String name = model.getChildren().get(i).getName();
             choiceLable.add(false);
             label_Txt.setTag(i);
-            hasMes(name,label_Txt,choiceLable);
+            hasMes(name, label_Txt, choiceLable);
             label_Txt.setText(name);
             choiceTxt.add(label_Txt);
             myFlex.addView(myView);
@@ -209,7 +213,7 @@ public class Edit_Change_Industry extends BaseActivity {
         }
     }
 
-    private void hasMes(String name,TextView textView,List<Boolean> choiceLabel) {
+    private void hasMes(String name, TextView textView, List<Boolean> choiceLabel) {
         if (domain.contains(name)) {
             int tag = (int) textView.getTag();
             choiceLabel.set(tag, true);
@@ -218,8 +222,6 @@ public class Edit_Change_Industry extends BaseActivity {
             choice_LableMap.put(name, name);
         }
     }
-
-
 
 
 }

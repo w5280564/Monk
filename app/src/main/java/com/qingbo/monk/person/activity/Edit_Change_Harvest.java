@@ -113,6 +113,10 @@ public class Edit_Change_Harvest extends BaseActivity {
                     T.ss("至少选择三个方向");
                     return;
                 }
+                if (mChooseGetResourceList.size() > 7){
+                    T.s("方向不能多于7个", 3000);
+                    return;
+                }
                 String s = StringUtil.listToString(mChooseGetResourceList);
                 edit_Info(s);
                 break;

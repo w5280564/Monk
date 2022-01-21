@@ -229,6 +229,7 @@ public class HttpUrl {
     public static final String fans_Like_List = "user/user/fans-list";//粉丝列表
     public static final String User_apply = "user/user/apply-originator";//申请成为创作者
     public static final String User_Update_Count = "square/set/new-update-count";//新增评论或文章的数量
+    public static final String User_AllUpdate_Count = "square/set/new-update-total";//新增的总数
 
 
 

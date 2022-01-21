@@ -86,6 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/dp_10"
                         android:text="进入我的主页"
+                        android:padding="@dimen/dp_10"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="@dimen/sp_10"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_right"

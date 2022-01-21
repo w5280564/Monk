@@ -29,8 +29,8 @@ import butterknife.BindView;
  * 社交主页-我/他的档案
  */
 public class MyArchives_Fragment extends BaseLazyFragment {
-    @BindView(R.id.interest_Flow)
-    FlowLayout interest_Flow;
+    @BindView(R.id.interest_EditView)
+    MyCardEditView interest_EditView;
     @BindView(R.id.good_EditView)
     MyCardEditView good_EditView;
     @BindView(R.id.resources_EditView)
@@ -91,13 +91,13 @@ public class MyArchives_Fragment extends BaseLazyFragment {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        interestLabelFlow(interest_Flow, requireActivity(), userBean.getInterested());
+                        interestLabelFlow(interest_EditView.getLabel_Flow(), requireActivity(), userBean.getInterested());
+                        interestLabelFlow(good_EditView.getLabel_Flow(), requireActivity(), userBean.getDomain());
+                        interestLabelFlow(resources_EditView.getLabel_Flow(), requireActivity(), userBean.getResource());
+                        interestLabelFlow(learn_EditView.getLabel_Flow(), requireActivity(), userBean.getResearch());
+                        interestLabelFlow(harvest_EditView.getLabel_Flow(), requireActivity(), userBean.getGetResource());
 
-                        originalValue(userBean.getDomain(), "暂未填写", good_EditView.getContent_Tv());
-                        originalValue(userBean.getResource(), "暂未填写", resources_EditView.getContent_Tv());
                         originalValue(userBean.getAchievement(), "暂未填写", achievement_EditView.getContent_Tv());
-                        originalValue(userBean.getResearch(), "暂未填写", learn_EditView.getContent_Tv());
-                        originalValue(userBean.getGetResource(), "暂未填写", harvest_EditView.getContent_Tv());
                     }
                 }
             }

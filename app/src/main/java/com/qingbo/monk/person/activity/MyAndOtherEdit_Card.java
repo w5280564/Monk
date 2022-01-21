@@ -72,10 +72,8 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     @BindView(R.id.urlLabel_Lin)
     LinearLayout urlLabel_Lin;
 
-    @BindView(R.id.interestEdit_Tv_)
-    TextView interestEdit_Tv_;
-    @BindView(R.id.interest_Flow)
-    FlowLayout interest_Flow;
+    @BindView(R.id.interest_EditView)
+    MyCardEditView interest_EditView;
     @BindView(R.id.good_EditView)
     MyCardEditView good_EditView;
     @BindView(R.id.resources_EditView)
@@ -126,7 +124,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     @Override
     protected void initView() {
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 200);
-        interestEdit_Tv_.setVisibility(View.VISIBLE);
+        interest_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         good_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         resources_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         achievement_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
@@ -145,7 +143,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         address_MyView.setOnClickListener(this);
         explain_Con.setOnClickListener(this);
         home_Con.setOnClickListener(this);
-        interestEdit_Tv_.setOnClickListener(this);
+        interest_EditView.getEdit_Tv().setOnClickListener(this);
         good_EditView.getEdit_Tv().setOnClickListener(this);
         resources_EditView.getEdit_Tv().setOnClickListener(this);
         achievement_EditView.getEdit_Tv().setOnClickListener(this);
@@ -180,13 +178,22 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                         String s = userBean.getProvince() + " " + userBean.getCity() + " " + userBean.getCounty();
                         address_MyView.getTvContent().setText(s);
                         originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
-                        interestLabelFlow(interest_Flow, mActivity, userBean.getInterested());
 
-                        originalValue(userBean.getDomain(), "暂未填写", "", good_EditView.getContent_Tv());
-                        originalValue(userBean.getResource(), "暂未填写", "", resources_EditView.getContent_Tv());
+//                        interestLabelFlow(interest_Flow, mActivity, userBean.getInterested());
+//
+//                        originalValue(userBean.getDomain(), "暂未填写", "", good_EditView.getContent_Tv());
+//                        originalValue(userBean.getResource(), "暂未填写", "", resources_EditView.getContent_Tv());
+//                        originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
+//                        originalValue(userBean.getResearch(), "暂未填写", "", learn_EditView.getContent_Tv());
+//                        originalValue(userBean.getGetResource(), "暂未填写", "", harvest_EditView.getContent_Tv());
+
+                        interestLabelFlow(interest_EditView.getLabel_Flow(), mActivity, userBean.getInterested());
+                        interestLabelFlow(good_EditView.getLabel_Flow(), mActivity, userBean.getDomain());
+                        interestLabelFlow(resources_EditView.getLabel_Flow(), mActivity, userBean.getResource());
+                        interestLabelFlow(learn_EditView.getLabel_Flow(), mActivity, userBean.getResearch());
+                        interestLabelFlow(harvest_EditView.getLabel_Flow(), mActivity, userBean.getGetResource());
+
                         originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
-                        originalValue(userBean.getResearch(), "暂未填写", "", learn_EditView.getContent_Tv());
-                        originalValue(userBean.getGetResource(), "暂未填写", "", harvest_EditView.getContent_Tv());
 
                         List<UserBean.ColumnDTO> column = userBean.getColumn();
                         urlLabelFlow(urlLabel_Lin, mActivity, column);
@@ -294,10 +301,6 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             case R.id.home_Con:
                 Edit_ChangePage.actionStart(mActivity, userBean.getNickname());//修改头像
                 break;
-            case R.id.interestEdit_Tv_:
-                String interested = userBean.getInterested();
-                Edit_Change_Interest.actionStart(mActivity, userBean.getNickname(), interested);
-                break;
         }
         if (v.equals(good_EditView.getEdit_Tv())) {
             String domain = userBean.getDomain();
@@ -313,6 +316,9 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         } else if (v.equals(harvest_EditView.getEdit_Tv())) {
             String getResource = userBean.getGetResource();
             Edit_Change_Harvest.actionStart(mActivity, userBean.getNickname(), getResource);
+        }else if (v.equals(interest_EditView.getEdit_Tv())) {
+            String interested = userBean.getInterested();
+            Edit_Change_Interest.actionStart(mActivity, userBean.getNickname(), interested);
         }
     }
 

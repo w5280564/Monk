@@ -13,11 +13,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.qingbo.monk.R;
+import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 
 public class MyCardEditView extends ConstraintLayout {
     private TextView content_Tv;
     private TextView edit_Tv;
+
+
+    private FlowLayout label_Flow;
 
     public MyCardEditView(Context context) {
         this(context, null);
@@ -38,6 +42,7 @@ public class MyCardEditView extends ConstraintLayout {
         content_Tv = findViewById(R.id.content_Tv);
         View line_View = findViewById(R.id.line_View);
         edit_Tv = findViewById(R.id.edit_Tv);
+        label_Flow = findViewById(R.id.label_Flow);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CardItemView);
 
@@ -98,6 +103,9 @@ public class MyCardEditView extends ConstraintLayout {
         boolean showEditTv = a.getBoolean(R.styleable.CardItemView_ShowEditTv, true);
         edit_Tv.setVisibility(showEditTv ? VISIBLE : GONE);
 
+        boolean showLabel_Flow = a.getBoolean(R.styleable.CardItemView_showLabelFlow, true);
+        label_Flow.setVisibility(showLabel_Flow ? VISIBLE : GONE);
+
 
         a.recycle();
 
@@ -111,6 +119,9 @@ public class MyCardEditView extends ConstraintLayout {
         return edit_Tv;
     }
 
+    public FlowLayout getLabel_Flow() {
+        return label_Flow;
+    }
 
     /**
      * sp to px

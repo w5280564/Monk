@@ -68,8 +68,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refresh_layout;
 
-    @BindView(R.id.interest_Flow)
-    FlowLayout interest_Flow;
+    @BindView(R.id.interest_EditView)
+    MyCardEditView interest_EditView;
     @BindView(R.id.good_EditView)
     MyCardEditView good_EditView;
     @BindView(R.id.resources_EditView)
@@ -156,13 +156,13 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         labelFlow(label_Lin, requireActivity(), userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
-                        interestLabelFlow(interest_Flow, requireActivity(), userBean.getInterested());
+                        interestLabelFlow(interest_EditView.getLabel_Flow(), requireActivity(), userBean.getInterested());
+                        interestLabelFlow(good_EditView.getLabel_Flow(), requireActivity(), userBean.getDomain());
+                        interestLabelFlow(resources_EditView.getLabel_Flow(), requireActivity(), userBean.getResource());
+                        interestLabelFlow(learn_EditView.getLabel_Flow(), requireActivity(), userBean.getResearch());
+                        interestLabelFlow(harvest_EditView.getLabel_Flow(), requireActivity(), userBean.getGetResource());
 
-                        originalValue(userBean.getDomain(), "暂未填写", good_EditView.getContent_Tv());
-                        originalValue(userBean.getResource(), "暂未填写", resources_EditView.getContent_Tv());
                         originalValue(userBean.getAchievement(), "暂未填写", achievement_EditView.getContent_Tv());
-                        originalValue(userBean.getResearch(), "暂未填写", learn_EditView.getContent_Tv());
-                        originalValue(userBean.getGetResource(), "暂未填写", harvest_EditView.getContent_Tv());
                     }
                 }
             }
@@ -276,7 +276,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             case R.id.tv_fabu:
                 if (userBean != null) {
                     String isOriginator = userBean.getIsOriginator();
-                    MyCrateArticle_Avtivity.actionStart(mActivity,isOriginator);
+                    MyCrateArticle_Avtivity.actionStart(mActivity, isOriginator);
                 }
                 break;
             case R.id.tv_caogao:

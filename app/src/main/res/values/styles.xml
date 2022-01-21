@@ -10,6 +10,7 @@
         <attr name="cardContentSize" format="dimension|reference"/>
         <attr name="ShowLine" format="boolean"/>
         <attr name="ShowEditTv" format="boolean"/>
+        <attr name="showLabelFlow" format="boolean"/>
 
 
     </declare-styleable>

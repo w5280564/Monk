@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -58,9 +59,9 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     MyArrowItemView arrowItemView_city;
     private boolean haveUploadImg;
     private ActivityResultLauncher mActivityResultLauncher;
-    private String[] yearList = {"1-3年","3-5年","5-10年","10-15年"};
+    private String[] yearList = {"1-3年", "3-5年", "5-10年", "10-15年"};
     private List<AreaBean> mAreaList = new ArrayList<>();
-    private String industryName,city,county,work;
+    private String industryName, city, county, work;
     private String avatar;
 
     @Override
@@ -72,13 +73,13 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     @Override
     protected void initView() {
         haveUploadImg = !StringUtil.isBlank(SharePref.user().getUserHead());
-        GlideUtils.loadCircleImage(mContext,iv_header, SharePref.user().getUserHead());
+        GlideUtils.loadCircleImage(mContext, iv_header, SharePref.user().getUserHead());
         mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if (result!=null) {
+                if (result != null) {
                     int resultCode = result.getResultCode();
-                    if (resultCode==Activity.RESULT_OK) {
+                    if (resultCode == Activity.RESULT_OK) {
                         industryName = result.getData().getStringExtra("name");
                         arrowItemView_industry.getTip().setVisibility(View.GONE);
                         arrowItemView_industry.getTvContent().setText(industryName);
@@ -89,26 +90,26 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     }
 
     private void showCityDialog() {
-        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity,mAreaList, new PickCityDialog.CityChooseIdCallback() {
+        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity, mAreaList, new PickCityDialog.CityChooseIdCallback() {
             @Override
             public void onConfirm(List<String> nameList, List<Integer> idList) {
                 if (ListUtils.isEmpty(nameList)) {
                     return;
                 }
-                if (nameList.size()<2) {
+                if (nameList.size() < 2) {
                     return;
                 }
                 arrowItemView_city.getTip().setVisibility(View.GONE);
                 city = nameList.get(0);
                 county = nameList.get(1);
-                arrowItemView_city.getTvContent().setText(city+"-"+county);
+                arrowItemView_city.getTvContent().setText(city + "-" + county);
             }
         });
         mPickCityDialog.show();
     }
 
     private void showPickStringDialog() {
-        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList),"", new PickStringDialog.ChooseCallback() {
+        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList), "", new PickStringDialog.ChooseCallback() {
             @Override
             public void onConfirm(String value) {
                 arrowItemView_year.getTip().setVisibility(View.GONE);
@@ -135,7 +136,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             BaseAreaBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseAreaBean.class);
-                            if (obj!=null) {
+                            if (obj != null) {
                                 mAreaList.addAll(obj.getList());
                             }
                         }
@@ -148,9 +149,9 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     }
 
 
-    @OnClick({R.id.iv_header,R.id.arrowItemView_industry,R.id.arrowItemView_year,R.id.arrowItemView_city,R.id.tv_next})
+    @OnClick({R.id.iv_header, R.id.arrowItemView_industry, R.id.arrowItemView_year, R.id.arrowItemView_city, R.id.tv_next})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_header:
                 checkGalleryPermission(1);
                 break;
@@ -165,36 +166,36 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 showCityDialog();
                 break;
             case R.id.tv_next:
-                if(!haveUploadImg){
+                if (!haveUploadImg) {
                     T.ss("请上传照片");
                     return;
                 }
 
                 String nickname = StringUtil.getEditText(et_name);
 
-                if(StringUtil.isBlank(nickname)){
+                if (StringUtil.isBlank(nickname)) {
                     T.ss("请填写名称");
                     return;
                 }
 
-                if(StringUtil.isBlank(industryName)){
+                if (StringUtil.isBlank(industryName)) {
                     T.ss("请选择行业");
                     return;
                 }
 
 
-                if(StringUtil.isBlank(work)){
+                if (StringUtil.isBlank(work)) {
                     T.ss("请选择工作年限");
                     return;
                 }
 
 
-                if(StringUtil.isBlank(city)){
+                if (StringUtil.isBlank(city)) {
                     T.ss("请选择城市");
                     return;
                 }
 
-                JSONObject jsonObject  = new JSONObject();
+                JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("nickname", nickname);
                     jsonObject.put("city", city);
@@ -206,19 +207,18 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
 
                 SharePref.server().setUserNickName(nickname);
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE,true,avatar,nickname,city,county,work,industryName));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE, true, avatar, nickname, city, county, work, industryName));
                 break;
 
         }
     }
 
 
-
     @Override
     protected void onUploadSuccess(String imageString) {
         haveUploadImg = true;
         avatar = imageString;
-        GlideUtils.loadImage(mContext,iv_header,avatar);
+        GlideUtils.loadImage(mContext, iv_header, avatar);
         SharePref.user().setUserHead(avatar);
     }
 

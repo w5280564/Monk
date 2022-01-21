@@ -4,6 +4,7 @@ import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
 import android.content.Context;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,14 +30,17 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.bean.HomeAllCount_Bean;
 import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.bean.InterestBean;
+import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
@@ -90,10 +94,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        getInterestLab();
+        getInterestLab(false);
+        getAllUpdateCount(false);
     }
 
-    private void getInterestLab() {
+    private void getInterestLab(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
 //        requestMap.put("page", page + "");
         requestMap.put("limit", "3");
@@ -108,7 +113,29 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     }
                 }
             }
-        }, true);
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+    /**
+     * 未读消息
+     */
+    private void getAllUpdateCount(boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        HttpSender httpSender = new HttpSender(HttpUrl.User_AllUpdate_Count, "新增的总数", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    HomeAllCount_Bean homeAllCount_bean = GsonUtil.getInstance().json2Bean(json_root, HomeAllCount_Bean.class);
+                    if (!TextUtils.equals(homeAllCount_bean.getData(), "0")) {
+                        manCount_Tv.setVisibility(View.VISIBLE);
+                        manCount_Tv.setText(homeAllCount_bean.getData());
+                    }
+                }
+            }
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
@@ -118,7 +145,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.change_Tv:
                 rotate(change_Img);
-                getInterestLab();
+                getInterestLab(false);
         }
     }
 
@@ -132,6 +159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
     /**
      * 首页我的兴趣组
+     *
      * @param context
      * @param myFlex
      * @param model
@@ -163,7 +191,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             myView.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
                 String id = model.getList().get(tag).getId();
-                InterestDetail_Activity.startActivity(requireActivity(),"0",id);
+                InterestDetail_Activity.startActivity(requireActivity(), "0", id);
             });
             join_Tv.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();

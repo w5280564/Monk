@@ -105,6 +105,10 @@ public class StepTwoFragmentLogin extends BaseFragment implements BaseQuickAdapt
                     T.ss("至少选择三个方向");
                     return;
                 }
+                if (mChooseGetResourceList.size() > 7){
+                    T.s("方向不能多于7个", 3000);
+                    return;
+                }
 
                 EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_TWO, true, StringUtil.listToString(mChooseGetResourceList)));
                 break;

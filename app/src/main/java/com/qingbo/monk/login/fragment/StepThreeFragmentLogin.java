@@ -59,6 +59,10 @@ public class StepThreeFragmentLogin extends BaseFragment {
                     T.s("至少选择三个话题",3000);
                     return;
                 }
+                if (choice_LableMap.size() > 7){
+                    T.s("不能多于7个", 3000);
+                    return;
+                }
                 StringBuilder stringBuilder = new StringBuilder();
                 for (Iterator i = choice_LableMap.keySet().iterator(); i.hasNext();) {
                     Object obj = i.next();
