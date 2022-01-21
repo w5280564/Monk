@@ -62,7 +62,9 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         tab = requireActivity().findViewById(R.id.card_Tab);
         sendComment_Et = requireActivity().findViewById(R.id.sendComment_Et);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
@@ -73,7 +75,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     ArticleCommentListBean articleCommentListBean;
@@ -85,6 +88,9 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     articleCommentListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleCommentListBean.class);
                     if (articleCommentListBean != null) {
@@ -102,7 +108,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -111,7 +118,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         getListData(false);
     }
 
-    ArticleComment_Adapter mAdapter;
+//    ArticleComment_Adapter mAdapter;
 
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
@@ -119,19 +126,19 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mRecyclerView.setLayoutManager(mMangaer);
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new ArticleComment_Adapter(id, "");
-        mAdapter.setEmptyView(addEmptyView("暂无评论", 0));
-        mAdapter.setLoadMoreView(new CustomLoadMoreView());
-        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
+//        mAdapter.setEmptyView(addEmptyView("暂无评论", 0));
+//        mAdapter.setLoadMoreView(new CustomLoadMoreView());
+//        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
-            @Override
-            public void onItemClick(View view, int pos, ArticleCommentBean data) {
-                if (data != null) {
-                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), data, id);
-                }
-
-            }
-        });
+//        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
+//            @Override
+//            public void onItemClick(View view, int pos, ArticleCommentBean data) {
+//                if (data != null) {
+//                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), data, id);
+//                }
+//
+//            }
+//        });
     }
 
 

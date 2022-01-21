@@ -32,6 +32,7 @@ import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.Slides.activity.SideslipInterest_Activity;
 import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
+import com.qingbo.monk.Slides.activity.SideslipRecommend_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
@@ -339,7 +340,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 break;
             case R.id.recomm_MyView:
                 closeLeft();
-                homeFragment.changePager(1);
+//                homeFragment.changePager(1);
+                SideslipRecommend_Activity.startActivity(mActivity,"");
                 break;
             case R.id.focus_MyView:
                 closeLeft();

@@ -51,6 +51,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/myagreement_activity.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/mycrate_center.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/myset_aboutme_update.xml" value="0.32447916666666665" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/sidesliprecommend_top.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/articlecomment_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/articlezan_adapter.xml" value="0.32864583333333336" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/character_adapter.xml" value="0.36302083333333335" />
@@ -99,6 +100,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sidesli_follow.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_expert.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_insider.xml" value="0.34512820512820513" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_recommend.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_stock.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/card_itemview.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/edit_change_achievement.xml" value="0.36614583333333334" />

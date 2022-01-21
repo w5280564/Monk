@@ -82,7 +82,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     ArticleCommentListBean articleCommentListBean;
@@ -133,15 +134,18 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         mAdapter = new ArticleComment_Adapter(articleId, type);
 //        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
-                if (item != null) {
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type);
-                }
-            }
-        });
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+//                if (item != null) {
+//                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type);
+//                }
+//            }
+//        });
+
+
+
     }
 
 

@@ -133,7 +133,13 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         ArticleComment_Childrens_Adapter childrens_adapter = new ArticleComment_Childrens_Adapter();
         mNineView.setAdapter(childrens_adapter);
         childrens_adapter.setNewData(data.getChildrens());
-        childrens_adapter.setOnItemClickListener((adapter, view, position) -> onClickLister.onItemClick(view,position,data));
+        childrens_adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//                onClickLister.onItemClick(view, position, data);
+                ArticleDetali_CommentList_Activity.startActivity(mContext, data, articleId, type);
+            }
+        });
     }
 
     public interface OnClickLister {

@@ -222,24 +222,36 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
                     ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
                     TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
-                    if (likedStateBena != null) {
-                        //0取消点赞成功，1点赞成功
-                        int nowLike;
-                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLiked_status() == 0) {
-                            nowLike -= 1;
-                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLiked_status() == 1) {
-                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
-                            nowLike += 1;
-                        }
-                        follow_Count.setText(nowLike + "");
-                    }
+                    changeLike(likedStateBena, follow_Img, follow_Count);
                 }
             }
         }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+    /**
+     * 修改点赞状态
+     *
+     * @param likedStateBena
+     * @param follow_Img
+     * @param follow_Count
+     */
+    private void changeLike(LikedStateBena likedStateBena, ImageView follow_Img, TextView follow_Count) {
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLiked_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLiked_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            follow_Count.setText(nowLike + "");
+        }
+    }
+
 
 }
