@@ -68,6 +68,7 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
 

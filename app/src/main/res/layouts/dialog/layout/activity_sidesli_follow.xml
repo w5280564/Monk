@@ -23,6 +23,7 @@
         android:id="@+id/card_Tab"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_39"
+        app:tabRippleColor="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:tabBackground="@color/transparent"

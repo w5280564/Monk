@@ -62,6 +62,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
 
@@ -222,7 +223,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
                     }
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

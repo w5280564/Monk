@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
+import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MySet_Activity;
@@ -426,6 +428,43 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     protected void onResume() {
         super.onResume();
         getAllUnreadNumber();
+        getUpdateCount(false);
+    }
+
+    /**
+     * 关注与问答消息数
+     */
+    private void getUpdateCount(boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Update_Count, "新增评论或文章的数量", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    MainUpdateCount_Bean mainUpdateCount_bean = GsonUtil.getInstance().json2Bean(json_data, MainUpdateCount_Bean.class);
+                    if (mainUpdateCount_bean != null) {
+                        String newArticle = mainUpdateCount_bean.getNewArticle();
+                        if (!TextUtils.equals(newArticle, "0")) {
+                            focus_MyView.getCount_Tv().setVisibility(View.VISIBLE);
+                            focus_MyView.getCount_Tv().setText(newArticle);
+                        }
+                        String newSquareComment = mainUpdateCount_bean.getNewSquareComment();
+                        if (!TextUtils.equals(newSquareComment, "0")) {
+                            wen_MyView.getCount_Tv().setVisibility(View.VISIBLE);
+                            wen_MyView.getCount_Tv().setText(newSquareComment);
+                        }
+//                        if (TextUtils.isEmpty(newArticle) && TextUtils.isEmpty(newSquareComment)){
+//                            int count = Integer.parseInt(newArticle);
+//                            int commentCount = Integer.parseInt(newSquareComment);
+//
+//                        }
+
+                    }
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
     }
 
     /**
@@ -456,6 +495,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
 
     private String handleUnreadNum(int unreadMsgCount) {
         if (unreadMsgCount <= 99) {

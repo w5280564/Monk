@@ -56,9 +56,10 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无资讯", 0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无资讯", 0,true);
     }
 
     @Override
@@ -69,7 +70,8 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     StockOrFund_QuestionListBean stockOrFund_questionListBean;
@@ -84,6 +86,9 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                      stockOrFund_questionListBean = GsonUtil.getInstance().json2Bean(json_data, StockOrFund_QuestionListBean.class);
                     if (stockOrFund_questionListBean != null) {
@@ -99,7 +104,8 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override

@@ -38,12 +38,21 @@
         app:layout_constraintTop_toBottomOf="@+id/title_bar" />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/card_Recycler"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/query_Edit" />
+        app:layout_constraintTop_toBottomOf="@id/query_Edit">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/card_Recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <ImageView

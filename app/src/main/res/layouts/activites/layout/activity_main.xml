@@ -74,6 +74,7 @@
                     app:layout_constraintStart_toStartOf="@id/nickName_Tv"
                     app:layout_constraintTop_toBottomOf="@id/nickName_Tv" />
 
+
                 <ImageView
                     android:id="@+id/head_Tv"
                     android:layout_width="@dimen/dp_28"

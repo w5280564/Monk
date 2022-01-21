@@ -46,6 +46,7 @@ import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -136,6 +137,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private String type;
     boolean isReply = false;
     boolean isExpanded = false; //是否展开
+    private boolean isExpert;
 
     /**
      * @param context
@@ -147,6 +149,22 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         intent.putExtra("articleId", articleId);
         intent.putExtra("isShowTop", isShowTop);
         intent.putExtra("type", type);
+        context.startActivity(intent);
+    }
+
+    /**
+     * @param context
+     * @param articleId
+     * @param isShowTop
+     * @param type
+     * @param isExpert  true是专家
+     */
+    public static void startActivity(Context context, String articleId, String isShowTop, String type, boolean isExpert) {
+        Intent intent = new Intent(context, ArticleDetail_Activity.class);
+        intent.putExtra("articleId", articleId);
+        intent.putExtra("isShowTop", isShowTop);
+        intent.putExtra("type", type);
+        intent.putExtra("isExpert", isExpert);
         context.startActivity(intent);
     }
 
@@ -162,6 +180,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         articleId = getIntent().getStringExtra("articleId");
         isShowTop = getIntent().getStringExtra("isShowTop");
         type = getIntent().getStringExtra("type");
+        isExpert = getIntent().getBooleanExtra("isExpert", false);
     }
 
     @Override
@@ -210,17 +229,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 postLikedData(likeId);
                 break;
             case R.id.join_Tv:
-                if (homeFoucsDetail_bean.getData().getDetail().getExtra() == null) {
-                    return;
-                }
-                String action = homeFoucsDetail_bean.getData().getDetail().getAction();//1是社群 2是兴趣组
-                String id = homeFoucsDetail_bean.getData().getDetail().getExtra().getId();
-                if (TextUtils.equals(action, "1")) {
-//                    getJoinSheQun(id);
-                    GroupDetailActivity.actionStart(mActivity, id);
-                } else if (TextUtils.equals(action, "2")) {
-                    getJoinGroup(id);
-                }
+                groupIsJoin();
+
                 break;
             case R.id.titleFollow_Tv:
                 String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
@@ -250,7 +260,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 break;
             case R.id.person_Img:
                 String authorId4 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                MyAndOther_Card.actionStart(mActivity, authorId4);
+                MyAndOther_Card.actionStart(mActivity, authorId4, isExpert);
                 break;
             case R.id.send_Mes:
                 String authorId3 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
@@ -258,6 +268,29 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 String avatar = homeFoucsDetail_bean.getData().getDetail().getAvatar();
                 ChatActivity.actionStart(mActivity, authorId3, authorName, avatar);
                 break;
+        }
+    }
+
+
+    /**
+     * 点击加入社群或兴趣组
+     */
+    private void groupIsJoin() {
+        if (homeFoucsDetail_bean.getData().getDetail().getExtra() == null) {
+            return;
+        }
+        String action = homeFoucsDetail_bean.getData().getDetail().getAction();//1是社群 2是兴趣组
+        String id = homeFoucsDetail_bean.getData().getDetail().getExtra().getId();
+        String isJoin = homeFoucsDetail_bean.getData().getDetail().getExtra().getIsJoin();
+        if (TextUtils.equals(action, "1")) { //1是社群 2是兴趣组
+//                    getJoinSheQun(id);
+            if (TextUtils.equals(isJoin, "1")) { //1已加入
+                GroupDetailActivity.actionStart(mActivity, id);
+            }else {
+                CheckOtherGroupDetailActivity.actionStart(mActivity,id);
+            }
+        } else if (TextUtils.equals(action, "2")) {
+            getJoinGroup(id);
         }
     }
 
@@ -522,6 +555,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
      * @param is_anonymous  是否匿名 1是匿名
      */
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes, String is_anonymous) {
+        if (isExpert) {
+            return;
+        }
+
         if (TextUtils.equals(is_anonymous, "0")) {
             String s = String.valueOf(follow_status);
             if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
@@ -698,7 +735,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 isExpanded = true;
                 title_Img.setVisibility(View.GONE);
                 titleNickName_Tv.setVisibility(View.GONE);
-                center_Tv.setVisibility(View.GONE);
+                center_Tv.setVisibility(View.VISIBLE);
                 titleFollow_Tv.setVisibility(View.GONE);
                 titleSend_Mes.setVisibility(View.GONE);
             }

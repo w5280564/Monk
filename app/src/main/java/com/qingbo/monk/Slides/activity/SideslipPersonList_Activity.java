@@ -22,6 +22,7 @@ import com.qingbo.monk.Slides.adapter.Character_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.CharacterList_Bean;
 import com.qingbo.monk.bean.Character_Bean;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -59,9 +60,10 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initView() {
+        mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无人物", 0, false);
+        initSwipeRefreshLayoutAndAdapter("暂无人物", 0, true);
     }
 
     @Override
@@ -73,7 +75,8 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
-        getListData(true, nickname);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false, nickname);
     }
 
     private void getListData(boolean isShow, String nickname) {
@@ -85,6 +88,9 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     CharacterList_Bean characterList_bean = GsonUtil.getInstance().json2Bean(json_data, CharacterList_Bean.class);
                     handleSplitListData(characterList_bean, mAdapter, limit);
@@ -99,7 +105,8 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false, nickname);
     }
 
     @Override
@@ -125,6 +132,21 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
                 String nickname = item.getNickname();
                 String id = item.getId();
                 SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            }
+        });
+
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Character_Bean item = (Character_Bean) adapter.getItem(position);
+                if (item == null){
+                    return;
+                }
+                switch (view.getId()){
+                    case R.id.head_Img:
+                        MyAndOther_Card.actionStart(mActivity, item.getId());
+                        break;
+                }
             }
         });
     }

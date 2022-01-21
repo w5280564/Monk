@@ -19,12 +19,18 @@ import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.MyDynamicListBean;
+import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.dialog.MyPopWindow;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,10 +41,20 @@ import java.util.List;
 public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
 
     private String userID;
+    private boolean isExpert;
 
     public static MyDynamic_Fragment newInstance(String userID) {
         Bundle args = new Bundle();
         args.putString("userID", userID);
+        MyDynamic_Fragment fragment = new MyDynamic_Fragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static MyDynamic_Fragment newInstance(String userID, boolean isExpert) {
+        Bundle args = new Bundle();
+        args.putString("userID", userID);
+        args.putBoolean("isExpert", isExpert);
         MyDynamic_Fragment fragment = new MyDynamic_Fragment();
         fragment.setArguments(args);
         return fragment;
@@ -54,22 +70,23 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initView(View mView) {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0,false);
+        initSwipeRefreshLayoutAndAdapter("您还未关注用户", 0, false);
     }
 
     @Override
     protected void initLocalData() {
-         userID = getArguments().getString("userID");
+        userID = getArguments().getString("userID");
+        isExpert = getArguments().getBoolean("isExpert", false);
     }
 
     @Override
     protected void loadData() {
-        getListData(userID,true);
+        getListData(userID, true);
     }
 
-    FollowListBean homeFllowBean;
+    MyDynamicListBean myDynamicListBean;
 
-    private void getListData(String userid,boolean isShow) {
+    private void getListData(String userid, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
@@ -79,9 +96,9 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
-                    if (homeFllowBean != null) {
-                        handleSplitListData(homeFllowBean, mAdapter, limit);
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+                    if (myDynamicListBean != null) {
+                        handleSplitListData(myDynamicListBean, mAdapter, limit);
                     }
                 }
             }
@@ -99,7 +116,7 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
     @Override
     protected void onLoadMoreData() {
         page++;
-        getListData(userID,false);
+        getListData(userID, false);
     }
 
 
@@ -109,15 +126,14 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Focus_Adapter();
+        mAdapter = new MyDynamic_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
-            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-            String action = item.getAction();//1是社群 2是兴趣组 3是个人
+            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
             String articleId = item.getArticleId();
             String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0",type);
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         });
 
     }
@@ -128,30 +144,38 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (homeFllowBean == null) {
+                MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = homeFllowBean.getList().get(position).getAuthorId();
+                        String otherUserId = item.getAuthorId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = homeFllowBean.getList().get(position).getArticleId();
+                        String likeId = item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
                         String articleId = item.getArticleId();
                         String type = item.getType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1",type);
+                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
+                        break;
+                    case R.id.more_Img:
+                        String id = PrefUtil.getUser().getId();
+                        String authorId = item.getAuthorId();
+                        if (TextUtils.equals(authorId, id)) {
+                            ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                            showPopMenu(more_Img, item, position);
+                        }
                         break;
                 }
             }
         });
 
 
-        ((Focus_Adapter) mAdapter).setOnItemImgClickLister(new Focus_Adapter.OnItemImgClickLister() {
+        ((MyDynamic_Adapter) mAdapter).setOnItemImgClickLister(new MyDynamic_Adapter.OnItemImgClickLister() {
             @Override
             public void OnItemImgClickLister(int position, List<String> strings) {
                 jumpToPhotoShowActivity(position, strings);
@@ -213,5 +237,67 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+    private void showPopMenu(ImageView more_Img, MyDynamic_Bean mQuestionBean, int position) {
+        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+        boolean haveEdit = false;
+        if (TextUtils.equals(status, "2")) {//审核未通过才能删除
+            haveEdit = true;
+        }
+        MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
+            @Override
+            public void onClickEdit() {
+//                String shequnId = mQuestionBean.getShequnId();
+//                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
+            }
+
+            @Override
+            public void onClickDelete() {
+                showDeleteDialog(mQuestionBean.getArticleId(), position);
+            }
+
+        });
+        morePopWindow.showPopupWindow(more_Img);
+    }
+
+    private void showDeleteDialog(String mQuestionId, int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity, "确定删除此问答？", "取消", "确定",
+                new TwoButtonDialogBlue.ConfirmListener() {
+
+                    @Override
+                    public void onClickRight() {
+                        deleteQuestion(mQuestionId, position);
+                    }
+
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+                });
+
+        mDialog.show();
+    }
+
+    /**
+     * 删除话题
+     *
+     * @param mQuestionId
+     */
+    private void deleteQuestion(String mQuestionId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", mQuestionId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.deleteTopic, "删除话题", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    mAdapter.remove(position);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
 
 }

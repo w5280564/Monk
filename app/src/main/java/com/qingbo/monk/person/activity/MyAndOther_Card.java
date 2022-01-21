@@ -100,12 +100,25 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @BindView(R.id.urlLabel_Lin)
     LinearLayout urlLabel_Lin;
 
-
     private String userID;
+    private boolean isExpert;
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyAndOther_Card.class);
         intent.putExtra("userID", userID);
+        context.startActivity(intent);
+    }
+
+    /**
+     *
+     * @param context
+     * @param userID
+     * @param isExpert 专家不显示关注
+     */
+    public static void actionStart(Context context, String userID,boolean isExpert) {
+        Intent intent = new Intent(context, MyAndOther_Card.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("isExpert", isExpert);
         context.startActivity(intent);
     }
 
@@ -133,6 +146,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @Override
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
+        isExpert = getIntent().getBooleanExtra("isExpert",false);
     }
 
     @Override
@@ -474,6 +488,9 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
      * @param send_Mes
      */
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+        if (isExpert){
+            return;
+        }
         String s = String.valueOf(follow_status);
         if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
             follow_Tv.setVisibility(View.VISIBLE);

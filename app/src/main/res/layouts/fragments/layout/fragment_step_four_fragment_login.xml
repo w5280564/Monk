@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="欢迎光临!"
+                android:text="告诉我们你丰富又有成就的经验吧."
                 android:textColor="@color/text_color_a1a1a1"
                 android:textSize="@dimen/sp_12" />
 

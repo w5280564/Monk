@@ -49,8 +49,8 @@ import butterknife.BindView;
  * 首页
  */
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
-    @BindView(R.id.btn_drawer_left)
-    Button btn_drawer_left;
+    @BindView(R.id.drawer_left_Img)
+    ImageView drawer_left_Img;
     @BindView(R.id.change_Tv)
     TextView change_Tv;
     @BindView(R.id.change_Img)
@@ -65,6 +65,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     AppBarLayout appLayout;
     @BindView(R.id.icon_Img)
     ImageView icon_Img;
+    @BindView(R.id.manCount_Tv)
+    TextView manCount_Tv;
 
 
     @Override
@@ -81,7 +83,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initEvent() {
         super.initEvent();
-        btn_drawer_left.setOnClickListener(new btn_drawer_leftClick());
+        drawer_left_Img.setOnClickListener(new drawer_left_ImgClick());
         change_Tv.setOnClickListener(this);
     }
 
@@ -121,7 +123,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
 
-    private class btn_drawer_leftClick implements View.OnClickListener {
+    private class drawer_left_ImgClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             ((MainActivity) requireActivity()).LeftDL();

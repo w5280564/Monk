@@ -37,6 +37,8 @@ public class Character_Adapter extends BaseQuickAdapter<Character_Bean, BaseView
         nickName_Tv.setText(item.getNickname());
         company_Tv.setText(item.getCompanyName());
         labelFlow(lable_Lin, mContext, item.getTag_name());
+
+        helper.addOnClickListener(R.id.head_Img);
     }
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {

@@ -61,14 +61,16 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无公告",0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无公告",0,true);
     }
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     InsiderListBean insiderListBean;
@@ -82,6 +84,9 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                      insiderListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderListBean.class);
                     if (insiderListBean != null) {
@@ -97,7 +102,8 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override

@@ -65,6 +65,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
 

@@ -228,6 +228,7 @@ public class HttpUrl {
     public static final String Topic_Like_List = "square/position/topic-like-list";//仓位组合点赞列表
     public static final String fans_Like_List = "user/user/fans-list";//粉丝列表
     public static final String User_apply = "user/user/apply-originator";//申请成为创作者
+    public static final String User_Update_Count = "square/set/new-update-count";//新增评论或文章的数量
 
 
 

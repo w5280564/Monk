@@ -83,10 +83,10 @@
                     android:paddingEnd="@dimen/dp_5"
                     android:textColor="@color/text_color_a1a1a1"
                     android:textSize="9sp"
-                    android:layout_marginTop="@dimen/dp_9"
                     android:layout_marginEnd="@dimen/dp_24"
+                    app:layout_constraintBottom_toBottomOf="@id/join_Tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/join_Tv" />
 
 
                 <TextView
@@ -116,6 +116,7 @@
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:tabBackground="@color/transparent"
         app:tabIndicatorColor="@color/transparent"
+        app:tabRippleColor="@android:color/transparent"
         app:tabIndicatorHeight="@dimen/dp_0"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_6f6f6f" />

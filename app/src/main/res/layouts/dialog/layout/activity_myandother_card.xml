@@ -434,6 +434,7 @@
             app:tabBackground="@color/transparent"
             app:tabIndicatorColor="@color/transparent"
             app:tabIndicatorHeight="@dimen/dp_0"
+            app:tabRippleColor="@android:color/transparent"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TabLayoutTextStyle"
             app:tabTextColor="@color/text_color_6f6f6f" />

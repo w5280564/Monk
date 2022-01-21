@@ -104,13 +104,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    app:tabRippleColor="@android:color/transparent"
                     app:tabBackground="@color/white"
                     app:tabIndicatorColor="@color/transparent"
                     app:tabIndicatorFullWidth="false"
                     app:tabIndicatorHeight="3dp"
                     app:tabMode="scrollable"
                     app:tabGravity="start"
-                    app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="@color/text_color_444444"
                     app:tabTextColor="@color/text_color_a1a1a1" />
 

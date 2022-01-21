@@ -10,19 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeInsiderBean;
-import com.qingbo.monk.bean.HomeInsiderHKBean;
 import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
-import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
 import java.util.HashMap;
+
 import butterknife.BindView;
 
 /**
@@ -69,6 +70,7 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
 

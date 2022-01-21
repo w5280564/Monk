@@ -14,18 +14,25 @@
         android:layout_height="@dimen/title_height"
         app:layout_constraintTop_toTopOf="parent"
         app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarRightImg="@mipmap/icon_sousuo"
         app:layout_constraintTop_toBottomOf="parent"
-        app:titleBarRightShowFlag="VISIBLE"
-        app:titleBarRightShowType="IMG"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarShowBottomLine="false"
         app:titleBarTitle="专家" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
-        android:layout_height="0dp" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

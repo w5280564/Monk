@@ -30,12 +30,18 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 问答广场(我的问答)
+ * 我的动态item
  */
 public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseViewHolder> {
+    boolean isExpert;
 
     public MyDynamic_Adapter() {
         super(R.layout.item_question_list_my);
+    }
+
+    public MyDynamic_Adapter(boolean isExpert) {
+        super(R.layout.item_question_list_my);
+        this.isExpert = isExpert;
     }
 
 
@@ -52,9 +58,9 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
         TextView mes_Count = helper.getView(R.id.mes_Count);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView more_Img = helper.getView(R.id.more_Img);
-        viewTouchDelegate.expandViewTouchDelegate(more_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -71,14 +77,14 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
         if (!StringUtil.isBlank(item.getTitle())) {
             title_Tv.setVisibility(View.VISIBLE);
             title_Tv.setText(item.getTitle());
-        }else{
+        } else {
             title_Tv.setVisibility(View.GONE);
         }
 
         if (!StringUtil.isBlank(item.getContent())) {
             content_Tv.setVisibility(View.VISIBLE);
             content_Tv.setText(item.getContent());
-        }else{
+        } else {
             content_Tv.setVisibility(View.GONE);
         }
 
@@ -106,7 +112,7 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
                     onItemImgClickLister.OnItemImgClickLister(position, strings);
                 }
             });
-        }else{
+        } else {
             nineGridAdapter.setNewData(null);
         }
 
@@ -134,13 +140,12 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
     }
 
 
-    private void setDrawableLeft(int mipmap,TextView status) {
+    private void setDrawableLeft(int mipmap, TextView status) {
         Drawable drawableLeft = mContext.getResources().getDrawable(
                 mipmap);
         status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }
-
 
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {

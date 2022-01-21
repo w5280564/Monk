@@ -174,7 +174,6 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
-
                 if (item == null) {
                     return;
                 }

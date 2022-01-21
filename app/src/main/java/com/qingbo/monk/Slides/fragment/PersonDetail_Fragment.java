@@ -37,6 +37,7 @@ import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.CharacterDetail_Bean;
 import com.qingbo.monk.bean.CharacterList_Bean;
 import com.qingbo.monk.bean.StockCombinationListBean;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -110,6 +111,7 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initEvent() {
+        head_Img.setOnClickListener(this);
         fundTime_Tv.setOnClickListener(this);
     }
 
@@ -117,6 +119,8 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
     protected void getServerData() {
         getListData(true);
     }
+
+
 
 
     CharacterDetail_Bean.DataDTO.ListDTO listDTO;
@@ -320,6 +324,10 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
         switch (v.getId()) {
             case R.id.fundTime_Tv:
                 setTime(listDTO);
+                break;
+            case R.id.head_Img:
+                MyAndOther_Card.actionStart(mActivity, id);
+                break;
         }
     }
 }

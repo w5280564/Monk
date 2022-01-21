@@ -26,6 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:tabBackground="@color/transparent"
+        app:tabRippleColor="@android:color/transparent"
         app:tabIndicatorColor="@color/transparent"
         app:tabTextAppearance="@style/TabLayoutTextStyle"
         app:tabTextColor="@color/text_color_6f6f6f" />

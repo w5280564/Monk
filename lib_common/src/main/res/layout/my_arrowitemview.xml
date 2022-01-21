@@ -100,9 +100,11 @@
 
     <TextView
         android:id="@+id/count_Tv"
-        android:layout_width="@dimen/dp_12"
-        android:layout_height="@dimen/dp_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:visibility="gone"
+        android:minHeight="@dimen/dp_12"
+        android:minWidth="@dimen/dp_12"
         android:gravity="center"
         android:textColor="@color/white"
         android:background="@drawable/radius_red"

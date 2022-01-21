@@ -12,11 +12,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
+import com.qingbo.monk.Slides.adapter.InsiderHK_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeInsiderHKBean;
 import com.qingbo.monk.bean.InsiderHKListBean;
-import com.qingbo.monk.Slides.adapter.InsiderHK_Adapter;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -54,14 +53,16 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mView) {
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据",0,false);
+        initSwipeRefreshLayoutAndAdapter("暂无数据",0,true);
     }
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     InsiderHKListBean insiderHKListBean;
@@ -75,6 +76,9 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                      insiderHKListBean =  GsonUtil.getInstance().json2Bean(json_data, InsiderHKListBean.class);
                     if (insiderHKListBean != null) {
@@ -90,7 +94,8 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override

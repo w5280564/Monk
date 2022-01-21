@@ -51,6 +51,7 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
 
     @Override
     protected void initView() {
+        mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据",0, true);
@@ -79,12 +80,14 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
 
     @Override
     protected void getServerData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override
@@ -103,6 +106,9 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     combinationListBean = GsonUtil.getInstance().json2Bean(json_data, CombinationListBean.class);
                     if (combinationListBean != null) {
