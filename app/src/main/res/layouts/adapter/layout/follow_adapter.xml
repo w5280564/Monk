@@ -96,7 +96,7 @@
         android:id="@+id/send_Mes"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_22"
-        android:background="@drawable/interest_lable"
+        android:background="@drawable/message_bg"
         android:gravity="center"
         android:paddingStart="@dimen/dp_8"
         android:paddingEnd="@dimen/dp_8"
