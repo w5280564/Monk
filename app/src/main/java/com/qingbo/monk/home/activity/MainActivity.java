@@ -254,16 +254,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
         }
 
-
-        String avatar = PrefUtil.getUser().getAvatar();
-        GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
-        String nickName = PrefUtil.getUser().getNickname();
-        nickName_Tv.setText(nickName);
-        String fow = PrefUtil.getUser().getFollowNum();
-        String fans = PrefUtil.getUser().getFansNum();
-        String fowAndFans = String.format("关注 %1$s      粉丝 %2$s", fow, fans);
-        followAndFans_Tv.setText(fowAndFans);
     }
+
 
     private void showBindPhoneNumberDialog(String openid) {
         TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this, "为了您在扫地僧获得更好的用户体验，请绑定手机号。", "退出登录", "去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
@@ -431,6 +423,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         super.onResume();
         getAllUnreadNumber();
         getUpdateCount(false);
+        changeUser();
     }
 
     /**
@@ -708,6 +701,17 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
+    }
+
+    public void changeUser(){
+        String avatar = PrefUtil.getUser().getAvatar();
+        GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
+        String nickName = PrefUtil.getUser().getNickname();
+        nickName_Tv.setText(nickName);
+        String fow = PrefUtil.getUser().getFollowNum();
+        String fans = PrefUtil.getUser().getFansNum();
+        String fowAndFans = String.format("关注 %1$s      粉丝 %2$s", fow, fans);
+        followAndFans_Tv.setText(fowAndFans);
     }
 
 }

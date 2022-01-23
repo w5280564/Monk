@@ -33,4 +33,6 @@ public class MyGroupBean implements Serializable {
     private String total;
     @SerializedName("role")
     private String role;
+    @SerializedName("user_id")
+    private String userId;
 }

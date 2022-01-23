@@ -1,11 +1,16 @@
 package com.qingbo.monk.question.adapter;
 
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.RoundImageView;
 
@@ -18,7 +23,7 @@ import com.xunda.lib.common.view.RoundImageView;
  */
 public class QuestionGroupAdapterMy extends BaseQuickAdapter<MyGroupBean, BaseViewHolder> {
     public QuestionGroupAdapterMy() {
-        super(R.layout.item_group_my);
+        super(R.layout.mygroup_item);
     }
 
     @Override
@@ -31,6 +36,14 @@ public class QuestionGroupAdapterMy extends BaseQuickAdapter<MyGroupBean, BaseVi
             iv_header.setImageResource(R.mipmap.bg_create_group);
         }else{
             GlideUtils.loadCircleImage(mContext,iv_header,item.getShequnImage());
+        }
+
+        ImageView groupUser_Img = helper.getView(R.id.groupUser_Img);
+        String id = PrefUtil.getUser().getId();
+        if (TextUtils.equals(id,item.getUserId())){
+            groupUser_Img.setVisibility(View.VISIBLE);
+        }else {
+            groupUser_Img.setVisibility(View.GONE);
         }
     }
 

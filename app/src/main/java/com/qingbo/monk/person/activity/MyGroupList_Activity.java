@@ -50,6 +50,13 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         context.startActivity(intent);
     }
 
+//    public static void actionStart(Context context, String userID, boolean isOther) {
+//        Intent intent = new Intent(context, MyGroupList_Activity.class);
+//        intent.putExtra("userID", userID);
+//        intent.putExtra("isOther", isOther);
+//        context.startActivity(intent);
+//    }
+
 
     @Override
     protected int getLayoutId() {
@@ -77,9 +84,9 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initView() {
-        if (isMe()){
+        if (isMe()) {
             title_bar.setTitle("我的社群");
-        }else {
+        } else {
             title_bar.setTitle("他的社群");
         }
         mRecyclerView = findViewById(R.id.mRecyclerView);
@@ -90,21 +97,22 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     }
 
 
-
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyGroupAdapter();
+        mAdapter = new MyGroupAdapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
-                GroupDetailActivity.actionStart(mActivity, obj.getId());
+                if (isMe()) {
+                    MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
+                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+                }
             }
         });
     }
@@ -128,7 +136,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            MyGroupList_Bean myGroupList_bean =  GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             handleSplitListData(myGroupList_bean, mAdapter, limit);
                         }
                     }
@@ -151,9 +159,6 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         }
         return false;
     }
-
-
-
 
 
 }

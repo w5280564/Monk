@@ -84,9 +84,9 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initView() {
-        if (isMe()){
+        if (isMe()) {
             title_bar.setTitle("我的兴趣组");
-        }else {
+        } else {
             title_bar.setTitle("他的兴趣组");
         }
 
@@ -98,21 +98,22 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
     }
 
 
-
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyInterestAdapter();
+        mAdapter = new MyInterestAdapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InterestBean item = (InterestBean) adapter.getItem(position);
-                InterestDetail_Activity.startActivity(mActivity,"0",item.getId());
+                if (isMe()) {
+                    InterestBean item = (InterestBean) adapter.getItem(position);
+                    InterestDetail_Activity.startActivity(mActivity, "0", item.getId());
+                }
             }
         });
     }
@@ -160,8 +161,6 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
         }
         return false;
     }
-
-
 
 
 }

@@ -128,9 +128,18 @@
                     android:id="@+id/interest_Lin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/dp_14"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@id/view" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interest_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_14"
+                    app:layout_constraintTop_toBottomOf="@id/view"/>
 
                 <View
                     android:id="@+id/grey_View"
@@ -138,7 +147,7 @@
                     android:layout_height="@dimen/dp_10"
                     android:layout_marginTop="@dimen/dp_15"
                     android:background="@color/text_color_EFEFEF"
-                    app:layout_constraintTop_toBottomOf="@id/interest_Lin" />
+                    app:layout_constraintTop_toBottomOf="@id/interest_recycler" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

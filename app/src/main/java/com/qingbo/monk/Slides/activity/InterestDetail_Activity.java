@@ -168,7 +168,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             } else {
                 stateIndex = "1";
             }
-            interestDetail_bean.setStatusJoin(stateIndex);
+            interestDetail_bean.setStatus_num(stateIndex);
             isJoin(stateIndex, join_Tv);
         }
     }
@@ -179,7 +179,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             case R.id.join_Tv:
                 if (interestDetail_bean != null) {
                     String id = interestDetail_bean.getId();
-                    String statusJoin = interestDetail_bean.getStatusJoin();
+                    String statusJoin = interestDetail_bean.getStatus_num();
                     changeJoin(statusJoin);
                     getJoin(id);
                 }

@@ -88,7 +88,9 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView interestName_Tv;
     @BindView(R.id.interestJoinCount_Tv)
     TextView interestJoinCount_Tv;
-    @BindView(R.id.interestHead_Lin)
+    @BindView(R.id.joinHead_Lin)
+    LinearLayout joinHead_Lin;
+        @BindView(R.id.interestHead_Lin)
     LinearLayout interestHead_Lin;
     @BindView(R.id.group_Con)
     ConstraintLayout group_Con;
@@ -104,7 +106,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     LinearLayout urlLabel_Lin;
 
     private String userID;
-    private boolean isExpert;
+    private boolean isExpert;//专家不显示关注
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyAndOther_Card.class);
@@ -280,6 +282,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                                 groupName_Tv.setText(groupString);
                                 String format = String.format("加入%1$s个社群", myCardBean.getData().getCount());
                                 joinCount_Tv.setText(format);
+                                groupHeadFlow(joinHead_Lin, mActivity, myCardBean);
                             }
                         }
                     }
@@ -395,10 +398,14 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             case R.id.group_Con:
                 if (isMe()) {
                     MyGroupList_Activity.actionStart(mActivity, userID);
+                }else {
+                    MyGroupList_Activity.actionStart(mActivity, userID);
                 }
                 break;
             case R.id.interest_Con:
                 if (isMe()) {
+                    MyInterestList_Activity.actionStart(mActivity, userID);
+                }else {
                     MyInterestList_Activity.actionStart(mActivity, userID);
                 }
                 break;
@@ -451,6 +458,28 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         }
     }
 
+    /**
+     * 我的社群
+     *
+     * @param myFlow
+     * @param mContext
+     */
+    public void groupHeadFlow(LinearLayout myFlow, Context mContext, myCardBean interestList_bean) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        int length = interestList_bean.getData().getList().size();
+        for (int i = 0; i < length; i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.interest_head, null);
+            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            itemParams.setMargins(0, 0, 0, 0);
+            view.setLayoutParams(itemParams);
+            ImageView head_Img = view.findViewById(R.id.head_Img);
+            String groupImage = interestList_bean.getData().getList().get(i).getShequnImage();
+            GlideUtils.loadRoundImage(mContext, head_Img, groupImage, 5);
+            myFlow.addView(view);
+        }
+    }
     /**
      * 我的兴趣组
      *
