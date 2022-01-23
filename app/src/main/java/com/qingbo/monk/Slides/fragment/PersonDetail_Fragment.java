@@ -231,6 +231,8 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
      */
     void initPie() {
 //       chart = findViewById(R.id.chart1);
+        chart.setNoDataTextColor(R.color.text_color_6f6f6f);
+        chart.setNoDataText("暂无数据");
         chart.setUsePercentValues(true);//设置使用百分比
         chart.getDescription().setEnabled(false);//设置描述
         chart.setExtraOffsets(5, 10, 5, 5);//设置边距

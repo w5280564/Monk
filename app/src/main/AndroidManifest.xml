@@ -65,11 +65,18 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
-
-
-        <activity android:name=".Slides.activity.SideslipRecommend_Activity"
-            android:exported="false"/>
+        <activity
+            android:name=".person.activity.MyWallet_DetailedList_Detail"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyWallet_DetailedList"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyWallet_Withdrawal"
+            android:exported="false" />
+        <activity
+            android:name=".Slides.activity.SideslipRecommend_Activity"
+            android:exported="false" />
         <activity
             android:name=".person.activity.MyFansActivity"
             android:exported="false" />

@@ -47,6 +47,7 @@ public class MyHistory_Activity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setOnRefreshListener(new mSwipeRefreshLayoutView());
+        mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
         initRecyclerView();
 //        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
@@ -54,7 +55,7 @@ public class MyHistory_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
-        getExpertList(true);
+        getExpertList(false);
     }
     private class mSwipeRefreshLayoutView implements SwipeRefreshLayout.OnRefreshListener {
         @Override
@@ -66,8 +67,8 @@ public class MyHistory_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void onRefreshData() {
-        page = 1;
-        getExpertList(true);
+//        page = 1;
+//        getExpertList(false);
     }
 
     @Override

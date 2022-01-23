@@ -83,6 +83,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/myfollow_adapter.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/myhistory_adapter.xml" value="0.3307291666666667" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/stockfund_mess_adapter.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/wallet_detailed_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_article_detali_comment_list.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_theme.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_edit_changadd.xml" value="0.35052083333333334" />
@@ -118,9 +119,12 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myandother_edit_card.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myinterest_label.xml" value="0.75" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myset_aboutme_update.xml" value="0.32447916666666665" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mywallet_detailedlist_detail.xml" value="0.36614583333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mywallet_moneylist.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/user_page.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/user_page_edit.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/usercard_view.xml" value="0.36614583333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/wallet_withdrawal.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_group_all.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_group_detail_all_layout.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.33" />

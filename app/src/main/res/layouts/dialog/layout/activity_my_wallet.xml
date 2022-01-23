@@ -14,6 +14,10 @@
         android:layout_height="@dimen/title_height"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
+        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowType="TEXT"
+        app:titleBarRightTxt="明细"
+        app:titleBarRightTxtColor="@color/text_color_1F8FE5"
         app:titleBarTitle="我的钱包" />
 
     <TextView
@@ -22,6 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_34"
         android:text="我的零钱"
+        android:drawableStart="@mipmap/lingqian"
+        android:drawablePadding="@dimen/dp_10"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +50,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_47"
@@ -103,5 +110,22 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:background="@drawable/selector_btn_rectangle"
+        android:gravity="center"
+        android:text="提现"
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/sp_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_64"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

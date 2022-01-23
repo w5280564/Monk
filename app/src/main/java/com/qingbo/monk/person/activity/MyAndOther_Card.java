@@ -371,10 +371,14 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_follow_number:
-                skipAnotherActivity(MyFollowActivity.class);
+                if (isMe()) {
+                    skipAnotherActivity(MyFollowActivity.class);
+                }
                 break;
             case R.id.tv_fans_number:
-                skipAnotherActivity(MyFansActivity.class);
+                if (isMe()) {
+                    skipAnotherActivity(MyFansActivity.class);
+                }
                 break;
             case R.id.back_Btn:
                 finish();

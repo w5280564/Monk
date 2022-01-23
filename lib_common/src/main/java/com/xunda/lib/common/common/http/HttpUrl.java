@@ -230,8 +230,8 @@ public class HttpUrl {
     public static final String User_apply = "user/user/apply-originator";//申请成为创作者
     public static final String User_Update_Count = "square/set/new-update-count";//新增评论或文章的数量
     public static final String User_AllUpdate_Count = "square/set/new-update-total";//新增的总数
-
-
+    public static final String Wallet_List = "pay/wallet/detail-list";//交易记录
+    public static final String Wallet_Order_Detail = "pay/wallet/order-detail";//交易记录—订单详情
 
 }
 

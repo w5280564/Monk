@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".person.activity.MyWallet_DetailedList_Detail"
+    tools:ignore="MissingConstraints">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarRightShowFlag="INVISIBLE"
+        app:titleBarRightShowType="TEXT"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="交易详情" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_25"
+        android:drawableStart="@mipmap/lingqian"
+        android:drawablePadding="@dimen/dp_13"
+        android:text="我的零钱"
+        android:textColor="@color/text_color_444444"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <TextView
+        android:id="@+id/moneyCount_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_23"
+        android:textColor="@color/text_color_444444"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    <TextView
+        android:id="@+id/cost_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_19"
+        android:text="扫地僧手续费"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moneyCount_Tv" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_25"
+        android:text="订单详情"
+        android:textColor="@color/text_color_444444"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cost_Tv" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_marginEnd="@dimen/dp_15"
+        android:background="@color/text_color_EFEFEF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView32"
+        app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/style_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:layout_marginTop="@dimen/dp_10"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="类型"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
+
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/from_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_1F8FE5"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="付款方"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/style_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/time_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="时间"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/from_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/order_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="交易单号"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/time_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/to_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_1F8FE5"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="收款方"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/order_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/mode_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="支付方式"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/to_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/state_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="交易状态"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/mode_MyView" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/remarks_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemContent=""
+        app:arrowItemContentColor="@color/text_color_444444"
+        app:arrowItemShowArrow="false"
+        app:arrowItemShowAvatar="false"
+        app:arrowItemShowDivider="false"
+        app:arrowItemTitle="备注"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/state_MyView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

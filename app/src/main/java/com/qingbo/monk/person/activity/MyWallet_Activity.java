@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.qingbo.monk.HttpSender;
@@ -25,7 +26,10 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
-public class MyWallet_Activity extends BaseActivity {
+/**
+ * 我的钱包
+ */
+public class MyWallet_Activity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.smallChange_Tv)
     TextView smallChange_Tv;
@@ -33,6 +37,8 @@ public class MyWallet_Activity extends BaseActivity {
     TextView withdrawal_Tv;
     @BindView(R.id.settlement)
     TextView settlement;
+    @BindView(R.id.tv_next)
+    TextView tv_next;
 
     @Override
     protected int getLayoutId() {
@@ -43,6 +49,11 @@ public class MyWallet_Activity extends BaseActivity {
     public void onResume() {
         super.onResume();
         getUserData();
+    }
+
+    @Override
+    protected void initEvent() {
+        tv_next.setOnClickListener(this);
     }
 
     private void getUserData() {
@@ -84,6 +95,17 @@ public class MyWallet_Activity extends BaseActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_next:
+                skipAnotherActivity(MyWallet_Withdrawal.class);
+                break;
+        }
+    }
 
-
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(MyWallet_DetailedList.class);
+    }
 }
