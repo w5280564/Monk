@@ -81,6 +81,18 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
                 <com.xunda.lib.common.view.MyArrowItemView
+                    android:id="@+id/sex_MyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    app:arrowItemAvatarHeight="@dimen/dp_12"
+                    app:arrowItemContent=""
+                    app:arrowItemShowAvatar="false"
+                    app:arrowItemTitle="性别"
+                    app:arrowItemTitleColor="@color/text_color_444444"
+                    app:layout_constraintTop_toBottomOf="@+id/nickName_MyView"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <com.xunda.lib.common.view.MyArrowItemView
                     android:id="@+id/address_MyView"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50"
@@ -89,7 +101,7 @@
                     app:arrowItemShowAvatar="false"
                     app:arrowItemTitle="居住地"
                     app:arrowItemTitleColor="@color/text_color_444444"
-                    app:layout_constraintTop_toBottomOf="@+id/nickName_MyView" />
+                    app:layout_constraintTop_toBottomOf="@+id/sex_MyView" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0加入"
+            android:visibility="gone"
             android:textColor="@color/text_color_a1a1a1"
             android:textSize="9sp"
             app:layout_constraintEnd_toEndOf="parent"

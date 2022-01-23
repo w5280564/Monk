@@ -14,6 +14,7 @@ import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.MyArrowItemView;
 import java.util.HashMap;
 import butterknife.BindView;
@@ -45,7 +46,6 @@ public class MySet_AboutMe_Activity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initView() {
-        update_MyView.setEnabled(false);
         viewTouchDelegate.expandViewTouchDelegate(service_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(privacy_Tv, 50);
 
@@ -68,12 +68,13 @@ public class MySet_AboutMe_Activity extends BaseActivity implements View.OnClick
                 jumpToWebView("隐私政策", H5Url.H5PrivatePolicy);
                 break;
             case R.id.update_MyView:
-                skipAnotherActivity(MySet_AboutMe_Update.class);
+                isUpdate();
                 break;
 
         }
     }
 
+    ApkBean apkObj;
     /**
      * 版本更新检测
      */
@@ -85,23 +86,37 @@ public class MySet_AboutMe_Activity extends BaseActivity implements View.OnClick
             @Override
             public void onComplete(String json, int status, String description, String data) {
                 if (status == Constants.REQUEST_SUCCESS_CODE) {
-                    ApkBean apkObj = GsonUtil.getInstance().json2Bean(data, ApkBean.class);
+                     apkObj = GsonUtil.getInstance().json2Bean(data, ApkBean.class);
                     if (apkObj != null) {
                         String tempIsForceUpdate = apkObj.getIs_force_update();//0不需要强制更新，1强制更新，2不需要更新
                         if (!StringUtil.isBlank(tempIsForceUpdate)) {
                             int isForceUpdate = Integer.parseInt(tempIsForceUpdate);
                             if (isForceUpdate != 2) {
                                 update_MyView.getCount_Tv().setVisibility(View.VISIBLE);
-                                update_MyView.setEnabled(true);
                             }
                         }
-
                     }
+
                 }
             }
         }, false);
         sender.setContext(mActivity);
         sender.sendGet();
+    }
+
+    private void isUpdate(){
+        if (apkObj != null) {
+            String tempIsForceUpdate = apkObj.getIs_force_update();//0不需要强制更新，1强制更新，2不需要更新
+            if (!StringUtil.isBlank(tempIsForceUpdate)) {
+                int isForceUpdate = Integer.parseInt(tempIsForceUpdate);
+                if (isForceUpdate != 2) {
+                    skipAnotherActivity(MySet_AboutMe_Update.class);
+                }else {
+                    T.s("已是最新版本，无需更新",2000);
+                }
+            }
+        }
+
     }
 
 }

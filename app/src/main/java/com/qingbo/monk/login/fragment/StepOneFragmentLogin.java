@@ -59,7 +59,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     MyArrowItemView arrowItemView_city;
     private boolean haveUploadImg;
     private ActivityResultLauncher mActivityResultLauncher;
-    private String[] yearList = {"1-3年", "3-5年", "5-10年", "10-15年"};
+    private String[] yearList = {"1-3年", "3-5年", "5-10年", "10-15年","15年以上"};
     private List<AreaBean> mAreaList = new ArrayList<>();
     private String industryName, city, county, work;
     private String avatar;

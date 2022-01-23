@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -43,6 +44,8 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.common.utils.T;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,12 +113,11 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     }
 
     /**
-     *
      * @param context
      * @param userID
      * @param isExpert 专家不显示关注
      */
-    public static void actionStart(Context context, String userID,boolean isExpert) {
+    public static void actionStart(Context context, String userID, boolean isExpert) {
         Intent intent = new Intent(context, MyAndOther_Card.class);
         intent.putExtra("userID", userID);
         intent.putExtra("isExpert", isExpert);
@@ -146,7 +148,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @Override
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
-        isExpert = getIntent().getBooleanExtra("isExpert",false);
+        isExpert = getIntent().getBooleanExtra("isExpert", false);
     }
 
     @Override
@@ -411,7 +413,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 ChatActivity.actionStart(mActivity, userBean.getId(), userBean.getNickname(), userBean.getAvatar());
                 break;
             case R.id.editUser_Tv_:
-                MyAndOtherEdit_Card.actionStart(mActivity,userID);
+                MyAndOtherEdit_Card.actionStart(mActivity, userID);
                 break;
 
         }
@@ -492,7 +494,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
      * @param send_Mes
      */
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
-        if (isExpert){
+        if (isExpert) {
             return;
         }
         String s = String.valueOf(follow_status);
@@ -530,16 +532,33 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         if (ListUtils.isEmpty(urlList)) {
             return;
         }
+        int index = 0;
         for (UserBean.ColumnDTO columnDTO : urlList) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.user_page, null);
             TextView name_Tv = view.findViewById(R.id.name_Tv);
             TextView contentUrl_Tv = view.findViewById(R.id.contentUrl_Tv);
             name_Tv.setText(columnDTO.getColumnName());
             contentUrl_Tv.setText(columnDTO.getColumnUrl());
+            contentUrl_Tv.setTag(index);
             myFlow.addView(view);
+            index++;
+
+            contentUrl_Tv.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                String columnName = urlList.get(tag).getColumnName();
+                String columnUrl = urlList.get(tag).getColumnUrl();
+                jumpToWebView(columnName, columnUrl);
+            });
+
+            contentUrl_Tv.setOnLongClickListener(v -> {
+                int tag = (int) v.getTag();
+                String columnUrl = urlList.get(tag).getColumnUrl();
+                StringUtil.copy(columnUrl, mContext);
+                T.s("已复制到剪切板",2000);
+                return true;
+            });
         }
     }
-
 
 
 }

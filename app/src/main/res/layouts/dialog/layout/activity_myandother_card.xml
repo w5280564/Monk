@@ -188,6 +188,19 @@
 
 
                     <TextView
+                        android:id="@+id/sex_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="性别："
+                        android:layout_marginStart="@dimen/dp_15"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_12"/>
+
+
+                    <TextView
                         android:id="@+id/brief_Tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -200,7 +213,7 @@
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                        app:layout_constraintTop_toBottomOf="@+id/sex_Tv" />
 
 
                     <LinearLayout

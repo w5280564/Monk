@@ -13,6 +13,7 @@ import com.qingbo.monk.base.BaseWebviewActivity;
  */
 public class WebviewActivity extends BaseWebviewActivity {
 
+    private String urlHead = "https://";
 
     @Override
     protected int getLayoutId() {
@@ -28,8 +29,11 @@ public class WebviewActivity extends BaseWebviewActivity {
         L.e(linkUrl + "");
 
         if (!StringUtil.isBlank(linkUrl)) {
-            if(!linkUrl.startsWith("http")){
-                linkUrl = Config.Link.getWholeUrl() + linkUrl;
+//            if(!linkUrl.startsWith("http")){
+//            linkUrl = Config.Link.getWholeUrl() + linkUrl;
+//            }
+            if (!linkUrl.startsWith("http")) {
+                linkUrl = urlHead + linkUrl;
             }
             loadUrl(linkUrl);
         }

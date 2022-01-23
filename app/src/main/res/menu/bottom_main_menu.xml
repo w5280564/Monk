@@ -3,7 +3,7 @@
     <item
         android:id="@+id/em_main_home"
         android:icon="@drawable/tab_home_selector"
-        android:title="首页" />
+        android:title="发现" />
 
     <item
         android:id="@+id/em_main_questions"
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/em_main_universe"
         android:icon="@drawable/tab_universe_selector"
-        android:title="宇宙"/>
+        android:title="房间"/>
 
     <item
         android:id="@+id/em_main_message"

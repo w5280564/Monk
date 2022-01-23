@@ -16,6 +16,8 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
@@ -31,6 +33,7 @@ import com.qingbo.monk.base.viewTouchDelegate;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -42,6 +45,7 @@ import com.xunda.lib.common.dialog.EditStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +65,9 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     ImageView head_Img;
     @BindView(R.id.nickName_MyView)
     MyArrowItemView nickName_MyView;
+    @BindView(R.id.sex_MyView)
+    MyArrowItemView sex_MyView;
+
     @BindView(R.id.address_MyView)
     MyArrowItemView address_MyView;
     @BindView(R.id.brief_Tv)
@@ -143,6 +150,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         address_MyView.setOnClickListener(this);
         explain_Con.setOnClickListener(this);
         home_Con.setOnClickListener(this);
+        sex_MyView.setOnClickListener(this);
         interest_EditView.getEdit_Tv().setOnClickListener(this);
         good_EditView.getEdit_Tv().setOnClickListener(this);
         resources_EditView.getEdit_Tv().setOnClickListener(this);
@@ -293,6 +301,10 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             case R.id.home_Con:
                 Edit_ChangePage.actionStart(mActivity, userBean.getNickname());//修改头像
                 break;
+            case R.id.sex_MyView:
+                setSex(sex_MyView.getTvContent());//修改性别
+                break;
+
         }
         if (v.equals(good_EditView.getEdit_Tv())) {
             String domain = userBean.getDomain();
@@ -308,7 +320,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         } else if (v.equals(harvest_EditView.getEdit_Tv())) {
             String getResource = userBean.getGetResource();
             Edit_Change_Harvest.actionStart(mActivity, userBean.getNickname(), getResource);
-        }else if (v.equals(interest_EditView.getEdit_Tv())) {
+        } else if (v.equals(interest_EditView.getEdit_Tv())) {
             String interested = userBean.getInterested();
             Edit_Change_Interest.actionStart(mActivity, userBean.getNickname(), interested);
         }
@@ -369,15 +381,43 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         if (ListUtils.isEmpty(urlList)) {
             return;
         }
+        int index = 0;
         for (UserBean.ColumnDTO columnDTO : urlList) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.user_page, null);
             TextView name_Tv = view.findViewById(R.id.name_Tv);
             TextView contentUrl_Tv = view.findViewById(R.id.contentUrl_Tv);
-
             name_Tv.setText(columnDTO.getColumnName());
             contentUrl_Tv.setText(columnDTO.getColumnUrl());
+            contentUrl_Tv.setTag(index);
             myFlow.addView(view);
+            index++;
+
+//            contentUrl_Tv.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    int tag1 = (int) v.getTag();
+//                    String columnName = urlList.get(tag1).getColumnName();
+//                    String columnUrl = urlList.get(tag1).getColumnUrl();
+//                    jumpToWebView(columnName, columnUrl);
+//                }
+//            });
         }
+    }
+
+
+    /**
+     * @param textView
+     */
+    private void setSex(TextView textView) {
+        final List<String> mOptionsItems = new ArrayList<>();
+        mOptionsItems.add("男");
+        mOptionsItems.add("女");
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(mActivity, (options1, option2, options3, v) -> {
+            textView.setText(mOptionsItems.get(options1));
+
+        }).build();
+        pvOptions.setPicker(mOptionsItems);
+        pvOptions.show();
     }
 
 

@@ -6,8 +6,10 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
@@ -44,8 +46,10 @@ import butterknife.BindView;
  * 添加社交主页
  */
 public class Edit_ChangePage_Add extends BaseActivity implements View.OnClickListener {
-    @BindView(R.id.name_Tv)
-    TextView name_Tv;
+//    @BindView(R.id.name_Tv)
+//    TextView name_Tv;
+    @BindView(R.id.name_edit)
+    TextView name_edit;
     @BindView(R.id.pageUrl_edit)
     TextView pageUrl_edit;
 
@@ -70,19 +74,26 @@ public class Edit_ChangePage_Add extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void initEvent() {
-        name_Tv.setOnClickListener(this);
+//        name_Tv.setOnClickListener(this);
     }
 
 
     @Override
     public void onRightClick() {
         super.onRightClick();
-        if (ListUtils.isEmpty(firList)){
-            T.s("添加社交主页已达上限",2000);
+//        if (ListUtils.isEmpty(firList)){
+//            T.s("添加社交主页已达上限",2000);
+//            return;
+//        }
+        if (!StringUtil.isHttpUrl(pageUrl_edit.getText().toString())){
+            T.s("请输入正确的主页地址",2000);
             return;
         }
+
         edit_Info();
     }
+
+
 
     @Override
     protected void getServerData() {
@@ -91,7 +102,7 @@ public class Edit_ChangePage_Add extends BaseActivity implements View.OnClickLis
 
     private void edit_Info() {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("columnName", name_Tv.getText().toString());
+        requestMap.put("columnName", name_edit.getText().toString());
         requestMap.put("columnUrl", pageUrl_edit.getText().toString());
         HttpSender httpSender = new HttpSender(HttpUrl.UserColumn_AddOrUpdate, "添加/更新专栏", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -167,7 +178,7 @@ public class Edit_ChangePage_Add extends BaseActivity implements View.OnClickLis
             mOptionsItems.add(name);
         }
         OptionsPickerView pvOptions = new OptionsPickerBuilder(mActivity, (options1, option2, options3, v) -> {
-            name_Tv.setText(mOptionsItems.get(options1));
+//            name_Tv.setText(mOptionsItems.get(options1));
 
         }).build();
         pvOptions.setPicker(mOptionsItems);

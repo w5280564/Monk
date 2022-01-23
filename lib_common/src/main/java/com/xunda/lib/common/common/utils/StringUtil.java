@@ -1,5 +1,9 @@
 package com.xunda.lib.common.common.utils;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +15,9 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.RelativeSizeSpan;
+import android.util.Patterns;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -31,6 +37,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,15 +74,15 @@ import java.util.regex.Pattern;
 public class StringUtil {
 
 
-
     public static String getIMEI() {
         String deviceId = "";
 
-        String uuid = SharePref.local().getMyUUID();;
+        String uuid = SharePref.local().getMyUUID();
+        ;
         if (StringUtil.isBlank(uuid)) {
             deviceId = getUUID();
             SharePref.local().setMyUUID(deviceId);
-        }else {
+        } else {
             deviceId = uuid;
         }
         return deviceId;
@@ -85,6 +96,7 @@ public class StringUtil {
 
     /**
      * 根据type值获取单位名称
+     *
      * @param unit_type 单位（1-双 2-件 3-个 4-斤 5-套）
      * @return
      */
@@ -92,7 +104,7 @@ public class StringUtil {
         String value = "个";
         if (!isBlank(unit_type)) {
             if ("1".equals(unit_type)) {
-                return  value = "双";
+                return value = "双";
             } else if ("2".equals(unit_type)) {
                 value = "件";
             } else if ("3".equals(unit_type)) {
@@ -132,14 +144,15 @@ public class StringUtil {
 
     /**
      * 判断string是否包含字母和数字
+     *
      * @param str
      * @return
      */
 
-    public static boolean isLetterDigit(String str){
+    public static boolean isLetterDigit(String str) {
         boolean isDigit = false;//定义一个boolean值，用来表示是否包含数字
         boolean isLetter = false;//定义一个boolean值，用来表示是否包含字母
-        for(int i=0 ; i<str.length() ; i++) {
+        for (int i = 0; i < str.length(); i++) {
             if (Character.isDigit(str.charAt(i))) { //用char包装类中的判断数字的方法判断每一个字符
                 isDigit = true;
             }
@@ -148,12 +161,13 @@ public class StringUtil {
             }
         }
         String regex = "^[a-zA-Z0-9]+$";
-        boolean isRight = isDigit && isLetter&&str.matches(regex);
+        boolean isRight = isDigit && isLetter && str.matches(regex);
         return isRight;
     }
 
     /**
      * 获取字符串字段的值，已做非空判断
+     *
      * @param value
      * @return
      */
@@ -192,8 +206,6 @@ public class StringUtil {
         }
         return tv_text.getText().toString().trim();
     }
-
-
 
 
     public static String deleteSomeString(String parent, String son) {//s是需要删除某个子串的字符串s1是需要删除的子串
@@ -238,8 +250,6 @@ public class StringUtil {
     }
 
 
-
-
     /**
      * 判断是否是中文
      *
@@ -262,7 +272,7 @@ public class StringUtil {
 
     /**
      * 邮箱验证_新
-     *
+     * <p>
      * author zhangliangliang
      *
      * @param strEmail
@@ -438,7 +448,6 @@ public class StringUtil {
     }
 
 
-
     /**
      * 将double转换为字符串，保留小数点位数
      *
@@ -452,9 +461,7 @@ public class StringUtil {
     }
 
 
-
-
-    public static String getUserNickName(String extInfo,String nickname) {
+    public static String getUserNickName(String extInfo, String nickname) {
         try {
             if (!StringUtil.isBlank(extInfo)) {
                 JSONObject jsonObject = new JSONObject(extInfo);//用户资料扩展属性
@@ -467,7 +474,6 @@ public class StringUtil {
         }
         return nickname;
     }
-
 
 
     /**
@@ -541,7 +547,6 @@ public class StringUtil {
     }
 
 
-
     /**
      * MD5加密 32位小写
      *
@@ -587,10 +592,11 @@ public class StringUtil {
 
     /**
      * 人名币符号+大写数字
-     * @param times 倍数（数字字体的大小/人民币符号字体的大小）
+     *
+     * @param times    倍数（数字字体的大小/人民币符号字体的大小）
      * @param tv_price 文本控件
      */
-    public static void setPriceTextShow(String temp_price,float times,TextView tv_price) {
+    public static void setPriceTextShow(String temp_price, float times, TextView tv_price) {
         if (!StringUtil.isBlank(temp_price)) {
             String price_value = String.format("￥%s", StringUtil.DoubleToAmountString(Double.parseDouble(temp_price)));
             tv_price.setText(price_value);
@@ -601,10 +607,9 @@ public class StringUtil {
     }
 
 
-
-
     /**
      * 数组转化成逗号分隔的字符串
+     *
      * @param stringList
      * @return
      */
@@ -628,6 +633,7 @@ public class StringUtil {
 
     /**
      * 数组转化成加号分隔的字符串
+     *
      * @param stringList
      * @return
      */
@@ -650,6 +656,7 @@ public class StringUtil {
 
     /**
      * 数组转化成加号分隔的字符串
+     *
      * @param stringList
      * @return
      */
@@ -673,22 +680,22 @@ public class StringUtil {
 
     /**
      * 逗号分隔的字符串转化成数组
+     *
      * @param string_list
      * @return
      */
-    public static List<String>  stringToList(String string_list) {
+    public static List<String> stringToList(String string_list) {
         List<String> bottom_image_List = new ArrayList<>();
         if (string_list.contains(",")) {
             List<String> tempList = Arrays.asList(string_list.split(","));
             if (!ListUtils.isEmpty(tempList)) {
                 bottom_image_List.addAll(tempList);
             }
-        }else{
+        } else {
             bottom_image_List.add(string_list);
         }
         return bottom_image_List;
     }
-
 
 
     public static String listToStringByLine(List<String> stringList) {
@@ -727,17 +734,17 @@ public class StringUtil {
 
     /**
      * 判断String是否是数字 含有负数
+     *
      * @param str
      * @return
      */
-    public static boolean isNumber(String str){
-        if (TextUtils.isEmpty(str)){
+    public static boolean isNumber(String str) {
+        if (TextUtils.isEmpty(str)) {
             return false;
         }
         Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
         return pattern.matcher(str).matches();
     }
-
 
 
     /**
@@ -806,7 +813,7 @@ public class StringUtil {
         String head = "<head>" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
                 "</head>";
-        return "<html>" +head+ "<body>" + bodyHTML + "</body></html>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
     private static String getHtmlData(String bodyHTML) {
@@ -817,7 +824,7 @@ public class StringUtil {
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
-    public static void setColor(Context context,int index, TextView tv) {
+    public static void setColor(Context context, int index, TextView tv) {
         int dex = index % 4;
         if (dex == 0) {
             tv.setTextColor(ContextCompat.getColor(context, R.color.text_color_FF801F));
@@ -841,6 +848,65 @@ public class StringUtil {
     }
 
 
+    /**
+     * 判断字符串是否为URL
+     *
+     * @param urls 需要判断的String类型url
+     * @return true:是URL；false:不是URL
+     */
+    public static boolean isHttpUrl(String urls) {
+        boolean isurl = false;
+        //设置正则表达式
+        String regex = "(((https|http)?://)?([a-z0-9]+[.])|(www.))"
+                + "\\w+[.|\\/]([a-z0-9]{0,})?[[.]([a-z0-9]{0,})]+((/[\\S&&[^,;\u4E00-\u9FA5]]+)+)?([.][a-z0-9]{0,}+|/?)";
+        //对比
+        Pattern pat = Pattern.compile(regex.trim());
+        Matcher mat = pat.matcher(urls.trim());
+        //判断是否匹配
+        isurl = mat.matches();
+        if (isurl) {
+            isurl = true;
+        }
+        return isurl;
+    }
+
+
+    /**
+     * 验证URL是否能打开
+     *
+     * @param input
+     * @return
+     */
+    public static boolean checkURL(CharSequence input) {
+        if (TextUtils.isEmpty(input)) {
+            return false;
+        }
+        Pattern URL_PATTERN = Patterns.WEB_URL;
+        boolean isURL = URL_PATTERN.matcher(input).matches();
+        if (!isURL) {
+            String urlString = input + "";
+            if (URLUtil.isNetworkUrl(urlString)) {
+                try {
+                    new URL(urlString);
+                    isURL = true;
+                } catch (Exception e) {
+                }
+            }
+        }
+        return isURL;
+    }
+
+    /**
+     * 实现文本复制功能
+     * add by wangqianzhou
+     *
+     * @param content
+     */
+    public static void copy(String content, Context context) {
+        ClipboardManager manager = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("text", content);
+        manager.setPrimaryClip(clipData);
+    }
 
 
 }

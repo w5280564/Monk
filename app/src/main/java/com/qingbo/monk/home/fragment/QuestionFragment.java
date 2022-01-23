@@ -33,11 +33,11 @@ public class QuestionFragment extends BaseTabLayoutFragment {
         for (int i = 0; i < 2; i++) {
             AppMenuBean bean = new AppMenuBean();
             if (i == 0) {
-                fragments.add(new QuestionFragment_Square());
-                bean.setName("问答广场");
-            } else{
                 fragments.add(new QuestionFragment_Group());
                 bean.setName("问答社群");
+            } else{
+                fragments.add(new QuestionFragment_Square());
+                bean.setName("问答广场");
             }
             menuList.add(bean);
         }

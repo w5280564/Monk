@@ -40,6 +40,20 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="关注"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_12"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_follow_number"
+                        app:layout_constraintStart_toStartOf="@+id/tv_follow_number"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_follow_number" />
+
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="@dimen/dp_0"
@@ -57,6 +71,19 @@
                         app:layout_constraintStart_toEndOf="@+id/iv_userHeader"
                         app:layout_constraintTop_toTopOf="@+id/iv_userHeader" />
 
+                    <TextView
+                        android:id="@+id/sex_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="性别："
+                        android:layout_marginStart="@dimen/dp_10"
+                        app:layout_constraintStart_toEndOf="@+id/iv_userHeader"
+                        app:layout_constraintTop_toBottomOf="@id/tv_name"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="@dimen/sp_12"/>
+
+
 
                     <LinearLayout
                         android:id="@+id/label_Lin"
@@ -68,7 +95,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginStart="@dimen/dp_10"
                         app:layout_constraintStart_toEndOf="@+id/iv_userHeader"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+                        app:layout_constraintTop_toBottomOf="@+id/sex_Tv" />
 
 
                     <ImageView
