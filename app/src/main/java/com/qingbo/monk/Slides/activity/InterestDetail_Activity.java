@@ -93,9 +93,14 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
 
     @Override
     protected void getServerData() {
-        getDetail(true);
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDetail(false);
+    }
 
     @SuppressLint("WrongConstant")
     private void initMenuData() {
@@ -196,6 +201,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
+                    onResume();
                 }
             }
         }, true);

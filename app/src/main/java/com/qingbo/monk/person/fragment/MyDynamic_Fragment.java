@@ -23,6 +23,7 @@ import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -34,6 +35,8 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
 import java.util.List;
+
+import butterknife.OnClick;
 
 /**
  * 社交主页-我/他的动态
@@ -63,7 +66,7 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_tab;
+        return R.layout.mydynamic_fragment;
     }
 
     @Override
@@ -297,6 +300,16 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    @OnClick({R.id.iv_bianji})
+    public void Onclick(View view){
+        switch (view.getId()){
+            case R.id.iv_bianji:
+                String isOriginator = PrefUtil.getUser().getIsOriginator();
+                MyCrateArticle_Avtivity.actionStart(requireActivity(),isOriginator);
+                break;
+        }
     }
 
 

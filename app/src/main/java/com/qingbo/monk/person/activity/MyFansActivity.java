@@ -46,7 +46,6 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
     protected void initView() {
         titleBar.setTitle("我的粉丝");
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
-        mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
@@ -54,13 +53,14 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
-        getExpertList(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getExpertList(false);
     }
 
     @Override
     protected void onRefreshData() {
         page = 1;
-        getExpertList(true);
+        getExpertList(false);
     }
 
     @Override

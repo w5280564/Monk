@@ -60,9 +60,10 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
     @Override
     protected void initView(View mView) {
         tab = requireActivity().findViewById(R.id.card_Tab);
+        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", 0, false);
+        initSwipeRefreshLayoutAndAdapter("暂无评论", 0, true);
     }
 
     @Override
@@ -73,7 +74,8 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void loadData() {
-        getListData(true);
+        mSwipeRefreshLayout.setRefreshing(true);
+        getListData(false);
     }
 
     InterestMember_ListBean interestMember_listBean;
@@ -85,6 +87,9 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     interestMember_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestMember_ListBean.class);
                     if (interestMember_listBean != null) {
@@ -100,7 +105,8 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
 
     @Override
     protected void onRefreshData() {
-
+        page = 1;
+        getListData(false);
     }
 
     @Override

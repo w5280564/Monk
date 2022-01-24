@@ -90,7 +90,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView interestJoinCount_Tv;
     @BindView(R.id.joinHead_Lin)
     LinearLayout joinHead_Lin;
-        @BindView(R.id.interestHead_Lin)
+    @BindView(R.id.interestHead_Lin)
     LinearLayout interestHead_Lin;
     @BindView(R.id.group_Con)
     ConstraintLayout group_Con;
@@ -167,13 +167,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
         initMenuData();
-
-
     }
 
     @Override
     protected void getServerData() {
-
         getMyGroup(userID, false);
         getInterestData(userID, false);
     }
@@ -275,7 +272,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                             if (myCardBean != null) {
                                 String groupString = "";
                                 if (isMe()) {
-                                    groupString = "我的社群";
+                                    groupString = "我的问答社群";
                                 } else {
                                     groupString = "他的社群";
                                 }
@@ -398,14 +395,14 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             case R.id.group_Con:
                 if (isMe()) {
                     MyGroupList_Activity.actionStart(mActivity, userID);
-                }else {
+                } else {
                     MyGroupList_Activity.actionStart(mActivity, userID);
                 }
                 break;
             case R.id.interest_Con:
                 if (isMe()) {
                     MyInterestList_Activity.actionStart(mActivity, userID);
-                }else {
+                } else {
                     MyInterestList_Activity.actionStart(mActivity, userID);
                 }
                 break;
@@ -480,6 +477,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             myFlow.addView(view);
         }
     }
+
     /**
      * 我的兴趣组
      *
@@ -583,7 +581,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 int tag = (int) v.getTag();
                 String columnUrl = urlList.get(tag).getColumnUrl();
                 StringUtil.copy(columnUrl, mContext);
-                T.s("已复制到剪切板",2000);
+                T.s("已复制到剪切板", 2000);
                 return true;
             });
         }
