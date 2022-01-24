@@ -402,13 +402,16 @@ public class HomeFragment extends BaseRecyclerViewSplitFragment implements View.
         RotateAnimation animation = new RotateAnimation(0f, 360f,
                 Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setFillAfter(true);
-        //设置无线循环
+        //设置无限循环
         animation.restrictDuration(Animation.INFINITE);
         //设置匀速旋转
         animation.setInterpolator(new LinearInterpolator());
         animation.setDuration(animateTime);
         view.startAnimation(animation);
     }
+    // 左右滑动样式
+
+
 
     /**
      * 修改导航页数
