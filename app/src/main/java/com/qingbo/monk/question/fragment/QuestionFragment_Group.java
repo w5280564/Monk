@@ -1,5 +1,6 @@
 package com.qingbo.monk.question.fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
+import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
@@ -28,6 +30,7 @@ import com.xunda.lib.common.common.http.HttpBaseList;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import org.greenrobot.eventbus.Subscribe;
@@ -95,7 +98,9 @@ public class QuestionFragment_Group extends BaseLazyFragment {
         img_top_banner.setOnItemClickL(new BaseBanner.OnItemClickL() {
             @Override
             public void onItemClick(int position) {
-                skipAnotherActivity(MyGroupListActivity.class);
+//                skipAnotherActivity(MyGroupListActivity.class);
+                    String userID = PrefUtil.getUser().getId();
+                    MyGroupList_Activity.actionStart(mActivity, userID);
             }
         });
 
@@ -207,4 +212,6 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                 break;
         }
     }
+
+
 }

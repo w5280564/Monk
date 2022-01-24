@@ -1,6 +1,10 @@
 package com.qingbo.monk.login.activity;
 
 import android.content.Intent;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -10,11 +14,13 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -36,6 +42,8 @@ public class LoginWithCodeActivity extends BaseActivity implements CompoundButto
     EditText et_phoneNumber;
     @BindView(R.id.cb_agreement)
     CheckBox cbAgreement;
+    @BindView(R.id.tv_agreement)
+    TextView tv_agreement;
     private boolean agreement;
     private ActivityResultLauncher mActivityResultLauncher;
     private String area_code = "86";
@@ -70,6 +78,8 @@ public class LoginWithCodeActivity extends BaseActivity implements CompoundButto
                 }
             }
         });
+
+        setSe(tv_agreement);
     }
 
 
@@ -136,6 +146,43 @@ public class LoginWithCodeActivity extends BaseActivity implements CompoundButto
             agreement = false;
         }
     }
+
+    private void setSe(TextView login_txt) {
+        String str = "《用户协议》和《隐私政策》";
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(str);
+        final int start = str.indexOf("《");//第一个出现的位置
+        ssb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                jumpToWebView("用户协议", H5Url.H5UserPolicy);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(getResources().getColor(R.color.blue));
+                ds.setUnderlineText(false);
+            }
+        }, start, start + 6, 0);
+        int end = str.lastIndexOf("《");
+        ssb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                jumpToWebView("隐私政策", H5Url.H5PrivatePolicy);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(getResources().getColor(R.color.blue));
+                ds.setUnderlineText(false);
+            }
+        }, end, end + 6, 0);
+        login_txt.setMovementMethod(LinkMovementMethod.getInstance());
+        login_txt.setText(ssb, TextView.BufferType.SPANNABLE);
+    }
+
 
 
 }

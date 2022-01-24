@@ -139,6 +139,7 @@
         android:background="@drawable/selector_btn_rectangle"
         android:gravity="center"
         android:text="申请提现"
+        android:visibility="gone"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_16"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,8 +1,15 @@
 package com.qingbo.monk.login.activity;
 
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.HashMap;
 
@@ -37,6 +44,9 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.cb_agreement)
     CheckBox cbAgreement;
+    @BindView(R.id.tv_agreement)
+    TextView tv_agreement;
+
     private boolean agreement;
 
     @Override
@@ -53,6 +63,7 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
     @Override
     protected void initView() {
         registerEventBus();
+        setSe(tv_agreement);
     }
 
     /**
@@ -67,7 +78,7 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
         }
     }
 
-    @OnClick({R.id.ll_wechat_login, R.id.ll_phone_login, R.id.tv_agreement})
+    @OnClick({R.id.ll_wechat_login, R.id.ll_phone_login})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_wechat_login:
@@ -95,7 +106,6 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
     }
 
 
-
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
         if (isChecked) {
@@ -103,6 +113,42 @@ public class LoginActivity extends BaseActivity implements CompoundButton.OnChec
         } else {
             agreement = false;
         }
+    }
+
+    private void setSe(TextView login_txt) {
+        String str = "《用户协议》和《隐私政策》";
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        ssb.append(str);
+        final int start = str.indexOf("《");//第一个出现的位置
+        ssb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                jumpToWebView("用户协议", H5Url.H5UserPolicy);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(getResources().getColor(R.color.blue));
+                ds.setUnderlineText(false);
+            }
+        }, start, start + 6, 0);
+        int end = str.lastIndexOf("《");
+        ssb.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                jumpToWebView("隐私政策", H5Url.H5PrivatePolicy);
+            }
+
+            @Override
+            public void updateDrawState(@NonNull TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setColor(getResources().getColor(R.color.blue));
+                ds.setUnderlineText(false);
+            }
+        }, end, end + 6, 0);
+        login_txt.setMovementMethod(LinkMovementMethod.getInstance());
+        login_txt.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
 
