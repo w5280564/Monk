@@ -99,12 +99,12 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onResume() {
         super.onResume();
-        word = query_edit.toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
     }
 
     @Override
     public void onRefresh() {
-        word = query_edit.toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
         SearchAllList(word, false);
     }

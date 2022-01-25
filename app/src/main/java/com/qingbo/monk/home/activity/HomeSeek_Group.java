@@ -57,7 +57,6 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initView(View mRootView) {
-        query_edit = ((HomeSeek_Activity) requireActivity()).query_Edit;
         mSwipeRefreshLayout = mRootView.findViewById(R.id.refresh_layout);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
@@ -65,7 +64,7 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        word = query_edit.toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
         getExpertList(word,false);
     }
@@ -74,14 +73,14 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void onRefreshData() {
-        word = query_edit.toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         page = 1;
         getExpertList(word,false);
     }
 
     @Override
     protected void onLoadMoreData() {
-        word = query_edit.toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         page++;
         getExpertList(word,false);
     }
@@ -90,7 +89,7 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
     public void getExpertList(String word,boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("word", word);
-        requestMap.put("page", 1 + "");
+        requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
         HttpSender sender = new HttpSender(HttpUrl.Search_Group, "搜索圈子", requestMap,
                 new MyOnHttpResListener() {
