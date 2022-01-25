@@ -16,20 +16,22 @@
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
         app:titleBarTitle="兴趣组"
-        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightImg="@mipmap/icon_sousuo" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/card_Tab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_39"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar"
-        app:tabBackground="@color/transparent"
-        app:tabRippleColor="@android:color/transparent"
-        app:tabIndicatorColor="@color/transparent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="@color/text_color_6f6f6f" />
+        app:tabMode="fixed"
+        app:tabIndicatorFullWidth="true"
+        app:tabBackground="@color/white"
+        app:tabRippleColor="@null"
+        app:tabIndicatorColor="@color/app_main_color"
+        app:tabTextAppearance="@style/TabLayoutTextStyle2"
+        app:tabTextColor="@color/text_color_444444" />
 
     <View
         android:id="@+id/line"

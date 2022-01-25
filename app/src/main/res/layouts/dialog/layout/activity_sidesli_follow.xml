@@ -16,7 +16,7 @@
         app:titleBarRightImg="@mipmap/icon_sousuo"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarRightShowFlag="VISIBLE"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarTitle="关注" />
 
     <com.google.android.material.tabs.TabLayout

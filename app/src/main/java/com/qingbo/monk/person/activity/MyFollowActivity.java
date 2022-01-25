@@ -108,10 +108,12 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-//            String articleId = item.getArticleId();
-//            String type = item.getType();
-//            ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+            ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
+            if (item==null) {
+                return;
+            }
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
         });
 
         mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
@@ -122,10 +124,6 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
                     case R.id.follow_Tv:
                         String likeId = item.getId();
                         postFollowData(likeId, position);
-                        break;
-                    case R.id.head_Img:
-                        String id = item.getId();
-                        MyAndOther_Card.actionStart(mActivity, id);
                         break;
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());

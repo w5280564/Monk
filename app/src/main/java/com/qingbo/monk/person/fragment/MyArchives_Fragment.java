@@ -85,9 +85,6 @@ public class MyArchives_Fragment extends BaseLazyFragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-//                if (refresh_layout.isRefreshing()) {
-//                    refresh_layout.setRefreshing(false);
-//                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {

@@ -449,4 +449,7 @@
         <item name="android:textSize">@dimen/sp_14</item>
     </style>
 
+    <style name="TabLayoutTextStyle2" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">@dimen/sp_15</item>
+    </style>
 </resources>

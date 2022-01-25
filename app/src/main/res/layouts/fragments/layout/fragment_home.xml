@@ -164,7 +164,7 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/card_Tab"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_33"
+                android:layout_height="wrap_content"
                 app:tabRippleColor="@android:color/transparent"
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
                 app:tabTextColor="@color/text_color_6f6f6f" />

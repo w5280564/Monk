@@ -41,7 +41,6 @@ public class MyFollow_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseVie
 //        String format = String.format("发布%1$s条，粉丝%2$s人，关注%3$s人", item.getArticleNum(), item.getFansNum(), item.getFollowerNum());
         content_Tv.setText(item.getDescription());
 
-        helper.addOnClickListener(R.id.head_Img);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Tv);
     }

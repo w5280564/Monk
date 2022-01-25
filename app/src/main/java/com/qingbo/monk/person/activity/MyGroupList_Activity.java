@@ -127,7 +127,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        requestMap.put("userID", userID);
+        requestMap.put("userid", userID);
         HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
