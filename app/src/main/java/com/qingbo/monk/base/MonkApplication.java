@@ -26,9 +26,6 @@ public class MonkApplication extends BaseApplication {
         instance = this;
         Treasure.setConverterFactory(new GsonConverterFactory());//Treasure：数据保存类
         OkhttpInitUtil.init(instance);//初始化网络请求类
-        if (PrefUtil.isLogin()) {
-            WebSocketHelper.getInstance().initWebSocketService(instance,BIND_AUTO_CREATE);//初始化WebSocket
-        }
     }
 
 

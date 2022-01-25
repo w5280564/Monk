@@ -5,17 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-
 import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.bean.SendMessageBean;
 import com.qingbo.monk.message.activity.WebSocketService;
-import com.xunda.lib.common.common.eventbus.EditGroupEvent;
 import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.L;
-
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -57,9 +54,9 @@ public class WebSocketHelper {
      * @param mContext
      */
     public void unbindWebSocketService(Context mContext) {
-//        if (isBind) {
-//            mContext.unbindService(serviceConnection);
-//        }
+        if (isBind) {
+            mContext.unbindService(serviceConnection);
+        }
     }
 
 
@@ -67,8 +64,9 @@ public class WebSocketHelper {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            L.e(TAG,"onServiceConnected");
             webSocketService = ((WebSocketService.LocalBinder) service).getService();
-            webSocketService.setWebSocketCallback(webSocketCallback);
+            webSocketService.setWebSocketCallbackAndConnect(webSocketCallback);
         }
 
         @Override

@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import androidx.annotation.Nullable;
-
 import com.xunda.lib.common.common.utils.L;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -42,12 +39,6 @@ public class WebSocketService extends Service {
         return new LocalBinder();
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        L.e(TAG,"onCreate");
-        webSocket = connect();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -101,6 +92,7 @@ public class WebSocketService extends Service {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
+            L.e(TAG,"onOpen");
             if (webSocketCallback != null) {
                 webSocketCallback.onOpen();
             }
@@ -109,6 +101,7 @@ public class WebSocketService extends Service {
 
         @Override
         public void onMessage(WebSocket webSocket, String text) {
+            L.e(TAG,"onMessage");
             if (webSocketCallback != null) {
                 webSocketCallback.onMessage(text);
             }
@@ -148,7 +141,8 @@ public class WebSocketService extends Service {
         void onClosed();
     }
 
-    public void setWebSocketCallback(WebSocketCallback webSocketCallback) {
+    public void setWebSocketCallbackAndConnect(WebSocketCallback webSocketCallback) {
         this.webSocketCallback = webSocketCallback;
+        webSocket = connect();
     }
 }

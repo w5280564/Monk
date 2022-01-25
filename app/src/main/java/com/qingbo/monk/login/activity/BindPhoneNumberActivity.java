@@ -162,7 +162,6 @@ public class BindPhoneNumberActivity extends BaseActivity{
             if (userObj==null) {
                 return;
             }
-            WebSocketHelper.getInstance().initWebSocketService(mContext,BIND_AUTO_CREATE);
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
             String interested = userObj.getInterested();
             if(StringUtil.isBlank(interested)) {//首次登陆

@@ -103,7 +103,6 @@ public class WelcomeActivity extends BaseActivity {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    WebSocketHelper.getInstance().unbindWebSocketService(mContext);//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);

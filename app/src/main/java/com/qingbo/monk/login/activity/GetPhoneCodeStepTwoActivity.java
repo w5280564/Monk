@@ -131,7 +131,6 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             if (userObj==null) {
                 return;
             }
-            WebSocketHelper.getInstance().initWebSocketService(mContext,BIND_AUTO_CREATE);
             int band_wx = userObj.getBand_wx();
             PrefUtil.saveUser(userObj,baseUserBean.getAccessToken());
             String interested = userObj.getInterested();

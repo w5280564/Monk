@@ -18,6 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentActivity;
 
+import com.qingbo.monk.WebSocketHelper;
+import com.qingbo.monk.message.activity.WebSocketService;
+import com.qingbo.monk.wxapi.WXEntryActivity;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -427,4 +430,20 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     }
 
 
+
+    /**
+     * 初始化和绑定WebSocket
+     */
+    protected void initWebSocketService() {
+        WebSocketHelper.getInstance().initWebSocketService(this,BIND_AUTO_CREATE);
+    }
+
+
+
+    /**
+     * 初始化和绑定WebSocket
+     */
+    protected void unbindWebSocketService() {
+        WebSocketHelper.getInstance().unbindWebSocketService(this);
+    }
 }

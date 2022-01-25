@@ -157,6 +157,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
         addTabBadge();
+        initWebSocketService();//初始化和绑定WebSocket
         registerEventBus();
     }
 
@@ -406,7 +407,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    WebSocketHelper.getInstance().unbindWebSocketService(mContext);//解绑WebSocketService
+                    unbindWebSocketService();//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);
