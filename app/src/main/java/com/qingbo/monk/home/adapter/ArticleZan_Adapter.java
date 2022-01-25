@@ -47,6 +47,7 @@ public class ArticleZan_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseV
         content_Tv.setText(format);
 
         helper.addOnClickListener(R.id.follow_Tv);
+        helper.addOnClickListener(R.id.send_Mes);
     }
 
     /**

@@ -21,9 +21,11 @@ import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -144,6 +146,9 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
                     case R.id.follow_Tv:
                         String likeId = item.getId();
                         postFollowData(likeId, position);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
                         break;
                 }
             }

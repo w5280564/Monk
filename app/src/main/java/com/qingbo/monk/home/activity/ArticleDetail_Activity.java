@@ -697,7 +697,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             homeFoucsDetail_bean.getData().getDetail().setIsJoin("1");
         }
         isJoinGroup(homeFoucsDetail_bean.getData().getDetail().getIsJoin());
-        appLayout.setExpanded(false);
+//        appLayout.setExpanded(false);
     }
 
     /**

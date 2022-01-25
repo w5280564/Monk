@@ -61,13 +61,15 @@ public class SearchAll_Bean {
             @SerializedName("article_num")
             private String articleNum;
             @SerializedName("tag_name")
-            private Object tagName;
+            private String tagName;
             @SerializedName("status")
             private String status;
             @SerializedName("sort")
             private Integer sort;
             @SerializedName("relation")
             private Integer relation;
+            @SerializedName("follow_status")
+            private String follow_status;
         }
 
         @NoArgsConstructor
@@ -114,7 +116,7 @@ public class SearchAll_Bean {
             @SerializedName("join_num")
             private String joinNum;
             @SerializedName("join_status")
-            private Object joinStatus;
+            private String joinStatus;
         }
     }
 }

@@ -128,7 +128,7 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        requestMap.put("userID", userID);
+        requestMap.put("userid", userID);
         HttpSender sender = new HttpSender(HttpUrl.Interest_My, "我的兴趣组", requestMap,
                 new MyOnHttpResListener() {
                     @Override
