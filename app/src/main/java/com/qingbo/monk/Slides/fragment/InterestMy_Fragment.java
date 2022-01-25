@@ -154,10 +154,10 @@ public class InterestMy_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
+
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

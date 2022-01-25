@@ -516,12 +516,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
                     String isJoin = homeFoucsDetail_bean.getData().getDetail().getIsJoin();
                     changeJoinGroup(isJoin);
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

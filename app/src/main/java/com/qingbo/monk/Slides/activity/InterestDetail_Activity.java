@@ -200,11 +200,10 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
                     onResume();
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

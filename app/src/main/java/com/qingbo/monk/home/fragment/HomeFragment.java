@@ -78,14 +78,8 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     TabLayout card_Tab;
     @BindView(R.id.card_ViewPager)
     ViewPager card_ViewPager;
-    @BindView(R.id.appLayout)
-    AppBarLayout appLayout;
-    @BindView(R.id.icon_Img)
-    ImageView icon_Img;
     @BindView(R.id.manCount_Tv)
     TextView manCount_Tv;
-    @BindView(R.id.interest_recycler)
-    RecyclerView interest_recycler;
     @BindView(R.id.seek_Tv)
     TextView seek_Tv;
 
@@ -308,10 +302,10 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s(json_data, 3000);
+
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
