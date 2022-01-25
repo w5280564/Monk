@@ -4,24 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
-
 import androidx.annotation.RequiresApi;
-
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
-
 import java.util.HashMap;
-
 import butterknife.OnClick;
 
 /**

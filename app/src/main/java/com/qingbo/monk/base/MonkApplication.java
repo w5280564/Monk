@@ -3,7 +3,6 @@ package com.qingbo.monk.base;
 import android.content.Context;
 import android.content.res.Configuration;
 import com.baoyz.treasure.Treasure;
-import com.qingbo.monk.WebSocketHelper;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
 import com.xunda.lib.common.common.Constants;
@@ -11,7 +10,6 @@ import com.xunda.lib.common.common.http.OkhttpInitUtil;
 import com.xunda.lib.common.common.language.MultiLanguageUtil;
 import com.xunda.lib.common.common.preferences.GsonConverterFactory;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.xunda.lib.common.common.preferences.PrefUtil;
 
 /**
  * BaseApplication

@@ -13,12 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,7 +32,6 @@ import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipRecommend_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -42,7 +39,6 @@ import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MySet_Activity;
 import com.xunda.lib.common.bean.ApkBean;
 import com.xunda.lib.common.bean.AppMarketBean;
-import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
@@ -61,7 +57,6 @@ import com.xunda.lib.common.common.http.OnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -70,13 +65,10 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.dialog.VersionDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 
 /**

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import com.qingbo.monk.R;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.tuo.customview.VerificationCodeView;

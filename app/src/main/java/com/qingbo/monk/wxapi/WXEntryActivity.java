@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import com.qingbo.monk.HttpSender;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.login.activity.WelcomeActivity;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
@@ -21,17 +19,13 @@ import com.xunda.lib.common.bean.BaseUserBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.WechatLoginEvent;
-import com.xunda.lib.common.common.eventbus.WechatPayEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 

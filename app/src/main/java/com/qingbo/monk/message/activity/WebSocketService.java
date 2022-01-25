@@ -33,6 +33,17 @@ public class WebSocketService extends Service {
         }
     }
 
+
+    /**
+     * 设置回调并连接
+     * @param webSocketCallback
+     */
+    public void setWebSocketCallbackAndConnect(WebSocketCallback webSocketCallback) {
+        this.webSocketCallback = webSocketCallback;
+        webSocket = connect();
+    }
+
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -141,8 +152,6 @@ public class WebSocketService extends Service {
         void onClosed();
     }
 
-    public void setWebSocketCallbackAndConnect(WebSocketCallback webSocketCallback) {
-        this.webSocketCallback = webSocketCallback;
-        webSocket = connect();
-    }
+
+
 }

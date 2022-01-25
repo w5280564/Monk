@@ -1,19 +1,12 @@
 package com.qingbo.monk.person.activity;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
@@ -22,14 +15,9 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DataCleanManager;
-import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.view.MyArrowItemView;
-
-import java.io.File;
 import java.util.HashMap;
-
 import butterknife.BindView;
 
 /**

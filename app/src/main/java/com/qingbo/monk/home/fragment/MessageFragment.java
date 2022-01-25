@@ -5,11 +5,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseMessageRecordBean;
 import com.qingbo.monk.bean.MessageRecordBean;
-import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.message.adapter.MessageListAdapter;
@@ -18,10 +16,7 @@ import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
-
 import org.greenrobot.eventbus.Subscribe;
-
 import java.util.HashMap;
 import butterknife.OnClick;
 
