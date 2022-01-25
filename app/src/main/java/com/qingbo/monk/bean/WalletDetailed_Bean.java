@@ -2,6 +2,8 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +13,13 @@ public class WalletDetailed_Bean {
     @SerializedName("money")
     private String money;
     @SerializedName("trade_desc")
-    private String trade_desc;
+    private String tradeDesc;
     @SerializedName("create_time")
-    private String create_time;
+    private String createTime;
     @SerializedName("trade_no")
-    private String trade_no;
+    private String tradeNo;
+    @SerializedName("status")
+    private String status;
     @SerializedName("order_id")
-    private String order_id;
-
+    private String orderId;
 }

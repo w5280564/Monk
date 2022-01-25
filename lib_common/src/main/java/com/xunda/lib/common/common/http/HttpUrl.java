@@ -232,6 +232,7 @@ public class HttpUrl {
     public static final String User_AllUpdate_Count = "square/set/new-update-total";//新增的总数
     public static final String Wallet_List = "pay/wallet/detail-list";//交易记录
     public static final String Wallet_Order_Detail = "pay/wallet/order-detail";//交易记录—订单详情
+    public static final String Search_All = "search/search/default-search";//搜索 默认页
 
 }
 

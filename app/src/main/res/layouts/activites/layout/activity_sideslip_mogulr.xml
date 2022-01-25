@@ -15,7 +15,7 @@
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarRightShowType="IMG"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="大佬"
+        app:titleBarTitle="大咖"
         app:titleBarRightShowFlag="VISIBLE"
         app:titleBarRightImg="@mipmap/icon_sousuo" />
 

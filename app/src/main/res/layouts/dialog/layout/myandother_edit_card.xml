@@ -74,9 +74,9 @@
                     android:layout_height="@dimen/dp_50"
                     android:layout_marginTop="@dimen/dp_10"
                     app:arrowItemAvatarHeight="@dimen/dp_12"
-                    app:arrowItemContent="昵称"
+                    app:arrowItemContent=""
                     app:arrowItemShowAvatar="false"
-                    app:arrowItemTitle="昵称"
+                    app:arrowItemTitle="用户名"
                     app:arrowItemTitleColor="@color/text_color_444444"
                     app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
@@ -97,9 +97,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50"
                     app:arrowItemAvatarHeight="@dimen/dp_12"
-                    app:arrowItemContent="杭州"
+                    app:arrowItemContent=""
                     app:arrowItemShowAvatar="false"
-                    app:arrowItemTitle="居住地"
+                    app:arrowItemTitle="地址"
                     app:arrowItemTitleColor="@color/text_color_444444"
                     app:layout_constraintTop_toBottomOf="@+id/sex_MyView" />
 

@@ -42,6 +42,7 @@ import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.MainUpdateCount_Bean;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.home.adapter.HomeInterest_Adapter;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
@@ -85,6 +86,9 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     TextView manCount_Tv;
     @BindView(R.id.interest_recycler)
     RecyclerView interest_recycler;
+    @BindView(R.id.seek_Tv)
+    TextView seek_Tv;
+
     private RecyclerView mRecyclerView;
     private HomeInterest_Adapter mAdapter;
     int page = 1;
@@ -111,6 +115,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         super.initEvent();
         drawer_left_Img.setOnClickListener(new drawer_left_ImgClick());
         change_Tv.setOnClickListener(this);
+        seek_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -179,6 +184,10 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             case R.id.change_Tv:
                 rotate(change_Img);
                 getInterestLab(false);
+                break;
+            case R.id.seek_Tv:
+                skipAnotherActivity(HomeSeek_Activity.class);
+                break;
         }
     }
 
@@ -212,12 +221,12 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
-                    case  R.id.join_Tv:
+                switch (view.getId()) {
+                    case R.id.join_Tv:
                         InterestBean item = (InterestBean) adapter.getItem(position);
                         String joinStatus = item.getJoinStatus();
-                        if (!TextUtils.equals(joinStatus,"1")) {
-                            changeJoin(item.getJoinStatus(), position,item);
+                        if (!TextUtils.equals(joinStatus, "1")) {
+                            changeJoin(item.getJoinStatus(), position, item);
                             getJoin(item.getId());
                         }
                         break;
@@ -227,7 +236,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
 
     }
 
-    private void addMore(){
+    private void addMore() {
         //加载更多
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -384,7 +393,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
      * @param stateIndex 1已加入 其他都是未加入
      * @param position
      */
-    private void changeJoin(String stateIndex, int position,InterestBean interestBean) {
+    private void changeJoin(String stateIndex, int position, InterestBean interestBean) {
         if (interestBean != null) {
             TextView join_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.join_Tv);
             if (TextUtils.equals(stateIndex, "1")) {
@@ -492,7 +501,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
         }
     }
-
 
 
 }

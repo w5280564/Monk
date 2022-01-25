@@ -68,6 +68,17 @@ public class UserBean implements Serializable {
     private Integer followStatus;
     @SerializedName("auth_nickname")
     private String auth_nickname;
+    @SerializedName("sex")
+    private String sex;
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
 
 
     public String getAuth_nickname() {

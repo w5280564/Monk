@@ -33,7 +33,7 @@ public class MyWallet_Withdrawal extends BaseActivity {
 
     private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender httpSender = new HttpSender(HttpUrl.User_wallet, "我的余额", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.User_wallet, "提现", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

@@ -92,6 +92,7 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
 
     private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("orderId",orderId);
         HttpSender httpSender = new HttpSender(HttpUrl.Wallet_Order_Detail, "订单详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -104,13 +105,13 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
                     if (walletDetailBean != null) {
                         moneyCount_Tv.setText(walletDetailBean.getMoney());
 //                        cost_Tv.setText("扫地僧手续费"+walletDetailBean.);
-                        from_MyView.getCount_Tv().setText(walletDetailBean.getPay_user_name());
-                        time_MyView.getCount_Tv().setText(walletDetailBean.getCreate_time());
-                        order_MyView.getCount_Tv().setText(walletDetailBean.getTrade_no());
-                        to_MyView.getCount_Tv().setText(walletDetailBean.getBenefit_user_name());
+                        from_MyView.getTvContent().setText(walletDetailBean.getPayUserName());
+                        time_MyView.getTvContent().setText(walletDetailBean.getCreateTime());
+                        order_MyView.getTvContent().setText(walletDetailBean.getTradeNo());
+                        to_MyView.getTvContent().setText(walletDetailBean.getBenefitUserName());
 //                        mode_MyView.getCount_Tv().setText(walletDetailBean.());
-                        state_MyView.getCount_Tv().setText(walletDetailBean.getTrade_state());
-                        remarks_MyView.getCount_Tv().setText(walletDetailBean.getTrade_desc());
+                        state_MyView.getTvContent().setText(walletDetailBean.getTradeState());
+                        remarks_MyView.getTvContent().setText(walletDetailBean.getTradeDesc());
                     }
                 }
             }

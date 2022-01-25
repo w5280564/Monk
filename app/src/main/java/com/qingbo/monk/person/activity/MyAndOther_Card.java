@@ -104,6 +104,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView send_Mes;
     @BindView(R.id.urlLabel_Lin)
     LinearLayout urlLabel_Lin;
+    @BindView(R.id.sex_Tv)
+    TextView sex_Tv;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -228,7 +230,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image());
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(),R.mipmap.card_bg);
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
@@ -239,6 +241,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
                         originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
                         originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
+                        originalValue(userBean.getSex(), "未知", "性别：", sex_Tv);
 
                         if (isMe()) {
                             mesHomepage_Tv.setText("我的社交主页");

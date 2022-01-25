@@ -180,7 +180,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image());
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(),R.mipmap.card_bg);
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         nickName_MyView.getTvContent().setText(userBean.getNickname());
                         String s = userBean.getProvince() + " " + userBean.getCity() + " " + userBean.getCounty();
@@ -194,6 +194,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                         interestLabelFlow(harvest_EditView.getLabel_Flow(), mActivity, userBean.getGetResource());
 
                         originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getSex(), "未知", "", sex_MyView.getTvContent());
 
                         List<UserBean.ColumnDTO> column = userBean.getColumn();
                         urlLabelFlow(urlLabel_Lin, mActivity, column);
@@ -358,7 +359,6 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
             //省份province 城市city 地区district
             String cityStr = province + " " + city + " " + district;
-
             requestMap.put("province", province.getName());
             requestMap.put("city", city.getName());
             requestMap.put("county", district.getName());
@@ -413,8 +413,10 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         mOptionsItems.add("男");
         mOptionsItems.add("女");
         OptionsPickerView pvOptions = new OptionsPickerBuilder(mActivity, (options1, option2, options3, v) -> {
-            textView.setText(mOptionsItems.get(options1));
-
+            String s = mOptionsItems.get(options1);
+            requestMap.put("sex", s);
+            textView.setText(s);
+            edit_Info();
         }).build();
         pvOptions.setPicker(mOptionsItems);
         pvOptions.show();

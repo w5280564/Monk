@@ -34,22 +34,24 @@ public class MyWallet_Detailed_Adapter extends BaseQuickAdapter<WalletDetailed_B
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, WalletDetailed_Bean item) {
-        helper.setText(R.id.content_Tv, item.getTrade_desc());
-        helper.setText(R.id.time_Tv, item.getCreate_time());
+        helper.setText(R.id.content_Tv, item.getTradeDesc());
+        helper.setText(R.id.time_Tv, item.getCreateTime());
         helper.setText(R.id.count_Tv, item.getMoney());
 
 
-//        TextView count_Tv = helper.getView(R.id.count_Tv);
-//        count_Tv.setText(item.getMoney() + "");
-//        boolean number = isNumber(item.getMoney());
-//        if (number) {
-//            double v = Double.parseDouble(item.getMoney());
-//            if (v > 0) {
-//                count_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
-//            } else if (v < 0) {
-//                count_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
-//            }
-//        }
+        TextView count_Tv = helper.getView(R.id.count_Tv);
+
+        boolean number = isNumber(item.getMoney());
+        if (number) {
+            double v = Double.parseDouble(item.getMoney());
+            if (v > 0) {
+                count_Tv.setText("+" + item.getMoney());
+                count_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+            } else if (v < 0) {
+                count_Tv.setText(item.getMoney() + "");
+                count_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            }
+        }
 
     }
 

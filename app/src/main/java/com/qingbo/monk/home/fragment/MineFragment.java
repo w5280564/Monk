@@ -98,6 +98,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView tv_group;
     @BindView(R.id.tv_my_wallet)
     TextView tv_my_wallet;
+    @BindView(R.id.sex_Tv)
+    TextView sex_Tv;
 
     @Override
     protected int getLayoutId() {
@@ -162,7 +164,8 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         interestLabelFlow(learn_EditView.getLabel_Flow(), requireActivity(), userBean.getResearch());
                         interestLabelFlow(harvest_EditView.getLabel_Flow(), requireActivity(), userBean.getGetResource());
 
-                        originalValue(userBean.getAchievement(), "暂未填写", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getAchievement(), "暂未填写","", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getSex(), "未知", "性别：", sex_Tv);
                     }
                 }
             }
@@ -229,14 +232,13 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
      * @param value
      * @param originalStr
      */
-    private void originalValue(Object value, String originalStr, TextView tv) {
+    private void originalValue(Object value, String originalStr, String hint, TextView tv) {
         if (TextUtils.isEmpty((CharSequence) value)) {
-            tv.setText(originalStr);
+            tv.setText(hint + originalStr);
         } else {
-            tv.setText((CharSequence) value);
+            tv.setText(hint + (CharSequence) value);
         }
     }
-
 
     @Override
     public void onRefresh() {
