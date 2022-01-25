@@ -59,7 +59,7 @@
                         android:layout_width="@dimen/dp_0"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_10"
-                        android:layout_marginTop="@dimen/dp_7"
+                        android:layout_marginTop="@dimen/dp_5"
                         android:layout_marginEnd="@dimen/dp_10"
                         android:ellipsize="end"
                         android:maxLines="1"
@@ -75,11 +75,11 @@
                         android:id="@+id/sex_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
                         android:text="性别："
-                        android:layout_marginStart="@dimen/dp_10"
-                        app:layout_constraintStart_toEndOf="@+id/iv_userHeader"
+                        app:layout_constraintStart_toStartOf="@id/tv_name"
                         app:layout_constraintTop_toBottomOf="@id/tv_name"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_userHeader"
+                        android:layout_marginBottom="@dimen/dp_5"
                         android:textColor="@color/text_color_a1a1a1"
                         android:textSize="@dimen/sp_12"/>
 
@@ -115,7 +115,7 @@
                         android:text="进入我的主页"
                         android:padding="@dimen/dp_10"
                         android:textColor="@color/text_color_a1a1a1"
-                        android:textSize="@dimen/sp_10"
+                        android:textSize="@dimen/sp_11"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_right"
                         app:layout_constraintEnd_toStartOf="@+id/iv_right"
                         app:layout_constraintTop_toTopOf="@+id/iv_right" />

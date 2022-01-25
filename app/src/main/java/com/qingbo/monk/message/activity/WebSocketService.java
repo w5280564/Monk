@@ -91,7 +91,7 @@ public class WebSocketService extends Service {
             public void run() {
                 L.e(TAG, "reconnect...");
                 if (!connected) {
-                    connect();
+                    webSocket = connect();
                 }
             }
         }, reconnectTimeout);
@@ -116,6 +116,7 @@ public class WebSocketService extends Service {
 
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
+            L.e(TAG,"onClosed " + reason);
             if (webSocketCallback != null) {
                 webSocketCallback.onClosed();
             }

@@ -24,7 +24,6 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_29"
         android:layout_marginStart="@dimen/dp_14"
-        android:layout_marginTop="@dimen/dp_7"
         android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/search_bg"
         android:drawableStart="@mipmap/seek_icon"
@@ -34,7 +33,8 @@
         android:text="搜索你感兴趣的人/公司"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/drawer_left_Img"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/drawer_left_Img"
+        app:layout_constraintBottom_toBottomOf="@id/drawer_left_Img"/>
 
     <TextView
         android:id="@+id/manCount_Tv"
