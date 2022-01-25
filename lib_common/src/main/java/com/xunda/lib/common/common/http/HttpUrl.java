@@ -233,6 +233,11 @@ public class HttpUrl {
     public static final String Wallet_List = "pay/wallet/detail-list";//交易记录
     public static final String Wallet_Order_Detail = "pay/wallet/order-detail";//交易记录—订单详情
     public static final String Search_All = "search/search/default-search";//搜索 默认页
+    public static final String Search_User = "search/search/user-list";//搜索用户
+    public static final String Search_Person = "search/search/people-list";//搜索人物
+    public static final String Search_Fund = "search/search/stock";//搜索股票
+    public static final String Search_Topic = "search/search/topic";//搜索专栏
+    public static final String Search_Group = "search/search/group";//搜索圈子
 
 }
 

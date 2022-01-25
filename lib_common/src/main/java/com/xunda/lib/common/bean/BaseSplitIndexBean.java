@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class BaseSplitIndexBean<T>{
 
+    public void setList(List<T> list) {
+        this.list = list;
+    }
+
     private List<T> list;
     private String count;
 

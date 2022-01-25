@@ -3,15 +3,14 @@ package com.qingbo.monk.home.activity;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
-import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
+import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.home.db.DbDao;
-import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
 import com.qingbo.monk.home.fragment.HomeSeek_Whole_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.utils.T;
@@ -24,10 +23,12 @@ import java.util.List;
 import butterknife.BindView;
 
 public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnClickListener {
-    @BindView(R.id.cancel_Tv)
-    TextView cancel_Tv;
+    @BindView(R.id.seek_Tv)
+    TextView seek_Tv;
+    @BindView(R.id.back_Img)
+    ImageView back_Img;
     @BindView(R.id.query_Edit)
-    SearchEditText query_Edit;
+    public SearchEditText query_Edit;
 
     public DbDao mDbDao;
 
@@ -38,16 +39,19 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
 
     @Override
     protected void initView() {
+        HideIMEUtil.wrap(this, query_Edit);
+        viewTouchDelegate.expandViewTouchDelegate(back_Img, 100);
         mViewPager = findViewById(R.id.card_ViewPager);
         mTabLayout = findViewById(R.id.card_Tab);
         initMenuData();
         mDbDao = new DbDao(this);
-        List<String> strings = mDbDao.queryData("");
     }
 
     @Override
     protected void initEvent() {
-        cancel_Tv.setOnClickListener(this);
+        super.initEvent();
+        seek_Tv.setOnClickListener(this);
+        back_Img.setOnClickListener(this);
     }
 
     @SuppressLint("WrongConstant")
@@ -66,11 +70,11 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         }
         AppMenuBean bean = new AppMenuBean();
         fragments.add(HomeSeek_Whole_Fragment.newInstance());
-        fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
-        fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
-        fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
-        fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
-        fragments.add(HomeInsiderHK_Fragment.newInstance("2"));
+        fragments.add(HomeSeek_User.newInstance(""));
+        fragments.add(HomeSeek_Person.newInstance(""));
+        fragments.add(HomeSeek_Fund.newInstance(""));
+        fragments.add(HomeSeek_Topic.newInstance(""));
+        fragments.add(HomeSeek_Group.newInstance(""));
         menuList.add(bean);
 
         initViewPager(0);
@@ -81,10 +85,11 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         int selectedTabPosition = mTabLayout.getSelectedTabPosition();
         CharSequence text = mTabLayout.getTabAt(selectedTabPosition).getText();
         switch (v.getId()) {
-            case R.id.cancel_Tv:
-//                if (TextUtils.equals(text, "综合")) {
+            case R.id.back_Img:
+                finish();
+                break;
+            case R.id.seek_Tv:
                 addSeekStr(text.toString());
-//                }
                 break;
         }
     }
@@ -101,12 +106,28 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
             List<String> strings = mDbDao.queryData("");
             FlowLayout label_flow = ((HomeSeek_Whole_Fragment) fragments.get(0)).label_Flow;
             ((HomeSeek_Whole_Fragment) fragments.get(0)).interestLabelFlow(label_flow, mActivity, strings);
-            if (TextUtils.equals(text, "综合")) {
-//                ((HomeSeek_Whole_Fragment) fragments.get(0)).onResume();
-                ((HomeSeek_Whole_Fragment) fragments.get(0)).SearchAllList("c", false);;
-            }
+            String query_EditString = query_Edit.getText().toString();
+            changeSeekData(text, query_EditString);
         } else {
             T.s("请输入内容", 3000);
         }
     }
+
+    private void changeSeekData(String type, String seekStr) {
+        if (TextUtils.equals(type, "综合")) {
+//                ((HomeSeek_Whole_Fragment) fragments.get(0)).onResume();
+            ((HomeSeek_Whole_Fragment) fragments.get(0)).SearchAllList(seekStr, false);
+        } else if (TextUtils.equals(type, "用户")) {
+            ((HomeSeek_User) fragments.get(1)).getExpertList(seekStr, false);
+        } else if (TextUtils.equals(type, "人物")) {
+            ((HomeSeek_Person) fragments.get(2)).getExpertList(seekStr, false);
+        } else if (TextUtils.equals(type, "股票")) {
+            ((HomeSeek_Fund) fragments.get(3)).getExpertList(seekStr, false);
+        } else if (TextUtils.equals(type, "资讯")) {
+            ((HomeSeek_Topic) fragments.get(4)).getExpertList(seekStr, false);
+        } else if (TextUtils.equals(type, "圈子")) {
+            ((HomeSeek_Group) fragments.get(5)).getExpertList(seekStr, false);
+        }
+    }
+
 }

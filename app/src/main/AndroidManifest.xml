@@ -65,9 +65,14 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
+
         <activity
+            android:name=".home.activity.HomeSeek_User"
+            android:exported="false" />
+                <activity
             android:name=".home.activity.HomeSeek_Activity"
             android:exported="false" />
+
         <activity
             android:name=".person.activity.MyWallet_DetailedList_Detail"
             android:exported="false" />

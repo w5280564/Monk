@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/head_Img"
-        android:layout_width="@dimen/dp_32"
-        android:layout_height="@dimen/dp_32"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="@dimen/dp_36"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_13"
         android:scaleType="centerCrop"
@@ -21,14 +21,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_11"
-        android:maxLength="6"
         android:layout_marginTop="@dimen/dp_11"
+        android:maxLength="10"
         android:maxLines="1"
         android:textColor="@color/text_color_444444"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/head_Img"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/followCount_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_30"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@id/nickName_Tv"
+        app:layout_constraintStart_toEndOf="@id/nickName_Tv"
+        app:layout_constraintTop_toTopOf="@id/nickName_Tv" />
 
     <TextView
         android:id="@+id/content_Tv"
@@ -36,57 +47,26 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_15"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/text_color_6f6f6f"
-        android:textSize="12sp"
+        android:maxLines="1"
+        android:textColor="@color/text_color_a1a1a1"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@id/nickName_Tv"
         app:layout_constraintTop_toBottomOf="@+id/nickName_Tv" />
 
-
     <TextView
-        android:id="@+id/follow_Tv"
-        android:layout_width="wrap_content"
+        android:id="@+id/join_Tv"
+        android:layout_width="@dimen/dp_46"
         android:layout_height="@dimen/dp_22"
         android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/interest_lable"
         android:gravity="center"
-        android:paddingStart="@dimen/dp_11"
-        android:paddingEnd="@dimen/dp_11"
-        android:text="关注"
-        android:textColor="@color/text_color_444444"
+        android:lines="1"
+        android:text="已加入"
+        android:textColor="@color/text_color_a1a1a1"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/head_Img" />
-
-    <TextView
-        android:id="@+id/send_Mes"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_22"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:background="@drawable/message_bg"
-        android:gravity="center"
-        android:paddingStart="@dimen/dp_8"
-        android:paddingEnd="@dimen/dp_8"
-        android:text="私信"
-        android:visibility="gone"
-        android:textColor="@color/text_color_a1a1a1"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/follow_Tv"
-        app:layout_constraintEnd_toStartOf="@+id/follow_Tv"
-        app:layout_constraintTop_toTopOf="@+id/follow_Tv"
-        app:layout_goneMarginEnd="@dimen/dp_5" />
-
-
-
-    <com.xunda.lib.common.view.flowlayout.FlowLayout
-        android:id="@+id/label_Flow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@id/send_Mes"
-        app:layout_constraintTop_toBottomOf="@id/content_Tv"
-        app:layout_constraintStart_toEndOf="@id/head_Img"/>
-
 
 
     <View
@@ -94,9 +74,7 @@
         android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/dp_10"
         android:background="@color/text_color_CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/label_Flow" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/content_Tv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
