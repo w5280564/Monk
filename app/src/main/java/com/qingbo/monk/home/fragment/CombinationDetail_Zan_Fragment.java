@@ -2,9 +2,7 @@ package com.qingbo.monk.home.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -16,15 +14,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -35,17 +28,17 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 文章-详情-赞列表
+ * 仓位-详情-赞列表
  */
-public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
+public class CombinationDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     private String articleId, type;
     private TabLayout tab;
 
-    public static ArticleDetail_Zan_Fragment newInstance(String articleId, String type) {
+    public static CombinationDetail_Zan_Fragment newInstance(String articleId, String type) {
         Bundle args = new Bundle();
         args.putString("articleId", articleId);
         args.putString("type", type);
-        ArticleDetail_Zan_Fragment fragment = new ArticleDetail_Zan_Fragment();
+        CombinationDetail_Zan_Fragment fragment = new CombinationDetail_Zan_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,11 +73,11 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
     ArticleLikedListBean articleLikedListBean;
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId + "");
+        requestMap.put("id", articleId + "");
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
 //        requestMap.put("type", type);
-        HttpSender httpSender = new HttpSender(HttpUrl.Article_LikedList, "文章点赞列表", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like_List, "仓位组合点赞列表", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

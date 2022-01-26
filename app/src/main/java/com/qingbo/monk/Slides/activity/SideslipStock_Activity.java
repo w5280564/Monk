@@ -15,6 +15,7 @@ import com.qingbo.monk.Slides.fragment.StockAFragment;
 import com.qingbo.monk.Slides.fragment.StockHKFragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MogulTagListBean;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -106,6 +107,8 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity {
         initViewPager(0);
     }
 
-
-
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(HomeSeek_Activity.class);
+    }
 }

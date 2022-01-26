@@ -16,7 +16,7 @@
         app:titleBarShowBottomLine="false"
         app:titleBarBackgroundColor="@color/app_main_color"
         app:titleBarTitle="基金"
-        app:titleBarRightShowFlag="INVISIBLE"
+        app:titleBarRightShowFlag="VISIBLE"
         app:titleBarRightImg="@mipmap/icon_sousuo"
         tools:ignore="MissingConstraints" />
 

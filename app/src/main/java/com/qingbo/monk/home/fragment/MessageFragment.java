@@ -8,6 +8,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseMessageRecordBean;
 import com.qingbo.monk.bean.MessageRecordBean;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.message.adapter.MessageListAdapter;
@@ -70,6 +71,7 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.seek_Tv:
+                skipAnotherActivity(HomeSeek_Activity.class);
                 break;
             case R.id.ll_contact:
                 skipAnotherActivity(ContactListActivity.class);
@@ -86,6 +88,8 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
 
         ChatActivity.actionStart(mActivity,mMessageBean.getId(),mMessageBean.getNickname(),mMessageBean.getAvatar());
     }
+
+
 
 
     @Override

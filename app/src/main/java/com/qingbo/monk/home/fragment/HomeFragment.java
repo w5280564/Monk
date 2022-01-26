@@ -250,7 +250,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         tabsList.add("推荐");
         tabsList.add("大咖");
         tabsList.add("内部人");
-        tabsList.add("取经");
+        tabsList.add("仓位组合");
         String titleType = "";
         card_Tab.setTabMode(TabLayout.MODE_SCROLLABLE);
         card_Tab.setTabIndicatorFullWidth(false);//下标跟字一样宽
@@ -396,7 +396,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
                 stateIndex = "1";
             }
             interestBean.setJoinStatus(stateIndex);
-            ((HomeInterest_Adapter) mAdapter).isJoin(stateIndex, join_Tv);
+            ((HomeInterest_Adapter) mAdapter).joinState(stateIndex, join_Tv);
         }
     }
 
@@ -475,8 +475,8 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
         } else {
             joinTv.setText("加入");
-            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.app_main_color));
         }
     }
 
@@ -486,8 +486,8 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         if (state == 1) {//1已加入 其他都是未加入
             model.getList().get(tag).setJoinStatus(0);
             joinTv.setText("加入");
-            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+            joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.app_main_color));
         } else {
             model.getList().get(tag).setJoinStatus(1);
             joinTv.setText("已加入");

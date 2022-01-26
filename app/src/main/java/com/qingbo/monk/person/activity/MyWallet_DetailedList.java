@@ -83,8 +83,8 @@ public class MyWallet_DetailedList extends BaseRecyclerViewSplitActivity {
     }
 
 
-
     WalletDetailed_ListBean walletDetailed_listBean;
+
     private void getExpertList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -97,7 +97,7 @@ public class MyWallet_DetailedList extends BaseRecyclerViewSplitActivity {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                             walletDetailed_listBean = GsonUtil.getInstance().json2Bean(json_data, WalletDetailed_ListBean.class);
+                            walletDetailed_listBean = GsonUtil.getInstance().json2Bean(json_data, WalletDetailed_ListBean.class);
                             if (walletDetailed_listBean != null) {
                                 handleSplitListData(walletDetailed_listBean, mAdapter, limit);
 
@@ -123,7 +123,7 @@ public class MyWallet_DetailedList extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             WalletDetailed_Bean item = (WalletDetailed_Bean) adapter.getItem(position);
-            MyWallet_DetailedList_Detail.actionStart(mActivity,item.getOrderId());
+            MyWallet_DetailedList_Detail.actionStart(mActivity, item.getOrderId());
         });
 
     }

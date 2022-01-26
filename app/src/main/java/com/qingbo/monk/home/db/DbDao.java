@@ -65,7 +65,7 @@ public class DbDao {
     }
 
     /**
-     * 插入数据
+     * 删除指定数据
      *
      * @param name
      * @return

@@ -127,9 +127,9 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-                String newsUuid = item.getNewsUuid();
-                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+//                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
+//                String newsUuid = item.getNewsUuid();
+//                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
             }
         });
     }

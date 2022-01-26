@@ -13,6 +13,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.AAndHkDetail_Bean;
+import com.qingbo.monk.bean.InsiderListBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -111,6 +112,10 @@ public class AAndHKDetail_Activity extends BaseActivity {
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
+
+
+
 
 
 }

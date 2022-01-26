@@ -54,6 +54,7 @@ import com.qingbo.monk.home.adapter.Combination_Shares_Adapter;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.qingbo.monk.home.fragment.CombinationDetail_Comment_Fragment;
+import com.qingbo.monk.home.fragment.CombinationDetail_Zan_Fragment;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -262,7 +263,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
         }
         tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id));
-        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(id, ""));
+        tabFragmentList.add(CombinationDetail_Zan_Fragment.newInstance(id, ""));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull

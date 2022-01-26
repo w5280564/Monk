@@ -13,6 +13,7 @@ import com.qingbo.monk.Slides.fragment.StockOrFund_Mess_Fragment;
 import com.qingbo.monk.Slides.fragment.StockOrFund_Question_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.bean.MogulTagListBean;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 
@@ -104,10 +105,10 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity {
         fragments.add(FundCombination_Fragment.newInstance(code));//"160613"
         fragments.add(FundManager_Fragment.newInstance(code));//"159001"
         initViewPager(0);
-
-
-
     }
 
-
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(HomeSeek_Activity.class);
+    }
 }

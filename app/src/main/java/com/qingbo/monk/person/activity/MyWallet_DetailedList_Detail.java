@@ -1,12 +1,16 @@
 package com.qingbo.monk.person.activity;
 
+import static com.xunda.lib.common.common.utils.StringUtil.isNumber;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -44,7 +48,6 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
     MyArrowItemView mode_MyView;
     @BindView(R.id.state_MyView)
     MyArrowItemView state_MyView;
-
     @BindView(R.id.remarks_MyView)
     MyArrowItemView remarks_MyView;
     @BindView(R.id.moneyCount_Tv)
@@ -103,14 +106,18 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     WalletDetailBean walletDetailBean = GsonUtil.getInstance().json2Bean(json_data, WalletDetailBean.class);
                     if (walletDetailBean != null) {
-                        moneyCount_Tv.setText(walletDetailBean.getMoney());
+//                        moneyCount_Tv.setText(walletDetailBean.getMoney());
+                        setMoney(walletDetailBean.getMoney(),moneyCount_Tv);
 //                        cost_Tv.setText("扫地僧手续费"+walletDetailBean.);
+                        String s = styleString(walletDetailBean.getType());
+                        style_MyView.getTvContent().setText(s);
                         from_MyView.getTvContent().setText(walletDetailBean.getPayUserName());
                         time_MyView.getTvContent().setText(walletDetailBean.getCreateTime());
                         order_MyView.getTvContent().setText(walletDetailBean.getTradeNo());
                         to_MyView.getTvContent().setText(walletDetailBean.getBenefitUserName());
-//                        mode_MyView.getCount_Tv().setText(walletDetailBean.());
-                        state_MyView.getTvContent().setText(walletDetailBean.getTradeState());
+                        mode_MyView.getTvContent().setText(walletDetailBean.getPayType());
+                        String s1 = payStatus(walletDetailBean.getStatus());
+                        state_MyView.getTvContent().setText(s1);
                         remarks_MyView.getTvContent().setText(walletDetailBean.getTradeDesc());
                     }
                 }
@@ -118,6 +125,55 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
         }, false);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    /**
+     *
+     * @param style SQ付费,TK退款，CZ充值 SR收入
+     * @return
+     */
+    private String styleString(String style){
+        String styleName ="";
+        if (TextUtils.equals(style,"SQ")) {
+            styleName = "付费";
+        }else if (TextUtils.equals(style,"TK")) {
+            styleName = "退款";
+        }else if (TextUtils.equals(style,"CZ")) {
+            styleName = "充值";
+        }else if (TextUtils.equals(style,"SR")) {
+            styleName = "收入";
+        }
+        return styleName;
+    }
+    /**
+     *
+     * @param style 0结算中 1已结算 2已退款 3已提现
+     * @return
+     */
+    private String payStatus(String style){
+        String styleName ="";
+        if (TextUtils.equals(style,"0")) {
+            styleName = "结算中 ";
+        }else if (TextUtils.equals(style,"1")) {
+            styleName = "已结算 ";
+        }else if (TextUtils.equals(style,"2")) {
+            styleName = "已退款";
+        }else if (TextUtils.equals(style,"3")) {
+            styleName = "已提现";
+        }
+        return styleName;
+    }
+
+    private void setMoney(String money,TextView countTv){
+        boolean number = isNumber(money);
+        if (number) {
+            double v = Double.parseDouble(money);
+            if (v > 0) {
+                countTv.setText("+" + money);
+            } else if (v < 0) {
+                countTv.setText(money + "");
+            }
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 
@@ -40,6 +41,11 @@ public class SideslipFollow_Activity extends BaseTabLayoutActivity {
             menuList.add(bean);
         }
         initViewPager(1);
+    }
+
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(HomeSeek_Activity.class);
     }
 
 }

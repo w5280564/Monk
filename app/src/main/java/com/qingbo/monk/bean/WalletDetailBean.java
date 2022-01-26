@@ -8,28 +8,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class WalletDetailBean {
-        @SerializedName("money")
-        private String money;
-        @SerializedName("trade_desc")
-        private String tradeDesc;
-        @SerializedName("create_time")
-        private String createTime;
-        @SerializedName("trade_no")
-        private String tradeNo;
-        @SerializedName("transaction_id")
-        private String transactionId;
-        @SerializedName("refund_id")
-        private String refundId;
-        @SerializedName("pay_user_id")
-        private String payUserId;
-        @SerializedName("pay_user_name")
-        private String payUserName;
-        @SerializedName("benefit_user_id")
-        private String benefitUserId;
-        @SerializedName("benefit_user_name")
-        private String benefitUserName;
-        @SerializedName("trade_state")
-        private String tradeState;
+    @SerializedName("money")
+    private String money;
+    @SerializedName("trade_desc")
+    private String tradeDesc;
+    @SerializedName("create_time")
+    private String createTime;
+    @SerializedName("trade_no")
+    private String tradeNo;
+    @SerializedName("transaction_id")
+    private String transactionId;
+    @SerializedName("refund_id")
+    private String refundId;
+    @SerializedName("pay_user_id")
+    private String payUserId;
+    @SerializedName("pay_user_name")
+    private String payUserName;
+    @SerializedName("benefit_user_id")
+    private String benefitUserId;
+    @SerializedName("benefit_user_name")
+    private String benefitUserName;
+    @SerializedName("status")
+    private String status;
+    @SerializedName("type")
+    private String type;
+    @SerializedName("pay_type")
+    private String payType;
+
 
 //    @SerializedName("money")
 //    private String money;

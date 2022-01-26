@@ -23,6 +23,7 @@ import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
+import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
@@ -187,6 +188,8 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
     }
 
 
-
-
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(HomeSeek_Activity.class);
+    }
 }

@@ -48,23 +48,11 @@ public class HomeInterest_Adapter extends BaseQuickAdapter<InterestBean, BaseVie
 
 
 
-    public void isJoin(String state, TextView join_Tv) {
-        if (TextUtils.equals(state, "1")) {
-            join_Tv.setText("已加入");
-            join_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
-            changeShapColor(join_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
-        } else {
-            join_Tv.setText("加入");
-            join_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
-            changeShapColor(join_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
-        }
-    }
-
     /**
      * @param state  1是已加入  其他都是未加入
      * @param joinTv
      */
-    private void joinState(String state, TextView joinTv) {
+    public void joinState(String state, TextView joinTv) {
         if (!TextUtils.isEmpty(state)) {
             int indexState = Integer.parseInt(state);
             if (indexState == 1) { //1已加入 其他都是未加入
@@ -73,8 +61,8 @@ public class HomeInterest_Adapter extends BaseQuickAdapter<InterestBean, BaseVie
                 changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             } else {
                 joinTv.setText("加入");
-                joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+                joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+                changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.app_main_color));
             }
         }
     }

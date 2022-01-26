@@ -44,7 +44,7 @@ import butterknife.BindView;
 /**
  * 搜索——综合
  */
-public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     @BindView(R.id.label_Flow)
     public FlowLayout label_Flow;
     @BindView(R.id.user_Lin)
@@ -61,6 +61,8 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     ConstraintLayout seek_Con;
     @BindView(R.id.noMes_Con)
     ConstraintLayout noMes_Con;
+    @BindView(R.id.dele_Tv)
+    TextView dele_Tv;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     private String word;
@@ -88,6 +90,11 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
         List<String> strings = ((HomeSeek_Activity) requireActivity()).mDbDao.queryData("");
         interestLabelFlow(label_Flow, mActivity, strings);
+    }
+
+    @Override
+    protected void initEvent() {
+        dele_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -520,4 +527,15 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.dele_Tv:
+                ((HomeSeek_Activity) requireActivity()).mDbDao.deleteData();
+                if (label_Flow != null) {
+                    label_Flow.removeAllViews();
+                }
+                break;
+        }
+    }
 }
