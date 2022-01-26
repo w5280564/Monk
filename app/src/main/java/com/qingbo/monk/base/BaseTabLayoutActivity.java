@@ -24,8 +24,8 @@ import java.util.List;
 public class BaseTabLayoutActivity extends BaseActivity {
     protected List<Fragment> fragments = new ArrayList<>();
     protected List<AppMenuBean> menuList = new ArrayList<>();
-    protected TabLayout mTabLayout;
-    protected ViewPager mViewPager;
+    public TabLayout mTabLayout;
+    public ViewPager mViewPager;
     private int selectSize = 16;
     private int normalSize = 14;
 

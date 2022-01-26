@@ -126,6 +126,7 @@
                         app:layout_constraintTop_toTopOf="@id/view" />
 
                     <TextView
+                        android:id="@+id/userSeek_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_10"
@@ -177,6 +178,7 @@
                         app:layout_constraintTop_toTopOf="@id/view1" />
 
                     <TextView
+                        android:id="@+id/personSeek_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_10"
@@ -229,6 +231,7 @@
                         app:layout_constraintTop_toTopOf="@id/view3" />
 
                     <TextView
+                        android:id="@+id/fundSeek_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_10"
@@ -282,6 +285,7 @@
                         app:layout_constraintTop_toTopOf="@id/view4" />
 
                     <TextView
+                        android:id="@+id/topicSeek_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dp_10"
@@ -337,6 +341,7 @@
                             app:layout_constraintTop_toTopOf="@id/view5" />
 
                         <TextView
+                            android:id="@+id/groupSeek_Tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/dp_10"

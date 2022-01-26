@@ -63,6 +63,16 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     ConstraintLayout noMes_Con;
     @BindView(R.id.dele_Tv)
     TextView dele_Tv;
+    @BindView(R.id.userSeek_Tv)
+    TextView userSeek_Tv;
+    @BindView(R.id.personSeek_Tv)
+    TextView personSeek_Tv;
+    @BindView(R.id.fundSeek_Tv)
+    TextView fundSeek_Tv;
+    @BindView(R.id.topicSeek_Tv)
+    TextView topicSeek_Tv;
+    @BindView(R.id.groupSeek_Tv)
+    TextView groupSeek_Tv;
 
     SwipeRefreshLayout mSwipeRefreshLayout;
     private String word;
@@ -95,6 +105,11 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     @Override
     protected void initEvent() {
         dele_Tv.setOnClickListener(this);
+        userSeek_Tv.setOnClickListener(this);
+        personSeek_Tv.setOnClickListener(this);
+        fundSeek_Tv.setOnClickListener(this);
+        topicSeek_Tv.setOnClickListener(this);
+        groupSeek_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -106,12 +121,12 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     @Override
     public void onResume() {
         super.onResume();
-        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
+        word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
     }
 
     @Override
     public void onRefresh() {
-        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
+        word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
         SearchAllList(word, false);
     }
@@ -529,13 +544,29 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.dele_Tv:
                 ((HomeSeek_Activity) requireActivity()).mDbDao.deleteData();
                 if (label_Flow != null) {
                     label_Flow.removeAllViews();
                 }
                 break;
+            case R.id.userSeek_Tv:
+                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(1);
+                break;
+            case R.id.personSeek_Tv:
+                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(2);
+                break;
+            case R.id.fundSeek_Tv:
+                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(3);
+                break;
+            case R.id.topicSeek_Tv:
+                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(4);
+                break;
+            case R.id.groupSeek_Tv:
+                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(5);
+                break;
+
         }
     }
 }
