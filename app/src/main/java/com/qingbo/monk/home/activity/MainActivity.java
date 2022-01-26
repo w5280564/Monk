@@ -166,7 +166,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Subscribe
     public void onSocketUnbindEvent(SocketUnbindEvent event) {
         if (event.type == SocketUnbindEvent.SocketUnbind) {
-            WebSocketHelper.getInstance().unbindWebSocketService(this);//初始化和绑定WebSocket
+            WebSocketHelper.getInstance().unbindWebSocketService(this);//解绑WebSocketService
         }
     }
 
