@@ -20,6 +20,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
@@ -68,14 +69,14 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
-        getUserData("", false);
+        getUserData(false);
     }
 
     UserBean userBean;
 
-    private void getUserData(String userId, boolean isShow) {
+    private void getUserData( boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("userId", userId + "");
+        requestMap.put("userId", SharePref.user().getUserId());
         HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -101,7 +102,7 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    getUserData("", false);
+                    getUserData(false);
                 }
             }
         }, true);

@@ -67,7 +67,6 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_23"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/seek_Tv">
 
@@ -85,10 +84,18 @@
                 app:layout_scrollFlags="scroll|enterAlways">
 
                 <View
+                    android:id="@+id/view_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_23"
+                    android:background="@color/white" />
+
+                <View
                     android:id="@+id/view"
                     android:layout_width="@dimen/dp_4"
                     android:layout_height="@dimen/dp_15"
-                    android:background="@color/app_main_color" />
+                    android:background="@color/app_main_color"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_white"/>
 
                 <TextView
                     android:id="@+id/textView"
