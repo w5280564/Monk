@@ -50,6 +50,7 @@ import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -130,6 +131,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     public TextView release_Tv;
     @BindView(R.id.back_Tv)
     TextView back_Tv;
+    @BindView(R.id.source_Tv)
+    TextView source_Tv;
 
 
     private String articleId;
@@ -204,6 +207,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         back_Tv.setOnClickListener(this);
         person_Img.setOnClickListener(this);
         send_Mes.setOnClickListener(this);
+        source_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -230,7 +234,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 break;
             case R.id.join_Tv:
                 groupIsJoin();
-
                 break;
             case R.id.titleFollow_Tv:
                 String authorId1 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
@@ -268,6 +271,14 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 String avatar = homeFoucsDetail_bean.getData().getDetail().getAvatar();
                 ChatActivity.actionStart(mActivity, authorId3, authorName, avatar);
                 break;
+            case R.id.source_Tv:
+                if (homeFoucsDetail_bean != null) {
+                    String title = homeFoucsDetail_bean.getData().getDetail().getTitle();
+                    String source_url = homeFoucsDetail_bean.getData().getDetail().getSource_url();
+                    jumpToWebView(title, source_url);
+                }
+                break;
+
         }
     }
 
@@ -286,8 +297,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //                    getJoinSheQun(id);
             if (TextUtils.equals(isJoin, "1")) { //1已加入
                 GroupDetailActivity.actionStart(mActivity, id);
-            }else {
-                CheckOtherGroupDetailActivity.actionStart(mActivity,id);
+            } else {
+                CheckOtherGroupDetailActivity.actionStart(mActivity, id);
             }
         } else if (TextUtils.equals(action, "2")) {
             getJoinGroup(id);
@@ -380,6 +391,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
+
+                        String source_url = detailData.getSource_url();
+                        if (TextUtils.isEmpty(source_url)){
+                            source_Tv.setVisibility(View.GONE);
+                        }else {
+                            source_Tv.setVisibility(View.VISIBLE);
+                        }
                         String is_anonymous = detailData.getIsAnonymous();//1是匿名
                         if (TextUtils.equals(is_anonymous, "1")) {
                             titleNickName_Tv.setText("匿名用户");

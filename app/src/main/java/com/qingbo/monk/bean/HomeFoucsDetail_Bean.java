@@ -63,6 +63,8 @@ public class HomeFoucsDetail_Bean {
             private Integer followStatus;
             @SerializedName("liked_status")
             private Integer likedStatus;
+            @SerializedName("source_url")
+            private String source_url;
 
             @NoArgsConstructor
             @Data
