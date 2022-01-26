@@ -1,7 +1,6 @@
-package com.qingbo.monk.home.adapter;
+package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
-import com.qingbo.monk.bean.HomeSeekFund_Bean;
 
 import java.util.List;
 
