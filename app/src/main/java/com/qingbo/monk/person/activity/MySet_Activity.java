@@ -11,12 +11,17 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.eventbus.FinishEvent;
+import com.xunda.lib.common.common.eventbus.SocketUnbindEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DataCleanManager;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.view.MyArrowItemView;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import butterknife.BindView;
 
@@ -108,7 +113,7 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    unbindWebSocketService();//解绑WebSocketService
+                    EventBus.getDefault().post(new SocketUnbindEvent(SocketUnbindEvent.SocketUnbind));//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);

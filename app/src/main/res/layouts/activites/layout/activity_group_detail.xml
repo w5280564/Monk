@@ -68,7 +68,7 @@
                 app:elevation="0dp">
 
 
-                <LinearLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -96,7 +96,7 @@
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
                 <com.google.android.material.tabs.TabLayout

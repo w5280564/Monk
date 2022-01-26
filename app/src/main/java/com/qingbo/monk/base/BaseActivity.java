@@ -427,20 +427,4 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     }
 
 
-
-    /**
-     * 初始化和绑定WebSocket
-     */
-    protected void initWebSocketService() {
-        WebSocketHelper.getInstance().initWebSocketService(this,BIND_AUTO_CREATE);
-    }
-
-
-
-    /**
-     * 初始化和绑定WebSocket
-     */
-    protected void unbindWebSocketService() {
-        WebSocketHelper.getInstance().unbindWebSocketService(this);
-    }
 }

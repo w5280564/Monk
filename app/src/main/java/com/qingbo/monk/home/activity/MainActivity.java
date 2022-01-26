@@ -32,6 +32,7 @@ import com.qingbo.monk.Slides.activity.SideslipMogul_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonList_Activity;
 import com.qingbo.monk.Slides.activity.SideslipRecommend_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
+import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -50,6 +51,7 @@ import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
+import com.xunda.lib.common.common.eventbus.SocketUnbindEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -149,7 +151,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
         addTabBadge();
-        initWebSocketService();//初始化和绑定WebSocket
+        WebSocketHelper.getInstance().initWebSocketService(this,BIND_AUTO_CREATE);;//初始化和绑定WebSocket
         registerEventBus();
     }
 
@@ -158,6 +160,13 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
         if (event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE) {
             getAllUnreadNumber();
+        }
+    }
+
+    @Subscribe
+    public void onSocketUnbindEvent(SocketUnbindEvent event) {
+        if (event.type == SocketUnbindEvent.SocketUnbind) {
+            WebSocketHelper.getInstance().unbindWebSocketService(this);//初始化和绑定WebSocket
         }
     }
 
@@ -399,7 +408,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    unbindWebSocketService();//解绑WebSocketService
+                    WebSocketHelper.getInstance().unbindWebSocketService(MainActivity.this);//解绑WebSocketService
                     PrefUtil.clearSharePrefInfo();
                     BaseApplication.getInstance().clearActivity();
                     skipAnotherActivity(LoginActivity.class);
