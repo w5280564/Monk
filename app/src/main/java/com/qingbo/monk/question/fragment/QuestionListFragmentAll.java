@@ -20,6 +20,7 @@ import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterAll;
 import com.xunda.lib.common.common.Constants;
@@ -125,6 +126,9 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                     case R.id.mes_Img:
                         String type = mQuestionBean.getType();
                         ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
                         break;
                 }
             }
