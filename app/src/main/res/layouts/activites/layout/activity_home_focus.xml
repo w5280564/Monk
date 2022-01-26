@@ -274,16 +274,18 @@
                         android:id="@+id/source_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="原文链接"
+                        android:layout_marginEnd="@dimen/dp_15"
                         android:drawableEnd="@mipmap/icon_lianjie"
                         android:drawablePadding="@dimen/dp_5"
-                        app:layout_constraintTop_toBottomOf="@id/group_Con"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="@dimen/dp_15"
+                        android:text="原文链接"
                         android:textColor="@color/text_color_1F8FE5"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="@dimen/dp_15"
+                        app:layout_constraintTop_toBottomOf="@id/group_Con" />
 
                     <View
+                        android:id="@+id/view9"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_10"
                         android:layout_marginTop="@dimen/dp_13"
