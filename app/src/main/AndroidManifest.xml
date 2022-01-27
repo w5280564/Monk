@@ -252,6 +252,7 @@
         <activity android:name=".question.activity.CreateGroupStepTwoActivity" />
         <activity android:name=".question.activity.AllGroupListActivity" />
         <activity android:name=".question.activity.GroupDetailActivity" />
+        <activity android:name=".question.activity.GroupDetailActivityTest" />
         <activity android:name=".question.activity.GroupDetailMoreInfoActivity" />
         <activity android:name=".question.activity.GroupMemberListActivity" />
         <activity android:name=".question.activity.GroupManagerActivity" />
