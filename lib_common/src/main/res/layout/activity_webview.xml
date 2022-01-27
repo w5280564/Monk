@@ -10,10 +10,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:titleBarLeftImg="@drawable/ab_back_material_black"
-        app:titleBarRightImg="@drawable/ab_back_material_black"
-        app:titleBarRightShowType="IMG"
-        app:titleBarRightShowFlag="VISIBLE"/>
+        app:titleBarLeftImg="@mipmap/icon_back"/>
 
 
     <include layout="@layout/webview_layout"/>

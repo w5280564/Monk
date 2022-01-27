@@ -9,7 +9,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:titleBarLeftImg="@drawable/ab_back_material_black"
+        app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"/>
 
 
