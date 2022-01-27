@@ -2,11 +2,15 @@ package com.qingbo.monk.message.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,14 +25,12 @@ import com.qingbo.monk.bean.BaseReceiveMessageBean;
 import com.xunda.lib.common.bean.ReceiveMessageBean;
 import com.qingbo.monk.message.adapter.ChatAdapter;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.eventbus.EditGroupEvent;
 import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -192,6 +194,21 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
             }
         });
 
+        etContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    String content = StringUtil.getEditText(etContent);
+                    if (!StringUtil.isBlank(content)) {
+                        sendMessage(content, ReceiveMessageBean.MESSAGE_TYPE_TEXT);
+                    }else{
+                        T.ss("请输入聊天内容");
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -272,13 +289,15 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
                     return;
                 }
 
-                WebSocketHelper.getInstance().sendMessage(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT,id);
-                addContentToList(content,ReceiveMessageBean.MESSAGE_TYPE_TEXT, ReceiveMessageBean.CHAT_TYPE_SEND);
+                sendMessage(content, ReceiveMessageBean.MESSAGE_TYPE_TEXT);
                 break;
         }
     }
 
-
+    private void sendMessage(String content, String messageTypeText) {
+        WebSocketHelper.getInstance().sendMessage(content, messageTypeText, id);
+        addContentToList(content, messageTypeText, ReceiveMessageBean.CHAT_TYPE_SEND);
+    }
 
 
     /**
@@ -310,8 +329,7 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
 
     @Override
     protected void onUploadSuccess(String imageString) {
-        WebSocketHelper.getInstance().sendMessage(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE,id);
-        addContentToList(imageString,ReceiveMessageBean.MESSAGE_TYPE_IMAGE, ReceiveMessageBean.CHAT_TYPE_SEND);
+        sendMessage(imageString, ReceiveMessageBean.MESSAGE_TYPE_IMAGE);
     }
 
     @Override

@@ -65,6 +65,8 @@
             android:background="@drawable/background_chat_input"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:imeOptions="actionSend"
             android:gravity="left|center_vertical"
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_13"
