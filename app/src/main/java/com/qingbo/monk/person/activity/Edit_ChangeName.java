@@ -1,19 +1,17 @@
 package com.qingbo.monk.person.activity;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
+import android.text.InputFilter;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -58,6 +56,10 @@ public class Edit_ChangeName extends BaseActivity {
 
     }
 
+    @Override
+    protected void initView() {
+        changeName_Edit.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+    }
 
     @Override
     public void onRightClick() {
@@ -93,6 +95,9 @@ public class Edit_ChangeName extends BaseActivity {
             PrefUtil.saveUser(userObj, "");
         }
     }
+
+
+
 
 
 }

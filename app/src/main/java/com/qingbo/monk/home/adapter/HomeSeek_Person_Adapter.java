@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.bean.HomeSeekPerson_Bean;
 import com.qingbo.monk.bean.HomeSeekUser_Bean;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -38,6 +39,7 @@ public class HomeSeek_Person_Adapter extends BaseQuickAdapter<HomeSeekPerson_Bea
         TextView nickName_Tv = helper.getView(R.id.nickName_Tv);
         LinearLayout lable_Lin = helper.getView(R.id.lable_Lin);
         TextView company_Tv = helper.getView(R.id.company_Tv);
+        nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
         GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
         nickName_Tv.setText(item.getNickname());
         originalValue(item.getCompanyName(), "暂未填写", "", company_Tv);

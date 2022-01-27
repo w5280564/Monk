@@ -2,6 +2,7 @@ package com.qingbo.monk.person.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.bean.OwnPublishBean;
@@ -61,6 +63,7 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView more_Img = helper.getView(R.id.more_Img);
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+        group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {

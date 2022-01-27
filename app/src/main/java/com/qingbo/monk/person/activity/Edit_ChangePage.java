@@ -41,6 +41,9 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
     TextView addPage_Tv;
     @BindView(R.id.urlLabel_Lin)
     LinearLayout urlLabel_Lin;
+    @BindView(R.id.noMes_Tv)
+    TextView noMes_Tv;
+
     private String nickname;
 
     public static void actionStart(Context context, String nickname) {
@@ -74,7 +77,7 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
 
     UserBean userBean;
 
-    private void getUserData( boolean isShow) {
+    private void getUserData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", SharePref.user().getUserId());
         HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
@@ -84,6 +87,7 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean.getColumn() != null) {
+
                         List<UserBean.ColumnDTO> column = userBean.getColumn();
                         urlLabelFlow(urlLabel_Lin, mActivity, column);
                     }
@@ -111,7 +115,6 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
     }
 
 
-
     /**
      * 我的专栏
      */
@@ -122,6 +125,7 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
         if (ListUtils.isEmpty(urlList)) {
             return;
         }
+        noMes_Tv.setVisibility(View.GONE);
         int index = 0;
         for (UserBean.ColumnDTO columnDTO : urlList) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.user_page_edit, null);
@@ -137,11 +141,12 @@ public class Edit_ChangePage extends BaseActivity implements View.OnClickListene
                 int tag = (int) v.getTag();
                 String columnName = urlList.get(tag).getColumnName();
                 String id = urlList.get(tag).getId();
-                new TwoButtonDialogBlue(mActivity, "确定删除‘"+ columnName+"’？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+                new TwoButtonDialogBlue(mActivity, "确定删除‘" + columnName + "’？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
                     @Override
                     public void onClickRight() {
                         del_Column(id);
                     }
+
                     @Override
                     public void onClickLeft() {
                     }

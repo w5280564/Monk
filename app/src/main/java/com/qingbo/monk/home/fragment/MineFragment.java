@@ -3,6 +3,7 @@ package com.qingbo.monk.home.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -112,6 +114,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
+        tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
     }
 
     @Override

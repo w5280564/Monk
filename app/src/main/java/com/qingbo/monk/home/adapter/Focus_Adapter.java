@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
@@ -52,7 +53,7 @@ public class Focus_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHolde
         ImageView mes_Img = helper.getView(R.id.mes_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
-        group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+        group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
 
 
         String is_anonymous = item.getIsAnonymous();//1是匿名

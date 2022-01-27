@@ -20,9 +20,9 @@
         android:id="@+id/urlLabel_Lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
         android:layout_marginTop="@dimen/dp_30"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
 
     <TextView
@@ -41,6 +41,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/noMes_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:drawableTop="@mipmap/icon_no_date"
+        android:drawablePadding="@dimen/dp_30"
+        android:gravity="center"
+        android:text="暂无内容"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

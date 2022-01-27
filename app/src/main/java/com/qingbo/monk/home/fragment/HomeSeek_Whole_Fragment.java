@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseLazyFragment;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.SearchAll_Bean;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
@@ -223,7 +224,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView follow_Tv = view.findViewById(R.id.follow_Tv);
             TextView send_Mes = view.findViewById(R.id.send_Mes);
             FlowLayout label_Flow = view.findViewById(R.id.label_Flow);
-            nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+            nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, userDTO.getAvatar(), R.mipmap.icon_logo);
             nickName_Tv.setText(userDTO.getNickname());
             isFollow(userDTO.getFollow_status(), follow_Tv, send_Mes);
@@ -265,6 +266,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView nickName_Tv = view.findViewById(R.id.nickName_Tv);
             LinearLayout lable_Lin = view.findViewById(R.id.lable_Lin);
             TextView company_Tv = view.findViewById(R.id.company_Tv);
+            nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, s.getAvatar(), R.mipmap.icon_logo);
             nickName_Tv.setText(s.getNickname());
 //            company_Tv.setText(s.getCompanyName());

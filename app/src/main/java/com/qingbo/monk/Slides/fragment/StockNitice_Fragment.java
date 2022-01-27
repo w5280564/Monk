@@ -69,7 +69,7 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无公告",0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无内容",0,true);
     }
 
     @Override

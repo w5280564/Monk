@@ -35,6 +35,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
@@ -188,6 +189,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initView() {
+        person_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
         viewTouchDelegate.expandViewTouchDelegate(back_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);

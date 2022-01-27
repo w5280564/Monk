@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -106,6 +108,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     LinearLayout urlLabel_Lin;
     @BindView(R.id.sex_Tv)
     TextView sex_Tv;
+    @BindView(R.id.iv_bianji)
+    ImageView iv_bianji;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -159,17 +163,17 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     protected void initView() {
         mTabLayout = findViewById(R.id.card_Tab);
         mViewPager = findViewById(R.id.card_ViewPager);
-//        NestedScrollView top_Src = findViewById(R.id.top_Src);
-//        CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
-//        AppBarLayout appbar_Layout = findViewById(R.id.appbar_Layout);
-//        LinearLayout bot_Lin = findViewById(R.id.bot_Lin);
-//        headLayout.setmMoveView(top_Src, bot_Lin);
-//        headLayout.setmZoomView(iv_img);
+        NestedScrollView top_Src = findViewById(R.id.top_Src);
+        CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
+        LinearLayout bot_Lin = findViewById(R.id.bot_Lin);
+        headLayout.setmMoveView(top_Src, bot_Lin);
+        headLayout.setmZoomView(iv_img);
 
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
         initMenuData();
+        tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
     }
 
     @Override
@@ -195,6 +199,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         editUser_Tv_.setOnClickListener(this);
         tv_follow_number.setOnClickListener(this);
         tv_fans_number.setOnClickListener(this);
+        iv_bianji.setOnClickListener(this);
     }
 
     @SuppressLint("WrongConstant")
@@ -422,6 +427,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 break;
             case R.id.editUser_Tv_:
                 MyAndOtherEdit_Card.actionStart(mActivity, userID);
+                break;
+            case R.id.iv_bianji:
+                if (isMe()){
+                    String isOriginator = PrefUtil.getUser().getIsOriginator();
+                    MyCrateArticle_Avtivity.actionStart(mActivity,isOriginator);
+                }
                 break;
 
         }

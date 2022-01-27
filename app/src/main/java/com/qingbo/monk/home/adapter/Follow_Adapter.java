@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
@@ -59,6 +60,8 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         ImageView mes_Img = helper.getView(R.id.mes_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
+        group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+
         if (TextUtils.isEmpty(item.getTitle())) {
             title_Tv.setVisibility(View.GONE);
         } else {

@@ -60,9 +60,6 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
     @Override
     protected void loadData() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        if (TextUtils.isEmpty(word)) {
-            word = "";
-        }
         mSwipeRefreshLayout.setRefreshing(true);
         getExpertList(word, false);
     }
@@ -71,9 +68,6 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
     @Override
     protected void onRefreshData() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        if (TextUtils.isEmpty(word)) {
-            word = "";
-        }
         page = 1;
         getExpertList(word, false);
     }
@@ -81,9 +75,6 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
     @Override
     protected void onLoadMoreData() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        if (TextUtils.isEmpty(word)) {
-            word = "";
-        }
         page++;
         getExpertList(word, false);
     }
@@ -106,6 +97,7 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
                                 List<HomeSeekFund_Bean> ganggu = homeSeekFund_all.getData().getList().getGanggu();
                                 HomeSeekFund_ListBean homeSeekFund_listBean = new HomeSeekFund_ListBean();
                                 List<HomeSeekFund_Bean>  Fund_beans  = new ArrayList<>();
+
                                 if (!ListUtils.isEmpty(agu)) {
                                     Fund_beans.addAll(agu);
                                 }

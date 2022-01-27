@@ -31,6 +31,7 @@
         android:layout_height="@dimen/dp_56"
         android:layout_marginRight="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_90"
+        android:visibility="gone"
         android:src="@mipmap/bianji_question"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

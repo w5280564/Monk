@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.HomeSeekUser_Bean;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -39,7 +40,7 @@ public class HomeSeek_User_Adapter extends BaseQuickAdapter<HomeSeekUser_Bean, B
         TextView follow_Tv =  helper.getView(R.id.follow_Tv);
         TextView send_Mes =  helper.getView(R.id.send_Mes);
         FlowLayout label_Flow =  helper.getView(R.id.label_Flow);
-        nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
+        nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
         GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
         nickName_Tv.setText(item.getNickname());
         isFollow(item.getFollowStatus(), follow_Tv, send_Mes);

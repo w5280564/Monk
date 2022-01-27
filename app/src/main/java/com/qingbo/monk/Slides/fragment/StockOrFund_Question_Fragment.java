@@ -59,7 +59,7 @@ public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无资讯", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无内容", 0,true);
     }
 
     @Override
