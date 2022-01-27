@@ -1,6 +1,5 @@
 package com.qingbo.monk.question.fragment;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -21,7 +20,6 @@ import com.qingbo.monk.person.activity.MyGroupList_Activity;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
-import com.qingbo.monk.question.activity.MyGroupListActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
