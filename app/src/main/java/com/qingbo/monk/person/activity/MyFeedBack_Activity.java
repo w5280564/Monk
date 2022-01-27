@@ -73,7 +73,8 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
     protected void initView() {
         HideIMEUtil.wrap(this, change_Edit);
         HideIMEUtil.wrap(this, changePhone_Edit);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
     }

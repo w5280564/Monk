@@ -113,7 +113,6 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
                                     Fund_beans.addAll(ganggu);
                                 }
                                 homeSeekFund_listBean.setList(Fund_beans);
-
                                 handleSplitListData(homeSeekFund_listBean, mAdapter, limit);
                             }
                         }

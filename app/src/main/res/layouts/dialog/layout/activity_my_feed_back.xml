@@ -4,26 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".person.activity.MyFeedBack_Activity"
     tools:ignore="MissingConstraints">
 
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="帮助反馈" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
-            <com.xunda.lib.common.common.titlebar.CustomTitleBar
-                android:id="@+id/title_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/title_height"
-                app:titleBarLeftImg="@mipmap/icon_back"
-                app:titleBarShowBottomLine="false"
-                app:titleBarTitle="帮助反馈" />
 
             <ImageView
                 android:id="@+id/topBg_Img"
@@ -33,7 +34,7 @@
                 android:background="@mipmap/jianyi_chahua"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title_bar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/question_Txt"
@@ -88,10 +89,10 @@
                 android:id="@+id/recycleView_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="@dimen/dp_15"
                 android:layout_marginEnd="@dimen/dp_15"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/explain_Con" />
 
@@ -124,10 +125,10 @@
                 android:id="@+id/changePhone_Edit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_43"
-                android:background="@drawable/base_gradual"
                 android:layout_marginStart="@dimen/dp_15"
-                android:layout_marginEnd="@dimen/dp_15"
                 android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_15"
+                android:background="@drawable/base_gradual"
                 android:lines="1"
                 android:paddingStart="@dimen/dp_15"
                 android:textColor="@color/text_color_a1a1a1"
@@ -144,13 +145,13 @@
                 android:layout_marginLeft="@dimen/dp_11"
                 android:layout_marginTop="@dimen/dp_20"
                 android:layout_marginBottom="@dimen/dp_30"
-                app:layout_constraintTop_toBottomOf="@id/changePhone_Edit"
                 android:background="@drawable/selector_btn_rectangle"
                 android:gravity="center"
                 android:text="提交"
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_16"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/changePhone_Edit" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
