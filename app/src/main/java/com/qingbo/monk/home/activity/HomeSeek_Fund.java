@@ -19,6 +19,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -104,12 +105,14 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
                                 List<HomeSeekFund_Bean> agu = homeSeekFund_all.getData().getList().getAgu();
                                 List<HomeSeekFund_Bean> ganggu = homeSeekFund_all.getData().getList().getGanggu();
                                 HomeSeekFund_ListBean homeSeekFund_listBean = new HomeSeekFund_ListBean();
+                                List<HomeSeekFund_Bean>  Fund_beans  = new ArrayList<>();
                                 if (!ListUtils.isEmpty(agu)) {
-                                    homeSeekFund_listBean.setList(agu);
+                                    Fund_beans.addAll(agu);
                                 }
                                 if (!ListUtils.isEmpty(ganggu)) {
-                                    homeSeekFund_listBean.setList(ganggu);
+                                    Fund_beans.addAll(ganggu);
                                 }
+                                homeSeekFund_listBean.setList(Fund_beans);
 
                                 handleSplitListData(homeSeekFund_listBean, mAdapter, limit);
                             }

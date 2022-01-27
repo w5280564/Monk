@@ -57,7 +57,7 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
 
-        @BindView(R.id.tv_remains_image)
+    @BindView(R.id.tv_remains_image)
     TextView tv_remains_image;
 
     private List<UploadPictureBean> imageList = new ArrayList<>();
@@ -87,8 +87,8 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
     @Override
     protected void onUploadSuccess(List<String> urlList, List<File> fileList) {
         List<UploadPictureBean> uriList = new ArrayList<>();
-        for (File mFile:fileList) {
-            Uri filePath = FileProvider7.getUriForFile(mContext,mFile);
+        for (File mFile : fileList) {
+            Uri filePath = FileProvider7.getUriForFile(mContext, mFile);
             UploadPictureBean obj = new UploadPictureBean();
             obj.setImageUri(filePath);
             obj.setType(2);
@@ -135,12 +135,14 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
 
     }
 
+    int allPhoto = 4; //能选择的图片总数
+
     /**
      * 点击图片
      */
     private void clickPhoto(int position) {
         int all_size = imageList.size();
-        if (all_size < 8) {
+        if (all_size < allPhoto) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
                 checkGalleryPermission(5 - all_size);
             } else {
@@ -154,15 +156,15 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
      * 展示选择的图片
      */
     private void showImageListImages(List<UploadPictureBean> mTempList) {
-        imageList.addAll(imageList.size()-1, mTempList);
+        imageList.addAll(imageList.size() - 1, mTempList);
         deleteLastOne();
-        tv_remains_image.setText(String.format("%s/4",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/4", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
 
     private void deleteLastOne() {
-        if (imageList.size() > 6) {
+        if (imageList.size() > allPhoto) {
             imageList.remove(imageList.size() - 1);
         }
     }
@@ -179,10 +181,9 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
                 imageList.add(imageList.size(), addBean);
             }
         }
-        tv_remains_image.setText(String.format("%s/4",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/4", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
-
 
 
     /**
@@ -220,7 +221,7 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
                     T.s("内容不能少于20字", 3000);
                     return;
                 }
-                if (TextUtils.isEmpty(changePhone_Edit.getText().toString())){
+                if (TextUtils.isEmpty(changePhone_Edit.getText().toString())) {
                     T.s("联系方式不能为空", 3000);
                     return;
                 }
@@ -230,7 +231,7 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
     }
 
     private void edit_Info() {
-       String images = StringUtil.listToString(imageStringList);
+        String images = StringUtil.listToString(imageStringList);
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("feedback_remark", change_Edit.getText().toString());
         requestMap.put("phone", changePhone_Edit.getText().toString());
@@ -240,7 +241,7 @@ public class MyFeedBack_Activity extends BaseCameraAndGalleryActivity_More imple
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    T.s("反馈已提交",3000);
+                    T.s("反馈已提交", 3000);
                     finish();
                 }
             }
