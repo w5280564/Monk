@@ -218,3 +218,8 @@
 -dontwarn com.google.android.material.**
 -dontnote com.google.android.material.**
 -dontwarn androidx.**
+
+
+#TreeRecyclerView
+-keep public class * extends  com.baozi.treerecyclerview.item.TreeItem {}
+-keep public class * extends android.support.annotation.**

@@ -65,6 +65,11 @@ public class SideslipMogul_Activity extends BaseTabLayoutActivity {
     @SuppressLint("WrongConstant")
     private void initMenuData() {
         if (mogulTagListBean != null) {
+            AppMenuBean allBean = new AppMenuBean();
+            allBean.setName("全部");
+            menuList.add(allBean);
+            fragments.add(SideslipMogul_Fragment.newInstance(""));
+
             int size = mogulTagListBean.getTagList().size();
             for (int i = 0; i < size; i++) {
                 AppMenuBean bean = new AppMenuBean();
@@ -87,6 +92,7 @@ public class SideslipMogul_Activity extends BaseTabLayoutActivity {
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     mogulTagListBean = GsonUtil.getInstance().json2Bean(json_data, MogulTagListBean.class);
+
                     initMenuData();
                 }
             }

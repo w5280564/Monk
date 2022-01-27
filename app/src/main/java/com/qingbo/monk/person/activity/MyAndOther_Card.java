@@ -159,11 +159,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     protected void initView() {
         mTabLayout = findViewById(R.id.card_Tab);
         mViewPager = findViewById(R.id.card_ViewPager);
-        NestedScrollView top_Src = findViewById(R.id.top_Src);
-        CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
-        LinearLayout bot_Lin = findViewById(R.id.bot_Lin);
-        headLayout.setmMoveView(top_Src, bot_Lin);
-        headLayout.setmZoomView(iv_img);
+//        NestedScrollView top_Src = findViewById(R.id.top_Src);
+//        CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
+//        AppBarLayout appbar_Layout = findViewById(R.id.appbar_Layout);
+//        LinearLayout bot_Lin = findViewById(R.id.bot_Lin);
+//        headLayout.setmMoveView(top_Src, bot_Lin);
+//        headLayout.setmZoomView(iv_img);
 
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
