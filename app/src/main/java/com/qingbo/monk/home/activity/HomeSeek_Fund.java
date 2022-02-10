@@ -13,6 +13,7 @@ import com.qingbo.monk.bean.HomeSeekFund_Bean;
 import com.qingbo.monk.bean.HomeSeekFund_ListBean;
 import com.qingbo.monk.bean.HomeSeekFund_All;
 import com.qingbo.monk.home.adapter.HomeSeek_Fund_Adapter;
+import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -105,6 +106,7 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
                                     Fund_beans.addAll(ganggu);
                                 }
                                 homeSeekFund_listBean.setList(Fund_beans);
+                                ((HomeSeek_Fund_Adapter)mAdapter).setFindStr(word);
                                 handleSplitListData(homeSeekFund_listBean, mAdapter, limit);
                             }
                         }

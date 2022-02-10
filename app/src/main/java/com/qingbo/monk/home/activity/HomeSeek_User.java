@@ -18,6 +18,7 @@ import com.qingbo.monk.bean.HomeSeekUser_Bean;
 import com.qingbo.monk.bean.HomeSeekUser_ListBean;
 import com.qingbo.monk.home.adapter.HomeSeek_User_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -36,7 +37,7 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     private String word;
-    private SearchEditText query_edit;
+    private SearchEditText query_Edit;
 
     public static HomeSeek_User newInstance(String word) {
         Bundle args = new Bundle();
@@ -59,6 +60,7 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
     @Override
     protected void initView(View mRootView) {
         mSwipeRefreshLayout = mRootView.findViewById(R.id.refresh_layout);
+        query_Edit = requireActivity().findViewById(R.id.query_Edit);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
 
@@ -102,6 +104,7 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                              homeSeekUser_listBean = GsonUtil.getInstance().json2Bean(json_data, HomeSeekUser_ListBean.class);
                             if (homeSeekUser_listBean != null) {
+                                ((HomeSeek_User_Adapter)mAdapter).setFindStr(word);
                                 handleSplitListData(homeSeekUser_listBean, mAdapter, limit);
                             }
                         }
@@ -138,6 +141,10 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
+                        break;
+                    case R.id.head_Img:
+                        String id = item.getId();
+                        MyAndOther_Card.actionStart(mActivity, id);
                         break;
                 }
             }

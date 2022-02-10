@@ -14,6 +14,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeSeekTopic_ListBean;
+import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
 import com.qingbo.monk.home.adapter.HomeSeek_Topic_Adapter;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
@@ -89,7 +90,7 @@ public class HomeSeek_Topic extends BaseRecyclerViewSplitFragment {
         requestMap.put("word", word);
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        HttpSender sender = new HttpSender(HttpUrl.Search_Topic, "搜索人物", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.Search_Topic, "搜索资讯", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -99,6 +100,7 @@ public class HomeSeek_Topic extends BaseRecyclerViewSplitFragment {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                              homeSeekTopic_listBean = GsonUtil.getInstance().json2Bean(json_data, HomeSeekTopic_ListBean.class);
                             if (homeSeekTopic_listBean != null) {
+                                ((HomeSeek_Topic_Adapter)mAdapter).setFindStr(word);
                                 handleSplitListData(homeSeekTopic_listBean, mAdapter, limit);
                             }
                         }

@@ -9,12 +9,20 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.ArticleLikedBean;
+import com.qingbo.monk.bean.Character_Bean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeSeekPerson_Bean;
 import com.qingbo.monk.bean.HomeSeekPerson_ListBean;
 import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
+import com.qingbo.monk.home.adapter.HomeSeek_User_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -99,6 +107,7 @@ public class HomeSeek_Person extends BaseRecyclerViewSplitFragment {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                              homeSeekPerson_listBean = GsonUtil.getInstance().json2Bean(json_data, HomeSeekPerson_ListBean.class);
                             if (homeSeekPerson_listBean != null) {
+                                ((HomeSeek_Person_Adapter)mAdapter).setFindStr(word);
                                 handleSplitListData(homeSeekPerson_listBean, mAdapter, limit);
                             }
                         }
@@ -113,50 +122,24 @@ public class HomeSeek_Person extends BaseRecyclerViewSplitFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-//            if (item==null) {
-//                return;
-//            }
-//            String id = item.getId();
-//            MyAndOther_Card.actionStart(mActivity, id);
-//        });
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            HomeSeekPerson_Bean item = (HomeSeekPerson_Bean) adapter.getItem(position);
+            String nickname = item.getNickname();
+            String id = item.getId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        });
 
-//        mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-//                switch (view.getId()) {
-//                    case R.id.follow_Tv:
-//                        String likeId = item.getId();
-//                        postFollowData(likeId, position);
-//                        break;
-//                    case R.id.send_Mes:
-//                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
-//                        break;
-//                }
-//            }
-//        });
-    }
-
-    private void postFollowData(String otherUserId, int position) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("otherUserId", otherUserId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((MyFollow_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            HomeSeekPerson_Bean item = (HomeSeekPerson_Bean) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.head_Img:
+                    String id = item.getId();
+                    MyAndOther_Card.actionStart(mActivity, id);
+                    break;
             }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
+        });
     }
+
 
 
 

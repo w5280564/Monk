@@ -12,7 +12,7 @@
 
 
     <string name="app_name">扫地僧</string>
-    <string name="privacy_policy_dialog_content">\u3000\u3000亲爱的扫地僧用户，感谢您使用扫地僧！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您充分阅读并理解《用户协议》和《隐私政策》的全部内容，同意并接受全部条款后开始使用我们的产品和服务。</string>
+    <string name="privacy_policy_dialog_content">\u3000\u3000亲爱的扫地僧用户，感谢您使用扫地僧！我们非常重视您的个人信息和隐私安全。为了更好地保障您的个人权益，请您充分阅读并理解《》和《隐私政策》的全部内容，同意并接受全部条款后开始使用我们的产品和服务。</string>
     <string name="privacy_policy_dialog_content_again">\u3000\u3000您需要同意本用户协议和隐私政策才能继续使用扫地僧，若您不同意，很遗憾我们将无法为您提供服务。</string>
     <string name="number_letter_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 

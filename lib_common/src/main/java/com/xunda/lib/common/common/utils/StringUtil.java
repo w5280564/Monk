@@ -12,8 +12,10 @@ import android.os.Environment;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Patterns;
 import android.view.View;
@@ -906,6 +908,26 @@ public class StringUtil {
         ClipboardManager manager = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData clipData = ClipData.newPlainText("text", content);
         manager.setPrimaryClip(clipData);
+    }
+
+    /**
+     * 搜索关键字高亮变色
+     *
+     * @param color   变化的色值
+     * @param text    文字
+     * @param keyword 文字中的关键字
+     * @return
+     */
+    public static SpannableString findSearchChange(int color, String text, String keyword) {
+        SpannableString s = new SpannableString(text);
+        Pattern p = Pattern.compile(keyword);
+        Matcher m = p.matcher(s);
+        while (m.find()) {
+            int start = m.start();
+            int end = m.end();
+            s.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return s;
     }
 
 

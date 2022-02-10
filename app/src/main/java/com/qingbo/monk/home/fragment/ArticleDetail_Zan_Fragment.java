@@ -62,7 +62,7 @@ public class ArticleDetail_Zan_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无点赞", 0,true);
     }
 
     @Override

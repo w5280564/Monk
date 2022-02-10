@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @NoArgsConstructor
 @Data
 public class MainUpdateCount_Bean {

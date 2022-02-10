@@ -64,7 +64,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        initSwipeRefreshLayoutAndAdapter("暂无评论",  R.mipmap.wupinglun, true);
     }
 
     @Override

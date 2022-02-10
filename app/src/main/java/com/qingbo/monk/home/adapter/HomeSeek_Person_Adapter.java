@@ -2,6 +2,7 @@ package com.qingbo.monk.home.adapter;
 
 import android.content.Context;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,14 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.List;
 
 public class HomeSeek_Person_Adapter extends BaseQuickAdapter<HomeSeekPerson_Bean, BaseViewHolder> {
-
+    String findStr;
     public HomeSeek_Person_Adapter() {
         super(R.layout.character_adapter);
     }
 
+    public void setFindStr(String findStr) {
+        this.findStr = findStr;
+    }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HomeSeekPerson_Bean item) {
@@ -41,13 +45,16 @@ public class HomeSeek_Person_Adapter extends BaseQuickAdapter<HomeSeekPerson_Bea
         TextView company_Tv = helper.getView(R.id.company_Tv);
         nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
         GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
-        nickName_Tv.setText(item.getNickname());
+//        nickName_Tv.setText(item.getNickname());
+        SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), item.getNickname(), findStr);
+        nickName_Tv.setText(searchChange);
         originalValue(item.getCompanyName(), "暂未填写", "", company_Tv);
         labelFlow(lable_Lin, mContext, item.getTagName());
 
 
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Tv);
+        helper.addOnClickListener(R.id.head_Img);
     }
 
 

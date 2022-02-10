@@ -17,6 +17,9 @@ import com.qingbo.monk.bean.HomeSeekGroup_All;
 import com.qingbo.monk.bean.HomeSeekGroup_Bean;
 import com.qingbo.monk.bean.HomeSeekGroup_ListBean;
 import com.qingbo.monk.home.adapter.HomeSeek_Group_Adapter;
+import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
+import com.qingbo.monk.person.activity.MyGroupList_Activity;
+import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -105,6 +108,7 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
                              homeSeekGroup_listBean = new HomeSeekGroup_ListBean();
                             homeSeekGroup_listBean.setList(data);
                             if (homeSeekGroup_listBean != null) {
+                                ((HomeSeek_Group_Adapter)mAdapter).setFindStr(word);
                                 handleSplitListData(homeSeekGroup_listBean, mAdapter, limit);
                             }
                         }
@@ -122,6 +126,9 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            HomeSeekGroup_Bean item = (HomeSeekGroup_Bean) adapter.getItem(position);
+            String id = item.getId();
+            GroupDetailActivity.actionStart(mActivity, id);
         });
 
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
@@ -133,6 +140,8 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
                     break;
             }
         });
+
+
     }
 
     private void getJoin(String ID) {

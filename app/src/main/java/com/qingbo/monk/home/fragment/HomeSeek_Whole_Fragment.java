@@ -3,12 +3,18 @@ package com.qingbo.monk.home.fragment;
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,12 +26,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.bean.Character_Bean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeInsiderBean;
+import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.SearchAll_Bean;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.person.activity.MyInterestList_Activity;
+import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -43,7 +58,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 搜索——综合
+ * ——综合
  */
 public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     @BindView(R.id.label_Flow)
@@ -142,7 +157,11 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         if (ListUtils.isEmpty(item)) {
             return;
         }
-        for (int i = 0; i < item.size(); i++) {
+        int size = item.size();
+        if (size > 10){
+            size = 10;
+        }
+        for (int i = 0; i < size; i++) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.history_label, null);
             TextView label_Name = view.findViewById(R.id.label_Name);
             label_Name.setText(item.get(i));
@@ -218,6 +237,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         for (int i = 0; i < size; i++) {
             SearchAll_Bean.DataDTO.UserDTO userDTO = item.get(i);
             View view = LayoutInflater.from(mContext).inflate(R.layout.homeseek_persn, null);
+            FrameLayout head_Frame = view.findViewById(R.id.head_Frame);
             ImageView head_Img = view.findViewById(R.id.head_Img);
             TextView nickName_Tv = view.findViewById(R.id.nickName_Tv);
             TextView content_Tv = view.findViewById(R.id.content_Tv);
@@ -226,26 +246,32 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             FlowLayout label_Flow = view.findViewById(R.id.label_Flow);
             nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, userDTO.getAvatar(), R.mipmap.icon_logo);
-            nickName_Tv.setText(userDTO.getNickname());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), userDTO.getNickname(), query_edit.getText().toString());
+            nickName_Tv.setText(searchChange);
             isFollow(userDTO.getFollow_status(), follow_Tv, send_Mes);
             String format = String.format("发表 %1$s条  关注 %2$s人", userDTO.getArticleNum(), userDTO.getFansNum());
             content_Tv.setText(format);
             labelAllFlow(label_Flow, mContext, userDTO.getTagName());
-
             follow_Tv.setTag(i);
             send_Mes.setTag(i);
+            head_Frame.setTag(i);
             myLin.addView(view);
             follow_Tv.setOnClickListener(v -> {
-                int tag1 = (int) v.getTag();
-                String likeId = item.get(tag1).getId();
+                int tag = (int) v.getTag();
+                String likeId = item.get(tag).getId();
                 postFollowData(likeId, follow_Tv, send_Mes);
             });
             send_Mes.setOnClickListener(v -> {
-                int tag1 = (int) v.getTag();
-                String id = item.get(tag1).getId();
-                String nickname = item.get(tag1).getNickname();
-                String avatar = item.get(tag1).getAvatar();
+                int tag = (int) v.getTag();
+                String id = item.get(tag).getId();
+                String nickname = item.get(tag).getNickname();
+                String avatar = item.get(tag).getAvatar();
                 ChatActivity.actionStart(mActivity, id, nickname, avatar);
+            });
+            head_Frame.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                String id = item.get(tag).getId();
+                MyAndOther_Card.actionStart(mActivity, id);
             });
         }
     }
@@ -268,11 +294,21 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView company_Tv = view.findViewById(R.id.company_Tv);
             nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, s.getAvatar(), R.mipmap.icon_logo);
-            nickName_Tv.setText(s.getNickname());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
+            nickName_Tv.setText(searchChange);
 //            company_Tv.setText(s.getCompanyName());
             originalValue(s.getCompanyName(), "暂未填写", "", company_Tv);
             labelFlow(lable_Lin, mContext, s.getTagName());
             myLin.addView(view);
+            head_Img.setOnClickListener(v -> {
+                String id = s.getId();
+                MyAndOther_Card.actionStart(mActivity, id);
+            });
+            view.setOnClickListener(v -> {
+                String nickname = s.getNickname();
+                String id = s.getId();
+                SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            });
         }
     }
 
@@ -291,7 +327,8 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             View view = LayoutInflater.from(mContext).inflate(R.layout.homeseek_fund_label, null);
             TextView fundName_Tv = view.findViewById(R.id.fundName_Tv);
             TextView fundCode_Tv = view.findViewById(R.id.fundCode_Tv);
-            fundName_Tv.setText(s.getName());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getName(), query_edit.getText().toString());
+            fundName_Tv.setText(searchChange);
             fundCode_Tv.setText(s.getNumber());
             myLin.addView(view);
         }
@@ -312,8 +349,12 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             ImageView art_Img = view.findViewById(R.id.art_Img);
             TextView artName_tv = view.findViewById(R.id.artName_tv);
             TextView artContent_Tv = view.findViewById(R.id.artContent_Tv);
-            artName_tv.setText(s.getNickname());
-            artContent_Tv.setText(s.getContent());
+//            artName_tv.setText(s.getNickname());
+//            artContent_Tv.setText(s.getContent());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
+            artName_tv.setText(searchChange);
+            SpannableString searchChange1 = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getContent(), query_edit.getText().toString());
+            artContent_Tv.setText(searchChange1);
             if (!TextUtils.isEmpty(s.getImages())) {
                 List<String> strings = Arrays.asList(s.getImages().split(","));
                 GlideUtils.loadRoundImage(mContext, art_Img, strings.get(0), 9);
@@ -345,7 +386,9 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView followCount_Tv = view.findViewById(R.id.followCount_Tv);
             TextView join_Tv = view.findViewById(R.id.join_Tv);
             GlideUtils.loadCircleImage(mContext, head_Img, groupDTO.getShequnImage(), R.mipmap.icon_logo);
-            nickName_Tv.setText(groupDTO.getShequnName());
+//            nickName_Tv.setText(groupDTO.getShequnName());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), groupDTO.getShequnName(), query_edit.getText().toString());
+            nickName_Tv.setText(searchChange);
             String format = String.format("关注 %1$s", groupDTO.getJoinNum());
             followCount_Tv.setText(format);
             content_Tv.setText(groupDTO.getShequnDes());
@@ -358,6 +401,11 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
                 String joinStatus = item.get(tag).getJoinStatus();
                 changeState(joinStatus, join_Tv, item);
                 getJoin(item.get(tag).getId());
+            });
+            view.setOnClickListener(v -> {
+                int tag = (Integer) v.getTag();
+                String id = item.get(tag).getId();
+                GroupDetailActivity.actionStart(mActivity, id);
             });
         }
     }
@@ -571,4 +619,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
         }
     }
+
+
+
 }

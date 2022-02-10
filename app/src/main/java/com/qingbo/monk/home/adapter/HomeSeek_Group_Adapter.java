@@ -4,6 +4,7 @@ import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
 import android.content.Context;
 import android.text.InputFilter;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +27,15 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.List;
 
 public class HomeSeek_Group_Adapter extends BaseQuickAdapter<HomeSeekGroup_Bean, BaseViewHolder> {
+    String findStr;
 
     public HomeSeek_Group_Adapter() {
         super(R.layout.homeseek_group);
     }
 
+    public void setFindStr(String findStr) {
+        this.findStr = findStr;
+    }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, HomeSeekGroup_Bean item) {
@@ -40,7 +45,9 @@ public class HomeSeek_Group_Adapter extends BaseQuickAdapter<HomeSeekGroup_Bean,
         TextView followCount_Tv = helper.getView(R.id.followCount_Tv);
         TextView join_Tv = helper.getView(R.id.join_Tv);
         GlideUtils.loadCircleImage(mContext, head_Img, item.getShequnImage(), R.mipmap.icon_logo);
-        nickName_Tv.setText(item.getShequnName());
+//        nickName_Tv.setText(item.getShequnName());
+        SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), item.getShequnName(), findStr);
+        nickName_Tv.setText(searchChange);
         String format = String.format("关注 %1$s", item.getJoinNum());
         followCount_Tv.setText(format);
         content_Tv.setText(item.getShequnDes());
