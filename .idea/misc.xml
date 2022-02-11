@@ -79,6 +79,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_drafts.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_fundshares.xml" value="0.334375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_all.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_detail_wait_answer.xml" value="0.33958333333333335" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_member_list_main.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_my.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_shequn.xml" value="0.35052083333333334" />

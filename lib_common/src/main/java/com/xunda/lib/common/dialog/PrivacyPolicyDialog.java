@@ -70,8 +70,6 @@ public class PrivacyPolicyDialog extends Dialog implements View.OnClickListener 
 		tv_content.setHighlightColor(ContextCompat.getColor(mContext,android.R.color.transparent));
 		SpannableStringBuilder builder = new SpannableStringBuilder(content);
 
-
-
 		int startIndex_agreement = content.indexOf(matcherAgreement);
 		int endIndex_agreement = startIndex_agreement+matcherAgreement.length();
 		//可单独文本前景色
