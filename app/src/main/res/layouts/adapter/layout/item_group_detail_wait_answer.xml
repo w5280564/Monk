@@ -85,14 +85,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_Img" />
 
-
+    <ImageView
+        android:id="@+id/question_Img"
+        android:layout_width="@dimen/dp_90"
+        android:layout_height="@dimen/dp_90"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/dp_15"
+        app:layout_constraintTop_toBottomOf="@+id/content_Tv" />
 
     <View
+        android:id="@+id/view10"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginTop="@dimen/dp_20"
         android:background="@color/text_color_CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/content_Tv" />
+        app:layout_constraintTop_toBottomOf="@id/question_Img" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

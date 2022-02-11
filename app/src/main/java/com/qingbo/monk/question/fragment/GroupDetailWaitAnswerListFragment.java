@@ -9,6 +9,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseWaitGroupAnswerBean;
 import com.qingbo.monk.bean.WaitGroupAnswerBean;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.question.activity.PublisherAnswerQuestionToPeopleActivity;
 import com.qingbo.monk.question.adapter.GroupDetailWaitAnswerAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -17,7 +18,10 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 社群详情等你回答列表
@@ -72,6 +76,13 @@ public class GroupDetailWaitAnswerListFragment extends BaseRecyclerViewSplitFrag
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new GroupDetailWaitAnswerAdapter();
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+
     }
 
     @Override
@@ -87,6 +98,11 @@ public class GroupDetailWaitAnswerListFragment extends BaseRecyclerViewSplitFrag
                 switch (view.getId()) {
                     case R.id.tv_answer:
                         PublisherAnswerQuestionToPeopleActivity.actionStart(mActivity,mQuestionBean.getNickname(),mQuestionBean.getId(),id);
+                        break;
+                    case R.id.question_Img:
+                        List<String> strings = new ArrayList<>();
+                        strings.add(mQuestionBean.getImages());
+                        jumpToPhotoShowActivity(position, strings);
                         break;
                 }
             }

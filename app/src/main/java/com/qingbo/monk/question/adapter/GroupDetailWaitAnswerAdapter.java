@@ -32,6 +32,7 @@ public class GroupDetailWaitAnswerAdapter extends BaseQuickAdapter<WaitGroupAnsw
         TextView tv_answer = helper.getView(R.id.tv_answer);
         TextView content_Tv = helper.getView(R.id.content_Tv);
         TextView time_Tv = helper.getView(R.id.time_Tv);
+        ImageView question_Img = helper.getView(R.id.question_Img);
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
         group_Name.setText(item.getNickname());
@@ -47,9 +48,11 @@ public class GroupDetailWaitAnswerAdapter extends BaseQuickAdapter<WaitGroupAnsw
             String userDate = DateUtil.getUserDate(item.getCreateTime());
             time_Tv.setText(userDate);
         }
+        GlideUtils.loadImage(mContext,question_Img,item.getImages());
 
         tv_answer.setVisibility(View.VISIBLE);
         helper.addOnClickListener(R.id.tv_answer);
+        helper.addOnClickListener(R.id.question_Img);
     }
 
 
