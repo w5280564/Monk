@@ -63,7 +63,6 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
         query_Edit = requireActivity().findViewById(R.id.query_Edit);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
-
     }
 
     @Override
@@ -72,7 +71,6 @@ public class HomeSeek_User extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout.setRefreshing(true);
         getExpertList(word,false);
     }
-
 
     @Override
     protected void onRefreshData() {

@@ -68,8 +68,6 @@ public class HomeSeek_Topic extends BaseRecyclerViewSplitFragment {
         getExpertList(word,false);
     }
 
-
-
     @Override
     protected void onRefreshData() {
         word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();

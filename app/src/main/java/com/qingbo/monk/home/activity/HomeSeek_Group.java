@@ -73,7 +73,6 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
     }
 
 
-
     @Override
     protected void onRefreshData() {
         word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();

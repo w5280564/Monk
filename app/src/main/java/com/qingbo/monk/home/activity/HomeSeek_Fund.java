@@ -65,7 +65,6 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
         getExpertList(word, false);
     }
 
-
     @Override
     protected void onRefreshData() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();

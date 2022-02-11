@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.qingbo.monk.HttpSender;
@@ -29,7 +30,9 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseLazyFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.Character_Bean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeInsiderBean;
@@ -37,6 +40,7 @@ import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.SearchAll_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
+import com.qingbo.monk.home.activity.HomeSeek_User;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyInterestList_Activity;
@@ -48,6 +52,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.view.SearchEditText;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
@@ -109,6 +114,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
     @Override
     protected void initView(View mRootView) {
+        viewTouchDelegate.expandViewTouchDelegate(dele_Tv, 100);
         query_edit = ((HomeSeek_Activity) requireActivity()).query_Edit;
         mSwipeRefreshLayout = mRootView.findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
@@ -116,6 +122,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
         List<String> strings = ((HomeSeek_Activity) requireActivity()).mDbDao.queryData("");
         interestLabelFlow(label_Flow, mActivity, strings);
+
     }
 
     @Override
@@ -596,28 +603,46 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.dele_Tv:
+                deleteHistory();
+                break;
+            case R.id.userSeek_Tv:
+                changeTabAndRefresh(1);
+                break;
+            case R.id.personSeek_Tv:
+                changeTabAndRefresh(2);
+                break;
+            case R.id.fundSeek_Tv:
+                changeTabAndRefresh(3);
+                break;
+            case R.id.topicSeek_Tv:
+                changeTabAndRefresh(4);
+                break;
+            case R.id.groupSeek_Tv:
+                changeTabAndRefresh(5);
+                break;
+        }
+    }
+
+    private void changeTabAndRefresh(int index){
+        ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(index);
+        List<Fragment> fragments = requireActivity().getSupportFragmentManager().getFragments();
+        BaseRecyclerViewSplitFragment fragment = (BaseRecyclerViewSplitFragment) fragments.get(index);
+        fragment.onRefresh();
+    }
+
+    private void deleteHistory(){
+        new TwoButtonDialogBlue(mActivity, "确定删除全部历史记录？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
                 ((HomeSeek_Activity) requireActivity()).mDbDao.deleteData();
                 if (label_Flow != null) {
                     label_Flow.removeAllViews();
                 }
-                break;
-            case R.id.userSeek_Tv:
-                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(1);
-                break;
-            case R.id.personSeek_Tv:
-                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(2);
-                break;
-            case R.id.fundSeek_Tv:
-                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(3);
-                break;
-            case R.id.topicSeek_Tv:
-                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(4);
-                break;
-            case R.id.groupSeek_Tv:
-                ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(5);
-                break;
-
-        }
+            }
+            @Override
+            public void onClickLeft() {
+            }
+        }).show();
     }
 
 
