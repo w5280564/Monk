@@ -28,6 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
+import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
@@ -36,6 +37,8 @@ import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.Character_Bean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeInsiderBean;
+import com.qingbo.monk.bean.HomeSeekTopic_Bean;
+import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.SearchAll_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
@@ -44,7 +47,9 @@ import com.qingbo.monk.home.activity.HomeSeek_User;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyInterestList_Activity;
+import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.qingbo.monk.question.activity.PreviewGroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -137,7 +142,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
     @Override
     protected void loadData() {
-//        SearchAllList("", false);
+//        SearchAllList("", true);
     }
 
 
@@ -145,13 +150,14 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     public void onResume() {
         super.onResume();
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
+        SearchAllList(word, true);
     }
 
     @Override
     public void onRefresh() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
-        SearchAllList(word, false);
+        SearchAllList(word, true);
     }
 
     /**
@@ -165,7 +171,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             return;
         }
         int size = item.size();
-        if (size > 10){
+        if (size > 10) {
             size = 10;
         }
         for (int i = 0; i < size; i++) {
@@ -187,19 +193,21 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         }
     }
 
+    int page = 1;
+
     /**
      * ，默认搜索数据
      */
     public void SearchAllList(String word, boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("word", word + "");
-        requestMap.put("page", 1 + "");
-        requestMap.put("limit", 10 + "");
+        requestMap.put("page", page + "");
+        requestMap.put("limit", 2 + "");
         HttpSender sender = new HttpSender(HttpUrl.Search_All, "搜索-默认页", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (mSwipeRefreshLayout.isRefreshing()) {
+                        if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
@@ -253,7 +261,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             FlowLayout label_Flow = view.findViewById(R.id.label_Flow);
             nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, userDTO.getAvatar(), R.mipmap.icon_logo);
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), userDTO.getNickname(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), userDTO.getNickname(), query_edit.getText().toString());
             nickName_Tv.setText(searchChange);
             isFollow(userDTO.getFollow_status(), follow_Tv, send_Mes);
             String format = String.format("发表 %1$s条  关注 %2$s人", userDTO.getArticleNum(), userDTO.getFansNum());
@@ -301,7 +309,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView company_Tv = view.findViewById(R.id.company_Tv);
             nickName_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
             GlideUtils.loadCircleImage(mContext, head_Img, s.getAvatar(), R.mipmap.icon_logo);
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
             nickName_Tv.setText(searchChange);
 //            company_Tv.setText(s.getCompanyName());
             originalValue(s.getCompanyName(), "暂未填写", "", company_Tv);
@@ -334,7 +342,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             View view = LayoutInflater.from(mContext).inflate(R.layout.homeseek_fund_label, null);
             TextView fundName_Tv = view.findViewById(R.id.fundName_Tv);
             TextView fundCode_Tv = view.findViewById(R.id.fundCode_Tv);
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getName(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getName(), query_edit.getText().toString());
             fundName_Tv.setText(searchChange);
             fundCode_Tv.setText(s.getNumber());
             myLin.addView(view);
@@ -342,7 +350,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     }
 
     /**
-     * 专栏
+     * 资讯
      */
     public void topicLabelLin(LinearLayout myLin, Context mContext, List<SearchAll_Bean.DataDTO.TopicDTO> item) {
         if (myLin != null) {
@@ -358,7 +366,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView artContent_Tv = view.findViewById(R.id.artContent_Tv);
 //            artName_tv.setText(s.getNickname());
 //            artContent_Tv.setText(s.getContent());
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getNickname(), query_edit.getText().toString());
             artName_tv.setText(searchChange);
             SpannableString searchChange1 = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getContent(), query_edit.getText().toString());
             artContent_Tv.setText(searchChange1);
@@ -369,6 +377,10 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
                 art_Img.setImageResource(R.mipmap.img_pic_none_square);
             }
             myLin.addView(view);
+            view.setOnClickListener(v -> {
+                String articleId = s.getId();
+                ArticleDetail_Activity.startActivity(mActivity, articleId, "0", true);
+            });
         }
     }
 
@@ -394,26 +406,48 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             TextView join_Tv = view.findViewById(R.id.join_Tv);
             GlideUtils.loadCircleImage(mContext, head_Img, groupDTO.getShequnImage(), R.mipmap.icon_logo);
 //            nickName_Tv.setText(groupDTO.getShequnName());
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext,R.color.text_color_ff5b29), groupDTO.getShequnName(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), groupDTO.getShequnName(), query_edit.getText().toString());
             nickName_Tv.setText(searchChange);
             String format = String.format("关注 %1$s", groupDTO.getJoinNum());
             followCount_Tv.setText(format);
             content_Tv.setText(groupDTO.getShequnDes());
             String state = groupDTO.getJoinStatus();
             joinState(state, join_Tv);
+            String type1 = item.get(i).getType();
+            if (TextUtils.equals(type1, "1")) { //1是社群 2是兴趣组
+                join_Tv.setVisibility(View.GONE);
+            }
             join_Tv.setTag(i);
+            view.setTag(i);
             myLin.addView(view);
             join_Tv.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
                 String joinStatus = item.get(tag).getJoinStatus();
-                changeState(joinStatus, join_Tv, item);
-                getJoin(item.get(tag).getId());
+                String type = item.get(tag).getType();
+                if (TextUtils.equals(type, "2")) { //1是社群 2是兴趣组
+                    changeState(joinStatus, join_Tv, item);
+                    getJoin(item.get(tag).getId());
+                }
             });
             view.setOnClickListener(v -> {
                 int tag = (Integer) v.getTag();
-                String id = item.get(tag).getId();
-                GroupDetailActivity.actionStart(mActivity, id);
+                groupOrInterest(item, tag);
             });
+        }
+    }
+
+    private void groupOrInterest(List<SearchAll_Bean.DataDTO.GroupDTO> item, int tag) {
+        String id = item.get(tag).getId();
+        String type = item.get(tag).getType();
+        String joinStatus = item.get(tag).getJoinStatus();
+        if (TextUtils.equals(type, "1")) { //1是社群 2是兴趣组
+            if (TextUtils.equals(joinStatus, "1")) {//1是已加入 其他都是未加入
+                CheckOtherGroupDetailActivity.actionStart(mActivity, id);
+            } else {
+                GroupDetailActivity.actionStart(mActivity, id);
+            }
+        } else {
+            InterestDetail_Activity.startActivity(mActivity, "0", id);
         }
     }
 
@@ -563,11 +597,11 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         httpSender.sendPost();
     }
 
-    //加入的状态
+    //加入的状态 state1已加入，其它都是未加入
     private void joinState(String state, TextView joinTv) {
         if (!TextUtils.isEmpty(state)) {
             int indexState = Integer.parseInt(state);
-            if (indexState == 1) { //1已加入 其他都是未加入
+            if (indexState == 1) {
                 joinTv.setText("已加入");
                 joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
                 changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
@@ -578,6 +612,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             }
         }
     }
+
 
     //修改加入状态
     private void changeState(String state, TextView joinTv, List<SearchAll_Bean.DataDTO.GroupDTO> item) {
@@ -623,14 +658,14 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         }
     }
 
-    private void changeTabAndRefresh(int index){
+    private void changeTabAndRefresh(int index) {
         ((HomeSeek_Activity) requireActivity()).mViewPager.setCurrentItem(index);
         List<Fragment> fragments = requireActivity().getSupportFragmentManager().getFragments();
         BaseRecyclerViewSplitFragment fragment = (BaseRecyclerViewSplitFragment) fragments.get(index);
         fragment.onRefresh();
     }
 
-    private void deleteHistory(){
+    private void deleteHistory() {
         new TwoButtonDialogBlue(mActivity, "确定删除全部历史记录？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
@@ -639,12 +674,12 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
                     label_Flow.removeAllViews();
                 }
             }
+
             @Override
             public void onClickLeft() {
             }
         }).show();
     }
-
 
 
 }

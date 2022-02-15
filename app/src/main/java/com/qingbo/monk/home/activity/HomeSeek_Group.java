@@ -12,13 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeSeekGroup_All;
 import com.qingbo.monk.bean.HomeSeekGroup_Bean;
 import com.qingbo.monk.bean.HomeSeekGroup_ListBean;
+import com.qingbo.monk.bean.SearchAll_Bean;
 import com.qingbo.monk.home.adapter.HomeSeek_Group_Adapter;
 import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
+import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -67,11 +70,18 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+//        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
+//        mSwipeRefreshLayout.setRefreshing(true);
+//        getExpertList(word,false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
         getExpertList(word,false);
     }
-
 
     @Override
     protected void onRefreshData() {
@@ -126,8 +136,9 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeSeekGroup_Bean item = (HomeSeekGroup_Bean) adapter.getItem(position);
-            String id = item.getId();
-            GroupDetailActivity.actionStart(mActivity, id);
+//            String id = item.getId();
+//            GroupDetailActivity.actionStart(mActivity, id);
+            groupOrInterest(item);
         });
 
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
@@ -139,9 +150,24 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
                     break;
             }
         });
-
-
     }
+
+    private void groupOrInterest(HomeSeekGroup_Bean item) {
+        String id = item.getId();
+        String type = item.getType();
+        String joinStatus = item.getJoinStatus();
+        if (TextUtils.equals(type, "1")) { //1是社群 2是兴趣组
+            if (TextUtils.equals(joinStatus, "1")) {//1是已加入 其他都是未加入
+                GroupDetailActivity.actionStart(mActivity, id);
+            } else {
+                CheckOtherGroupDetailActivity.actionStart(mActivity, id);
+            }
+        } else {
+            InterestDetail_Activity.startActivity(mActivity, "0", id);
+        }
+    }
+
+
 
     private void getJoin(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();

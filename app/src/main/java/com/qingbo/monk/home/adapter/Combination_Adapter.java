@@ -67,7 +67,10 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
      * @param item
      */
     private void addRecycleData(RecyclerView mNineView, HomeCombinationBean item) {
-        mNineView.addItemDecoration(getRecyclerViewDivider(R.drawable.recyleview_solid));//添加横向分割线
+        if (mNineView != null){
+            mNineView.removeAllViews();
+        }
+//        mNineView.addItemDecoration(getRecyclerViewDivider(R.drawable.recyleview_solid));//添加横向分割线
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mNineView.setLayoutManager(linearLayoutManager);

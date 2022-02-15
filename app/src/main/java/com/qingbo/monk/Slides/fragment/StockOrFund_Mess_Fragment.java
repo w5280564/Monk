@@ -17,6 +17,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.bean.HomeSeekTopic_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.StockFundMes_Bean;
 import com.qingbo.monk.bean.StockFundMes_ListBean;
@@ -122,7 +123,17 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new StockFund_Mess_Adapter();
         mRecyclerView.setAdapter(mAdapter);
-
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                StockFundMes_Bean item = (StockFundMes_Bean) adapter.getItem(position);
+                if (item==null) {
+                    return;
+                }
+                String articleId = item.getId();
+                ArticleDetail_Activity.startActivity(mActivity, articleId, "0", true);
+            }
+        });
     }
 
 

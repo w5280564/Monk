@@ -116,7 +116,7 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
     private void changeSeekData(String type, String seekStr) {
         if (TextUtils.equals(type, "综合")) {
 //                ((HomeSeek_Whole_Fragment) fragments.get(0)).onResume();
-            ((HomeSeek_Whole_Fragment) fragments.get(0)).SearchAllList(seekStr, false);
+            ((HomeSeek_Whole_Fragment) fragments.get(0)).SearchAllList(seekStr, true);
         } else if (TextUtils.equals(type, "用户")) {
             ((HomeSeek_User) fragments.get(1)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "人物")) {

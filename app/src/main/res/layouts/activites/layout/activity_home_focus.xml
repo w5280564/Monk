@@ -37,6 +37,11 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/dp_40">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/top_Con"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
                     <ImageView
                         android:id="@+id/person_Img"
                         android:layout_width="@dimen/dp_36"
@@ -114,7 +119,7 @@
                         app:layout_constraintStart_toStartOf="@+id/follow_Tv"
                         app:layout_constraintTop_toBottomOf="@+id/follow_Tv" />
 
-
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                     <TextView
                         android:id="@+id/title_Tv"
                         android:layout_width="0dp"
@@ -128,7 +133,7 @@
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/person_Img" />
+                        app:layout_constraintTop_toBottomOf="@+id/top_Con" />
 
                     <TextView
                         android:id="@+id/content_Tv"

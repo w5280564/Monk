@@ -134,6 +134,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView back_Tv;
     @BindView(R.id.source_Tv)
     TextView source_Tv;
+    @BindView(R.id.top_Con)
+    ConstraintLayout top_Con;
 
 
     private String articleId;
@@ -142,6 +144,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     boolean isReply = false;
     boolean isExpanded = false; //是否展开
     private boolean isExpert;
+    private boolean isInformation;
 
     /**
      * @param context
@@ -161,7 +164,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
      * @param articleId
      * @param isShowTop
      * @param type
-     * @param isExpert  true是专家
+     * @param isExpert  true是专家 专家没有关注
      */
     public static void startActivity(Context context, String articleId, String isShowTop, String type, boolean isExpert) {
         Intent intent = new Intent(context, ArticleDetail_Activity.class);
@@ -171,6 +174,22 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         intent.putExtra("isExpert", isExpert);
         context.startActivity(intent);
     }
+
+    /**
+     *
+     * @param context
+     * @param articleId
+     * @param isShowTop
+     * @param isInformation true是资讯 资讯没有 头像与关注
+     */
+    public static void startActivity(Context context, String articleId, String isShowTop, boolean isInformation) {
+        Intent intent = new Intent(context, ArticleDetail_Activity.class);
+        intent.putExtra("articleId", articleId);
+        intent.putExtra("isShowTop", isShowTop);
+        intent.putExtra("isInformation", isInformation);
+        context.startActivity(intent);
+    }
+
 
 
     @Override
@@ -185,6 +204,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         isShowTop = getIntent().getStringExtra("isShowTop");
         type = getIntent().getStringExtra("type");
         isExpert = getIntent().getBooleanExtra("isExpert", false);
+        isInformation = getIntent().getBooleanExtra("isInformation", false);
     }
 
     @Override
@@ -393,7 +413,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-
+                        type = detailData.getType();
                         String source_url = detailData.getSource_url();
                         if (TextUtils.isEmpty(source_url)){
                             source_Tv.setVisibility(View.GONE);
@@ -577,6 +597,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         if (isExpert) {
             return;
         }
+        if (isInformation) {
+            return;
+        }
 
         if (TextUtils.equals(is_anonymous, "0")) {
             String s = String.valueOf(follow_status);
@@ -757,6 +780,15 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 center_Tv.setVisibility(View.VISIBLE);
                 titleFollow_Tv.setVisibility(View.GONE);
                 titleSend_Mes.setVisibility(View.GONE);
+            }
+
+            if (isInformation) {
+                title_Img.setVisibility(View.GONE);
+                titleNickName_Tv.setVisibility(View.GONE);
+                center_Tv.setVisibility(View.VISIBLE);
+                titleFollow_Tv.setVisibility(View.GONE);
+                titleSend_Mes.setVisibility(View.GONE);
+                top_Con.setVisibility(View.GONE);
             }
         }
     }

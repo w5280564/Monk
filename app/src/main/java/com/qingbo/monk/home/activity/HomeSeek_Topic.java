@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeSeekTopic_Bean;
 import com.qingbo.monk.bean.HomeSeekTopic_ListBean;
 import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
 import com.qingbo.monk.home.adapter.HomeSeek_Topic_Adapter;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -113,30 +116,15 @@ public class HomeSeek_Topic extends BaseRecyclerViewSplitFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-//            if (item==null) {
-//                return;
-//            }
-//            String id = item.getId();
-//            MyAndOther_Card.actionStart(mActivity, id);
-//        });
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            HomeSeekTopic_Bean item = (HomeSeekTopic_Bean) adapter.getItem(position);
+            if (item==null) {
+                return;
+            }
+            String articleId = item.getId();
+            ArticleDetail_Activity.startActivity(mActivity, articleId, "0", true);
+        });
 
-//        mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
-//            @Override
-//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-//                ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-//                switch (view.getId()) {
-//                    case R.id.follow_Tv:
-//                        String likeId = item.getId();
-//                        postFollowData(likeId, position);
-//                        break;
-//                    case R.id.send_Mes:
-//                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
-//                        break;
-//                }
-//            }
-//        });
     }
 
     private void postFollowData(String otherUserId, int position) {

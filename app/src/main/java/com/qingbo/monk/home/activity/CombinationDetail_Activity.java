@@ -303,7 +303,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                         mes_Count.setText(homeCombinationBean.getCommentcount());
                         time_Tv.setText(DateUtil.getUserDate(homeCombinationBean.getCreateTime()));
 
-                        mNineView.addItemDecoration(getRecyclerViewDivider(R.drawable.recyleview_solid));//添加横向分割线
+//                        mNineView.addItemDecoration(getRecyclerViewDivider(R.drawable.recyleview_solid));//添加横向分割线
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         mNineView.setLayoutManager(linearLayoutManager);

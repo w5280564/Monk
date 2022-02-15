@@ -53,7 +53,12 @@ public class HomeSeek_Group_Adapter extends BaseQuickAdapter<HomeSeekGroup_Bean,
         content_Tv.setText(item.getShequnDes());
         String state = item.getJoinStatus();
         isJoin(state, join_Tv);
-
+        String type1 = item.getType();
+        if (TextUtils.equals(type1, "1")) { //1是社群 2是兴趣组
+            join_Tv.setVisibility(View.GONE);
+        }else {
+            join_Tv.setVisibility(View.VISIBLE);
+        }
         helper.addOnClickListener(R.id.join_Tv);
     }
 

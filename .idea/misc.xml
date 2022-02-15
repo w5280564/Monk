@@ -58,7 +58,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/my_recyleview_refresh.xml" value="0.3287037037037037" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/myagreement_activity.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/mycrate_center.xml" value="0.35052083333333334" />
-        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/myset_aboutme_update.xml" value="0.32447916666666665" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/myset_aboutme_update.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/sidesliprecommend_top.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/articlecomment_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/articlezan_adapter.xml" value="0.32864583333333336" />
@@ -93,6 +93,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/myhistory_adapter.xml" value="0.3307291666666667" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/stockfund_mess_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/wallet_detailed_adapter.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/actiivty_preview_group_detail.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_article_detali_comment_list.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_theme.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_edit_changadd.xml" value="0.35052083333333334" />
@@ -108,6 +109,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myandother_card.xml" value="0.25" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset.xml" value="0.3359375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset_aboutme.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset_cancellation.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sidesli_follow.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_expert.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_insider.xml" value="0.34512820512820513" />

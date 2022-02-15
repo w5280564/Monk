@@ -238,6 +238,7 @@ public class HttpUrl {
     public static final String Search_Fund = "search/search/stock";//搜索股票
     public static final String Search_Topic = "search/search/topic";//搜索专栏
     public static final String Search_Group = "search/search/group";//搜索圈子
+    public static final String User_AwayOver = "user/user/away-over";//注销账户
 
 }
 

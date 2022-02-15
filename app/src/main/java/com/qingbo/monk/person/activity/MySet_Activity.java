@@ -39,6 +39,8 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
     MyArrowItemView clean_MyView;
     @BindView(R.id.quit_Tv)
     TextView quit_Tv;
+    @BindView(R.id.cancellation_MyView)
+    MyArrowItemView cancellation_MyView;
 
     @Override
     protected int getLayoutId() {
@@ -68,6 +70,7 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
         clean_MyView.setOnClickListener(this);
         about_MyView.setOnClickListener(this);
         quit_Tv.setOnClickListener(this);
+        cancellation_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -101,6 +104,9 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
                     public void onClickLeft() {
                     }
                 }).show();
+                break;
+            case R.id.cancellation_MyView:
+                skipAnotherActivity(MySet_Cancellation_Activity.class);
                 break;
         }
 
