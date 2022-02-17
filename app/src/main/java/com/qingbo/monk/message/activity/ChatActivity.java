@@ -355,5 +355,36 @@ public class ChatActivity extends BaseCameraAndGalleryActivity_Single implements
         }
         return super .onTouchEvent(event);
     }
+
+
+    @Override
+    public void onLeftClick() {
+        clearFriendUnread();
+    }
+
+    @Override
+    public void onBackPressed() {
+        clearFriendUnread();
+    }
+
+    /**
+     * 好友清除未读消息
+     */
+    private void clearFriendUnread() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userid",id);
+        HttpSender sender = new HttpSender(HttpUrl.clearUnread, "好友清除未读消息", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            finish();
+                        }
+                    }
+
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
 }
 
