@@ -442,9 +442,9 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         String joinStatus = item.get(tag).getJoinStatus();
         if (TextUtils.equals(type, "1")) { //1是社群 2是兴趣组
             if (TextUtils.equals(joinStatus, "1")) {//1是已加入 其他都是未加入
-                CheckOtherGroupDetailActivity.actionStart(mActivity, id);
-            } else {
                 GroupDetailActivity.actionStart(mActivity, id);
+            } else {
+                CheckOtherGroupDetailActivity.actionStart(mActivity, id);
             }
         } else {
             InterestDetail_Activity.startActivity(mActivity, "0", id);

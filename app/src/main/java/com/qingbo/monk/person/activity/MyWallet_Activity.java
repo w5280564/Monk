@@ -39,6 +39,8 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
     TextView settlement;
     @BindView(R.id.tv_next)
     TextView tv_next;
+    @BindView(R.id.refresh_Tv)
+    TextView refresh_Tv;
 
     @Override
     protected int getLayoutId() {
@@ -54,6 +56,7 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
     @Override
     protected void initEvent() {
         tv_next.setOnClickListener(this);
+        refresh_Tv.setOnClickListener(this);
     }
 
     private void getUserData() {
@@ -101,6 +104,10 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
             case R.id.tv_next:
                 skipAnotherActivity(MyWallet_Withdrawal.class);
                 break;
+            case R.id.refresh_Tv:
+                getUserData();
+                break;
+
         }
     }
 

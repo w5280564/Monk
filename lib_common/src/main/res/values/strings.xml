@@ -88,7 +88,7 @@
 
     <string name="Loading_dialog_check">努力查询中...</string>
     <string name="HttpSender_FWQKXC">服务器开小差啦</string>
-    <string name="HttpSender_FWQCS">请求服务器超时</string>
+    <string name="HttpSender_FWQCS">网络请求超时，请稍后再试</string>
     <string name="HttpSender_FWQDW">无法连接到服务器,请检查网络连接</string>
     <string name="HttpSender_ERROR_404">服务维护中，请稍后再试...</string>
 </resources>

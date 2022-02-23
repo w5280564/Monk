@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingConstraints">
+
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarShowBottomLine="false" />
+
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/system_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:arrowItemAvatarHeight="@dimen/dp_33"
+        app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
+        app:arrowItemShowAvatar="true"
+        app:layout_constraintTop_toBottomOf="@id/title_bar"
+        app:arrowItemTitle="系统审核"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/comment_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:arrowItemAvatarHeight="@dimen/dp_33"
+        app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
+        app:layout_constraintTop_toBottomOf="@id/system_MyView"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="评论"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+
+        <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/focus_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:arrowItemAvatarHeight="@dimen/dp_33"
+        app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
+        app:layout_constraintTop_toBottomOf="@id/comment_MyView"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="点赞"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

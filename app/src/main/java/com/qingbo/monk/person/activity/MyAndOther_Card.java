@@ -174,6 +174,9 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
         initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+        if (isMe()){
+            iv_bianji.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -205,11 +208,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @SuppressLint("WrongConstant")
     private void initMenuData() {
         ArrayList<String> tabName = new ArrayList<>();
-        if (isMe()) {
-            tabName.add("我的动态");
-        } else {
-            tabName.add("他的动态");
-        }
+//        if (isMe()) {
+//            tabName.add("我的动态");
+//        } else {
+//            tabName.add("他的动态");
+//        }
+        tabName.add("动态");
         tabName.add("档案");
         for (int i = 0; i < tabName.size(); i++) {
             AppMenuBean bean = new AppMenuBean();

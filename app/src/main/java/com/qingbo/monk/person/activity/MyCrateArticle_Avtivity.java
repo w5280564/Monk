@@ -107,7 +107,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     protected void initView() {
         initFirstAddData();
         initImageRecyclerViewAndAdapter();
-        title = "创作中心";
+        title = "";
     }
 
 

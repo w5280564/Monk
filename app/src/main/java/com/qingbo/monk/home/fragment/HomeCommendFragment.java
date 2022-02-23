@@ -243,8 +243,10 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
             int nowLike;
             nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
             if (likedStateBena.getLiked_status() == 0) {
-                nowLike -= 1;
-                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+                if (nowLike != 0) {
+                    nowLike -= 1;
+                    follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+                }
             } else if (likedStateBena.getLiked_status() == 1) {
                 follow_Img.setBackgroundResource(R.mipmap.dianzan);
                 nowLike += 1;

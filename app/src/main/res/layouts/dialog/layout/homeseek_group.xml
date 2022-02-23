@@ -50,6 +50,7 @@
         android:maxLines="1"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@id/join_Tv"
         app:layout_constraintStart_toStartOf="@id/nickName_Tv"
         app:layout_constraintTop_toBottomOf="@+id/nickName_Tv" />
 
