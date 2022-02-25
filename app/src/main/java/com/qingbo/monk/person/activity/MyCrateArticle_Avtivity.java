@@ -23,7 +23,6 @@ import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.fileprovider.FileProvider7;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -32,8 +31,6 @@ import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,9 +72,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     private String isOriginator;
 
 
-    public static void actionStart(Context context, String shequn_id, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
+    public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, MyCrateArticle_Avtivity.class);
-        intent.putExtra("shequn_id", shequn_id);
         intent.putExtra("obj", mQuestionBeanMy);
         intent.putExtra("isEdit", isEdit);
         context.startActivity(intent);
@@ -95,8 +91,55 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
     @Override
     protected void initLocalData() {
+        initFirstAddData();
+        initImageRecyclerViewAndAdapter();
+
         isOriginator = getIntent().getStringExtra("isOriginator");
+        title = "";
+        isEdit = getIntent().getBooleanExtra("isEdit", false);
+        if (isEdit) {//编辑
+            OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
+            if (mQuestionBeanMy != null) {
+                questionId = mQuestionBeanMy.getId();
+                handleEditOtherData(mQuestionBeanMy);
+                handleEditImageData(mQuestionBeanMy);
+            }
+        }
     }
+
+    private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
+        et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
+        et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+        tv_remains_text.setText(String.format("%s/2000", StringUtil.getEditText(et_content).length()));
+        String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
+        if (TextUtils.equals(is_anonymous, "1")) {
+            tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
+            llTag.setTag("1");
+        } else {
+            tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
+            llTag.setTag("0");
+        }
+    }
+
+    private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
+        String images = mQuestionBeanMy.getImages();
+        if (!StringUtil.isBlank(images)) {
+            List<String> tempStringUrlList = StringUtil.stringToList(images);
+            List<UploadPictureBean> urlList = new ArrayList<>();
+            for (String imageUrl : tempStringUrlList) {
+                UploadPictureBean obj = new UploadPictureBean();
+                obj.setImageUrl(imageUrl);
+                obj.setType(0);
+                urlList.add(obj);
+            }
+
+            imageStringList.addAll(tempStringUrlList);
+            showImageListImages(urlList);
+        }
+    }
+
 
     @Override
     protected int getLayoutId() {
@@ -105,9 +148,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
     @Override
     protected void initView() {
-        initFirstAddData();
-        initImageRecyclerViewAndAdapter();
-        title = "";
+
+        apply();
     }
 
 
@@ -204,17 +246,17 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
         if (!StringUtil.isBlank(mTitle) || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
-                mDialog = new TwoButtonDialogBlue(this, "返回将丢失填写的内容，确定返回吗？", "取消", "确定",
+                mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
 
                             @Override
                             public void onClickRight() {
-                                finish();
+                                createOrEditSaveQuestion("1");
                             }
 
                             @Override
                             public void onClickLeft() {
-
+                                finish();
                             }
                         });
             }
@@ -247,20 +289,25 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("title", mTitle);
         baseMap.put("content", mContent);
-        baseMap.put("images", images);
         baseMap.put("isAnonymous", (String) llTag.getTag());
-        HttpSender sender = new HttpSender(HttpUrl.User_Post_Article, "创作者发表文章", baseMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json, int status, String description, String data) {
-                        if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            if ("0".equals(optype)) {
-                                EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_TOPIC));
-                                showToastDialog("发布成功！");
-                            }
-                        }
+        baseMap.put("images", images);
+        baseMap.put("draft", optype);
+        if (isEdit) {//编辑
+            baseMap.put("id", questionId);
+        }
+        HttpSender sender = new HttpSender(HttpUrl.User_Post_Article, "创作者发表文章", baseMap, new MyOnHttpResListener() {
+            @Override
+            public void onComplete(String json, int status, String description, String data) {
+                if (status == Constants.REQUEST_SUCCESS_CODE) {
+                    if (TextUtils.equals(optype, "0")) {
+//                        EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_TOPIC));
+                        showToastDialog("发布成功！");
+                    } else if (TextUtils.equals(optype, "1")) {
+                        showToastDialog("已保存至草稿箱！");
                     }
-                }, true);
+                }
+            }
+        }, true);
         sender.setContext(mActivity);
         sender.sendPost();
     }
@@ -344,6 +391,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
+                            T.s(data, 3000);
                             finish();
                         }
                     }
@@ -357,17 +405,36 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_next:
-                if (TextUtils.equals(isOriginator, "1")) {
-                    getPramsValue();
-                    if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-                        T.ss("标题、内容、图片必须填写一项");
-                        return;
-                    }
-                    createOrEditSaveQuestion("0");
-                } else {
-                    applyCrate();
+                getPramsValue();
+                if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
+                    T.ss("标题、内容、图片必须填写一项");
+                    return;
                 }
+                createOrEditSaveQuestion("0");
                 break;
         }
     }
+
+    /**
+     * 申请创作者
+     */
+    private void apply() {
+        if (TextUtils.equals(isOriginator, "0")) {
+            new TwoButtonDialogBlue(mActivity, "创作发布需要申请开通创作人权限是否现在去申请？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+                @Override
+                public void onClickRight() {
+                    if (TextUtils.equals(isOriginator, "0")) {
+                        applyCrate();
+                    }
+                }
+
+                @Override
+                public void onClickLeft() {
+                    finish();
+                }
+            }).show();
+        }
+    }
+
+
 }

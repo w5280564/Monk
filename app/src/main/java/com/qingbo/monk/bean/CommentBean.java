@@ -35,4 +35,9 @@ public class CommentBean {
         private String likedNum;
         @SerializedName("liked_status")
         private Integer likedStatus;
+        @SerializedName("edit")
+        private String edit;
+        @SerializedName("del")
+        private String del;
+
 }

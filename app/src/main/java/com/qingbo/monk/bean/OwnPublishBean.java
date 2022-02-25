@@ -21,6 +21,8 @@ public class OwnPublishBean implements Serializable {
     private String articleId;
     @SerializedName("shequn_id")
     private String shequnId;
+    @SerializedName("topic_id")
+    private String topic_id;
     @SerializedName("title")
     private String title;
     @SerializedName("content")
@@ -62,7 +64,7 @@ public class OwnPublishBean implements Serializable {
 
     @NoArgsConstructor
     @Data
-    public static class DetailDTO implements Serializable{
+    public static class DetailDTO implements Serializable {
 
         @SerializedName("answer_content")
         private String answerContent;

@@ -36,10 +36,15 @@ public class ArticleCommentBean implements Serializable {
     private String likedNum;
     @SerializedName("liked_status")
     private Integer likedStatus;
+    @SerializedName("edit")
+    private String edit;
+    @SerializedName("del")
+    private String del;
+
 
     @NoArgsConstructor
     @Data
-    public static class ChildrensDTO implements Serializable{
+    public static class ChildrensDTO implements Serializable {
         @SerializedName("parent_id")
         private String parentId;
         @SerializedName("comment_id")
@@ -58,5 +63,10 @@ public class ArticleCommentBean implements Serializable {
         private String auditStatus;
         @SerializedName("create_time")
         private String createTime;
+        @SerializedName("edit")
+        private String edit;
+        @SerializedName("del")
+        private String del;
+
     }
 }

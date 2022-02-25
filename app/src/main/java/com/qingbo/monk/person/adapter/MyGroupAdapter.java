@@ -49,11 +49,11 @@ public class MyGroupAdapter extends BaseQuickAdapter<MyCardGroup_Bean, BaseViewH
         if (isMe){
             ImageView groupUser_Img = helper.getView(R.id.groupUser_Img);
             String id = PrefUtil.getUser().getId();
-            if (TextUtils.equals(id,item.getUserId())){
-                groupUser_Img.setVisibility(View.VISIBLE);
-            }else {
-                groupUser_Img.setVisibility(View.GONE);
-            }
+//            if (TextUtils.equals(id,item.getUserId())){
+//                groupUser_Img.setVisibility(View.VISIBLE);
+//            }else {
+//                groupUser_Img.setVisibility(View.GONE);
+//            }
             tv_join.setVisibility(View.VISIBLE);
         }else {
             tv_join.setVisibility(View.GONE);

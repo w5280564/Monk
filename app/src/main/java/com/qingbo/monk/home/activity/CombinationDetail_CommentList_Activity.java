@@ -235,7 +235,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
 //            authorId = commentItem.getAuthorId();
 //            authorName1 = commentItem.getAuthorName();
 //        } else {
-        CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();
+        CommentBean commentData = commentListBean.getCommentData();
         commentID = commentData.getId();
         authorId = commentData.getAuthorId();
         authorName1 = commentData.getAuthorName();
@@ -260,7 +260,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         head_Img.setOnClickListener(this);
         mAdapter.addHeaderView(myView);
         if (commentListBean != null) {
-            CommentListBean.CommentDataDTO commentData = commentListBean.getCommentData();
+            CommentBean commentData = commentListBean.getCommentData();
             String is_anonymous = commentData.getIsAnonymous();//1是匿名
             if (TextUtils.equals(is_anonymous, "1")) {
                 nickName_Tv.setText("匿名用户");

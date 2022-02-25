@@ -240,6 +240,8 @@ public class HttpUrl {
     public static final String Search_Topic = "search/search/topic";//搜索专栏
     public static final String Search_Group = "search/search/group";//搜索圈子
     public static final String User_AwayOver = "user/user/away-over";//注销账户
+    public static final String Comment_Edit = "comment/comment/comment-edit";//修改评论
+    public static final String Comment_Del = "comment/comment/comment-del";//删除评论
 
 }
 

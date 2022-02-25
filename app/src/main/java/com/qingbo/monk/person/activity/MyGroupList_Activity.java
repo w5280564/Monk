@@ -3,8 +3,11 @@ package com.qingbo.monk.person.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +46,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
     private String userID;
+    String type;
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyGroupList_Activity.class);
@@ -66,19 +70,32 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void onRefreshData() {
         page = 1;
-        getMyGroup();
+        getMyGroup(type);
     }
 
     @Override
     protected void onLoadMoreData() {
         page++;
-        getMyGroup();
+        getMyGroup(type);
     }
 
 
     @Override
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
+    }
+
+    @Override
+    protected void getServerData() {
+        if (isMe()) {
+            getMyGroupHead("1");
+            type = "2";
+            getMyGroup(type);
+        } else {
+            type = "3";
+            getMyGroup(type);
+        }
+
     }
 
 
@@ -105,8 +122,42 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new MyGroupAdapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
-
+        addHeadView();
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (isMe()) {
+                    MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
+                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+                }
+            }
+        });
+    }
+    MyGroupAdapter myGroupAdapter;
+
+    /**
+     * 列表第一列改为我创建的群
+     */
+    private void addHeadView() {
+        View myView = LayoutInflater.from(this).inflate(R.layout.mygrouplist_top, null);
+        ConstraintLayout top_Con = myView.findViewById(R.id.top_Con);
+        TextView group_Tv = myView.findViewById(R.id.group_Tv);
+
+        if (isMe()){
+            top_Con.setVisibility(View.VISIBLE);
+            group_Tv.setText("我加入的社群");
+        }else {
+            group_Tv.setText("他创建的社群");
+        }
+        RecyclerView top_mRecyclerView = myView.findViewById(R.id.top_mRecyclerView);
+        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
+        mMangaer.setOrientation(RecyclerView.VERTICAL);
+        top_mRecyclerView.setLayoutManager(mMangaer);
+        myGroupAdapter = new MyGroupAdapter(isMe());
+        top_mRecyclerView.setAdapter(myGroupAdapter);
+        mAdapter.addHeaderView(myView);
+
+        myGroupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (isMe()) {
@@ -118,16 +169,36 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     }
 
 
-    @Override
-    protected void getServerData() {
-        getMyGroup();
-    }
-
-    private void getMyGroup() {
+    //我创建的群
+    private void getMyGroupHead(String type) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
         requestMap.put("userid", userID);
+        requestMap.put("type", type);
+        HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            myGroupAdapter.addData(myGroupList_bean.getList());
+//                            handleSplitListData(myGroupList_bean, myGroupAdapter, limit);
+                        }
+                    }
+
+                }, false);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+    private void getMyGroup(String type) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
+        requestMap.put("userid", userID);
+        requestMap.put("type", type);
         HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -138,6 +209,9 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             handleSplitListData(myGroupList_bean, mAdapter, limit);
+//                            if (page == 1) {
+//                                getMyGroupHead("1");
+//                            }
                         }
                     }
 

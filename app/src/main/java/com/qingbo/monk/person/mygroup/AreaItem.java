@@ -15,6 +15,7 @@ import com.qingbo.monk.bean.MyTestHis_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +43,9 @@ public class AreaItem extends TreeItem<MyTestHis_Bean.DataDTO.ListDTO> {
         GlideUtils.loadCircleImage(holder.itemView.getContext(), head_Img,data.getAvatar());
         if (!TextUtils.isEmpty(data.getImages())) {
             List<String> strings = Arrays.asList(data.getImages().split(","));
+            if (!ListUtils.isEmpty(strings)){
             GlideUtils.loadRoundImage(holder.itemView.getContext(), art_Img, strings.get(0),9);
+            }
         }else {
             art_Img.setImageResource(R.mipmap.img_pic_none_square);
         }

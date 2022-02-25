@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -27,16 +29,17 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -91,7 +94,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
             submitRequestUrl = HttpUrl.editQuestion;
             OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy!=null) {
-                questionId = mQuestionBeanMy.getId();
+                questionId = mQuestionBeanMy.getTopic_id();
                 handleEditOtherData(mQuestionBeanMy);
                 handleEditImageData(mQuestionBeanMy);
             }
@@ -289,10 +292,8 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
             baseMap.put("action", "3");
             baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }
-
         HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题或提问，或保存至草稿", baseMap,
                 new MyOnHttpResListener() {
-
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
@@ -308,9 +309,6 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         sender.setContext(mActivity);
         sender.sendPost();
     }
-
-
-
 
     /**
      * 点击图片

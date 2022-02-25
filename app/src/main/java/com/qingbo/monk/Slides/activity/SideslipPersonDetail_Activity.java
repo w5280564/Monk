@@ -10,11 +10,9 @@ import androidx.core.content.ContextCompat;
 
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
 import com.qingbo.monk.Slides.fragment.PersonDetail_Fragment;
 import com.qingbo.monk.Slides.fragment.StockOrFund_Question_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 
@@ -25,7 +23,6 @@ import butterknife.BindView;
  */
 public class SideslipPersonDetail_Activity extends BaseTabLayoutActivity {
     private String nickname, id;
-
     @BindView(R.id.sideslip_Con)
     ConstraintLayout sideslip_Con;
     @BindView(R.id.title_bar)

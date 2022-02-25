@@ -140,10 +140,18 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
                 ArticleDetali_CommentList_Activity.startActivity(mContext, data, articleId, type);
             }
         });
+        childrens_adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                onClickLister.onLongClick(view, position, data);
+                return true;
+            }
+        });
+
     }
 
     public interface OnClickLister {
-        void onItemClick(View view, int pos,ArticleCommentBean data);
+        void onLongClick(View view, int pos,ArticleCommentBean data);
     }
 
 
