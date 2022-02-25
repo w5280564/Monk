@@ -268,9 +268,9 @@ public class HttpSender {
 
 
 	private void backError(String failure_message,int failure_code){
+		T.ss(failure_message);
 		if (mListener != null) {
-			mListener.onComplete("", failure_code, failure_message, null);
-			T.ss(failure_message);
+			mListener.onComplete("", failure_code, failure_message, "");
 		}
 	}
 

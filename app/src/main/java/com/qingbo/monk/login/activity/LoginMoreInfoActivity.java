@@ -183,7 +183,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
     }
 
     private void onReturn() {
-        goToMainActivity();
+
     }
 
     /**

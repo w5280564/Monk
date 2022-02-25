@@ -130,20 +130,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         return R.layout.activity_main;
     }
 
-    public static void actionStart(Context context, String openid, int isFromType) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("isFromType", isFromType);
-        intent.putExtra("openid", openid);
-        context.startActivity(intent);
-    }
-
-    public static void actionStart(Context context, int band_wx, int isFromType) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("isFromType", isFromType);
-        intent.putExtra("band_wx", band_wx);
-        context.startActivity(intent);
-    }
-
 
     @Override
     protected void initView(Bundle savedInstanceState) {
@@ -232,62 +218,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         }
     }
 
-    @Override
-    protected void initLocalData() {
-        super.initLocalData();
-        int isFromType = getIntent().getIntExtra("isFromType", 0);//1来自绑定微信  2来自绑定手机号  0从启动页进来
-        if (isFromType == 1) {
-            String openid = getIntent().getStringExtra("openid");
-            if (!StringUtil.isBlank(openid)) {
-                showBindPhoneNumberDialog(openid);
-            }
-        } else if (isFromType == 2) {
-            int band_wx = getIntent().getIntExtra("band_wx", 0);
-            if (band_wx == 0) {
-                showBindWechatDialog();
-            }
-        } else {
-            if (PrefUtil.getUser() != null) {
-                int isBindWechat = PrefUtil.getUser().getBand_wx();
-                if (isBindWechat == 0) {
-                    showBindWechatDialog();
-                }
-            }
-
-        }
-
-    }
-
-
-    private void showBindPhoneNumberDialog(String openid) {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this, "为了您在扫地僧获得更好的用户体验，请绑定手机号。", "退出登录", "去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
-            @Override
-            public void onClickRight() {
-                BindPhoneNumberActivity.actionStart(mActivity, openid);
-            }
-
-            @Override
-            public void onClickLeft() {
-                getQuit();
-            }
-        });
-        mDialog.show();
-    }
-
-    private void showBindWechatDialog() {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this, "为了您在扫地僧获得更好的用户体验，请绑定微信。", "退出登录", "去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
-            @Override
-            public void onClickRight() {
-                wechatThirdLogin();
-            }
-
-            @Override
-            public void onClickLeft() {
-                getQuit();
-            }
-        });
-        mDialog.show();
-    }
 
 
     @Override

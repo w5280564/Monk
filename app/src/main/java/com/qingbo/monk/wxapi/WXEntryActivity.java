@@ -79,7 +79,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler{
 				if(StringUtil.isBlank(interested)) {//首次登陆
 					WelcomeActivity.actionStart(WXEntryActivity.this,"",1);
 				}else{
-					MainActivity.actionStart(WXEntryActivity.this,"",1);
+					Intent intent = new Intent(WXEntryActivity.this, MainActivity.class);
+					startActivity(intent);
 				}
 				EventBus.getDefault().post(new WechatLoginEvent(WechatLoginEvent.WECHAT_Login_RESULT));
 				WXEntryActivity.this.finish();

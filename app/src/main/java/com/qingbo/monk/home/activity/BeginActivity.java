@@ -160,13 +160,15 @@ public class BeginActivity extends FragmentActivity {
         if (mUserBean!=null) {
             String interested = mUserBean.getInterested();
             L.d("interest",PrefUtil.getUser().getInterested());
-            Intent intent = new Intent();
+            int band_wx = mUserBean.getBand_wx();
+
             if(StringUtil.isBlank(interested)) {//首次登陆
-                intent.setClass(this,WelcomeActivity.class);
+                WelcomeActivity.actionStart(this,band_wx,2);
             }else{
-                intent.setClass(this, MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }
-            startActivity(intent);
+
         }
     }
 

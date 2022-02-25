@@ -136,7 +136,7 @@ public class GetPhoneCodeStepTwoActivity extends BaseActivity {
             if(StringUtil.isBlank(interested)) {//首次登陆
                 WelcomeActivity.actionStart(mActivity,band_wx,2);
             }else{
-                MainActivity.actionStart(mActivity,band_wx,2);
+                skipAnotherActivity(MainActivity.class);
             }
         }
 
