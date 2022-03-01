@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -20,7 +21,6 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
@@ -31,7 +31,8 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.CustomLoadMoreView;
+import com.xunda.lib.common.dialog.MyEditPopWindow;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
 
@@ -42,6 +43,9 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
     public String id;
     TabLayout tab;
     private EditText sendComment_Et;
+
+    private boolean haveEditMes = false;
+    private String commentId;
 
     public static CombinationDetail_Comment_Fragment newInstance(String id) {
         Bundle args = new Bundle();
@@ -130,15 +134,63 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 //        mAdapter.setLoadMoreView(new CustomLoadMoreView());
 //        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
-//            @Override
-//            public void onItemClick(View view, int pos, ArticleCommentBean data) {
-//                if (data != null) {
-//                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), data, id);
-//                }
-//
-//            }
-//        });
+        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+                editAndDelMesParent(view, item, position);
+                return false;
+            }
+        });
+
+        ((ArticleComment_Adapter) mAdapter).setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
+            @Override
+            public void onLongClick(View view, int pos, ArticleCommentBean data) {
+                editAndDelMesChildren(view, data, pos);
+            }
+        });
+
+    }
+
+    /**
+     * 编辑删除一级评论
+     *
+     * @param view
+     * @param item
+     * @param pos
+     */
+    private void editAndDelMesParent(View view, ArticleCommentBean item, int pos) {
+        String del = item.getDel();
+        String edit = item.getEdit();
+        boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
+        boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+        if (isAll) {
+            showPopMenu(view, item, pos, true, true);
+        }
+        if (isDel) {
+            showPopMenu(view, item, pos, false, true);
+        }
+    }
+
+
+    /**
+     * 编辑删除子评论
+     *
+     * @param view
+     * @param item
+     * @param pos
+     */
+    private void editAndDelMesChildren(View view, ArticleCommentBean item, int pos) {
+        String del = item.getChildrens().get(pos).getDel();
+        String edit = item.getChildrens().get(pos).getEdit();
+        boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
+        boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+        if (isAll) {
+            showPopMenu(view, item, pos, true, false);
+        }
+        if (isDel) {
+            showPopMenu(view, item, pos, false, false);
+        }
     }
 
 
@@ -165,6 +217,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     if (!my) {
                         ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
                         setHint(item, sendComment_Et);
+                        haveEditMes = false;
                     }
                     break;
                 case R.id.head_Img:
@@ -204,7 +257,12 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     T.s("文章ID是空", 2000);
                     return;
                 }
-                addComment(id, s, item);
+
+                if (haveEditMes) {
+                    editMesData(commentId, s);
+                } else {
+                    addComment(id, s, item);
+                }
                 break;
         }
     }
@@ -276,6 +334,121 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
             follow_Count.setText(nowLike + "");
         }
     }
+
+    /**
+     * 编辑删除弹窗
+     *
+     * @param more_Img
+     * @param data
+     * @param position
+     * @param haveEdit
+     * @param parentOrChildren true是一级评论 false 是子评论
+     */
+    private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveEdit, boolean parentOrChildren) {
+        MyEditPopWindow morePopWindow = new MyEditPopWindow(mActivity, haveEdit, new MyEditPopWindow.OnPopWindowClickListener() {
+            @Override
+            public void onClickEdit() {
+                editMes(data, position, parentOrChildren);
+            }
+
+            @Override
+            public void onClickDelete() {
+                String id = "";
+                if (parentOrChildren) {
+                    id =  data.getId();
+                }else {
+                    id = data.getChildrens().get(position).getCommentId();
+                }
+                showDeleteDialog(id, position);
+            }
+
+        });
+        morePopWindow.showPopupWindow(more_Img);
+    }
+
+
+    private void showDeleteDialog(String commentId, int position) {
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(mActivity, "确定删除此评论？", "取消", "确定",
+                new TwoButtonDialogBlue.ConfirmListener() {
+                    @Override
+                    public void onClickRight() {
+                        delMesData(commentId);
+                    }
+
+                    @Override
+                    public void onClickLeft() {
+
+                    }
+                });
+
+        mDialog.show();
+    }
+
+
+    private void editMes(ArticleCommentBean data, int pos, boolean parentOrChildren) {
+        ((CombinationDetail_Activity) requireActivity()).showInput(sendComment_Et, true);//弹出键盘
+        String id = "";
+        String comment;
+        int length;
+        if (parentOrChildren) {
+            id = data.getId();
+            comment = data.getComment();
+        } else {
+            id = data.getChildrens().get(pos).getCommentId();
+            comment = data.getChildrens().get(pos).getComment();
+        }
+        length = comment.length();
+        sendComment_Et.setText(comment);
+        sendComment_Et.setSelection(length);
+        haveEditMes = true;
+        commentId = id;
+    }
+
+    /**
+     * 修改评论
+     *
+     * @param id
+     * @param content
+     */
+    private void editMesData(String id, String content) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id + "");
+        requestMap.put("content", content);
+        HttpSender httpSender = new HttpSender(HttpUrl.Comment_Edit, "文章—修改评论", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    sendComment_Et.setText("");
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 删除评论
+     * @param id
+     */
+    private void delMesData(String id) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", id + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Comment_Del, "文章—删除评论", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    loadData();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
 
 
 }

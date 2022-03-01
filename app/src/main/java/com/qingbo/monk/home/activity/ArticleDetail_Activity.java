@@ -2,16 +2,6 @@ package com.qingbo.monk.home.activity;
 
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -27,20 +17,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
@@ -51,7 +52,6 @@ import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
-import com.xunda.lib.common.common.http.H5Url;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -284,8 +284,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 }
                 break;
             case R.id.person_Img:
-                String authorId4 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
-                MyAndOther_Card.actionStart(mActivity, authorId4, isExpert);
+//                String authorId4 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
+//                MyAndOther_Card.actionStart(mActivity, authorId4, isExpert);
+                HomeFoucsDetail_Bean.DataDTO.DetailDTO item =  homeFoucsDetail_bean.getData().getDetail();
+                startPerson(item);
                 break;
             case R.id.send_Mes:
                 String authorId3 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
@@ -301,6 +303,22 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 }
                 break;
 
+        }
+    }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(HomeFoucsDetail_Bean.DataDTO.DetailDTO item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getAuthorName();
+            String id = item.getAuthorId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getAuthorId();
+            MyAndOther_Card.actionStart(mActivity, id, isExpert);
         }
     }
 

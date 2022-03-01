@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.qingbo.monk.Slides.adapter.Character_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.CharacterList_Bean;
 import com.qingbo.monk.bean.Character_Bean;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -129,9 +131,7 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Character_Bean item = (Character_Bean) adapter.getItem(position);
-                String nickname = item.getNickname();
-                String id = item.getId();
-                SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+                startPerson(item);
             }
         });
 
@@ -144,12 +144,29 @@ public class SideslipPersonList_Activity extends BaseRecyclerViewSplitActivity {
                 }
                 switch (view.getId()){
                     case R.id.head_Img:
-                        MyAndOther_Card.actionStart(mActivity, item.getId());
+                        startPerson(item);
                         break;
                 }
             }
         });
     }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(Character_Bean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getNickname();
+            String id = item.getId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
+    }
+
 
     private class query_EditChangeListener implements TextWatcher {
         @Override

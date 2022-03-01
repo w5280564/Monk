@@ -61,6 +61,9 @@ public class OwnPublishBean implements Serializable {
     private List<DetailDTO> detail;
     @SerializedName("isCheck")
     private boolean isCheck;
+    @SerializedName("data_source")
+    private String data_source;
+
 
     @NoArgsConstructor
     @Data

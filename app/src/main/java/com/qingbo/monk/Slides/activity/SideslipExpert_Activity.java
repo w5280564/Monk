@@ -1,5 +1,6 @@
 package com.qingbo.monk.Slides.activity;
 
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -107,7 +108,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
                 switch (view.getId()){
                     case R.id.group_Img:
                         HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-                        MyAndOther_Card.actionStart(mActivity, item.getAuthorId(),true);
+                        startPerson(item);
                         break;
                 }
             }
@@ -120,6 +121,23 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
             }
         });
     }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(HomeFllowBean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getAuthorName();
+            String id = item.getAuthorId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getAuthorId();
+            MyAndOther_Card.actionStart(mActivity, id,true);
+        }
+    }
+
 
 
 }

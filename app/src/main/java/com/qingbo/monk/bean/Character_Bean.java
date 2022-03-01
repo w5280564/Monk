@@ -24,4 +24,7 @@ public class Character_Bean {
     private String companyName;
     @SerializedName("tag_name")
     private String tag_name;
+    @SerializedName("data_source")
+    private String data_source;
+
 }

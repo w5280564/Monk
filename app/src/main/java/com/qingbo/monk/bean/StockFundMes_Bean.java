@@ -31,4 +31,7 @@ public class StockFundMes_Bean {
     private String likecount;
     @SerializedName("commentcount")
     private String commentcount;
+    @SerializedName("data_source")
+    private String data_source;
+
 }

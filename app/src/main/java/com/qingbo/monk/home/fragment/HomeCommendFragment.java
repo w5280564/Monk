@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -170,23 +171,32 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         });
     }
 
+
     //推荐各种类型跳转页面
     private void jumpPage(HomeFllowBean item) {
-        String isAnonymous = item.getIsAnonymous();//1是匿名
-        if (TextUtils.equals(isAnonymous, "1")) {
-            return;
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getAuthorName();
+            String id = item.getAuthorId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        } else {
+            String isAnonymous = item.getIsAnonymous();//1是匿名
+            if (TextUtils.equals(isAnonymous, "1")) {
+                return;
+            }
+            String action = item.getAction(); //1是社群 2是兴趣组 3是个人
+            if (TextUtils.equals(action, "1")) {
+                String shequnId = item.getShequnId();
+                GroupDetailActivity.actionStart(mActivity, shequnId);
+            } else if (TextUtils.equals(action, "2")) {
+                String groupId = item.getGroupId();
+                InterestDetail_Activity.startActivity(requireActivity(), "0", groupId);
+            } else if (TextUtils.equals(action, "3")) {
+                String authorId = item.getAuthorId();
+                MyAndOther_Card.actionStart(mActivity, authorId);
+            }
         }
-        String action = item.getAction(); //1是社群 2是兴趣组 3是个人
-        if (TextUtils.equals(action, "1")) {
-            String shequnId = item.getShequnId();
-            GroupDetailActivity.actionStart(mActivity, shequnId);
-        } else if (TextUtils.equals(action, "2")) {
-            String groupId = item.getGroupId();
-            InterestDetail_Activity.startActivity(requireActivity(), "0", groupId);
-        } else if (TextUtils.equals(action, "3")) {
-            String authorId = item.getAuthorId();
-            MyAndOther_Card.actionStart(mActivity, authorId);
-        }
+
     }
 
 

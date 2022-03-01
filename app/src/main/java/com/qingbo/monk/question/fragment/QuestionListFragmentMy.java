@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
 import com.xunda.lib.common.common.Constants;
@@ -136,6 +139,9 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                         String type = mQuestionBean.getTopicType();
                         ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1",type);
                         break;
+                    case R.id.group_Img:
+                        startPerson(mQuestionBean);
+                        break;
                 }
             }
         });
@@ -148,6 +154,23 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
             }
         });
     }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(OwnPublishBean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getNickname();
+            String id = item.getAuthorId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getAuthorId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
+    }
+
 
 
     private void showPopMenu(ImageView more_Img,OwnPublishBean mQuestionBean,int position){

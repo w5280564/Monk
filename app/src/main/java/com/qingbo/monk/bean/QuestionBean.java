@@ -42,4 +42,7 @@ public class QuestionBean {
         private String isHot;
         @SerializedName("type")
         private String type;
+        @SerializedName("data_source")
+        private String data_source;
+
 }

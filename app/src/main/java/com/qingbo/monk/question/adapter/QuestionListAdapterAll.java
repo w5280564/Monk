@@ -118,6 +118,7 @@ public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseV
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.send_Mes);
+        helper.addOnClickListener(R.id.group_Img);
     }
 
     /**

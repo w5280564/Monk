@@ -98,7 +98,7 @@
                     app:layout_constraintTop_toBottomOf="@id/view_white"/>
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/listName_Tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_12"
@@ -118,9 +118,9 @@
                     android:textColor="@color/text_color_1F8FE5"
                     android:textSize="12sp"
                     android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView"
+                    app:layout_constraintBottom_toBottomOf="@+id/listName_Tv"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView" />
+                    app:layout_constraintTop_toTopOf="@+id/listName_Tv" />
 
                 <ImageView
                     android:id="@+id/change_Img"

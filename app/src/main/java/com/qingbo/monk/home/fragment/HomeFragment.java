@@ -37,6 +37,8 @@ import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.ArticleLikedBean;
+import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.HomeAllCount_Bean;
 import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.bean.InterestBean;
@@ -45,6 +47,9 @@ import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.home.adapter.HomeInterest_Adapter;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -52,6 +57,7 @@ import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
@@ -82,11 +88,14 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     TextView manCount_Tv;
     @BindView(R.id.seek_Tv)
     TextView seek_Tv;
+    @BindView(R.id.listName_Tv)
+    TextView listName_Tv;
 
     private RecyclerView mRecyclerView;
     private HomeInterest_Adapter mAdapter;
     int page = 1;
     int limit = 10;
+    private MyFollow_Adapter mAdapterFollow;
 
     @Override
     protected int getLayoutId() {
@@ -99,8 +108,13 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
 //        super.initView(mRootView);
         initTab();
         mRecyclerView = mRootView.findViewById(R.id.interest_recycler);
-        initRecyclerView();
-        addMore();
+        if (card_Tab.getSelectedTabPosition() == 0) {
+            initFollowRecyclerView();
+            followAddMore();
+        } else {
+            initRecyclerView();
+            addMore();
+        }
 //        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
@@ -116,7 +130,11 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
 //        getInterestLab(false);
+        if (card_Tab.getSelectedTabPosition() == 0) {
+            getExpertList(false);
+        } else {
         getListData(false);
+        }
         getAllUpdateCount(false);
         ((MainActivity) requireActivity()).changeUser();
     }
@@ -131,6 +149,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
      *
      * @param isShow
      */
+    InterestList_Bean interestList_bean;
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -139,7 +158,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-                InterestList_Bean interestList_bean = new Gson().fromJson(json_data, InterestList_Bean.class);
+                 interestList_bean = new Gson().fromJson(json_data, InterestList_Bean.class);
                 if (interestList_bean != null) {
                     handleSplitListData(interestList_bean, mAdapter, limit);
                 }
@@ -147,6 +166,34 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    /**
+     * 我的关注
+     *
+     * @param isShowAnimal
+     */
+    ArticleLikedListBean articleLikedListBean;
+    private void getExpertList(boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
+        HttpSender sender = new HttpSender(HttpUrl.User_Follow_List, "关注列表", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                             articleLikedListBean = GsonUtil.getInstance().json2Bean(json_data, ArticleLikedListBean.class);
+                            if (articleLikedListBean != null) {
+                                handleSplitListData(articleLikedListBean, mAdapterFollow, limit);
+                            }
+                        }
+                    }
+
+                }, isShowAnimal);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
     }
 
 
@@ -193,6 +240,9 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         }
     }
 
+    /**
+     * 我的兴趣组
+     */
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.HORIZONTAL);
@@ -202,7 +252,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         mAdapter = new HomeInterest_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         //  使用加载更多
-
         mAdapter.setEnableLoadMore(true);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -227,7 +276,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
                 }
             }
         });
-
     }
 
     private void addMore() {
@@ -240,6 +288,55 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             }
         });
     }
+
+
+    /**
+     * 关注列表
+     */
+    private void initFollowRecyclerView() {
+        mAdapterFollow = new MyFollow_Adapter();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapterFollow);
+        mAdapterFollow.setOnItemClickListener((adapter, view, position) -> {
+            ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
+            if (item == null) {
+                return;
+            }
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        });
+
+        mAdapterFollow.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
+                switch (view.getId()) {
+                    case R.id.follow_Tv:
+                        String likeId = item.getId();
+//                        postFollowData(likeId, position);
+                        break;
+                    case R.id.send_Mes:
+                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
+                        break;
+                }
+            }
+        });
+    }
+
+    private void followAddMore() {
+        //加载更多
+        mAdapterFollow.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                page += 1;
+                getListData(false);
+            }
+        });
+    }
+
+
 
 
     private List<Object> tabFragmentList = new ArrayList<>();
@@ -269,7 +366,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         tabFragmentList.add(HomeInsider_Fragment.newInstance("1"));
         tabFragmentList.add(HomeCombination_Fragment.newInstance(titleType));
 
-        card_ViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        card_ViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -291,6 +388,37 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         //设置TabLayout和ViewPager联动
         card_Tab.setupWithViewPager(card_ViewPager);
         changePager(1);
+        card_Tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                if (position == 0) {
+                    listName_Tv.setText("我的关注");
+                    initFollowRecyclerView();
+                    followAddMore();
+                    page = 1;
+                    getExpertList(false);
+//                    handleSplitListData(articleLikedListBean, mAdapterFollow, limit);
+                } else {
+                    listName_Tv.setText("我的兴趣组");
+                    initRecyclerView();
+                    addMore();
+                    page = 1;
+                    handleSplitListData(interestList_bean, mAdapter, limit);
+//                    getListData(false);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 

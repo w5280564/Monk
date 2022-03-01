@@ -301,14 +301,13 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             mes_Count.setText(commentListBean.getCount() + "");
             isLike(commentData.getLikedStatus(), commentData.getLikedNum(), topFollow_Img, topFollow_Count);
         }
-        myView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-//                editAndDelMesHead(v, commentListBean.getCommentData(), 0);
-                editAndDelMesParent(v, commentListBean.getCommentData());
-                return false;
-            }
-        });
+//        myView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                editAndDelMesParent(v, commentListBean.getCommentData());
+//                return false;
+//            }
+//        });
     }
 
 

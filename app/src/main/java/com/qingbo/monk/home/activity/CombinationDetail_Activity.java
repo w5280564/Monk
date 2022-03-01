@@ -106,8 +106,6 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     LineChart chart;
     @BindView(R.id.label_Name)
     TextView label_Name;
-
-
     private String isShowTop;
     boolean isReply = false;
     private String id;

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
@@ -23,6 +24,7 @@ import com.qingbo.monk.bean.StockFundMes_Bean;
 import com.qingbo.monk.bean.StockFundMes_ListBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.StockFund_Mess_Adapter;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -150,6 +152,10 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
                         String likeId = stockFundMes_listBean.getList().get(position).getId();
                         postLikedData(likeId, position);
                         break;
+                    case R.id.group_Img:
+                        StockFundMes_Bean item = (StockFundMes_Bean) adapter.getItem(position);
+                        startPerson(item);
+                        break;
                 }
             }
         });
@@ -161,6 +167,24 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
             }
         });
     }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(StockFundMes_Bean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getAuthor();
+            String id = item.getId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
+    }
+
 
 
 

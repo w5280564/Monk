@@ -13,14 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.QuestionBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.qingbo.monk.question.adapter.QuestionListAdapterAll;
 import com.xunda.lib.common.common.Constants;
@@ -130,6 +133,9 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, mQuestionBean.getAuthorId(), mQuestionBean.getNickname(), mQuestionBean.getAvatar());
                         break;
+                    case R.id.group_Img:
+                        startPerson(mQuestionBean);
+                        break;
                 }
             }
         });
@@ -141,6 +147,22 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+    }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(QuestionBean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getNickname();
+            String id = item.getAuthorId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getAuthorId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
     }
 
 

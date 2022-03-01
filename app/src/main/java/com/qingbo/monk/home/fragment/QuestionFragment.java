@@ -25,10 +25,6 @@ public class QuestionFragment extends BaseTabLayoutFragment {
         initMenuData();
     }
 
-
-
-
-
     private void initMenuData() {
         for (int i = 0; i < 2; i++) {
             AppMenuBean bean = new AppMenuBean();
