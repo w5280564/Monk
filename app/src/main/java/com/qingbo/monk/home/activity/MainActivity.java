@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -121,7 +122,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @BindView(R.id.set_MyView)
     MyArrowItemView set_MyView;
 
-    private long clickTime;
     private TextView tv_unread_msg_number;
     private HomeFragment homeFragment;
 
@@ -221,13 +221,12 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
 
     @Override
-    public void onBackPressed() {
-        if ((System.currentTimeMillis() - clickTime) > 2000) {
-            T.ss(getString(R.string.Home_press_again));
-            clickTime = System.currentTimeMillis();
-        } else {
-            closeApp();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
         }
+        return super.onKeyDown(keyCode, event);
     }
 
     @SuppressLint("ResourceType")
