@@ -41,7 +41,7 @@ public class BaseApplication extends MultiDexApplication {
         return instance;
     }
 
-    public Context getContext() {
+    public Context getContext()  {
         return instance.getApplicationContext();
     }
 

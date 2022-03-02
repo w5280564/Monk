@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
@@ -97,7 +99,6 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
                     }
 
                 }, isShowAnimal);
-
         sender.setContext(mActivity);
         sender.sendGet();
     }
@@ -112,8 +113,7 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
             if (item==null) {
                 return;
             }
-            String id = item.getId();
-            MyAndOther_Card.actionStart(mActivity, id);
+            startPerson(item);
         });
 
         mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
@@ -132,6 +132,23 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
             }
         });
     }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(ArticleLikedBean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getNickname();
+            String id = item.getId();
+            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
+    }
+
 
     private void postFollowData(String otherUserId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();

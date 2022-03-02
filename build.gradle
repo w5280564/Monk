@@ -9,7 +9,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:4.2.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'//必不可少
         classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
     }

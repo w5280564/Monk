@@ -38,5 +38,7 @@ public class ArticleLikedBean {
     private String fansNum;
     @SerializedName("follower_num")
     private String followerNum;
+    @SerializedName("data_source")
+    private String data_source;
 
 }

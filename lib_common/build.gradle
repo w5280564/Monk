@@ -82,7 +82,6 @@ dependencies {
 
     api 'androidx.appcompat:appcompat:1.0.1'
 
-    api 'androidx.multidex:multidex:2.0.0'
 
     //扫码
 //    api 'cn.bingoogolapple:bga-qrcode-zbar:1.2.5'
