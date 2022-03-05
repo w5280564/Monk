@@ -11,6 +11,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/group_Recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -10,11 +10,9 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Expert_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
-import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -131,7 +129,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
         if (TextUtils.equals(data_source, "1")) {
             String nickname = item.getAuthorName();
             String id = item.getAuthorId();
-            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         }else {
             String id = item.getAuthorId();
             MyAndOther_Card.actionStart(mActivity, id,true);

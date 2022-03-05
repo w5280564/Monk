@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -30,12 +31,17 @@ public class Combination_Shares_Adapter extends BaseQuickAdapter<HomeCombination
         String format = String.format("%1$s%2$s", item.getNumber(), item.getName());
         shareName_Tv.setText(format);
 //        String format1 = String.format("%1$s手%2$s", item.getNum(), item.getPosition());
-        String s = item.getNum() + "手";
-        String s1 = "（" + item.getPosition() + "%）";
-        String s2 = s + s1;
-        int length = s2.length();
-        int startLength = length - s1.length();
-        setName(s2,length,startLength,length,proportion_Tv);
+
+//        String s = item.getNum() + "手";
+//        String s1 = "（" + item.getPosition() + "%）";
+//        String s2 = s + s1;
+//        int length = s2.length();
+//        int startLength = length - s1.length();
+//        setName(s2,length,startLength,length,proportion_Tv);
+
+        proportion_Tv.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_1F8FE5));
+        String s = item.getPosition() + "%";
+        proportion_Tv.setText(s);
 
     }
 

@@ -8,17 +8,12 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.bean.MogulTagListBean;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
-import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
-import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -28,7 +23,7 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import java.util.HashMap;
 
 /**
- * 侧边栏 大佬列表
+ * 侧边栏 大咖列表
  */
 public class SideslipMogul_Activity extends BaseTabLayoutActivity {
     /**

@@ -43,6 +43,8 @@ public class CharacterDetail_Bean {
             private String companyName;
             @SerializedName("tag_name")
             private String tagName;
+            @SerializedName("stock_name")
+            private String stock_name;
             @SerializedName("info")
             private List<InfoDTO> info;
 

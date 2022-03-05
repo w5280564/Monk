@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBean;
@@ -158,7 +159,7 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
         if (TextUtils.equals(data_source, "1")) {
             String nickname = item.getNickname();
             String id = item.getAuthorId();
-            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         }else {
             String id = item.getAuthorId();
             MyAndOther_Card.actionStart(mActivity, id);

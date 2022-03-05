@@ -25,13 +25,13 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_13"
+        android:layout_marginEnd="@dimen/dp_15"
         android:background="@drawable/background_white_shape"
         android:elevation="@dimen/dp_1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginEnd="@dimen/dp_15"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comName_TV"
         tools:layout_editor_absoluteX="15dp">
 
@@ -53,7 +53,7 @@
             android:layout_height="@dimen/dp_29"
             android:background="@drawable/text_topright_shape"
             android:gravity="center"
-            android:text="持仓数（仓位占比）"
+            android:text="仓位占比"
             android:textColor="@color/text_color_6f6f6f"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,17 +67,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/more_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看全部持仓"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        android:drawableEnd="@mipmap/icon_youjiantou"
+        android:drawablePadding="@dimen/dp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/follow_Img"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_19"
         android:background="@mipmap/icon_dainzan"
-        android:layout_marginStart="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/more_Tv" />
 
     <TextView
         android:id="@+id/follow_Count"
@@ -104,10 +120,10 @@
         android:id="@+id/mes_Count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_8"
+        android:maxLines="1"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="12sp"
-        android:maxLines="1"
-        android:layout_marginStart="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="@+id/mes_Img"
         app:layout_constraintStart_toEndOf="@+id/mes_Img"
         app:layout_constraintTop_toTopOf="@+id/mes_Img" />
@@ -115,21 +131,21 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/text_color_CCCCCC"
         android:layout_marginTop="@dimen/dp_16"
+        android:background="@color/text_color_CCCCCC"
         android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/mes_Count"/>
+        app:layout_constraintTop_toBottomOf="@id/mes_Count" />
 
     <TextView
         android:id="@+id/time_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:maxLines="1"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/dp_16"
-        android:layout_marginTop="@dimen/dp_16"
-        android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout"/>
+        app:layout_constraintTop_toBottomOf="@id/more_Tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

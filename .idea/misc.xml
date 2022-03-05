@@ -93,6 +93,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_shares.xml" value="0.30104166666666665" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/mycomment_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/myfollow_adapter.xml" value="0.36614583333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/mygroup_item.xml" value="0.30833333333333335" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/myhistory_adapter.xml" value="0.3307291666666667" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/stockfund_mess_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/wallet_detailed_adapter.xml" value="0.35052083333333334" />
@@ -117,6 +118,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sidesli_follow.xml" value="0.34512820512820513" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_expert.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_insider.xml" value="0.34512820512820513" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_personandfund.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_recommend.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_stock.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/card_itemview.xml" value="0.36614583333333334" />
@@ -212,6 +214,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_quit.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue_with_title.xml" value="0.3296875" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/empty_view_layout.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/item_share.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/layout_dialog_grid.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/layout_tab.xml" value="0.34512820512820513" />
@@ -219,6 +222,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/layout/picker_single_layout.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/popupwindow_layout.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/refresh_recyclerview_layout.xml" value="0.3314814814814815" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/webview_layout.xml" value="0.35052083333333334" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_efefef.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_f5f5f5.xml" value="0.3697916666666667" />
         <entry key="..\:/MonkWorkBase/Monk/app/src/main/res/drawable/background_bg_f5f5f5_9.xml" value="0.3697916666666667" />

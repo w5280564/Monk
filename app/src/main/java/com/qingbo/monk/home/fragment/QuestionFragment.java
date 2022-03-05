@@ -11,8 +11,6 @@ import com.xunda.lib.common.bean.AppMenuBean;
  * 问答
  */
 public class QuestionFragment extends BaseTabLayoutFragment {
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_question;
@@ -40,9 +38,4 @@ public class QuestionFragment extends BaseTabLayoutFragment {
 
         initViewPager(0);
     }
-
-
-
-
-
 }

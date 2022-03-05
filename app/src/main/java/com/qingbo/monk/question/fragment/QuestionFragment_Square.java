@@ -21,14 +21,10 @@ public class QuestionFragment_Square extends BaseFragmentWithSon implements Radi
 
     private int fragmentId = R.id.fl_question_square;
 
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_question_square;
     }
-
-
 
     @Override
     protected void initView() {

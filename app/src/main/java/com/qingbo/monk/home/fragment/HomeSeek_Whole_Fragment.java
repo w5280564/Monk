@@ -29,6 +29,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
@@ -322,7 +323,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             view.setOnClickListener(v -> {
                 String nickname = s.getNickname();
                 String id = s.getId();
-                SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+                SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
             });
         }
     }

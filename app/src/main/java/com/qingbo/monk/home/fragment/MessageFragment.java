@@ -1,30 +1,31 @@
 package com.qingbo.monk.home.fragment;
 
 import android.view.View;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qingbo.monk.HttpSender;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseMessageRecordBean;
-import com.qingbo.monk.bean.MessageRecordBean;
+import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
+import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
+import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
-import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.activity.ContactListActivity;
-import com.qingbo.monk.message.adapter.MessageListAdapter;
-import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.http.MyOnHttpResListener;
-import com.xunda.lib.common.common.utils.GsonUtil;
-import org.greenrobot.eventbus.Subscribe;
-import java.util.HashMap;
+import com.xunda.lib.common.bean.AppMenuBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.OnClick;
 
 /**
  * 会话列表
  */
-public class MessageFragment extends BaseRecyclerViewSplitFragment implements BaseQuickAdapter.OnItemClickListener{
+public class MessageFragment extends BaseTabLayoutFragment{
 
     @Override
     protected int getLayoutId() {
@@ -34,38 +35,12 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
 
     @Override
     protected void initView(View mView) {
-        mRecyclerView = mView.findViewById(R.id.mRecyclerView);
-        mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
-        initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无消息", 0,true);
+        mViewPager = mView.findViewById(R.id.viewpager);
+        mTabLayout = mView.findViewById(R.id.tabs);
+        initMenuData();
+        initTab();
     }
 
-    private void initRecyclerView() {
-        LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
-        mRecyclerView.setLayoutManager(mManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MessageListAdapter();
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    protected void initLocalData() {
-        registerEventBus();
-    }
-
-    @Subscribe
-    public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
-        if(event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE){
-            page = 1;
-            conversationList(false);
-        }
-    }
-
-    @Override
-    protected void initEvent() {
-        mAdapter.setOnItemClickListener(this);
-    }
 
     @OnClick({R.id.seek_Tv, R.id.ll_contact})
     public void onClick(View view) {
@@ -79,68 +54,66 @@ public class MessageFragment extends BaseRecyclerViewSplitFragment implements Ba
         }
     }
 
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        MessageRecordBean mMessageBean = (MessageRecordBean) adapter.getItem(position);
-        if (mMessageBean == null) {
-            return;
+    private void initMenuData() {
+//        if (fragments != null){
+//            fragments.clear();
+//            menuList.clear();
+//        }
+//        for (int i = 0; i < 2; i++) {
+//            AppMenuBean bean = new AppMenuBean();
+//            if (i == 0) {
+//                bean.setName("发现");
+//                fragments.add(SideslipFind_Card_Fragment.newInstance("1"));
+//            } else{
+//                bean.setName("好友消息");
+//                fragments.add(new Message_List_Fragment());
+//            }
+//            menuList.add(bean);
+//        }
+//        initViewPager(0);
+    }
+
+    private List<Object> tabFragmentList = new ArrayList<>();
+    private void initTab() {
+        List<String> tabsList = new ArrayList<>();
+        tabsList.add("发现");
+        tabsList.add("好友消息");
+        mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        mTabLayout.setTabIndicatorFullWidth(false);//下标跟字一样宽
+        mTabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
+        mTabLayout.setTabTextColors(ContextCompat.getColor(mActivity, R.color.text_color_6f6f6f), ContextCompat.getColor(mActivity, R.color.text_color_444444));
+        //添加tab
+        int sizes = tabsList.size();
+        for (int i = 0; i < sizes; i++) {
+            mTabLayout.addTab(mTabLayout.newTab().setText(tabsList.get(i)));
         }
+        tabFragmentList.add(SideslipFind_Card_Fragment.newInstance("1"));
+        tabFragmentList.add(new Message_List_Fragment());
 
-        ChatActivity.actionStart(mActivity,mMessageBean.getId(),mMessageBean.getNickname(),mMessageBean.getAvatar());
+        mViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                return (Fragment) tabFragmentList.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return tabFragmentList.size();
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return tabsList.get(position);
+            }
+        });
+        mViewPager.setOffscreenPageLimit(tabFragmentList.size());
+        //设置TabLayout和ViewPager联动
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
 
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        page = 1;
-        conversationList(false);
-    }
-
-    @Override
-    protected void loadData() {
-        conversationList(true);
-    }
-
-
-    /**
-     * 会话列表
-     */
-    private void conversationList(boolean isShowAnimal) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("page", page + "");
-        requestMap.put("limit", 40 + "");
-        HttpSender sender = new HttpSender(HttpUrl.conversationList, "会话列表", requestMap,
-                new MyOnHttpResListener() {
-                    @Override
-                    public void onComplete(String json_root, int code, String msg, String json_data) {
-                        if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
-                        if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            BaseMessageRecordBean mObj = GsonUtil.getInstance().json2Bean(json_data, BaseMessageRecordBean.class);
-                            handleSplitListData(mObj, mAdapter, 40);
-                        }
-                    }
-
-                }, isShowAnimal);
-        sender.setContext(mActivity);
-        sender.sendGet();
-    }
-
-
-
-    @Override
-    protected void onRefreshData() {
-        page = 1;
-        conversationList(false);
-    }
-
-    @Override
-    protected void onLoadMoreData() {
-        page++;
-        conversationList(false);
-    }
 }

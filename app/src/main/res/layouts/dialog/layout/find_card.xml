@@ -13,8 +13,8 @@
         android:layout_marginTop="@dimen/dp_8"
         android:text="想与这些人对话吗？"
         android:textColor="@color/text_color_444444"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="12sp"
+        android:layout_marginStart="@dimen/dp_41"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,13 +22,13 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_2"
         android:text="互相关注后可进行1对1私信"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        android:layout_marginStart="@dimen/dp_10"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
 
 
     <com.qingbo.monk.Slides.widget.StackCardsView
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/dp_40"
+        android:paddingBottom="@dimen/dp_20"
         app:itemHeight="385dp"
         app:itemWidth="@dimen/dp_280"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -49,7 +49,6 @@
         android:layout_height="@dimen/dp_80"
         android:layout_marginStart="@dimen/dp_85"
         android:background="@mipmap/chacha"
-        android:layout_marginTop="@dimen/dp_32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cards" />
 
@@ -59,7 +58,6 @@
         android:layout_height="@dimen/dp_80"
         android:layout_marginEnd="@dimen/dp_85"
         android:background="@drawable/love_selector"
-        android:layout_marginTop="@dimen/dp_32"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cards" />
 

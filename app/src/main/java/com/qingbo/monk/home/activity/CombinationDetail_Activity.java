@@ -139,6 +139,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     }
 
 
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_combinationdetail;

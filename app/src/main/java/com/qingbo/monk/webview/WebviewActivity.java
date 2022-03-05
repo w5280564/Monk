@@ -1,11 +1,9 @@
 package com.qingbo.monk.webview;
 
-import com.xunda.lib.common.common.Config;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.utils.L;
-import com.xunda.lib.common.common.utils.StringUtil;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseWebviewActivity;
+import com.xunda.lib.common.common.utils.L;
+import com.xunda.lib.common.common.utils.StringUtil;
 
 
 /**

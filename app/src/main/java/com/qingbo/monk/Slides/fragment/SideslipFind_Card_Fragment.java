@@ -4,15 +4,10 @@ import static android.content.ContentValues.TAG;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.qingbo.monk.HttpSender;
@@ -29,8 +24,6 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;

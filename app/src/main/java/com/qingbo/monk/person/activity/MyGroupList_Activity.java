@@ -88,7 +88,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void getServerData() {
         if (isMe()) {
-            getMyGroupHead("1");
+//            getMyGroupHead("1");
             type = "2";
             getMyGroup(type);
         } else {
@@ -110,7 +110,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+//        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
 
@@ -176,7 +176,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         requestMap.put("limit", limit + "");
         requestMap.put("userid", userID);
         requestMap.put("type", type);
-        HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群", requestMap,
+        HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我创建的社群", requestMap,
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -209,9 +209,9 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             handleSplitListData(myGroupList_bean, mAdapter, limit);
-//                            if (page == 1) {
-//                                getMyGroupHead("1");
-//                            }
+                            if (page == 1 && isMe()) {
+                                getMyGroupHead("1");
+                            }
                         }
                     }
 

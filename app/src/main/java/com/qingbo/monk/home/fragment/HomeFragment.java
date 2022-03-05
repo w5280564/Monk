@@ -32,6 +32,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.Slides.adapter.Interest_Adapter;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
@@ -350,7 +351,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         if (TextUtils.equals(data_source, "1")) {
             String nickname = item.getNickname();
             String id = item.getId();
-            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         }else {
             String id = item.getId();
             MyAndOther_Card.actionStart(mActivity, id);

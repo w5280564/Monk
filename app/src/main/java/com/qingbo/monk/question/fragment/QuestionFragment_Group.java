@@ -1,10 +1,12 @@
 package com.qingbo.monk.question.fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +18,9 @@ import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
+import com.qingbo.monk.bean.MyGroupList_Bean;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
+import com.qingbo.monk.person.adapter.MyGroupAdapter;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
@@ -31,10 +35,13 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
+
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -42,15 +49,17 @@ import butterknife.OnClick;
  * 社群问答
  */
 public class QuestionFragment_Group extends BaseLazyFragment {
-
     @BindView(R.id.img_top_banner)
     QuestionGroupBanner img_top_banner;
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+    @BindView(R.id.group_Recycler)
+    RecyclerView group_Recycler;
     @BindView(R.id.ll_top_right)
     LinearLayout ll_top_right;
     private QuestionGroupAdapter mQuestionGroupAdapter;
     private List<MyGroupBean> bannerList = new ArrayList<>();
+    private MyGroupAdapter myGroupAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -58,20 +67,30 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
 
-
     @Override
     protected void initView() {
+        initGroupRecycler();
         initRecyclerView();
         registerEventBus();
     }
 
     @Subscribe
     public void onFinishEvent(FinishEvent event) {
-        if(event.type == FinishEvent.CREATE_GROUP){
+        if (event.type == FinishEvent.CREATE_GROUP) {
             getMyGroup();
-        }else if(event.type == FinishEvent.JOIN_GROUP||event.type == FinishEvent.EXIT_GROUP){
+        } else if (event.type == FinishEvent.JOIN_GROUP || event.type == FinishEvent.EXIT_GROUP) {
             getAllShequn();
         }
+    }
+
+    /**
+     * 我的社群
+     */
+    private void initGroupRecycler() {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
+        group_Recycler.setLayoutManager(gridLayoutManager);
+        myGroupAdapter = new MyGroupAdapter(true);
+        group_Recycler.setAdapter(myGroupAdapter);
     }
 
     private void initRecyclerView() {
@@ -97,8 +116,8 @@ public class QuestionFragment_Group extends BaseLazyFragment {
             @Override
             public void onItemClick(int position) {
 //                skipAnotherActivity(MyGroupListActivity.class);
-                    String userID = PrefUtil.getUser().getId();
-                    MyGroupList_Activity.actionStart(mActivity, userID);
+                String userID = PrefUtil.getUser().getId();
+                MyGroupList_Activity.actionStart(mActivity, userID);
             }
         });
 
@@ -106,10 +125,10 @@ public class QuestionFragment_Group extends BaseLazyFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 GroupBean mGroupBean = (GroupBean) adapter.getItem(position);
-                if (mGroupBean==null) {
+                if (mGroupBean == null) {
                     return;
                 }
-                CheckOtherGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
+                CheckOtherGroupDetailActivity.actionStart(mActivity, mGroupBean.getId());
             }
         });
     }
@@ -117,6 +136,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     @Override
     protected void loadData() {
         getAllShequn();
+//        getMyGroupHead("1");
     }
 
     private void getAllShequn() {
@@ -144,7 +164,6 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
 
-
     private void getMyGroup() {
         HashMap<String, String> requestMap = new HashMap<>();
         HttpSender sender = new HttpSender(HttpUrl.myGroup, "我的社群", requestMap,
@@ -163,14 +182,9 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
 
-
     private void handleData(String json) {
-        HttpBaseList<MyGroupBean> objList = GsonUtil
-                .getInstance()
-                .json2List(
-                        json,
-                        new TypeToken<HttpBaseList<MyGroupBean>>() {
-                        }.getType());
+        HttpBaseList<MyGroupBean> objList = GsonUtil.getInstance().json2List(json, new TypeToken<HttpBaseList<MyGroupBean>>() {
+        }.getType());
         handleBanner(objList.getData());
     }
 
@@ -186,8 +200,6 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
 
-
-
     @Override
     public void onPause() {
         super.onPause();
@@ -201,7 +213,6 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     }
 
 
-
     @OnClick({R.id.tv_create})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -209,6 +220,29 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                 skipAnotherActivity(CreateGroupStepOneActivity.class);
                 break;
         }
+    }
+
+    //我创建的群
+    private void getMyGroupHead(String type) {
+        String id = PrefUtil.getUser().getId();
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userid", id);
+        requestMap.put("type", type);
+        HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我创建的社群", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            myGroupAdapter.addData(myGroupList_bean.getList());
+//                            handleSplitListData(myGroupList_bean, myGroupAdapter, limit);
+                        }
+                    }
+
+                }, false);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
     }
 
 

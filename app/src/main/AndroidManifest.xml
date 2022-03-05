@@ -66,14 +66,19 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".Slides.activity.SideslipPersonAndFund_Activity"
+            android:exported="false" />
+                <activity
             android:name=".person.activity.Person_system"
             android:exported="false" />
+
         <activity
             android:name=".person.activity.MySet_Cancellation_Activity"
             android:exported="false" />
         <activity
             android:name=".home.activity.HomeSeek_User"
-            android:exported="false" />
+            android:exported="false"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".home.activity.HomeSeek_Activity"
             android:exported="false" />

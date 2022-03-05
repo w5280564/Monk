@@ -36,12 +36,16 @@ import com.qingbo.monk.Slides.adapter.StockCombination_Shares_Adapter;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.bean.CharacterDetail_Bean;
 import com.qingbo.monk.bean.CharacterList_Bean;
+import com.qingbo.monk.bean.FundHaveList_Bean;
 import com.qingbo.monk.bean.StockCombinationListBean;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -50,6 +54,7 @@ import com.xunda.lib.common.view.flowlayout.FlowLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 
@@ -80,6 +85,9 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
     ConstraintLayout stock_Con;
     @BindView(R.id.stockContent_Con)
     ConstraintLayout stockContent_Con;
+    @BindView(R.id.fundName_Tv)
+    TextView fundName_Tv;
+    private String stockCode = "";
 
     /**
      * @param
@@ -115,25 +123,39 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
     protected void initEvent() {
         head_Img.setOnClickListener(this);
         fundTime_Tv.setOnClickListener(this);
+        fundName_Tv.setOnClickListener(this);
     }
 
     @Override
     protected void getServerData() {
+        getFundData();
         getListData(true);
     }
 
-
-
+    FundHaveList_Bean fundHaveList_bean;
+    private void getFundData() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("nickname", nickname);
+        HttpSender httpSender = new HttpSender(HttpUrl.Fund_Have_List, "基金经理-拥有的基金", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                     fundHaveList_bean = GsonUtil.getInstance().json2Bean(json_root, FundHaveList_Bean.class);
+                }
+            }
+        }, false);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
 
     CharacterDetail_Bean.DataDTO.ListDTO listDTO;
     PersomCombination_Shares_Adapter persomCombination_shares_adapter;
-
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-//        requestMap.put("page", "1");
-//        requestMap.put("limit", "1");
-        requestMap.put("nickname", nickname);
-        requestMap.put("id", id);
+        requestMap.put("nickname", nickname);//孙伟
+        requestMap.put("id", id);//868
+        requestMap.put("stock", stockCode);//"513060"
         HttpSender httpSender = new HttpSender(HttpUrl.Fund_Postion, "人物持仓", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -172,6 +194,8 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
                             stockContent_Con.setVisibility(View.GONE);
                             chart.setVisibility(View.VISIBLE);
                         }
+
+                        originalValue(listDTO.getStock_name(), "暂未填写", "", fundName_Tv);
                     }
                 }
             }
@@ -220,6 +244,32 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
             persomCombination_shares_adapter.setNewData(list);
             setData(options1, characterDetail_bean);
 
+        }).build();
+        pvOptions.setPicker(mOptionsItems);
+        pvOptions.show();
+    }
+
+    //选中基金名字 只设置一组数据
+    private void setFundName(FundHaveList_Bean fundHaveList_bean) {
+        if (ListUtils.isEmpty(fundHaveList_bean.getData())) {
+            return;
+        }
+        final List<Map<Object,String>> allMap = new ArrayList<>();
+        final List<String> mOptionsItems = new ArrayList<>();
+        for (FundHaveList_Bean.DataDTO oneData : fundHaveList_bean.getData()) {
+            Map<Object,String> oneMap = new HashMap<>();
+            oneMap.put("name",oneData.getName());
+            oneMap.put("code",oneData.getCode());
+            mOptionsItems.add(oneData.getName());
+            allMap.add(oneMap);
+        }
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(requireActivity(), new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                fundName_Tv.setText(allMap.get(options1).get("name"));
+                stockCode = allMap.get(options1).get("code");
+                getListData(true);
+            }
         }).build();
         pvOptions.setPicker(mOptionsItems);
         pvOptions.show();
@@ -337,6 +387,9 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
             case R.id.head_Img:
                 MyAndOther_Card.actionStart(mActivity, id);
                 break;
+            case R.id.fundName_Tv:
+                setFundName(fundHaveList_bean);
+                break;
         }
     }
 
@@ -350,7 +403,7 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
         if (TextUtils.isEmpty((CharSequence) value)) {
             tv.setText(hint + originalStr);
         } else {
-            tv.setText(hint + (CharSequence) value);
+            tv.setText(hint + value);
         }
     }
 

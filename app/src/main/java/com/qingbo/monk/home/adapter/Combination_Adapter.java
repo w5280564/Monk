@@ -39,13 +39,14 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
         TextView mes_Count = helper.getView(R.id.mes_Count);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
+        TextView more_Tv = helper.getView(R.id.more_Tv);
 
         comName_TV.setText(item.getName());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
         mes_Count.setText(item.getCommentcount());
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
 
-        addRecycleData(mNineView, item);
+        addRecycleData(mNineView, item,more_Tv);
 
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
@@ -66,7 +67,7 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
      * @param mNineView
      * @param item
      */
-    private void addRecycleData(RecyclerView mNineView, HomeCombinationBean item) {
+    private void addRecycleData(RecyclerView mNineView, HomeCombinationBean item,TextView more_Tv) {
         if (mNineView != null){
             mNineView.removeAllViews();
         }
@@ -80,7 +81,8 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
             List<HomeCombinationBean.DetailDTO> detail = item.getDetail();
             List<HomeCombinationBean.DetailDTO> detail1 = new ArrayList<>();
             for (int k = 0; k < detail.size(); k++) {
-                if (k > 2) {
+                if (k > 4) {
+                    more_Tv.setVisibility(View.VISIBLE);
                     continue;
                 }
                 detail1.add(detail.get(k));

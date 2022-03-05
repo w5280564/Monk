@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.ArticleLikedBean;
@@ -125,7 +126,7 @@ public class HomeSeek_Person extends BaseRecyclerViewSplitFragment {
             HomeSeekPerson_Bean item = (HomeSeekPerson_Bean) adapter.getItem(position);
             String nickname = item.getNickname();
             String id = item.getId();
-            SideslipPersonDetail_Activity.startActivity(mActivity, nickname, id, "0");
+            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         });
 
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
