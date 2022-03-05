@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:ignore="MissingConstraints">
 
     <LinearLayout
         android:id="@+id/ll_top"
@@ -45,50 +46,85 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_label"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/system_Con"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_15"
-        android:text="好友消息"
-        android:textColor="@color/text_color_444444"
-        android:textSize="@dimen/sp_15"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_top" />
+        app:layout_constraintTop_toBottomOf="@id/ll_top">
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="@dimen/dp_46"
+            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@mipmap/icon_geren"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-<!--    <include-->
-<!--        layout="@layout/refresh_recyclerview_layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:visibility="gone"-->
-<!--        android:layout_height="@dimen/dp_0"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_label"-->
-<!--        app:layout_constraintVertical_weight="1" />-->
+        <ImageView
+            android:id="@+id/iv_right"
+            android:layout_width="@dimen/dp_8"
+            android:layout_height="@dimen/dp_14"
+            android:src="@mipmap/icon_youjiantou"
+            android:layout_marginEnd="@dimen/dp_19"
+            android:layout_marginTop="@dimen/dp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_13"
+            android:text="系统通知"
+            android:textColor="@color/text_color_444444"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView10"
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+
+        <TextView
+            android:id="@+id/sysytem_Tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_marginTop="@dimen/dp_5"
+            android:textColor="@color/text_color_a1a1a1"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_right"
+            app:layout_constraintStart_toStartOf="@+id/textView27"
+            app:layout_constraintTop_toBottomOf="@+id/textView27" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
-        app:tabGravity="start"
         android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/system_Con"
         app:tabBackground="@color/transparent"
-        app:tabRippleColor="@color/transparent"
-        app:tabIndicatorFullWidth="false"
+        app:tabGravity="start"
         app:tabIndicatorColor="@color/transparent"
+        app:tabIndicatorFullWidth="false"
         app:tabMode="scrollable"
-        app:layout_constraintTop_toBottomOf="@id/tv_label"
+        app:tabRippleColor="@color/transparent"
         app:tabSelectedTextColor="@color/text_color_444444"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance18"
-        app:tabTextColor="@color/text_color_6F6F6F"/>
+        app:tabTextColor="@color/text_color_6F6F6F" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/app_line"
-        app:layout_constraintTop_toBottomOf="@id/tabs"/>
+        app:layout_constraintTop_toBottomOf="@id/tabs" />
 
 
     <androidx.viewpager.widget.ViewPager

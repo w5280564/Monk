@@ -15,7 +15,6 @@ import butterknife.OnClick;
  * 会话列表
  */
 public class MessageFragment extends BaseTabLayoutFragment{
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_message;
@@ -53,9 +52,5 @@ public class MessageFragment extends BaseTabLayoutFragment{
         }
         initChildViewPager(0);
     }
-
-
-
-
 
 }

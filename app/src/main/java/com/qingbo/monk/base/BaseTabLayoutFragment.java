@@ -92,7 +92,7 @@ public class BaseTabLayoutFragment extends BaseFragment {
     }
 
     /**
-     *
+     * fragment中添加fragment 使用此方法
      * @param position 页面下标
      */
     protected void initChildViewPager(int position) {

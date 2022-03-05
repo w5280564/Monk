@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.adapter.Question_MyGroupAdapter;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
 import com.qingbo.monk.bean.MyGroupBean;
@@ -59,7 +60,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     LinearLayout ll_top_right;
     private QuestionGroupAdapter mQuestionGroupAdapter;
     private List<MyGroupBean> bannerList = new ArrayList<>();
-    private MyGroupAdapter myGroupAdapter;
+    private Question_MyGroupAdapter myGroupAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -89,7 +90,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     private void initGroupRecycler() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         group_Recycler.setLayoutManager(gridLayoutManager);
-        myGroupAdapter = new MyGroupAdapter(true);
+        myGroupAdapter = new Question_MyGroupAdapter(true);
         group_Recycler.setAdapter(myGroupAdapter);
     }
 
@@ -136,7 +137,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     @Override
     protected void loadData() {
         getAllShequn();
-//        getMyGroupHead("1");
+        getMyGroupHead("1");
     }
 
     private void getAllShequn() {

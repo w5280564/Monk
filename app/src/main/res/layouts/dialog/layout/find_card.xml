@@ -49,8 +49,9 @@
         android:layout_height="@dimen/dp_80"
         android:layout_marginStart="@dimen/dp_85"
         android:background="@mipmap/chacha"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cards" />
+        app:layout_constraintTop_toTopOf="@id/cards"
+        android:layout_marginTop="@dimen/dp_300"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/love_Img"
@@ -59,7 +60,8 @@
         android:layout_marginEnd="@dimen/dp_85"
         android:background="@drawable/love_selector"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cards" />
+        app:layout_constraintTop_toTopOf="@id/cards"
+        android:layout_marginTop="@dimen/dp_300" />
 
 
 

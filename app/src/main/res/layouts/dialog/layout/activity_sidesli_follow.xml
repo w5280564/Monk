@@ -7,39 +7,68 @@
     tools:context=".Slides.activity.SideslipFollow_Activity"
     tools:ignore="MissingConstraints">
 
+
     <com.xunda.lib.common.common.titlebar.CustomTitleBar
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
         app:layout_constraintTop_toTopOf="parent"
         app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarRightImg="@mipmap/icon_sousuo"
-        app:titleBarRightShowType="IMG"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarShowBottomLine="false"
-        app:titleBarRightShowFlag="VISIBLE"
         app:titleBarTitle="关注" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/card_Tab"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_39"
-        app:tabRippleColor="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
-        app:tabBackground="@color/transparent"
-        app:tabIndicatorColor="@color/transparent"
-        app:tabTextAppearance="@style/TabLayoutTextStyle"
-        app:tabTextColor="@color/text_color_6f6f6f" />
-
-
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/card_ViewPager"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/card_Tab" />
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+<!--    <com.xunda.lib.common.common.titlebar.CustomTitleBar-->
+<!--        android:id="@+id/title_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/title_height"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:titleBarLeftImg="@mipmap/icon_back"-->
+<!--        app:titleBarRightImg="@mipmap/icon_sousuo"-->
+<!--        app:titleBarRightShowType="IMG"-->
+<!--        app:titleBarShowBottomLine="false"-->
+<!--        app:titleBarRightShowFlag="VISIBLE"-->
+<!--        app:titleBarTitle="关注" />-->
+
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--        android:id="@+id/card_Tab"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="@dimen/dp_39"-->
+<!--        app:tabRippleColor="@android:color/transparent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/title_bar"-->
+<!--        app:tabBackground="@color/transparent"-->
+<!--        app:tabIndicatorColor="@color/transparent"-->
+<!--        app:tabTextAppearance="@style/TabLayoutTextStyle"-->
+<!--        app:tabTextColor="@color/text_color_6f6f6f" />-->
+
+
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/card_ViewPager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/card_Tab" />-->
 
 
 
