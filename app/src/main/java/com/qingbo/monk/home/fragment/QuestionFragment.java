@@ -36,6 +36,6 @@ public class QuestionFragment extends BaseTabLayoutFragment {
             menuList.add(bean);
         }
 
-        initViewPager(0);
+        initChildViewPager(0);
     }
 }
