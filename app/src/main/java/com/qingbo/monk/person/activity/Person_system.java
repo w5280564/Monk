@@ -11,7 +11,7 @@ import butterknife.BindView;
 /**
  * 系统通知
  */
-public class Person_system extends BaseActivity {
+public class Person_system extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.system_MyView)
     MyArrowItemView system_MyView;
     @BindView(R.id.comment_MyView)
@@ -23,10 +23,8 @@ public class Person_system extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_person_system;
     }
-
     @Override
     protected void initView() {
-
         system_MyView.getCount_Tv().setVisibility(View.VISIBLE);
         system_MyView.getCount_Tv().setText("5");
         comment_MyView.getCount_Tv().setVisibility(View.VISIBLE);
@@ -34,5 +32,24 @@ public class Person_system extends BaseActivity {
         focus_MyView.getCount_Tv().setVisibility(View.VISIBLE);
         focus_MyView.getCount_Tv().setText("5");
 
+    }
+
+    @Override
+    protected void initEvent() {
+        comment_MyView.setOnClickListener(this);
+        focus_MyView.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.comment_MyView:
+                skipAnotherActivity(Person_System_examine.class);
+                break;
+            case R.id.focus_MyView:
+                skipAnotherActivity(Person_System_Liked.class);
+                break;
+
+        }
     }
 }

@@ -244,6 +244,8 @@ public class HttpUrl {
     public static final String Comment_Del = "comment/comment/comment-del";//删除评论
     public static final String Fund_Have_List = "fund/fund/stock-list";//基金经理拥有的基金
     public static final String Edit_Phone = "user/user/edit-mobile";//修改手机号
+    public static final String System_ReplyList = "user/user/reply-list";//系统评论
+    public static final String System_LikedList = "user/user/liked-list";//点赞我的
 
 }
 

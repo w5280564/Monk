@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.login.activity.ChangePhoneNumberActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
@@ -71,6 +72,7 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
         about_MyView.setOnClickListener(this);
         quit_Tv.setOnClickListener(this);
         cancellation_MyView.setOnClickListener(this);
+        phone_MyView.setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +109,10 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.cancellation_MyView:
                 skipAnotherActivity(MySet_Cancellation_Activity.class);
+                break;
+
+            case R.id.phone_MyView:
+                ChangePhoneNumberActivity.actionStart(mActivity);
                 break;
         }
 

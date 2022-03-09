@@ -22,32 +22,42 @@
         app:arrowItemAvatarHeight="@dimen/dp_33"
         app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
         app:arrowItemShowAvatar="true"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
         app:arrowItemTitle="系统审核"
-        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
     <com.xunda.lib.common.view.MyArrowItemView
         android:id="@+id/comment_MyView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         app:arrowItemAvatarHeight="@dimen/dp_33"
-        app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
-        app:layout_constraintTop_toBottomOf="@id/system_MyView"
+        app:arrowItemAvatarSrc="@mipmap/pinglun"
         app:arrowItemShowAvatar="true"
         app:arrowItemTitle="评论"
-        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/system_MyView" />
 
-        <com.xunda.lib.common.view.MyArrowItemView
+    <com.xunda.lib.common.view.MyArrowItemView
         android:id="@+id/focus_MyView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         app:arrowItemAvatarHeight="@dimen/dp_33"
-        app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
-        app:layout_constraintTop_toBottomOf="@id/comment_MyView"
+        app:arrowItemAvatarSrc="@mipmap/dianzan"
         app:arrowItemShowAvatar="true"
         app:arrowItemTitle="点赞"
-        app:arrowItemTitleColor="@color/text_color_6f6f6f" />
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/comment_MyView" />
 
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/at_MyView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:arrowItemAvatarHeight="@dimen/dp_33"
+        app:arrowItemAvatarSrc="@mipmap/aite"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="\@我的"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/focus_MyView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
