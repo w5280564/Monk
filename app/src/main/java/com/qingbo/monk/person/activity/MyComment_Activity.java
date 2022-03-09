@@ -1,5 +1,7 @@
 package com.qingbo.monk.person.activity;
 
+import android.text.TextUtils;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -7,7 +9,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.bean.MyCommentBean;
 import com.qingbo.monk.bean.MyCommentList_Bean;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.person.adapter.MyComment_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -75,7 +80,7 @@ public class MyComment_Activity extends BaseRecyclerViewSplitActivity {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                             myCommentList_bean = GsonUtil.getInstance().json2Bean(json_data, MyCommentList_Bean.class);
+                            myCommentList_bean = GsonUtil.getInstance().json2Bean(json_data, MyCommentList_Bean.class);
                             if (myCommentList_bean != null) {
                                 handleSplitListData(myCommentList_bean, mAdapter, limit);
                             }
@@ -94,10 +99,13 @@ public class MyComment_Activity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
-//            String articleId = item.getArticleId();
-//            String type = item.getType();
-//            ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+            MyCommentBean item = (MyCommentBean) adapter.getItem(position);
+            String articleId = item.getArticleId();
+            if (!TextUtils.isEmpty(articleId)) {
+                String type = item.getCommentType();
+                ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+
+            }
         });
     }
 

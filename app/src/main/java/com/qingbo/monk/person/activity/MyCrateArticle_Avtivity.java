@@ -301,7 +301,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
                 if (status == Constants.REQUEST_SUCCESS_CODE) {
                     if (TextUtils.equals(optype, "0")) {
 //                        EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_TOPIC));
-                        showToastDialog("发布成功！");
+                        showToastDialog("发布成功，待审核！");
                     } else if (TextUtils.equals(optype, "1")) {
                         showToastDialog("已保存至草稿箱！");
                     }

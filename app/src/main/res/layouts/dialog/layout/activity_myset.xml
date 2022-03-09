@@ -36,7 +36,7 @@
         app:arrowItemAvatarHeight="@dimen/dp_12"
         app:arrowItemContent=""
         app:arrowItemShowAvatar="false"
-        app:arrowItemShowArrow="false"
+        app:arrowItemShowArrow="true"
         app:arrowItemTitle="手机号码"
         app:arrowItemTitleColor="@color/text_color_6f6f6f"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />

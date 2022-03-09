@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Question_MyGroupAdapter;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
+import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.bean.MyGroupList_Bean;
@@ -25,6 +27,7 @@ import com.qingbo.monk.person.adapter.MyGroupAdapter;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
+import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
@@ -90,9 +93,28 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     private void initGroupRecycler() {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2);
         group_Recycler.setLayoutManager(gridLayoutManager);
-        myGroupAdapter = new Question_MyGroupAdapter(true);
+        myGroupAdapter = new Question_MyGroupAdapter();
         group_Recycler.setAdapter(myGroupAdapter);
+        myGroupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                int count = adapter.getItemCount() - 1;
+               if (count == position){
+                   skipAnotherActivity(CreateGroupStepOneActivity.class);
+               }else {
+                   MyCardGroup_Bean item = (MyCardGroup_Bean) adapter.getItem(position);
+                   if (item == null) {
+                       return;
+                   }
+                   GroupDetailActivity.actionStart(mActivity, item.getId());
+               }
+
+            }
+        });
+
     }
+
+
 
     private void initRecyclerView() {
         View itemView = LayoutInflater.from(mActivity).inflate(R.layout.layout_group_bottom, null);
@@ -140,7 +162,10 @@ public class QuestionFragment_Group extends BaseLazyFragment {
         getMyGroupHead("1");
     }
 
+
+
     private void getAllShequn() {
+
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", "1");
         requestMap.put("limit", "4");
@@ -155,7 +180,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                                 mQuestionGroupAdapter.setNewData(list);
                             }
                         }
-                        getMyGroup();
+//                        getMyGroup();
                     }
 
                 }, true);
@@ -236,7 +261,9 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             myGroupAdapter.addData(myGroupList_bean.getList());
-//                            handleSplitListData(myGroupList_bean, myGroupAdapter, limit);
+                            MyCardGroup_Bean myCardGroup_bean = new MyCardGroup_Bean();
+                            myCardGroup_bean.setItemType("2");
+                            myGroupAdapter.addData(myCardGroup_bean);
                         }
                     }
 

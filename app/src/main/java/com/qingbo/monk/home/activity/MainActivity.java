@@ -3,10 +3,13 @@ package com.qingbo.monk.home.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,10 +17,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -68,10 +73,13 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.dialog.VersionDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
+
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -137,7 +145,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
         addTabBadge();
-        WebSocketHelper.getInstance().initWebSocketService(this,BIND_AUTO_CREATE);;//初始化和绑定WebSocket
+        WebSocketHelper.getInstance().initWebSocketService(this, BIND_AUTO_CREATE);
+        ;//初始化和绑定WebSocket
         registerEventBus();
     }
 
@@ -219,7 +228,6 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -264,7 +272,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             case R.id.recomm_MyView:
                 closeLeft();
 //                homeFragment.changePager(1);
-                SideslipRecommend_Activity.startActivity(mActivity,"");
+                SideslipRecommend_Activity.startActivity(mActivity, "");
                 break;
             case R.id.focus_MyView:
                 closeLeft();
@@ -634,7 +642,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         }
     }
 
-    public void changeUser(){
+    public void changeUser() {
         String avatar = PrefUtil.getUser().getAvatar();
         GlideUtils.loadCircleImage(mContext, head_Tv, avatar);
         String nickName = PrefUtil.getUser().getNickname();
@@ -644,5 +652,11 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         String fowAndFans = String.format("关注 %1$s      粉丝 %2$s", fow, fans);
         followAndFans_Tv.setText(fowAndFans);
     }
+
+
+
+
+
+
 
 }

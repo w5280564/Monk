@@ -68,10 +68,13 @@
         <activity
             android:name=".Slides.activity.SideslipPersonAndFund_Activity"
             android:exported="false" />
-                <activity
+        <activity
             android:name=".person.activity.Person_system"
             android:exported="false" />
 
+        <activity
+            android:name=".login.activity.ChangePhoneNumberActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".person.activity.MySet_Cancellation_Activity"
             android:exported="false" />
@@ -132,7 +135,8 @@
             android:exported="false" />
         <activity
             android:name=".person.activity.MyComment_Activity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".person.activity.Edit_Change_Harvest"
             android:exported="false" />

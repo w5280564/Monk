@@ -2,13 +2,17 @@ package com.qingbo.monk.home.fragment;
 
 import android.view.View;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.message.activity.ContactListActivity;
+import com.qingbo.monk.person.activity.Person_system;
 import com.xunda.lib.common.bean.AppMenuBean;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -26,10 +30,13 @@ public class MessageFragment extends BaseTabLayoutFragment{
         initMenuData();
     }
 
-    @OnClick({R.id.seek_Tv, R.id.ll_contact})
+    @OnClick({R.id.seek_Tv, R.id.ll_contact,R.id.system_Con})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.seek_Tv:
+            case R.id.system_Con:
+                skipAnotherActivity(Person_system.class);
+                break;
+                case R.id.seek_Tv:
                 skipAnotherActivity(HomeSeek_Activity.class);
                 break;
             case R.id.ll_contact:

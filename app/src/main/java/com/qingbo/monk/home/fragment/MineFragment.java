@@ -2,9 +2,11 @@ package com.qingbo.monk.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,9 +43,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.HashMap;
@@ -167,7 +167,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                         interestLabelFlow(learn_EditView.getLabel_Flow(), requireActivity(), userBean.getResearch());
                         interestLabelFlow(harvest_EditView.getLabel_Flow(), requireActivity(), userBean.getGetResource());
 
-                        originalValue(userBean.getAchievement(), "暂未填写","", achievement_EditView.getContent_Tv());
+                        originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
                         originalValue(userBean.getSex(), "未知", "性别：", sex_Tv);
                     }
                 }
@@ -295,4 +295,6 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 break;
         }
     }
+
+
 }

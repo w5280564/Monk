@@ -1,19 +1,19 @@
 package com.qingbo.monk.Slides.adapter;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
-import com.xunda.lib.common.common.glide.GlideUtils;
-import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.view.RoundImageView;
+import com.xunda.lib.common.common.glide.RoundedCornersTransform;
+import com.xunda.lib.common.common.utils.DisplayUtil;
 
 /**
  * ================================================
@@ -23,41 +23,34 @@ import com.xunda.lib.common.view.RoundImageView;
  * ================================================
  */
 public class Question_MyGroupAdapter extends BaseQuickAdapter<MyCardGroup_Bean, BaseViewHolder> {
-    boolean isMe;
-    public Question_MyGroupAdapter(boolean isMe) {
+
+    public Question_MyGroupAdapter() {
         super(R.layout.question_mygroup_item);
-        this.isMe = isMe;
     }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, MyCardGroup_Bean item) {
-        helper.setText(R.id.tv_name_group,item.getShequnName());
-        helper.setText(R.id.tv_des_group,StringUtil.isBlank(item.getShequnDes())?"暂无群简介...":item.getShequnDes());
-        TextView tv_join = helper.getView(R.id.tv_join);
 
-        RoundImageView iv_header = helper.getView(R.id.iv_header);
-        if (StringUtil.isBlank(item.getShequnImage())) {
-            iv_header.setImageResource(R.mipmap.bg_create_group);
-        }else{
-            GlideUtils.loadCircleImage(mContext,iv_header,item.getShequnImage());
-        }
-
-
-
-        if (isMe){
-            ImageView groupUser_Img = helper.getView(R.id.groupUser_Img);
-            String id = PrefUtil.getUser().getId();
-//            if (TextUtils.equals(id,item.getUserId())){
-//                groupUser_Img.setVisibility(View.VISIBLE);
-//            }else {
-//                groupUser_Img.setVisibility(View.GONE);
-//            }
-            tv_join.setVisibility(View.VISIBLE);
+        ConstraintLayout haveData_Con = helper.getView(R.id.haveData_Con);
+        ConstraintLayout noData_Con = helper.getView(R.id.noData_Con);
+        String itemType = item.getItemType();
+        if (TextUtils.equals(itemType,"2")){
+            haveData_Con.setVisibility(View.GONE);
+            noData_Con.setVisibility(View.VISIBLE);
         }else {
-            tv_join.setVisibility(View.GONE);
+            haveData_Con.setVisibility(View.VISIBLE);
+            noData_Con.setVisibility(View.GONE);
         }
 
+        ImageView iv_img_top = helper.getView(R.id.iv_img_top);
+        helper.setText(R.id.tv_group_name, item.getShequnName());
+        helper.setText(R.id.tv_name, item.getNickname());
+        RoundedCornersTransform transform = new RoundedCornersTransform(mContext, DisplayUtil.dip2px(mContext, 8));
+        transform.setNeedCorner(true, true, false, false);
+        Glide.with(mContext).load(item.getShequnImage()).placeholder(R.mipmap.bg).transforms(transform).into(iv_img_top);
 
     }
+
+
 
 }
