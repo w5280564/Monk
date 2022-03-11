@@ -65,7 +65,6 @@ import butterknife.BindView;
  * 侧滑——推荐
  */
 public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity implements View.OnClickListener {
-
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
     private String type;

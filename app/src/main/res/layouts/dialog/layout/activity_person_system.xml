@@ -11,6 +11,7 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
+        app:titleBarTitle="系统通知"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false" />
 
@@ -20,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         app:arrowItemAvatarHeight="@dimen/dp_33"
+        android:visibility="gone"
         app:arrowItemAvatarSrc="@mipmap/xitonshenhe"
         app:arrowItemShowAvatar="true"
         app:arrowItemTitle="系统审核"
@@ -42,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         app:arrowItemAvatarHeight="@dimen/dp_33"
-        app:arrowItemAvatarSrc="@mipmap/dianzan"
+        app:arrowItemAvatarSrc="@mipmap/system_zan"
         app:arrowItemShowAvatar="true"
         app:arrowItemTitle="点赞"
         app:arrowItemTitleColor="@color/text_color_6f6f6f"
@@ -53,6 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_60"
         app:arrowItemAvatarHeight="@dimen/dp_33"
+        android:visibility="gone"
         app:arrowItemAvatarSrc="@mipmap/aite"
         app:arrowItemShowAvatar="true"
         app:arrowItemTitle="\@我的"

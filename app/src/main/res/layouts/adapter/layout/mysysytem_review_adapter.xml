@@ -6,50 +6,34 @@
     android:layout_height="wrap_content"
     tools:ignore="MissingConstraints">
 
-    <ImageView
-        android:id="@+id/head_Img"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
-        android:layout_marginStart="@dimen/dp_15"
-        android:layout_marginTop="@dimen/dp_10"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/name_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
-        android:maxLength="6"
-        android:textColor="@color/text_color_6f6f6f"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/head_Img"
-        app:layout_constraintTop_toTopOf="@+id/head_Img" />
 
     <TextView
         android:id="@+id/time_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/text_color_a1a1a1"
-        android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="@+id/name_Tv"
-        app:layout_constraintTop_toBottomOf="@+id/name_Tv" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="10sp"/>
 
 
     <TextView
-        android:id="@+id/zan_Tv"
-        android:layout_width="wrap_content"
+        android:id="@+id/review_Tv"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_11"
-        android:drawablePadding="@dimen/dp_5"
-        android:drawableEnd="@mipmap/likedzan_icon"
         android:textColor="@color/text_color_444444"
         android:textSize="14sp"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/head_Img" />
+        app:layout_constraintTop_toBottomOf="@id/time_Tv"/>
 
 
     <TextView

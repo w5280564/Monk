@@ -23,26 +23,31 @@ public class Person_system extends BaseActivity implements View.OnClickListener 
     protected int getLayoutId() {
         return R.layout.activity_person_system;
     }
+
     @Override
     protected void initView() {
-        system_MyView.getCount_Tv().setVisibility(View.VISIBLE);
+        system_MyView.getCount_Tv().setVisibility(View.GONE);
         system_MyView.getCount_Tv().setText("5");
-        comment_MyView.getCount_Tv().setVisibility(View.VISIBLE);
+        comment_MyView.getCount_Tv().setVisibility(View.GONE);
         comment_MyView.getCount_Tv().setText("5");
-        focus_MyView.getCount_Tv().setVisibility(View.VISIBLE);
+        focus_MyView.getCount_Tv().setVisibility(View.GONE);
         focus_MyView.getCount_Tv().setText("5");
 
     }
 
     @Override
     protected void initEvent() {
+        system_MyView.setOnClickListener(this);
         comment_MyView.setOnClickListener(this);
         focus_MyView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
+            case R.id.system_MyView:
+//                skipAnotherActivity(Person_System_Review.class);
+                break;
             case R.id.comment_MyView:
                 skipAnotherActivity(Person_System_examine.class);
                 break;

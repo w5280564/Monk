@@ -28,7 +28,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 草稿箱--创作中心
+ * 草稿箱--发布动态
  */
 public class MyDrafts_Crate_Fragment extends BaseRecyclerViewSplitFragment {
     @BindView(R.id.dingTop_Img)

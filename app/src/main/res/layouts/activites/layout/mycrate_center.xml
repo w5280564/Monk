@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -11,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_height"
         app:titleBarLeftImg="@mipmap/icon_back"
-        app:titleBarShowBottomLine="false"
         app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightShowType="TEXT"
+        app:titleBarShowBottomLine="false"
         app:titleColor="@color/text_main_color" />
 
 
@@ -22,110 +23,147 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/dp_15"
-                android:paddingRight="@dimen/dp_15">
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints">
 
                 <EditText
                     android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/dp_12"
-                    android:background="@null"
+                    android:layout_marginStart="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginEnd="@dimen/dp_15"
+                    android:background="@null"
+                    android:ellipsize="end"
                     android:gravity="left"
                     android:hint="请输入标题"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:maxLength="40"
                     android:lineSpacingExtra="@dimen/dp_1"
+                    android:maxLength="40"
+                    android:maxLines="2"
+                    android:paddingBottom="@dimen/dp_12"
                     android:textColor="@color/text_color_444444"
                     android:textColorHint="@color/text_hint_color"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <View style="@style/app_line" />
+                <View
+                    android:id="@+id/view11"
+                    style="@style/app_line"
+                    app:layout_constraintEnd_toEndOf="@id/et_title"
+                    app:layout_constraintStart_toStartOf="@id/et_title"
+                    app:layout_constraintTop_toBottomOf="@id/et_title" />
 
 
                 <EditText
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_15"
+                    android:layout_marginEnd="@dimen/dp_15"
                     android:background="@null"
+                    android:ellipsize="end"
                     android:gravity="left"
                     android:hint="请输入内容"
+                    android:lineSpacingExtra="@dimen/dp_2"
+                    android:maxLength="2000"
                     android:paddingTop="@dimen/dp_12"
                     android:paddingBottom="@dimen/dp_12"
-                    android:ellipsize="end"
-                    android:maxLength="2000"
-                    android:lineSpacingExtra="@dimen/dp_2"
                     android:textColor="@color/text_color_444444"
                     android:textColorHint="@color/text_hint_color"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_title" />
 
                 <TextView
                     android:id="@+id/tv_remains_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_60"
                     android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_60"
+                    android:layout_marginEnd="@dimen/dp_15"
                     android:text="0/2000"
                     android:textColor="@color/text_color_6f6f6f"
-                    android:textSize="@dimen/sp_12"/>
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_content" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleView_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_15"
                     android:layout_marginTop="@dimen/dp_14"
-                    android:nestedScrollingEnabled="false"/>
+                    android:layout_marginEnd="@dimen/dp_15"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_remains_text" />
 
 
                 <TextView
                     android:id="@+id/tv_remains_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_28"
                     android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_28"
+                    android:layout_marginEnd="@dimen/dp_15"
                     android:text="0/6"
                     android:textColor="@color/text_color_6f6f6f"
-                    android:textSize="@dimen/sp_12"/>
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycleView_image" />
 
 
                 <LinearLayout
                     android:id="@+id/ll_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_20"
-                    android:tag="0"
                     android:layout_gravity="right"
-                    android:paddingLeft="@dimen/dp_8"
-                    android:paddingRight="@dimen/dp_8"
-                    android:gravity="center"
-                    android:background="@drawable/background_group_edit"
                     android:layout_marginTop="@dimen/dp_20"
                     android:layout_marginBottom="@dimen/dp_21"
-                    android:orientation="horizontal">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/dp_15"
+                    app:layout_constraintTop_toBottomOf="@id/tv_remains_image"
+                    android:background="@drawable/background_group_edit"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
+                    android:tag="0">
 
                     <TextView
                         android:id="@+id/tv_tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="公开"
-                        android:drawablePadding="@dimen/dp_5"
                         android:drawableLeft="@mipmap/gongkai"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="公开"
                         android:textColor="@color/text_color_6f6f6f"
-                        android:textSize="@dimen/sp_12"/>
+                        android:textSize="@dimen/sp_12" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/at_Img"
+                    android:layout_width="@dimen/dp_15"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:background="@mipmap/crate_aite"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_tag"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_tag"
+                    app:layout_constraintTop_toTopOf="@+id/ll_tag" />
 
                 <TextView
                     android:id="@+id/tv_next"
@@ -133,24 +171,20 @@
                     android:layout_height="@dimen/button_height"
                     android:layout_marginLeft="@dimen/dp_11"
                     android:layout_marginTop="@dimen/dp_26"
-                    android:layout_marginBottom="@dimen/dp_30"
-                    app:layout_constraintTop_toBottomOf="@id/changePhone_Edit"
                     android:background="@drawable/selector_btn_rectangle"
                     android:gravity="center"
                     android:text="发布"
                     android:textColor="@color/text_color_444444"
                     android:textSize="@dimen/sp_16"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/ll_tag" />
 
 
-            </LinearLayout>
-
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
 
 </LinearLayout>

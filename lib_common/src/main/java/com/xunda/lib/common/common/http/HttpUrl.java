@@ -246,6 +246,7 @@ public class HttpUrl {
     public static final String Edit_Phone = "user/user/edit-mobile";//修改手机号
     public static final String System_ReplyList = "user/user/reply-list";//系统评论
     public static final String System_LikedList = "user/user/liked-list";//点赞我的
+    public static final String System_CheckList = "user/user/check-list";//审核列表
 
 }
 

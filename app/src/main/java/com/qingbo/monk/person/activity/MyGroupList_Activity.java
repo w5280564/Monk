@@ -47,6 +47,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     CustomTitleBar title_bar;
     private String userID;
     String type;
+    private TextView myCrate_Tv,group_Tv;
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyGroupList_Activity.class);
@@ -102,9 +103,9 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void initView() {
         if (isMe()) {
-            title_bar.setTitle("我的社群");
+            title_bar.setTitle("我的问答社群");
         } else {
-            title_bar.setTitle("他的社群");
+            title_bar.setTitle("他的问答社群");
         }
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
@@ -133,6 +134,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
             }
         });
     }
+
     MyGroupAdapter myGroupAdapter;
 
     /**
@@ -141,14 +143,18 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     private void addHeadView() {
         View myView = LayoutInflater.from(this).inflate(R.layout.mygrouplist_top, null);
         ConstraintLayout top_Con = myView.findViewById(R.id.top_Con);
-        TextView group_Tv = myView.findViewById(R.id.group_Tv);
+        myCrate_Tv = myView.findViewById(R.id.myCrate_Tv);
+         group_Tv = myView.findViewById(R.id.group_Tv);
 
-        if (isMe()){
+        if (isMe()) {
             top_Con.setVisibility(View.VISIBLE);
             group_Tv.setText("我加入的社群");
-        }else {
+
+        } else {
             group_Tv.setText("他创建的社群");
         }
+
+
         RecyclerView top_mRecyclerView = myView.findViewById(R.id.top_mRecyclerView);
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
@@ -170,6 +176,8 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
 
 
     //我创建的群
+    MyGroupList_Bean myGroupList_bean;
+
     private void getMyGroupHead(String type) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -181,9 +189,11 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             myGroupAdapter.addData(myGroupList_bean.getList());
 //                            handleSplitListData(myGroupList_bean, myGroupAdapter, limit);
+                                String format = String.format("我创建的社群(%1$s/8)", myGroupList_bean.getList().size());
+                                myCrate_Tv.setText(format);
                         }
                     }
 
@@ -209,6 +219,12 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
                             handleSplitListData(myGroupList_bean, mAdapter, limit);
+                            if (isMe()) {
+                                group_Tv.setText("我加入的社群");
+                            } else {
+                                String format = String.format("他创建的社群(%1$s/8)", myGroupList_bean.getList().size());
+                                group_Tv.setText(format);
+                            }
                             if (page == 1 && isMe()) {
                                 getMyGroupHead("1");
                             }

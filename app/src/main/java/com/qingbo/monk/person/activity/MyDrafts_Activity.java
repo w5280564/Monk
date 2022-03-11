@@ -62,7 +62,7 @@ public class MyDrafts_Activity extends BaseTabLayoutActivity {
                 bean.setName("问答广场");
             } else {
                 fragments.add(MyDrafts_Crate_Fragment.newInstance("2"));
-                bean.setName("创作中心");
+                bean.setName("发布动态");
             }
             menuList.add(bean);
         }
