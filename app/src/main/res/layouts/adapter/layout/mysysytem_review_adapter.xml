@@ -51,7 +51,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/zan_Tv" />
+        app:layout_constraintTop_toBottomOf="@id/review_Tv" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_Con"

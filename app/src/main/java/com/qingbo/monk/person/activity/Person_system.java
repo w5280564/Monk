@@ -46,7 +46,7 @@ public class Person_system extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.system_MyView:
-//                skipAnotherActivity(Person_System_Review.class);
+                skipAnotherActivity(Person_System_Review.class);
                 break;
             case R.id.comment_MyView:
                 skipAnotherActivity(Person_System_examine.class);
@@ -54,7 +54,6 @@ public class Person_system extends BaseActivity implements View.OnClickListener 
             case R.id.focus_MyView:
                 skipAnotherActivity(Person_System_Liked.class);
                 break;
-
         }
     }
 }

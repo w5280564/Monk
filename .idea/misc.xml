@@ -34,6 +34,8 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_change_phone.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_choose_industry.xml" value="0.3605128205128205" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_code_list.xml" value="0.33541666666666664" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_contact_at.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_contact_list.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_create_group_step_two.xml" value="0.3234375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_get_code.xml" value="0.33541666666666664" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail.xml" value="0.34512820512820513" />
@@ -146,6 +148,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/itme_one.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/layout_more.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myandother_edit_card.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mycrate_articleat_seek.xml" value="0.3359375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myinterest_label.xml" value="0.75" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myset_aboutme_update.xml" value="0.32447916666666665" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mywallet_detailedlist_detail.xml" value="0.33" />
@@ -174,6 +177,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_step_two_fragment_login.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_tab.xml" value="0.3229166666666667" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/fragment_universe.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/homeseek_fragment.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/homeseek_whole_fragment.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/interest_lable.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/fragments/layout/mainlogin_forgetpsw_questionlist.xml" value="0.2859375" />

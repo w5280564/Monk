@@ -2,12 +2,14 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class FriendContactBean {
+public class FriendContactBean implements Serializable {
 
 
     @SerializedName("id")

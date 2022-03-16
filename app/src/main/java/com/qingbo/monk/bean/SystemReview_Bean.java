@@ -2,6 +2,8 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,14 +11,16 @@ import lombok.NoArgsConstructor;
 @Data
 public class SystemReview_Bean {
 
-    @SerializedName("like_type")
-    private String likeType;
-    @SerializedName("like_type_name")
-    private String likeTypeName;
-    @SerializedName("relations_id")
-    private String relationsId;
+    @SerializedName("id")
+    private String id;
+    @SerializedName("type")
+    private String type;
+    @SerializedName("refuse_msg")
+    private String refuseMsg;
     @SerializedName("user_id")
     private String userId;
+    @SerializedName("main_id")
+    private String mainId;
     @SerializedName("nickname")
     private String nickname;
     @SerializedName("avatar")
@@ -47,5 +51,12 @@ public class SystemReview_Bean {
         private String articleContent;
         @SerializedName("article_images")
         private String articleImages;
+        @SerializedName("shequn_name")
+        private String shequn_name;
+        @SerializedName("shequn_des")
+        private String shequn_des;
+        @SerializedName("shequn_image")
+        private String shequn_image;
+
     }
 }

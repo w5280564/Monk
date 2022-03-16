@@ -38,32 +38,39 @@ public class MySystem_Review_Adapter extends BaseQuickAdapter<SystemReview_Bean,
     @Override
     protected void convert(@NonNull BaseViewHolder helper, SystemReview_Bean item) {
         helper.setText(R.id.time_Tv, item.getCreateTime());
-        helper.setText(R.id.review_Tv, item.getLikeTypeName());
+        helper.setText(R.id.review_Tv, item.getRefuseMsg());
         TextView comment_Tv = helper.getView(R.id.comment_Tv);
         ImageView art_Img = helper.getView(R.id.art_Img);
-        helper.setText(R.id.artContent_Tv, item.getContent().getContent());
+        TextView artName_tv = helper.getView(R.id.artName_tv);
+        TextView artContent_Tv = helper.getView(R.id.artContent_Tv);
 
-        String likeType = item.getLikeType();
-        if (TextUtils.equals(likeType, "1")) {
-            comment_Tv.setVisibility(View.GONE);
-        } else {
-            comment_Tv.setVisibility(View.VISIBLE);
-            String authorName = "@" + item.getContent().getAuthorName();
-            String content = "："+item.getContent().getContent();
-            String setStr = authorName + content;
-            int length = authorName.length();
-            int startLength = 0;
-            setName(setStr, length, startLength, length, comment_Tv);
-        }
-        if (!TextUtils.isEmpty(item.getContent().getArticleImages())) {
-            List<String> strings = Arrays.asList(item.getContent().getArticleImages().split(","));
-            GlideUtils.loadRoundImage(mContext, art_Img, strings.get(0), 9);
-        } else {
-            art_Img.setImageResource(R.mipmap.img_pic_none_square);
-        }
+        String type = item.getType();//1除创作者文章的全部文章 2评论 3社群 4创作者文章 5创作者 6资讯评论
 
+        if (item.getContent() != null) {
+            if (TextUtils.equals(type, "2") || TextUtils.equals(type, "6")) { //type=2/6存在
+                comment_Tv.setVisibility(View.VISIBLE);
+                String authorName = "@" + item.getContent().getAuthorName();
+                String content = "：" + item.getContent().getContent();
+                String setStr = authorName + content;
+                int length = authorName.length();
+                int startLength = 0;
+                setName(setStr, length, startLength, length, comment_Tv);
+            }
+
+            if (TextUtils.equals(type, "3")) {//type=3存在 社群取用社群字段
+                GlideUtils.loadRoundImage(mContext, art_Img, item.getContent().getShequn_image(), 9);
+                artName_tv.setText(item.getContent().getShequn_name());
+                artContent_Tv.setText(item.getContent().getShequn_des());
+            }else {
+                if (!TextUtils.isEmpty(item.getContent().getArticleImages())) {
+                    List<String> strings = Arrays.asList(item.getContent().getArticleImages().split(","));
+                    GlideUtils.loadRoundImage(mContext, art_Img, strings.get(0), 9);
+                }
+                artName_tv.setText(item.getContent().getArticleTitle());
+                artContent_Tv.setText(item.getContent().getArticleContent());
+            }
+        }
     }
-
 
     /**
      * @param name        要显示的数据

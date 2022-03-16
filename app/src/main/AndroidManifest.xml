@@ -65,14 +65,18 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
-
+        <activity
+            android:name=".person.activity.MyCrateArticle_At_Seek"
+            android:exported="false" />
+        <activity
+            android:name=".person.activity.MyCrateArticle_At"
+            android:exported="false" />
         <activity
             android:name=".person.activity.Person_System_Review"
             android:exported="false" />
-                <activity
+        <activity
             android:name=".person.activity.Person_System_Liked"
             android:exported="false" />
-
         <activity
             android:name=".person.activity.Person_System_examine"
             android:exported="false" />
@@ -82,8 +86,7 @@
         <activity
             android:name=".person.activity.Person_system"
             android:exported="false" />
-        <activity
-            android:name=".login.activity.ChangePhoneNumberActivity" />
+        <activity android:name=".login.activity.ChangePhoneNumberActivity" />
         <activity
             android:name=".person.activity.MySet_Cancellation_Activity"
             android:exported="false" />

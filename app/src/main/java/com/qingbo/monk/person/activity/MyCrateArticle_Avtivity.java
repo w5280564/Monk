@@ -9,9 +9,11 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +21,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
+import com.qingbo.monk.base.MyConstant;
+import com.qingbo.monk.base.baseview.AtEditText;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
+import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.FriendContactBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
+import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.fileprovider.FileProvider7;
@@ -28,12 +36,14 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -51,7 +61,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     @BindView(R.id.et_title)
     EditText et_title;
     @BindView(R.id.et_content)
-    EditText et_content;
+    AtEditText et_content;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
     @BindView(R.id.tv_remains_text)
@@ -60,6 +70,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     TextView tv_remains_image;
     @BindView(R.id.tv_next)
     TextView tv_next;
+    @BindView(R.id.at_Img)
+    ImageView at_Img;
 
 
     private List<UploadPictureBean> imageList = new ArrayList<>();
@@ -148,8 +160,17 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
     @Override
     protected void initView() {
-
+        viewTouchDelegate.expandViewTouchDelegate(at_Img, 50);
         apply();
+        //接收at人的实体类
+        LiveDataBus.get().with(MyConstant.FRIEND_DATA, FriendContactBean.class).observe(this, new Observer<FriendContactBean>() {
+            @Override
+            public void onChanged(FriendContactBean friendContactBean) {
+                if (friendContactBean != null) {
+                    et_content.addAtContent(friendContactBean.getId(), friendContactBean.getNickname(), friendContactBean.getDescription());
+                }
+            }
+        });
     }
 
 
@@ -227,6 +248,7 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         });
 
         tv_next.setOnClickListener(this);
+        at_Img.setOnClickListener(this);
     }
 
 
@@ -292,6 +314,13 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         baseMap.put("isAnonymous", (String) llTag.getTag());
         baseMap.put("images", images);
         baseMap.put("draft", optype);
+        if (!ListUtils.isEmpty(et_content.getAtList())) {
+            StringBuffer alterList = new StringBuffer();
+            for (AtEditText.Entity entity : et_content.getAtList()) {
+                alterList.append("," + entity.getName());
+            }
+            baseMap.put("alterList", alterList.toString());//at人名字
+        }
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
         }
@@ -411,6 +440,9 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
                     return;
                 }
                 createOrEditSaveQuestion("0");
+                break;
+            case R.id.at_Img:
+                skipAnotherActivity(MyCrateArticle_At.class);
                 break;
         }
     }

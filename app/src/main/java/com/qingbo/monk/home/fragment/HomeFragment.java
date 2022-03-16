@@ -213,6 +213,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     HomeAllCount_Bean homeAllCount_bean = GsonUtil.getInstance().json2Bean(json_root, HomeAllCount_Bean.class);
+                        manCount_Tv.setVisibility(View.GONE);
                     if (!TextUtils.equals(homeAllCount_bean.getData(), "0")) {
                         manCount_Tv.setVisibility(View.VISIBLE);
                         manCount_Tv.setText(homeAllCount_bean.getData());

@@ -377,6 +377,8 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     MainUpdateCount_Bean mainUpdateCount_bean = GsonUtil.getInstance().json2Bean(json_data, MainUpdateCount_Bean.class);
                     if (mainUpdateCount_bean != null) {
+                        focus_MyView.getCount_Tv().setVisibility(View.GONE);
+                        wen_MyView.getCount_Tv().setVisibility(View.GONE);
                         String newArticle = mainUpdateCount_bean.getNewArticle();
                         if (!TextUtils.equals(newArticle, "0")) {
                             focus_MyView.getCount_Tv().setVisibility(View.VISIBLE);
