@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -42,6 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -114,13 +117,13 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     public void onWechatPayEvent(WechatPayEvent event) {
         if (event.event_type == WechatPayEvent.WECHAT_PAY_RESULT) {
             int errCode = event.errCode;//0	成功  -1	错误  -2	用户取消
-            L.e("wechat>>"+errCode);
+            L.e("wechat>>" + errCode);
             if (errCode == 0) {
                 showSuccessToastDialog();
             } else if (errCode == -1) {
-                showCommonToastDialog("支付失败",0);
+                showCommonToastDialog("支付失败", 0);
             } else {
-                showCommonToastDialog("用户取消了支付",0);
+                showCommonToastDialog("用户取消了支付", 0);
             }
         }
     }
@@ -147,6 +150,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     /**
      * 未加入的社群详情
      */
+    CheckOtherGroupBean groupBean;
     private void getShequnDetail() {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("id", id);
@@ -155,7 +159,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {
-                            CheckOtherGroupBean groupBean = GsonUtil.getInstance().json2Bean(data, CheckOtherGroupBean.class);
+                             groupBean = GsonUtil.getInstance().json2Bean(data, CheckOtherGroupBean.class);
                             handleData(groupBean);
                         }
                     }
@@ -167,8 +171,8 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     private void handleData(CheckOtherGroupBean groupBean) {
         if (groupBean != null) {
             tvGroupName.setText(groupBean.getShequnName());
-            tvGroupId.setText(String.format("群ID：%s",id));
-            GlideUtils.loadRoundImage(mContext,ivHeader, groupBean.getAvatar(),9);
+            tvGroupId.setText(String.format("群ID：%s", id));
+            GlideUtils.loadRoundImage(mContext, ivHeader, groupBean.getAvatar(), 9);
             labelFlow(groupBean.getTags());
             tv_theme_num.setText(groupBean.getThemeCount());
             tv_member_num.setText(groupBean.getMemberCount());
@@ -180,16 +184,21 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
             tvCreateTime.setText(String.format("创建%1$s天，%2$s活跃过", groupBean.getCreateDay(), groupBean.getLastLogin()));
 
             fee_type = groupBean.getType();
-            if ("0".equals(fee_type)) {
-                tv_money.setText("免费");
-                tv_fee_type.setText("免费");
-                tv_money.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_1F8FE5));
-                tv_fee_type.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_1F8FE5));
-            }else{
-                tv_money.setText("￥"+groupBean.getShequnFee());
-                tv_fee_type.setText("￥"+groupBean.getShequnFee());
-                tv_money.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_FC0000));
-                tv_fee_type.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_FC0000));
+            String shequnFee = groupBean.getShequnFee();
+            if (!TextUtils.isEmpty(shequnFee)) {
+                double money = Double.parseDouble(shequnFee);
+//            if ("0".equals(fee_type)) {
+                if (money == 0) {//等于0就是免费
+                    tv_money.setText("免费");
+                    tv_fee_type.setText("免费");
+                    tv_money.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+                    tv_fee_type.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5));
+                } else {
+                    tv_money.setText("￥" + groupBean.getShequnFee());
+                    tv_fee_type.setText("￥" + groupBean.getShequnFee());
+                    tv_money.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
+                    tv_fee_type.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
+                }
             }
 
             tv_pay_notice.setText(groupBean.getPayNotice());
@@ -209,7 +218,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         for (int i = 0; i < length; i++) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.group_tag, null);
             LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            itemParams.setMargins(0, 0, DisplayUtil.dip2px(mContext,8), 0);
+            itemParams.setMargins(0, 0, DisplayUtil.dip2px(mContext, 8), 0);
             view.setLayoutParams(itemParams);
             TextView tv_tag = view.findViewById(R.id.tv_tag);
             tv_tag.setText(tagS[i]);
@@ -218,14 +227,13 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     }
 
 
-
     /**
      * 部分主题预览
      */
     private void createList(List<ThemeBean> mList) {
         if (!ListUtils.isEmpty(mList)) {
             llContainerBottom.removeAllViews();
-            for (ThemeBean item:mList) {
+            for (ThemeBean item : mList) {
                 View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_group_detail_bottom, null);
                 TextView tv_group_host_name = itemView.findViewById(R.id.tv_group_host_name);
                 TextView tv_title = itemView.findViewById(R.id.tv_title);
@@ -241,31 +249,30 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                 }
 
 
-
                 String topicType = item.getTopicType();
                 if ("1".equals(topicType)) {//1是话题2是问答
                     if (!StringUtil.isBlank(item.getTitle())) {
                         tv_title.setVisibility(View.VISIBLE);
                         tv_title.setText(item.getTitle());
-                    }else{
+                    } else {
                         tv_title.setVisibility(View.GONE);
                     }
-                    handleCommonData(item.getAvatar(),item.getNickname(),item.getContent()
-                            ,iv_header_host,tv_group_host_name,tv_des);
+                    handleCommonData(item.getAvatar(), item.getNickname(), item.getContent()
+                            , iv_header_host, tv_group_host_name, tv_des);
                     handleImageList(item, mNineView);
                     ll_container_answer.setVisibility(View.GONE);
-                }else{
+                } else {
                     tv_title.setVisibility(View.GONE);
                     List<ThemeBean.DetailDTO> details = item.getDetail();
                     if (!ListUtils.isEmpty(details)) {
                         ll_container_answer.setVisibility(View.VISIBLE);
                         ThemeBean.DetailDTO answerObj = details.get(0);
-                        handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent()
-                                ,iv_header_host,tv_group_host_name,tv_des);
-                        createQuestionList(ll_container_answer,item);
-                    }else{
-                        handleCommonData(item.getAvatar(),item.getNickname(),item.getContent()
-                                ,iv_header_host,tv_group_host_name,tv_des);
+                        handleCommonData(answerObj.getAvatar(), answerObj.getNickname(), answerObj.getAnswerContent()
+                                , iv_header_host, tv_group_host_name, tv_des);
+                        createQuestionList(ll_container_answer, item);
+                    } else {
+                        handleCommonData(item.getAvatar(), item.getNickname(), item.getContent()
+                                , iv_header_host, tv_group_host_name, tv_des);
                         handleImageList(item, mNineView);
                         ll_container_answer.setVisibility(View.GONE);
                     }
@@ -276,15 +283,15 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         }
     }
 
-    private void handleCommonData(String headImg,String headName,String content
-            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content) {
+    private void handleCommonData(String headImg, String headName, String content
+            , ImageView iv_headImg, TextView tv_headName, TextView tv_content) {
         GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
         tv_headName.setText(headName);
 
         if (!StringUtil.isBlank(content)) {
             tv_content.setVisibility(View.VISIBLE);
             tv_content.setText(content);
-        }else{
+        } else {
             tv_content.setVisibility(View.GONE);
         }
     }
@@ -292,14 +299,14 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     /**
      * 提问
      */
-    private void createQuestionList(LinearLayout ll_container_answer, ThemeBean item ) {
+    private void createQuestionList(LinearLayout ll_container_answer, ThemeBean item) {
         ll_container_answer.removeAllViews();
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
         TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
         TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
         RecyclerView mNineView = itemView.findViewById(R.id.nine_grid_answer);
         tv_answer_name.setText(item.getNickname());
-        tv_answer_content.setText("提问："+item.getContent());
+        tv_answer_content.setText("提问：" + item.getContent());
 
         handleImageList(item, mNineView);
         ll_container_answer.addView(itemView);
@@ -332,10 +339,14 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
 
     @OnClick(R.id.tv_join)
     public void onClick() {
-        if ("0".equals(fee_type)) {
-            joinGroup();
-        }else{
-            createOrder();
+        if (groupBean != null) {
+            double money = Double.parseDouble(groupBean.getShequnFee());
+//            if ("0".equals(fee_type)) {
+            if (money == 0) {//等于0就是免费
+                joinGroup();
+            } else {
+                createOrder();
+            }
         }
     }
 
@@ -374,7 +385,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            String prepay_id = GsonUtil.getInstance().getValue(json_data,"prepay_id");
+                            String prepay_id = GsonUtil.getInstance().getValue(json_data, "prepay_id");
                             toPay(prepay_id);
                         }
                     }
@@ -382,8 +393,6 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         sender.setContext(mActivity);
         sender.sendGet();
     }
-
-
 
 
     //-------------------------------------------微信支付-------------------------------------------------------------
@@ -435,9 +444,6 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
         }
 
     }
-
-
-
 
 
 }

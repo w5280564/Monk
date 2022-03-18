@@ -11,6 +11,8 @@ import com.xunda.lib.common.common.language.MultiLanguageUtil;
 import com.xunda.lib.common.common.preferences.GsonConverterFactory;
 import com.tencent.bugly.crashreport.CrashReport;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * BaseApplication
  *
@@ -24,6 +26,9 @@ public class MonkApplication extends BaseApplication {
         instance = this;
         Treasure.setConverterFactory(new GsonConverterFactory());//Treasure：数据保存类
         OkhttpInitUtil.init(instance);//初始化网络请求类
+
+        JPushInterface.setDebugMode(true);//打开日志
+        JPushInterface.init(this);//初始化
     }
 
 

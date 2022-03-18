@@ -6,12 +6,16 @@ buildscript {
         maven {
             url 'https://maven.aliyun.com/repository/google'
             name 'Google'
-        }
+            }
+        // hms
+        maven { url 'https://developer.huawei.com/repo/'}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.2'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'//必不可少
         classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
+        // hms
+        classpath 'com.huawei.agconnect:agcp:1.6.0.300'
     }
 }
 
@@ -26,6 +30,9 @@ allprojects {
             url 'https://maven.aliyun.com/repository/google'
             name 'Google'
         }
+
+        //hms
+        maven {url 'https://developer.huawei.com/repo/'}
 
         // 子模块含有aar:添加全局引用
         flatDir {

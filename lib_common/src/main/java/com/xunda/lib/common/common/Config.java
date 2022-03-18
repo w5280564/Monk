@@ -18,7 +18,7 @@ public class Config {
         public static final boolean DEBUG = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ;
 
         // 是否输出日志
-        public static final boolean IS_LOG = true;
+        public static final boolean IS_LOG = false;
 
 
         // 图片保存地址

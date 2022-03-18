@@ -105,7 +105,6 @@ public class ChangePhoneNumberActivity extends BaseActivity {
                 break;
             case R.id.tv_submit:
                 String phoneNumber = StringUtil.getEditText(et_phoneNumber);
-
                 if (StringUtil.isBlank(phoneNumber)) {
                     T.ss("请输入手机号");
                     return;
@@ -137,10 +136,11 @@ public class ChangePhoneNumberActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-//                            T.ss("登录成功");
+                            T.ss("修改成功");
+                            finish();
+//                            getQuit();
 //                            BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);
 //                            saveUserInfo(obj);
-                            getQuit();
                         }
                     }
 

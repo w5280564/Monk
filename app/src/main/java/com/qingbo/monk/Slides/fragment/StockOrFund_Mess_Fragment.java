@@ -177,11 +177,11 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
         if (TextUtils.equals(data_source, "1")) {
             String nickname = item.getAuthor();
-            String id = item.getId();
+            String id = item.getAuthor_id();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         }else {
 
-            String id = item.getId();
+            String id = item.getAuthor_id();
             MyAndOther_Card.actionStart(mActivity, id);
         }
     }

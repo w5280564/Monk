@@ -67,6 +67,8 @@ public class HomeFoucsDetail_Bean {
             private String source_url;
             @SerializedName("data_source")
             private String data_source;
+            @SerializedName("collect_status")
+            private String collect_status;
 
 
             @NoArgsConstructor

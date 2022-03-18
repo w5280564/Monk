@@ -15,6 +15,7 @@
         app:titleBarRightShowFlag="INVISIBLE"
         app:titleBarRightShowType="TEXT"
         app:titleBarShowBottomLine="false"
+        app:titleBarTitle="发布动态"
         app:titleColor="@color/text_main_color" />
 
 

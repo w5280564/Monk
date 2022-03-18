@@ -1,10 +1,7 @@
 package com.qingbo.monk.person.activity;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +19,6 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 
@@ -57,6 +53,7 @@ public class Person_System_examine extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
+        postClear(false);
         getExpertList(true);
     }
 
@@ -129,7 +126,23 @@ public class Person_System_examine extends BaseRecyclerViewSplitActivity {
         });
     }
 
+    private void postClear(boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("type","check");
+        HttpSender sender = new HttpSender(HttpUrl.System_Mes_Clear, "系统消息数-清除提醒", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
 
+                        }
+                    }
+
+                }, isShowAnimal);
+
+        sender.setContext(mActivity);
+        sender.sendPost();
+    }
 
 
 

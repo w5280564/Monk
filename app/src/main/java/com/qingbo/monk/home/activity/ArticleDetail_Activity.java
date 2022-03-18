@@ -5,6 +5,7 @@ import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
@@ -60,6 +62,7 @@ import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
 
 import java.util.ArrayList;
@@ -137,6 +140,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView source_Tv;
     @BindView(R.id.top_Con)
     ConstraintLayout top_Con;
+    @BindView(R.id.collect_Tv)
+    TextView collect_Tv;
+    @BindView(R.id.share_Tv)
+    TextView share_Tv;
 
 
     private String articleId;
@@ -177,7 +184,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
     /**
-     *
      * @param context
      * @param articleId
      * @param isShowTop
@@ -190,7 +196,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         intent.putExtra("isInformation", isInformation);
         context.startActivity(intent);
     }
-
 
 
     @Override
@@ -214,6 +219,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         viewTouchDelegate.expandViewTouchDelegate(back_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
+        viewTouchDelegate.expandViewTouchDelegate(collect_Tv, 50);
+        viewTouchDelegate.expandViewTouchDelegate(share_Tv, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
     }
@@ -231,6 +238,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         person_Img.setOnClickListener(this);
         send_Mes.setOnClickListener(this);
         source_Tv.setOnClickListener(this);
+        collect_Tv.setOnClickListener(this);
+        share_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -255,6 +264,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
                 postLikedData(likeId);
                 break;
+            case R.id.collect_Tv:
+                String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
+                postCollectData(articleId);
+                break;
+
             case R.id.join_Tv:
                 groupIsJoin();
                 break;
@@ -273,7 +287,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     T.s("评论不能为空", 2000);
                     return;
                 }
-                if (TextUtils.isEmpty(articleId) || TextUtils.isEmpty(type)) {
+                if (TextUtils.isEmpty(this.articleId) || TextUtils.isEmpty(type)) {
                     T.s("文章ID是空", 2000);
                     return;
                 }
@@ -281,13 +295,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     ArticleDetail_Comment_Fragment o = (ArticleDetail_Comment_Fragment) tabFragmentList.get(0);
                     o.onClick(release_Tv);
                 } else {
-                    addComment(articleId, type, s);
+                    addComment(this.articleId, type, s);
                 }
                 break;
             case R.id.person_Img:
 //                String authorId4 = homeFoucsDetail_bean.getData().getDetail().getAuthorId();
 //                MyAndOther_Card.actionStart(mActivity, authorId4, isExpert);
-                HomeFoucsDetail_Bean.DataDTO.DetailDTO item =  homeFoucsDetail_bean.getData().getDetail();
+                HomeFoucsDetail_Bean.DataDTO.DetailDTO item = homeFoucsDetail_bean.getData().getDetail();
                 startPerson(item);
                 break;
             case R.id.send_Mes:
@@ -303,12 +317,31 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     jumpToWebView(title, source_url);
                 }
                 break;
+          case R.id.share_Tv:
+                if (homeFoucsDetail_bean != null) {
+                   showShareDialog();
+                }
+                break;
 
+        }
+    }
+
+
+    private void showShareDialog() {
+        if (homeFoucsDetail_bean != null) {
+            String imgUrl = homeFoucsDetail_bean.getData().getDetail().getAvatar();
+            String downURl = "https://www.pgyer.com/TvE6";
+//            String title = String.format("邀请%1$s")
+            String title = homeFoucsDetail_bean.getData().getDetail().getTitle();
+            String content = homeFoucsDetail_bean.getData().getDetail().getContent();
+            ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
+            mShareDialog.show();
         }
     }
 
     /**
      * 人物跳转
+     *
      * @param item
      */
     private void startPerson(HomeFoucsDetail_Bean.DataDTO.DetailDTO item) {
@@ -317,7 +350,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             String nickname = item.getAuthorName();
             String id = item.getAuthorId();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
-        }else {
+        } else {
             String id = item.getAuthorId();
             MyAndOther_Card.actionStart(mActivity, id, isExpert);
         }
@@ -434,9 +467,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
                         type = detailData.getType();
                         String source_url = detailData.getSource_url();
-                        if (TextUtils.isEmpty(source_url)){
+                        if (TextUtils.isEmpty(source_url)) {
                             source_Tv.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             source_Tv.setVisibility(View.VISIBLE);
                         }
                         String is_anonymous = detailData.getIsAnonymous();//1是匿名
@@ -470,6 +503,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
+                        isCollect(detailData.getCollect_status(), collect_Tv);
 
                         String action = detailData.getAction();
                         if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣组
@@ -520,6 +554,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.sendPost();
     }
 
+    /**
+     * 点赞
+     *
+     * @param likeId
+     */
     private void postLikedData(String likeId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", likeId + "");
@@ -541,6 +580,31 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                             nowLike += 1;
                         }
                         follow_Count.setText(nowLike + "");
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+                        isCollect(collect_status + "", collect_Tv);
                     }
                 }
             }
@@ -657,6 +721,22 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }
         follow_Count.setText(nowLike + "");
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    private void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
     /**
      * 大V标签
@@ -839,6 +919,18 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         } else {
             return true;
         }
+    }
+
+    /**
+     * 设置textview 右边图
+     *
+     * @param textView
+     * @param mipmap
+     */
+    private void setDrawableEnd(TextView textView, int mipmap) {
+        Drawable drawableEnd = getResources().getDrawable(mipmap);
+        textView.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
     }
 
 

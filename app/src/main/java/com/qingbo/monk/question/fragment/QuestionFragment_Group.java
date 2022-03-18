@@ -1,12 +1,10 @@
 package com.qingbo.monk.question.fragment;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,16 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.flyco.banner.widget.Banner.base.BaseBanner;
 import com.google.gson.reflect.TypeToken;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Question_MyGroupAdapter;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.bean.BaseGroupBean;
+import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.MyGroupBean;
-import com.qingbo.monk.bean.GroupBean;
 import com.qingbo.monk.bean.MyGroupList_Bean;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
-import com.qingbo.monk.person.adapter.MyGroupAdapter;
 import com.qingbo.monk.question.activity.AllGroupListActivity;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
@@ -33,7 +31,6 @@ import com.qingbo.monk.view.banner.QuestionGroupBanner;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpBaseList;
-import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -158,9 +155,10 @@ public class QuestionFragment_Group extends BaseLazyFragment {
 
     @Override
     protected void loadData() {
-        getAllShequn();
-        getMyGroupHead("1");
+
     }
+
+
 
 
 
@@ -229,12 +227,15 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     @Override
     public void onPause() {
         super.onPause();
+
         img_top_banner.pauseScroll();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getAllShequn();
+        getMyGroupHead("1");
         img_top_banner.goOnScroll();
     }
 
@@ -260,7 +261,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
-                            myGroupAdapter.addData(myGroupList_bean.getList());
+                            myGroupAdapter.setNewData( myGroupList_bean.getList());
                             MyCardGroup_Bean myCardGroup_bean = new MyCardGroup_Bean();
                             myCardGroup_bean.setItemType("2");
                             myGroupAdapter.addData(myCardGroup_bean);

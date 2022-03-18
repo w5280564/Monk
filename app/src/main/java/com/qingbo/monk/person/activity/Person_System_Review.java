@@ -1,5 +1,8 @@
 package com.qingbo.monk.person.activity;
 
+import android.text.TextUtils;
+import android.view.View;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +11,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.SystemReview_Bean;
 import com.qingbo.monk.bean.SystemReview_List_Bean;
+import com.qingbo.monk.bean.System_MesCount_Bean;
 import com.qingbo.monk.person.adapter.MySystem_Review_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -19,7 +23,10 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
-public class Person_System_Review extends BaseRecyclerViewSplitActivity {
+/**
+ * 系统通知-系统审核
+ */
+public class  Person_System_Review extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.card_Recycler)
     RecyclerView mRecyclerView;
     @BindView(R.id.title_bar)
@@ -43,6 +50,7 @@ public class Person_System_Review extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
+        postClear(false);
         getExpertList(true);
     }
 
@@ -103,6 +111,24 @@ public class Person_System_Review extends BaseRecyclerViewSplitActivity {
 //                ArticleDetail_Activity.startActivity(this, articleId, "0", type);
 //            }
         });
+    }
+
+    private void postClear(boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("type","check");
+        HttpSender sender = new HttpSender(HttpUrl.System_Mes_Clear, "系统消息数-清除提醒", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+
+                        }
+                    }
+
+                }, isShowAnimal);
+
+        sender.setContext(mActivity);
+        sender.sendPost();
     }
 
 }

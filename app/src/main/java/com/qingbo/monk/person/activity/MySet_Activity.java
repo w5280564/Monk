@@ -11,13 +11,17 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.login.activity.ChangePhoneNumberActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
 import com.xunda.lib.common.base.BaseApplication;
+import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.eventbus.SocketUnbindEvent;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DataCleanManager;
+import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import com.xunda.lib.common.view.MyArrowItemView;
 
@@ -50,8 +54,8 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initLocalData() {
-        String username = PrefUtil.getUser().getUsername();
-        phone_MyView.getTvContent().setText(username);
+//        String username = PrefUtil.getUser().getUsername();
+//        phone_MyView.getTvContent().setText(username);
 
         String auth_nickname = PrefUtil.getUser().getAuth_nickname();
         if (TextUtils.isEmpty(auth_nickname)) {
@@ -143,6 +147,33 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserData();
+    }
+
+
+    private void getUserData() {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userId", SharePref.user().getUserId());
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    UserBean  userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    if (userBean != null) {
+                        phone_MyView.getTvContent().setText(userBean.getUsername());
+                    }
+                }
+            }
+        }, false);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
     }
 
 }

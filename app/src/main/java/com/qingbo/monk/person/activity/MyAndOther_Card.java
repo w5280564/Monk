@@ -29,12 +29,14 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.fragment.MyArchives_Fragment;
+import com.qingbo.monk.person.fragment.MyCollect_Fragment;
 import com.qingbo.monk.person.fragment.MyDynamic_Fragment;
 import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.bean.UserBean;
@@ -47,6 +49,7 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,6 +113,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView sex_Tv;
     @BindView(R.id.iv_bianji)
     ImageView iv_bianji;
+    @BindView(R.id.share_Btn)
+    Button share_Btn;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -170,17 +175,19 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         headLayout.setmZoomView(iv_img);
 
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
+        viewTouchDelegate.expandViewTouchDelegate(share_Btn, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
         initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
-        if (isMe()){
+        if (isMe()) {
             iv_bianji.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     protected void getServerData() {
+        postDeleArticleData(userID,false);
         getMyGroup(userID, false);
         getInterestData(userID, false);
     }
@@ -195,6 +202,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     protected void initEvent() {
         super.initEvent();
         back_Btn.setOnClickListener(this);
+        share_Btn.setOnClickListener(this);
         brief_Tv.setOnClickListener(this);
         group_Con.setOnClickListener(this);
         interest_Con.setOnClickListener(this);
@@ -208,12 +216,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @SuppressLint("WrongConstant")
     private void initMenuData() {
         ArrayList<String> tabName = new ArrayList<>();
-//        if (isMe()) {
-//            tabName.add("我的动态");
-//        } else {
-//            tabName.add("他的动态");
-//        }
         tabName.add("动态");
+        if (isMe()) {
+            tabName.add("收藏");
+        }
         tabName.add("档案");
         for (int i = 0; i < tabName.size(); i++) {
             AppMenuBean bean = new AppMenuBean();
@@ -221,12 +227,36 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             menuList.add(bean);
         }
         fragments.add(MyDynamic_Fragment.newInstance(userID));
+        if (isMe()) {
+            fragments.add(MyCollect_Fragment.newInstance(userID));
+        }
         fragments.add(MyArchives_Fragment.newInstance(userID));
         initViewPager(0);
     }
 
-    UserBean userBean;
+    /**
+     * 删除查看发文状态
+     * @param followId
+     */
+    private void postDeleArticleData(String followId, boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("followId", followId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Clear_Article, "删除查看发文状态", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
 
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
+
+    UserBean userBean;
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
@@ -240,7 +270,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(),R.mipmap.card_bg);
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.card_bg);
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
@@ -433,14 +463,28 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 MyAndOtherEdit_Card.actionStart(mActivity, userID);
                 break;
             case R.id.iv_bianji:
-                if (isMe()){
+                if (isMe()) {
                     String isOriginator = PrefUtil.getUser().getIsOriginator();
-                    MyCrateArticle_Avtivity.actionStart(mActivity,isOriginator);
+                    MyCrateArticle_Avtivity.actionStart(mActivity, isOriginator);
                 }
                 break;
-
+            case R.id.share_Btn:
+                showShareDialog();
+                break;
         }
     }
+
+    private void showShareDialog() {
+        if (userBean != null) {
+            String imgUrl = userBean.getAvatar();
+            String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s",userBean.getId());
+            String title = String.format("分享 %1$s 的发现扫地僧主页",userBean.getNickname());
+            String content = String.format("%1$s粉丝 %2$s关注",userBean.getFansNum(),userBean.getFollowNum());
+            ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
+            mShareDialog.show();
+        }
+    }
+
 
     /**
      * 我的标签

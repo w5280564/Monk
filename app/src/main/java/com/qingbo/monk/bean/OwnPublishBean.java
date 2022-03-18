@@ -84,4 +84,5 @@ public class OwnPublishBean implements Serializable {
         @SerializedName("role")
         private String role;
     }
+
 }

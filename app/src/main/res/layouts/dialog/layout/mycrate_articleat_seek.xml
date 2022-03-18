@@ -13,7 +13,7 @@
         android:layout_height="@dimen/title_height"
         app:titleBarLeftImg="@mipmap/icon_back"
         app:titleBarShowBottomLine="false"
-        app:titleBarTitle="选择@的人" />
+        app:titleBarTitle="搜索" />
 
 
     <com.xunda.lib.common.view.SearchEditText

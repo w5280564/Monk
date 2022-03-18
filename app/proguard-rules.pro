@@ -174,26 +174,6 @@
     @butterknife.* <methods>;
 }
 
-
-#华为推送
--ignorewarnings
--keepattributes *Annotation*
--keepattributes Exceptions
--keepattributes InnerClasses
--keepattributes Signature
--keepattributes SourceFile,LineNumberTable
--keep class com.hianalytics.android.**{*;}
--keep class com.huawei.updatesdk.**{*;}
--keep class com.huawei.hms.**{*;}
-
-
-#小米推送
--dontwarn com.xiaomi.push.**
-
-#Vivo推送
--dontwarn com.vivo.push.**
--keep class com.vivo.push.**{*;   }
--keep class com.vivo.vms.**{*; }
 #环信SDK已添加相应的规则
 #-keep class com.hyphenate.push.platform.vivo.EMVivoMsgReceiver{*;}
 
@@ -223,3 +203,44 @@
 #TreeRecyclerView
 -keep public class * extends  com.baozi.treerecyclerview.item.TreeItem {}
 -keep public class * extends android.support.annotation.**
+
+#小米推送
+-dontwarn com.xiaomi.push.**
+-keep class com.xiaomi.push.** { *; }
+
+#华为推送
+-ignorewarnings
+-keepattributes *Annotation*
+-keepattributes Exceptions
+-keepattributes InnerClasses
+-keepattributes Signature
+-keepattributes SourceFile,LineNumberTable
+-keep class com.hianalytics.android.**{*;}
+-keep class com.huawei.updatesdk.**{*;}
+-keep class com.huawei.hms.**{*;}
+
+#OPPO推送
+-dontwarn com.coloros.mcsdk.**
+-keep class com.coloros.mcsdk.** { *; }
+-dontwarn com.heytap.**
+-keep class com.heytap.** { *; }
+-dontwarn com.mcs.**
+-keep class com.mcs.** { *; }
+
+#Vivo推送
+-dontwarn com.vivo.push.**
+-keep class com.vivo.push.**{*; }
+-keep class com.vivo.vms.**{*; }
+
+#JPush推送配置
+-dontoptimize
+-dontpreverify
+-dontwarn cn.jpush.**
+-keep class cn.jpush.** { *; }
+-keep class * extends cn.jpush.android.helpers.JPushMessageReceiver { *; }
+-dontwarn cn.jiguang.**
+-keep class cn.jiguang.** { *; }
+
+-dontwarn com.google.**
+-keep class com.google.gson.** {*;}
+-keep class com.google.protobuf.** {*;}

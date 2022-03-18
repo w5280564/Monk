@@ -119,22 +119,22 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
             nineGridAdapter.setNewData(null);
         }
 
-//        String status = item.getStatus();//0待审核 1通过 2未通过
-//        if (TextUtils.equals(status, "0")) {
-//            tv_status.setVisibility(View.VISIBLE);
-//            tv_status.setText("待审核");
-//            setDrawableLeft(R.mipmap.weishenhe,tv_status);
-//        } else if(TextUtils.equals(status, "1")){
-//            tv_status.setVisibility(View.VISIBLE);
-//            tv_status.setText("审核通过");
-//            setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
-//        } else if(TextUtils.equals(status, "2")){
-//            tv_status.setVisibility(View.VISIBLE);
-//            setDrawableLeft(R.mipmap.weitongguo,tv_status);
-//            tv_status.setText("未通过");
-//        } else{
-//            tv_status.setVisibility(View.GONE);
-//        }
+        String status = item.getStatus();//0待审核 1通过 2未通过
+        if (TextUtils.equals(status, "0")) {
+            tv_status.setVisibility(View.VISIBLE);
+            tv_status.setText("待审核");
+            setDrawableLeft(R.mipmap.weishenhe,tv_status);
+        } else if(TextUtils.equals(status, "1")){
+            tv_status.setVisibility(View.VISIBLE);
+            tv_status.setText("审核通过");
+            setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
+        } else if(TextUtils.equals(status, "2")){
+            tv_status.setVisibility(View.VISIBLE);
+            setDrawableLeft(R.mipmap.weitongguo,tv_status);
+            tv_status.setText("未通过");
+        } else{
+            tv_status.setVisibility(View.GONE);
+        }
 
 
         helper.addOnClickListener(R.id.follow_Tv);

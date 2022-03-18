@@ -1,11 +1,20 @@
 package com.qingbo.monk.home.activity;
 
 import android.app.ActivityManager;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
@@ -22,6 +31,10 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialog;
 import com.xunda.lib.common.dialog.PrivacyPolicyDialogAgain;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+
 /**
  * 启动页面
  */
@@ -34,6 +47,7 @@ public class BeginActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         judgePrivacyPolicy();
         setStatusBar();
+
     }
 
 
@@ -180,5 +194,9 @@ public class BeginActivity extends FragmentActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
+
+
+
+
 
 }

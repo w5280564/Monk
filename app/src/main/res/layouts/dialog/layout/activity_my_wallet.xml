@@ -36,13 +36,17 @@
 
     <TextView
         android:id="@+id/refresh_Tv"
-        android:layout_width="@dimen/dp_15"
-        android:layout_height="@dimen/dp_15"
-        android:background="@mipmap/huanyihuan"
-        android:layout_marginStart="@dimen/dp_10"
-        app:layout_constraintBottom_toBottomOf="@+id/textView19"
-        app:layout_constraintStart_toEndOf="@+id/textView19"
-        app:layout_constraintTop_toTopOf="@+id/textView19" />
+        android:layout_width="@dimen/dp_54"
+        android:layout_height="@dimen/dp_24"
+        android:background="@drawable/blue_radius9"
+        android:text="刷新"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginTop="@dimen/dp_15"
+        app:layout_constraintEnd_toEndOf="@+id/smallChange_Tv"
+        app:layout_constraintStart_toStartOf="@+id/smallChange_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/smallChange_Tv" />
 
 
     <TextView
@@ -63,9 +67,9 @@
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_47"
+        android:layout_marginTop="@dimen/dp_25"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/smallChange_Tv">
+        app:layout_constraintTop_toBottomOf="@+id/refresh_Tv">
 
         <TextView
             android:id="@+id/textView21"

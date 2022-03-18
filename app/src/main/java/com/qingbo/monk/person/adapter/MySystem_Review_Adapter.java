@@ -38,13 +38,21 @@ public class MySystem_Review_Adapter extends BaseQuickAdapter<SystemReview_Bean,
     @Override
     protected void convert(@NonNull BaseViewHolder helper, SystemReview_Bean item) {
         helper.setText(R.id.time_Tv, item.getCreateTime());
-        helper.setText(R.id.review_Tv, item.getRefuseMsg());
+        TextView review_Tv = helper.getView(R.id.review_Tv);
         TextView comment_Tv = helper.getView(R.id.comment_Tv);
         ImageView art_Img = helper.getView(R.id.art_Img);
         TextView artName_tv = helper.getView(R.id.artName_tv);
         TextView artContent_Tv = helper.getView(R.id.artContent_Tv);
 
         String type = item.getType();//1除创作者文章的全部文章 2评论 3社群 4创作者文章 5创作者 6资讯评论
+
+        if (TextUtils.equals(type, "1") || TextUtils.equals(type, "4")){
+            String format = String.format("你的文章因 “%1$s” 审核未通过，请重新编辑再发 布。", item.getRefuseMsg());
+            review_Tv.setText(format);
+        }else if (TextUtils.equals(type, "2") || TextUtils.equals(type, "6")){
+            String format = String.format("你的评论因 “%1$s” 审核未通过，请重新编辑再发 布。", item.getRefuseMsg());
+            review_Tv.setText(format);
+        }
 
         if (item.getContent() != null) {
             if (TextUtils.equals(type, "2") || TextUtils.equals(type, "6")) { //type=2/6存在

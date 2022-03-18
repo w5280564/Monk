@@ -21,6 +21,7 @@ import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
+import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
@@ -84,6 +85,12 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getListData(userID, true);
     }
 
@@ -241,22 +248,28 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.sendPost();
     }
 
-    private void showPopMenu(ImageView more_Img, MyDynamic_Bean mQuestionBean, int position) {
-        String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
+    private void showPopMenu(ImageView more_Img, MyDynamic_Bean myDynamic_bean, int position) {
+        String status = myDynamic_bean.getStatus();//0待审核 1通过 2未通过
         boolean haveEdit = false;
-        if (TextUtils.equals(status, "2")) {//审核未通过才能删除
+        if (TextUtils.equals(status, "2")) {//审核未通过才能编辑
             haveEdit = true;
         }
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-//                String shequnId = mQuestionBean.getShequnId();
-//                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
+                OwnPublishBean ownPublishBean = new OwnPublishBean();
+                ownPublishBean.setId(myDynamic_bean.getArticleId());
+                ownPublishBean.setTitle(myDynamic_bean.getTitle());
+                ownPublishBean.setContent(myDynamic_bean.getContent());
+                ownPublishBean.setImages(myDynamic_bean.getImages());
+                ownPublishBean.setCreateTime(myDynamic_bean.getCreateTime());
+                ownPublishBean.setIsAnonymous(myDynamic_bean.getIsAnonymous());
+                MyCrateArticle_Avtivity.actionStart(mActivity, ownPublishBean, true);
             }
 
             @Override
             public void onClickDelete() {
-                showDeleteDialog(mQuestionBean.getArticleId(), position);
+                showDeleteDialog(myDynamic_bean.getArticleId(), position);
             }
 
         });

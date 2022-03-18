@@ -78,6 +78,19 @@
             android:background="@drawable/interest_lable"
             android:layout_marginBottom="@dimen/dp_13"/>
 
+        <TextView
+            android:id="@+id/update_Tv"
+            android:layout_width="@dimen/dp_4"
+            android:layout_height="@dimen/dp_4"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:background="@drawable/radius_blue"
+            app:layout_constraintTop_toTopOf="@id/head_Tv"
+            app:layout_constraintEnd_toEndOf="@id/head_Tv"
+            android:textSize="10sp" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

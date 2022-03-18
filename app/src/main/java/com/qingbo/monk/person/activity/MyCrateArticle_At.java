@@ -1,15 +1,7 @@
 package com.qingbo.monk.person.activity;
 
-import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,11 +13,9 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.MyConstant;
-import com.qingbo.monk.base.baseview.AtEditText;
 import com.qingbo.monk.base.livedatas.LiveDataBus;
 import com.qingbo.monk.bean.FriendContactBean;
 import com.qingbo.monk.bean.FriendContactBigBean;
-import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.message.adapter.ContactListAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpBaseList;

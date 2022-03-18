@@ -132,7 +132,6 @@
         android:background="@drawable/shape_bag_join_group"
         android:drawablePadding="@dimen/dp_10"
         android:gravity="center"
-        android:paddingStart="@dimen/dp_10"
         android:text="回复"
         android:textColor="@color/text_color_a1a1a1"
         android:textSize="12sp"

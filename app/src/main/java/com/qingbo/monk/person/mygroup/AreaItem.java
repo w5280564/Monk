@@ -1,9 +1,7 @@
 package com.qingbo.monk.person.mygroup;
 
 
-import android.net.Uri;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,6 @@ import com.baozi.treerecyclerview.item.TreeItem;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.MyTestHis_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.message.activity.ChatActivity;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.ListUtils;
 

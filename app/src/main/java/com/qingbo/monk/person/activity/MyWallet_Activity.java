@@ -21,6 +21,7 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 
@@ -50,7 +51,7 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        getUserData();
+        getUserData(false);
     }
 
     @Override
@@ -59,26 +60,25 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
         refresh_Tv.setOnClickListener(this);
     }
 
-    private void getUserData() {
+    private void getUserData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         HttpSender httpSender = new HttpSender(HttpUrl.User_wallet, "我的余额", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-//                if (refresh_layout.isRefreshing()) {
-//                    refresh_layout.setRefreshing(false);
-//                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     MyWallet_Bean myWallet_bean = GsonUtil.getInstance().json2Bean(json_data, MyWallet_Bean.class);
                     if (myWallet_bean != null){
                         originalValue(myWallet_bean.getTotal(), "0.00","¥ ", smallChange_Tv);
                         originalValue(myWallet_bean.getCan(), "0.00","¥", withdrawal_Tv);
                         originalValue(myWallet_bean.getWait(), "0.00","¥", settlement);
-
+                        if (isShow){
+                            T.s("已刷新",2000);
+                        }
                     }
                 }
             }
-        }, false);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
@@ -105,7 +105,7 @@ public class MyWallet_Activity extends BaseActivity implements View.OnClickListe
                 skipAnotherActivity(MyWallet_Withdrawal.class);
                 break;
             case R.id.refresh_Tv:
-                getUserData();
+                getUserData(true);
                 break;
 
         }

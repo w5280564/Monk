@@ -317,9 +317,9 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         if (!ListUtils.isEmpty(et_content.getAtList())) {
             StringBuffer alterList = new StringBuffer();
             for (AtEditText.Entity entity : et_content.getAtList()) {
-                alterList.append("," + entity.getName());
+                alterList.append(entity.getId() + ",");
             }
-            baseMap.put("alterList", alterList.toString());//at人名字
+            baseMap.put("alterList", alterList.toString());//at人id
         }
         if (isEdit) {//编辑
             baseMap.put("id", questionId);

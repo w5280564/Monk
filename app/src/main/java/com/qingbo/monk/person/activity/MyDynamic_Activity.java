@@ -204,8 +204,15 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
-//                String shequnId = mQuestionBean.getShequnId();
-//                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
+                OwnPublishBean ownPublishBean = new OwnPublishBean();
+                ownPublishBean.setId(mQuestionBean.getArticleId());
+                ownPublishBean.setTitle(mQuestionBean.getTitle());
+                ownPublishBean.setContent(mQuestionBean.getContent());
+                ownPublishBean.setImages(mQuestionBean.getImages());
+                ownPublishBean.setCreateTime(mQuestionBean.getCreateTime());
+                ownPublishBean.setIsAnonymous(mQuestionBean.getIsAnonymous());
+                MyCrateArticle_Avtivity.actionStart(mActivity, ownPublishBean, true);
+
             }
 
             @Override

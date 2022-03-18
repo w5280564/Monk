@@ -33,5 +33,7 @@ public class StockFundMes_Bean {
     private String commentcount;
     @SerializedName("data_source")
     private String data_source;
+    @SerializedName("author_id")
+    private String author_id;
 
 }

@@ -1,12 +1,19 @@
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'com.huawei.agconnect'
+
 // 注：需要配置符号表时，使用bugly插件
 apply plugin: 'bugly'
 
 bugly {
     appId = 'e702e5c066'
     appKey = 'd2de105b-ac53-45f3-a1c6-1d967b754877'
+}
+
+// ADD THIS AT THE BOTTOM
+repositories {
+    flatDir {
+        dirs 'libs'//this way we can find the .aar file in libs folder 添加aar文件索引
+    }
 }
 
 android {
@@ -36,6 +43,25 @@ android {
                 includeCompileClasspath = true
             }
         }
+
+
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                //JPush 上注册的包名对应的 Appkey.
+                JPUSH_APPKEY  : "21562add5efafcaead6371a5",
+                //暂时填写默认值即可.
+                JPUSH_CHANNEL : "developer-default",
+                //若不集成厂商通道，可直接跳过以下配置
+//                MEIZU_APPKEY  : "MZ-魅族的APPKEY",
+//                MEIZU_APPID   : "MZ-魅族的APPID",
+                XIAOMI_APPID  : "MI-2882303761520132776",
+                XIAOMI_APPKEY : "MI-5512013244776",
+                OPPO_APPKEY   : "OP-3990f15ae45948f19a36f538bb9f5c47",
+                OPPO_APPID    : "OP-30770553",
+                OPPO_APPSECRET: "OP-f71321e7b1d14a1393ffe149a3f9c35f",
+                VIVO_APPKEY   : "vivo的APPKEY",
+                VIVO_APPID    : "vivo的APPID"
+        ]
 
     }
     buildTypes {
@@ -83,6 +109,7 @@ android {
 
 
     dependencies {
+        compileOnly fileTree(dir: 'libs', include: ["*.aar"])
         implementation 'androidx.appcompat:appcompat:1.3.1'
         implementation 'com.google.android.material:material:1.3.0'
         implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -93,18 +120,42 @@ android {
         compileOnly 'org.projectlombok:lombok:1.18.20'
         annotationProcessor 'org.projectlombok:lombok:1.18.20'
         implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
-
         implementation 'org.jetbrains:annotations:15.0'
-
 
         implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'//折线图 饼状图
         implementation 'com.contrarywind:Android-PickerView:4.1.9'//选择器
         implementation 'com.github.lzjin:SideBarView:1.0'//字母索引
-
         implementation 'liji.library.dev:citypickerview:5.2.4'//三级联动城市选择器
         implementation 'com.github.Jlanglang:TreeRecyclerView:1.3.1-androidx'
+        implementation 'xiao.free.horizontalrefreshlayout:lib:v0.1.2' //横向刷新
 
-        implementation 'xiao.free.horizontalrefreshlayout:lib:v0.1.2'
+
+        // 此处以JCore 3.2.2 版本为例。
+        implementation 'cn.jiguang.sdk:jcore:3.2.2'
+        // 此处以JPush 4.6.2 版本为例
+        implementation 'cn.jiguang.sdk:jpush:4.6.2'
+        //若不集成厂商通道，可直接跳过以下依赖
+        // 接入华为厂商
+        implementation 'com.huawei.hms:push:4.0.2.300'
+        // 极光厂商插件版本与接入 JPush 版本保持一致，下同
+        implementation 'cn.jiguang.sdk.plugin:huawei:4.6.2'
+        // 接入 FCM 厂商
+//        implementation 'com.google.firebase:firebase-messaging:23.0.0'
+//        implementation 'cn.jiguang.sdk.plugin:fcm:4.6.2'
+        // 接入魅族厂商
+//        implementation 'cn.jiguang.sdk.plugin:meizu:4.6.2'
+        // 接入 VIVO 厂商
+        implementation 'cn.jiguang.sdk.plugin:vivo:4.6.2'
+        // 接入小米厂商
+        implementation 'cn.jiguang.sdk.plugin:xiaomi:4.6.2'
+        // 接入 OPPO 厂商
+        implementation 'cn.jiguang.sdk.plugin:oppo:4.6.2'
+        // oppo 厂商 aar 需要单独引入，请将 jiguang/libs 下 com.heytap.msp-push-x.x.x.aar 单独拷贝一份到应用 module/libs 下
+        implementation(name: 'com.heytap.msp-push-3.0.0', ext: 'aar')
+        //以下为 OPPO 3.0.0 aar需要依赖
+        implementation 'com.google.code.gson:gson:2.9.0'
+        implementation 'commons-codec:commons-codec:1.10'
+        implementation 'androidx.annotation:annotation:1.3.0'
     }
 
 

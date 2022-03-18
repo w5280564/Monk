@@ -1,19 +1,16 @@
 package com.qingbo.monk.home.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,20 +38,19 @@ import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.bean.MainUpdateCount_Bean;
-import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.person.activity.MyFeedBack_Activity;
-import com.qingbo.monk.person.activity.MySet_Activity;
-import com.xunda.lib.common.bean.ApkBean;
-import com.xunda.lib.common.bean.AppMarketBean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
 import com.qingbo.monk.home.fragment.MineFragment;
 import com.qingbo.monk.home.fragment.QuestionFragment;
 import com.qingbo.monk.home.fragment.UniverseFragment;
-import com.qingbo.monk.login.activity.BindPhoneNumberActivity;
 import com.qingbo.monk.login.activity.LoginActivity;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
+import com.qingbo.monk.person.activity.MyFeedBack_Activity;
+import com.qingbo.monk.person.activity.MySet_Activity;
 import com.xunda.lib.common.base.BaseApplication;
+import com.xunda.lib.common.bean.ApkBean;
+import com.xunda.lib.common.bean.AppMarketBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.ReceiveSocketMessageEvent;
 import com.xunda.lib.common.common.eventbus.SocketUnbindEvent;
@@ -67,10 +63,8 @@ import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ChooseAppMarketDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
-import com.xunda.lib.common.dialog.TwoButtonDialogBlue_No_Finish;
 import com.xunda.lib.common.dialog.VersionDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 
@@ -144,6 +138,14 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
         super.initView(savedInstanceState);
         initFragment();
         mBottomNavigationView.setItemIconTintList(null);
+        List<Object> ids =new ArrayList<>();
+        ids.add(R.id.em_main_home);
+        ids.add(R.id.em_main_questions);
+        ids.add(R.id.em_main_universe);
+        ids.add(R.id.em_main_message);
+        ids.add(R.id.em_main_mine);
+        clearToast(mBottomNavigationView,ids);
+
         addTabBadge();
         WebSocketHelper.getInstance().initWebSocketService(this, BIND_AUTO_CREATE);
         ;//初始化和绑定WebSocket
@@ -657,8 +659,23 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
 
 
 
-
-
+    /*
+     ** 清除长按时的toast
+     ** @param bottomNavigationView 当前BottomNavigationView
+     * @param ids 与配置文件中对应的所有id
+     */
+    public static void clearToast(BottomNavigationView bottomNavigationView, List ids) {
+        ViewGroup bottomNavigationMenuView = (ViewGroup) bottomNavigationView.getChildAt(0);
+        //遍历子View,重写长按点击事件
+        for (int position = 0; position < ids.size(); position++) {
+            bottomNavigationMenuView.getChildAt(position).findViewById((Integer) ids.get(position)).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
+                }
+            });
+        }
+    }
 
 
 }

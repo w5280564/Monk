@@ -247,6 +247,13 @@ public class HttpUrl {
     public static final String System_ReplyList = "user/user/reply-list";//系统评论
     public static final String System_LikedList = "user/user/liked-list";//点赞我的
     public static final String System_CheckList = "user/user/check-list";//审核列表
+    public static final String System_ATList = "user/user/alert-article";//at我的文章列表
+    public static final String Collect_Article = "user/user/collect";//收藏文章
+    public static final String Collect_Article_List = "user/user/collect-list";//收藏文章列表
+    public static final String Clear_Article = "user/user/clear-new-article";//删除查看发文状态
+    public static final String System_Mes_Count = "user/user/system-message-count";//系统消息数
+    public static final String System_Mes_Clear = "user/user/clear-remind";//系统消息数-清除提醒
+
 
 }
 

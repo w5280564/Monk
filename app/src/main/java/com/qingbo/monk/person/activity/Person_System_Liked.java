@@ -24,6 +24,9 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 
+/**
+ * 系统通知-点赞列表
+ */
 public class Person_System_Liked extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.card_Recycler)
     RecyclerView mRecyclerView;
@@ -45,6 +48,7 @@ public class Person_System_Liked extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void getServerData() {
+        postClear(false);
         getExpertList(true);
     }
 
@@ -105,6 +109,24 @@ public class Person_System_Liked extends BaseRecyclerViewSplitActivity {
                 ArticleDetail_Activity.startActivity(this, articleId, "0", type);
             }
         });
+    }
+
+    private void postClear(boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("type","check");
+        HttpSender sender = new HttpSender(HttpUrl.System_Mes_Clear, "系统消息数-清除提醒", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+
+                        }
+                    }
+
+                }, isShowAnimal);
+
+        sender.setContext(mActivity);
+        sender.sendPost();
     }
 
 }

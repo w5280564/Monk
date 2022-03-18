@@ -133,6 +133,7 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
         map.put("action", "1");
         map.put("page", page + "");
         map.put("limit", limit + "");
+        map.put("theme", "1");
         HttpSender sender = new HttpSender(HttpUrl.groupDetailAllTab, "查看主题", map,
                 new MyOnHttpResListener() {
                     @Override
