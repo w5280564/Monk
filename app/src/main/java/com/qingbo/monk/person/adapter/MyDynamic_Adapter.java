@@ -24,6 +24,7 @@ import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
@@ -35,15 +36,15 @@ import java.util.List;
  * 我的动态item
  */
 public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseViewHolder> {
-    boolean isExpert;
+    boolean isMe;
 
     public MyDynamic_Adapter() {
         super(R.layout.item_question_list_my);
     }
 
-    public MyDynamic_Adapter(boolean isExpert) {
+    public MyDynamic_Adapter(boolean isMe) {
         super(R.layout.item_question_list_my);
-        this.isExpert = isExpert;
+        this.isMe = isMe;
     }
 
 
@@ -63,6 +64,7 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView more_Img = helper.getView(R.id.more_Img);
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+        more_Img.setVisibility(View.GONE);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
@@ -119,21 +121,24 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
             nineGridAdapter.setNewData(null);
         }
 
-        String status = item.getStatus();//0待审核 1通过 2未通过
-        if (TextUtils.equals(status, "0")) {
-            tv_status.setVisibility(View.VISIBLE);
-            tv_status.setText("待审核");
-            setDrawableLeft(R.mipmap.weishenhe,tv_status);
-        } else if(TextUtils.equals(status, "1")){
-            tv_status.setVisibility(View.VISIBLE);
-            tv_status.setText("审核通过");
-            setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
-        } else if(TextUtils.equals(status, "2")){
-            tv_status.setVisibility(View.VISIBLE);
-            setDrawableLeft(R.mipmap.weitongguo,tv_status);
-            tv_status.setText("未通过");
-        } else{
-            tv_status.setVisibility(View.GONE);
+        if (isMe){
+            more_Img.setVisibility(View.VISIBLE);
+            String status = item.getStatus();//0待审核 1通过 2未通过
+            if (TextUtils.equals(status, "0")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("待审核");
+                setDrawableLeft(R.mipmap.weishenhe, tv_status);
+            } else if (TextUtils.equals(status, "1")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("审核通过");
+                setDrawableLeft(R.mipmap.shenhetongguo, tv_status);
+            } else if (TextUtils.equals(status, "2")) {
+                tv_status.setVisibility(View.VISIBLE);
+                setDrawableLeft(R.mipmap.weitongguo, tv_status);
+                tv_status.setText("未通过");
+            } else {
+                tv_status.setVisibility(View.GONE);
+            }
         }
 
 
@@ -205,6 +210,20 @@ public class MyDynamic_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
     public void setOnItemImgClickLister(OnItemImgClickLister ItemListener) {
         onItemImgClickLister = ItemListener;
     }
+
+    /**
+     * 是否是我自己
+     *
+     * @return
+     */
+    private boolean isMe(String userID) {
+        String id = PrefUtil.getUser().getId();
+        if (TextUtils.equals(userID, id)) {
+            return true;
+        }
+        return false;
+    }
+
 
 
 }

@@ -105,6 +105,7 @@ public class LoginMoreInfoActivity extends BaseActivityWithFragment {
                     if (event.isNext) {//是点下一步操作
                         requestMap.put("avatar", event.avatar);
                         requestMap.put("nickname", event.nickname);
+                        requestMap.put("province", event.province);
                         requestMap.put("city", event.city);
                         requestMap.put("county", event.county);
                         requestMap.put("work", event.work);

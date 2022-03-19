@@ -2,11 +2,13 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -51,6 +53,11 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
     TextView tv_remains_image;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
+
+    @BindView(R.id.tv_tag)
+    TextView tvTag;
+    @BindView(R.id.ll_tag)
+    LinearLayout llTag;
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
@@ -138,6 +145,26 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
         });
     }
 
+    @OnClick(R.id.ll_tag)
+    public void onClick() {
+        String tag = (String) llTag.getTag();
+        if ("0".equals(tag)) {
+            tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
+            llTag.setTag("1");
+        } else {
+            tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
+            llTag.setTag("0");
+        }
+    }
+
+    private void setDrawableLeft(int mipmap) {
+        Drawable drawableLeft = getResources().getDrawable(mipmap);
+        tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                null, null, null);
+    }
+
 
 
 
@@ -186,8 +213,9 @@ public class PublisherAskQuestionToPeopleActivity extends BaseCameraAndGalleryAc
         baseMap.put("shequn_id", shequn_id);
         baseMap.put("content", mContent);
         baseMap.put("images", images);
-        baseMap.put("action", "1");
+        baseMap.put("action", "1");//1是社群
         baseMap.put("optype", "0");//默认是0,0是发布,1是保存
+        baseMap.put("is_anonymous", (String) llTag.getTag());//默认是0,0是发布,1是保存
 
         HttpSender sender = new HttpSender(HttpUrl.createTopic, "创建提问", baseMap,
                 new MyOnHttpResListener() {

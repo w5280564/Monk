@@ -1,8 +1,5 @@
 package com.qingbo.monk.person.activity;
 
-import android.text.TextUtils;
-import android.view.View;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,7 +8,6 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.SystemReview_Bean;
 import com.qingbo.monk.bean.SystemReview_List_Bean;
-import com.qingbo.monk.bean.System_MesCount_Bean;
 import com.qingbo.monk.person.adapter.MySystem_Review_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;

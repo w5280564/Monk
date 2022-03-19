@@ -343,7 +343,6 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     }
 
     CityPickerView mPicker = new CityPickerView();
-
     private void initCity() {
         //等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
         //预先加载仿iOS滚轮实现的全部数据

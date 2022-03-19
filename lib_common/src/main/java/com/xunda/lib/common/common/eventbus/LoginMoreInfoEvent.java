@@ -15,6 +15,7 @@ public class LoginMoreInfoEvent {
     public boolean isNext;
     public String avatar;
     public String nickname;
+    public String province;
     public String city;
     public String county;
     public String work;
@@ -26,11 +27,12 @@ public class LoginMoreInfoEvent {
         this.type = type;
     }
 
-    public LoginMoreInfoEvent(int type,boolean isNext, String avatar,String nickname,String city,String county,String work,String industry) {
+    public LoginMoreInfoEvent(int type,boolean isNext, String avatar,String nickname,String province,String city,String county,String work,String industry) {
         this.type = type;
         this.isNext = isNext;
         this.avatar = avatar;
         this.nickname = nickname;
+        this.province = province;
         this.city = city;
         this.county = county;
         this.work = work;

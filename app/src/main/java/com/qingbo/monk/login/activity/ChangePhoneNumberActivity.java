@@ -136,7 +136,7 @@ public class ChangePhoneNumberActivity extends BaseActivity {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            T.ss("修改成功");
+                            T.ss(msg);
                             finish();
 //                            getQuit();
 //                            BaseUserBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseUserBean.class);

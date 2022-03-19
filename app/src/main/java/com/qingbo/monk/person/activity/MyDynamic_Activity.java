@@ -154,7 +154,7 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyDynamic_Adapter();
+        mAdapter = new MyDynamic_Adapter(true);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
@@ -325,6 +325,9 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
             tv.setText(hint + (CharSequence) value);
         }
     }
+
+
+
 
 
 }

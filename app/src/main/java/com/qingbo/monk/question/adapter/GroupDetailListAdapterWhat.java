@@ -31,14 +31,14 @@ public class GroupDetailListAdapterWhat extends BaseQuickAdapter<AskQuestionBean
 
         GlideUtils.loadCircleImage(mContext, iv_header, item.getAvatar());
 
-        if ("0".equals(item.getIsQuestion())) {//0-不可提问 1-可提问
-            tv_submit.setText("不能向自己提问");
-            tv_submit.setBackgroundResource(R.drawable.shape_bag_what_gray);
-        }else{
+//        if ("0".equals(item.getIsQuestion())) {//0-不可提问 1-可提问
+//            tv_submit.setText("不能向自己提问");
+//            tv_submit.setBackgroundResource(R.drawable.shape_bag_what_gray);
+//        }else{
             tv_submit.setText("向ta提问");
             tv_submit.setBackgroundResource(R.drawable.shape_bag_what_yellow);
             helper.addOnClickListener(R.id.tv_submit);
-        }
+//        }
 
         if ("0".equals(item.getNum())) {
             tv_des.setVisibility(View.GONE);

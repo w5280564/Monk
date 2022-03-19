@@ -11,9 +11,16 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryFragment;
 import com.qingbo.monk.login.activity.ChooseIndustryActivity;
+import com.qingbo.monk.person.activity.MyAndOtherEdit_Card;
 import com.xunda.lib.common.bean.AreaBean;
 import com.xunda.lib.common.bean.BaseAreaBean;
 import com.xunda.lib.common.common.Constants;
@@ -61,7 +68,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
     private ActivityResultLauncher mActivityResultLauncher;
     private String[] yearList = {"1-3年", "3-5年", "5-10年", "10-15年","15年以上"};
     private List<AreaBean> mAreaList = new ArrayList<>();
-    private String industryName, city, county, work;
+    public String industryName,upProvince, upCity, upCounty, work;
     private String avatar;
 
     @Override
@@ -87,25 +94,39 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
             }
         });
+        initCity();
     }
 
-    private void showCityDialog() {
-        PickCityDialog mPickCityDialog = new PickCityDialog(mActivity, mAreaList, new PickCityDialog.CityChooseIdCallback() {
-            @Override
-            public void onConfirm(List<String> nameList, List<Integer> idList) {
-                if (ListUtils.isEmpty(nameList)) {
-                    return;
-                }
-                if (nameList.size() < 2) {
-                    return;
-                }
-                arrowItemView_city.getTip().setVisibility(View.GONE);
-                city = nameList.get(0);
-                county = nameList.get(1);
-                arrowItemView_city.getTvContent().setText(city + "-" + county);
-            }
-        });
-        mPickCityDialog.show();
+    /**
+     *
+     */
+    CityPickerView mPicker = new CityPickerView();
+    private void initCity() {
+        //等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
+        //预先加载仿iOS滚轮实现的全部数据
+        mPicker.init(requireActivity());
+        //添加默认的配置，不需要自己定义，当然也可以自定义相关熟悉，详细属性请看demo
+        CityConfig cityConfig = new CityConfig.Builder().build();
+        mPicker.setConfig(cityConfig);
+        mPicker.setOnCityItemClickListener(new mPickerCityItemClick());
+    }
+
+    private class mPickerCityItemClick extends OnCityItemClickListener {
+        @Override
+        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+            //省份province 城市city 地区district
+            upProvince = province.getName();
+            upCity = city.getName();
+            upCounty = district.getName();
+            arrowItemView_city.getTip().setVisibility(View.GONE);
+            String format = String.format("%1$s-%2$s-%3$s", upProvince, upCity, upCounty);
+            arrowItemView_city.getTvContent().setText(format);
+        }
+
+        @Override
+        public void onCancel() {
+//            ToastUtils.showLongToast(UserDetail_Set.this, "已取消");
+        }
     }
 
     private void showPickStringDialog() {
@@ -163,7 +184,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 showPickStringDialog();
                 break;
             case R.id.arrowItemView_city:
-                showCityDialog();
+                mPicker.showCityPicker();
                 break;
             case R.id.tv_next:
                 if (!haveUploadImg) {
@@ -190,7 +211,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
 
 
-                if (StringUtil.isBlank(city)) {
+                if (StringUtil.isBlank(upProvince)) {
                     T.ss("请选择城市");
                     return;
                 }
@@ -198,8 +219,9 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("nickname", nickname);
-                    jsonObject.put("city", city);
-                    jsonObject.put("county", county);
+                    jsonObject.put("province", upProvince);
+                    jsonObject.put("city", upCity);
+                    jsonObject.put("county", upCounty);
                     jsonObject.put("work", work);
                     jsonObject.put("industry", industryName);
                 } catch (JSONException e) {
@@ -207,7 +229,7 @@ public class StepOneFragmentLogin extends BaseCameraAndGalleryFragment {
                 }
 
                 SharePref.server().setUserNickName(nickname);
-                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE, true, avatar, nickname, city, county, work, industryName));
+                EventBus.getDefault().post(new LoginMoreInfoEvent(LoginMoreInfoEvent.LOGIN_SUBMIT_MORE_INFO_STEP_ONE, true, avatar, nickname,upProvince, upCity, upCounty, work, industryName));
                 break;
 
         }

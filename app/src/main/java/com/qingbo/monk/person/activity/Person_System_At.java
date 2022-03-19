@@ -111,7 +111,7 @@ public class Person_System_At extends BaseRecyclerViewSplitActivity {
 
     private void postClear(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("type","check");
+        requestMap.put("type","alert");
         HttpSender sender = new HttpSender(HttpUrl.System_Mes_Clear, "系统消息数-清除提醒", requestMap,
                 new MyOnHttpResListener() {
                     @Override

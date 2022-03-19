@@ -287,6 +287,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         baseMap.put("images", images);
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
+            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }else{
             baseMap.put("type", "1");
             baseMap.put("action", "3");

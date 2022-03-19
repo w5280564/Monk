@@ -136,7 +136,7 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyDynamic_Adapter();
+        mAdapter = new MyDynamic_Adapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
@@ -324,6 +324,20 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
                 break;
         }
     }
+
+    /**
+     * 是否是我自己
+     *
+     * @return
+     */
+    private boolean isMe() {
+        String id = PrefUtil.getUser().getId();
+        if (TextUtils.equals(userID, id)) {
+            return true;
+        }
+        return false;
+    }
+
 
 
 }

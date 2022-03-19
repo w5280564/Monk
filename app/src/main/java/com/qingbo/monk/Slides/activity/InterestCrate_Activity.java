@@ -288,6 +288,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
         baseMap.put("is_anonymous", (String) llTag.getTag());
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
+            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         } else {
             baseMap.put("type", "1"); //1是话题，2是提问
             baseMap.put("action", "2");//1是社群 2是兴趣组 3是问答广场

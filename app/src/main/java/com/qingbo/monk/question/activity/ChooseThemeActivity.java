@@ -153,13 +153,13 @@ public class ChooseThemeActivity extends BaseRecyclerViewSplitActivity {
     }
 
 
-    @OnClick({R.id.rl_back,R.id.tv_cancel,R.id.tv_choose})
+    @OnClick({R.id.tv_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_back:
-            case R.id.tv_cancel:
-                back();
-                break;
+//            case R.id.rl_back:
+//            case R.id.tv_cancel:
+//                back();
+//                break;
             case R.id.tv_choose:
                 if (ListUtils.isEmpty(mChooseIsList)) {
                     T.ss("请选择主题");
