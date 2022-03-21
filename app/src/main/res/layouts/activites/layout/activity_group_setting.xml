@@ -68,17 +68,15 @@
             android:layout_height="@dimen/dp_75"
             android:layout_marginLeft="@dimen/dp_8">
 
-            <com.xunda.lib.common.view.RadiusImageWidget
+            <com.xunda.lib.common.view.RoundImageView
                 android:id="@+id/iv_header_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:left_bottom_radius="@dimen/dp_9"
-                app:left_top_radius="@dimen/dp_9"
-                app:right_bottom_radius="@dimen/dp_9"
-                app:right_top_radius="@dimen/dp_9"
                 tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp" />
+                tools:layout_editor_absoluteY="0dp"
+                app:type="round"
+                app:borderRadius="@dimen/dp_9"/>
 
             <ImageView
                 android:id="@+id/shangchuan"

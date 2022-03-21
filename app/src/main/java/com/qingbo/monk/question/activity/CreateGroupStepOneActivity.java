@@ -1,17 +1,14 @@
 package com.qingbo.monk.question.activity;
 
 import android.widget.EditText;
-
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
-import com.xunda.lib.common.common.glide.GlideUtils;
+import com.xunda.lib.common.common.imgloader.ImgLoader;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.view.RadiusImageWidget;
-
+import com.xunda.lib.common.view.RoundImageView;
 import org.greenrobot.eventbus.Subscribe;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -20,7 +17,7 @@ import butterknife.OnClick;
  */
 public class CreateGroupStepOneActivity extends BaseCameraAndGalleryActivity_Single {
     @BindView(R.id.iv_header_group)
-    RadiusImageWidget ivHeaderGroup;
+    RoundImageView ivHeaderGroup;
     @BindView(R.id.et_name)
     EditText etName;
     private String group_header;
@@ -64,7 +61,7 @@ public class CreateGroupStepOneActivity extends BaseCameraAndGalleryActivity_Sin
     @Override
     protected void onUploadSuccess(String imageString) {
         group_header = imageString;
-        GlideUtils.loadImage(mContext,ivHeaderGroup,group_header);
+        ImgLoader.getInstance().displayCrop(mContext,ivHeaderGroup,group_header,R.mipmap.bg_group_top);
     }
 
     @Override

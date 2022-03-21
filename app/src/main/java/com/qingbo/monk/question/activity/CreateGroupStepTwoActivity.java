@@ -16,10 +16,13 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.imgloader.ImgLoader;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.RadiusImageWidget;
+import com.xunda.lib.common.view.RoundImageView;
+
 import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 import butterknife.BindView;
@@ -29,7 +32,7 @@ import butterknife.BindView;
  */
 public class CreateGroupStepTwoActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
     @BindView(R.id.iv_header_group)
-    RadiusImageWidget ivHeaderGroup;
+    RoundImageView ivHeaderGroup;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_group_type)
@@ -66,7 +69,7 @@ public class CreateGroupStepTwoActivity extends BaseActivity implements Compound
         if (StringUtil.isBlank(group_header)) {
             ivHeaderGroup.setImageResource(R.mipmap.bg_create_group);
         }else{
-            GlideUtils.loadImage(mContext,ivHeaderGroup,group_header);
+            ImgLoader.getInstance().displayCrop(mContext,ivHeaderGroup,group_header,R.mipmap.bg_group_top);
         }
 
     }

@@ -14,23 +14,21 @@ import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.xunda.lib.common.bean.NameIdBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.imgloader.ImgLoader;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.EditStringDialog;
 import com.qingbo.monk.dialog.GridDialog;
-import com.xunda.lib.common.view.RadiusImageWidget;
+import com.xunda.lib.common.view.RoundImageView;
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -39,7 +37,7 @@ import butterknife.OnClick;
  */
 public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single implements GridDialog.OnSelectItemListener {
     @BindView(R.id.iv_header_group)
-    RadiusImageWidget iv_header_group;
+    RoundImageView iv_header_group;
     @BindView(R.id.tv_group_tag)
     TextView tv_group_tag;
     @BindView(R.id.tv_group_name)
@@ -92,7 +90,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
             if (StringUtil.isBlank(sheQunBean.getShequnImage())) {
                 iv_header_group.setImageResource(R.mipmap.bg_create_group);
             }else{
-                GlideUtils.loadImage(mContext,iv_header_group,sheQunBean.getShequnImage());
+                ImgLoader.getInstance().displayCrop(mContext,iv_header_group,sheQunBean.getShequnImage(),R.mipmap.bg_group_top);
             }
 
             String role = sheQunBean.getRole();
@@ -253,7 +251,7 @@ public class GroupSettingActivity extends BaseCameraAndGalleryActivity_Single im
                             }else if("des".equals(key)){
                                 tv_group_des.setText(StringUtil.getStringValue(value));
                             }else if("image".equals(key)){
-                                GlideUtils.loadImage(mContext,iv_header_group,value);
+                                ImgLoader.getInstance().displayCrop(mContext,iv_header_group,key,R.mipmap.bg_group_top);
                             }else if("tag".equals(key)){
                                 tv_group_tag.setText(value);
                             }

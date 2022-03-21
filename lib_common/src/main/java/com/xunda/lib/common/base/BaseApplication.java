@@ -3,6 +3,8 @@ package com.xunda.lib.common.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Handler;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.multidex.MultiDexApplication;
 import com.xunda.lib.common.common.language.MultiLanguageUtil;
@@ -16,6 +18,8 @@ import java.util.List;
  */
 public class BaseApplication extends MultiDexApplication {
     public static BaseApplication instance;
+    //用来在主线程中刷新ui
+    private static Handler mHandler;
 
     /**
      * 将所有FragmentActivity存放在链表中，便于管理
@@ -30,8 +34,14 @@ public class BaseApplication extends MultiDexApplication {
         if(isAgree==1){//已同意过隐私政策
             initPrivatePolicySDK();
         }
+        mHandler = new Handler();
     }
 
+
+
+    public static Handler getMainHandler() {
+        return mHandler;
+    }
 
 
     /**
@@ -120,6 +130,16 @@ public class BaseApplication extends MultiDexApplication {
     @Override
     public void onTerminate() {
         super.onTerminate();
+    }
+
+
+    /**
+     * 在主线程中刷新UI的方法
+     *
+     * @param mRunnable
+     */
+    public static void runOnUIThread(Runnable mRunnable) {
+        BaseApplication.getMainHandler().post(mRunnable);
     }
 
 }

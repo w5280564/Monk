@@ -2,6 +2,7 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.GroupMoreInfoBean;
+import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -21,10 +23,14 @@ import com.xunda.lib.common.common.eventbus.GroupManagerEvent;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.imgloader.ImgLoader;
+import com.xunda.lib.common.common.utils.FastBlurUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
+import com.xunda.lib.common.view.RoundImageView;
+
 import org.greenrobot.eventbus.Subscribe;
 import java.util.HashMap;
 import butterknife.BindView;
@@ -44,7 +50,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
     @BindView(R.id.ll_top)
     LinearLayout ll_top;
     @BindView(R.id.iv_head)
-    ImageView ivHead;
+    RoundImageView ivHead;
     @BindView(R.id.tv_id)
     TextView tvId;
     @BindView(R.id.tv_name)
@@ -161,10 +167,8 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
             arrowItemViewEdit.getTvContent().setText(sheQunBean.getShequnDes());
             arrowItemViewNumber.getTvContent().setText(sheQunBean.getCount());
             String group_header = sheQunBean.getShequnImage();
-            GlideUtils.loadCircleImage(mContext, ivHead, group_header,R.mipmap.bg_group_top);
-            Glide.with(mContext).asBitmap().load(group_header).error(R.mipmap.bg_group_top).transform(new BlurTransformation(14,1)).into(iv_head_bag);
-
-
+            ImgLoader.getInstance().displayCrop(mContext,ivHead,group_header,R.mipmap.bg_group_top);
+            handleGaussianBlur(group_header);
 
 
             role = sheQunBean.getRole();
@@ -194,6 +198,31 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * 处理高斯模糊
+     */
+    private void handleGaussianBlur(String group_header) {
+        if (StringUtil.isBlank(group_header)) {
+            iv_head_bag.setImageResource(R.mipmap.bg_group_top);
+        }else{
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int scaleRatio = 2;
+                    //下面的这个方法必须在子线程中执行
+                    final Bitmap blurBitmap = FastBlurUtil.GetUrlBitmap(group_header, scaleRatio);
+                    //刷新ui必须在主线程中执行
+                    BaseApplication.runOnUIThread(new Runnable() {//这个是我自己封装的在主线程中刷新ui的方法。
+                        @Override
+                        public void run() {
+                            iv_head_bag.setImageBitmap(blurBitmap);
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
 
 
     @OnClick({R.id.arrowItemView_edit, R.id.arrowItemView_number, R.id.arrowItemView_manager, R.id.arrowItemView_invite_partner,

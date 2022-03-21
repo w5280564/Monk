@@ -60,11 +60,14 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <ImageView
+
+                <com.xunda.lib.common.view.RoundImageView
                     android:id="@+id/iv_head"
                     android:layout_width="@dimen/dp_56"
                     android:layout_height="@dimen/dp_56"
-                    android:layout_marginTop="@dimen/dp_23"/>
+                    android:layout_marginTop="@dimen/dp_23"
+                    android:scaleType="centerCrop"
+                    app:type="circle"/>
 
                 <TextView
                     android:id="@+id/tv_id"

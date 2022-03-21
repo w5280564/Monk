@@ -3,6 +3,7 @@ package com.qingbo.monk.person.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -16,9 +17,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.widget.NestedScrollView;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -115,6 +118,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     ImageView iv_bianji;
     @BindView(R.id.share_Btn)
     Button share_Btn;
+    @BindView(R.id.mToolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_Layout)
+    AppBarLayout appbar_Layout;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -141,9 +148,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
      * 设置状态栏
      */
     private void setBar() {
-        ImmersionBar.with(this)
-                .fitsSystemWindows(false)
-                .statusBarDarkFont(true)
+        ImmersionBar.with(this).titleBar(mToolbar)
+                .statusBarDarkFont(false)
                 .init();
     }
 
@@ -211,6 +217,19 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         tv_follow_number.setOnClickListener(this);
         tv_fans_number.setOnClickListener(this);
         iv_bianji.setOnClickListener(this);
+
+
+        appbar_Layout.addOnOffsetChangedListener(new AppBarLayout.BaseOnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+                    ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(false).init();//把标题栏和状态栏绑定在一块
+                } else {
+                    ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(true).init();
+                }
+            }
+        });
     }
 
     @SuppressLint("WrongConstant")
