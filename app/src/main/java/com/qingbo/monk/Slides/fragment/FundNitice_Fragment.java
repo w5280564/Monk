@@ -10,17 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.HomeInsiderBean;
-import com.qingbo.monk.bean.InsiderListBean;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
-import com.xunda.lib.common.common.Constants;
 import com.qingbo.monk.HttpSender;
+import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.adapter.FundNotice_Insider_Adapter;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.InsiderListBean;
+import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -119,7 +118,7 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new Insider_Adapter();
+        mAdapter = new FundNotice_Insider_Adapter();
         mRecyclerView.setAdapter(mAdapter);
 
         onBackTop(dingTop_Img);

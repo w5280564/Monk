@@ -183,6 +183,7 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
         MyPopWindow morePopWindow = new MyPopWindow(mActivity, haveEdit, new MyPopWindow.OnPopWindowClickListener() {
             @Override
             public void onClickEdit() {
+                mQuestionBean.setTopic_id(mQuestionBean.getId());
                 PublisherQuestionActivity.actionStart(mActivity,mQuestionBean,true);
             }
 

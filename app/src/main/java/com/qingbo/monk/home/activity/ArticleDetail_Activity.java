@@ -62,6 +62,7 @@ import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ShareArticle_Dialog;
 import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
 
@@ -317,9 +318,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     jumpToWebView(title, source_url);
                 }
                 break;
-          case R.id.share_Tv:
+            case R.id.share_Tv:
                 if (homeFoucsDetail_bean != null) {
-                   showShareDialog();
+                    showShareDialog();
                 }
                 break;
 
@@ -334,7 +335,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //            String title = String.format("邀请%1$s")
             String title = homeFoucsDetail_bean.getData().getDetail().getTitle();
             String content = homeFoucsDetail_bean.getData().getDetail().getContent();
-            ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
+            ShareArticle_Dialog mShareDialog = new ShareArticle_Dialog(this, downURl, imgUrl, title, content, "分享");
+            mShareDialog.setDynamicClickLister(() -> {
+                mShareDialog.dismiss();
+                postForwardingData(articleId);
+            });
             mShareDialog.show();
         }
     }
@@ -589,10 +594,31 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
     /**
-     * 收藏
+     * 转发
      *
      * @param articleId
      */
+    private void postForwardingData(String articleId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        String type = "0";
+        if (isInformation) {
+            type = "1";
+        }
+        requestMap.put("id", articleId);
+        requestMap.put("type", type);
+        HttpSender httpSender = new HttpSender(HttpUrl.Repeat_Article, "转发动态", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
     private void postCollectData(String articleId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId + "");
@@ -612,6 +638,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
 
     private void getJoinSheQun(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -724,6 +751,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     /**
      * 收藏/取消收藏
+     *
      * @param status
      * @param collect_Tv
      */

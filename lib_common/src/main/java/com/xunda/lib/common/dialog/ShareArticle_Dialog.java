@@ -7,10 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +15,12 @@ import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -30,30 +33,36 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.R;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * 分享弹出框
+ * 文章分享弹出框
  *
  * @author Administrator 欧阳
  */
-public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAdapter.OnItemClickListener {
+public class ShareArticle_Dialog extends Dialog implements OnClickListener, BaseQuickAdapter.OnItemClickListener {
     private static final int THUMB_SIZE = 120;
     private Context context;
-    private String pageUrl,title, text,imageUrl,dialog_title;
-    private List<String> platformList =  new ArrayList<>();
+    private String pageUrl, title, text, imageUrl, dialog_title;
+    private List<Map<Object, String>> platformList = new ArrayList<>();
     private RecyclerView mRecycleView;
     private String appId;
     private IWXAPI api;
-    public static String[] SHARE_PLATFORM_LIST = {"微信好友","朋友圈"};//分享平台列表
+    public static String[] SHARE_PLATFORM_LIST = {"转发动态", "微信好友", "朋友圈", "微博", "QQ"};//分享平台列表
+    public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan, R.mipmap.weibo, R.mipmap.qq};//分享平台列表
+    private dynamicClickLister dynamicClickLister;
 
 
-    public   ShareDialog(Context context,String pageUrl,String imageUrl,String title,String text,String dialog_title) {
+    public ShareArticle_Dialog(Context context, String pageUrl, String imageUrl, String title, String text, String dialog_title) {
         super(context, R.style.bottomrDialogStyle);
         this.context = context;
         this.pageUrl = pageUrl;
@@ -63,7 +72,9 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         this.dialog_title = dialog_title;
     }
 
-
+    public void setDynamicClickLister(ShareArticle_Dialog.dynamicClickLister dynamicClickLister) {
+        this.dynamicClickLister = dynamicClickLister;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +87,30 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         setCanceledOnTouchOutside(true);
 
         appId = Constants.WECHAT_APPID; // 填应用AppId
-        api = WXAPIFactory.createWXAPI(context, appId,false);
+        api = WXAPIFactory.createWXAPI(context, appId, false);
 
         initPlatformList();
         initEventAndView();
     }
 
 
-
     private void initPlatformList() {
         platformList.clear();
-        platformList.addAll(Arrays.asList(SHARE_PLATFORM_LIST));
+        List<String> strings = Arrays.asList(SHARE_PLATFORM_LIST);
+        for (int i = 0; i < strings.size(); i++) {
+            Map<Object, String> oneData = new HashMap<>();
+            oneData.put("name", strings.get(i));
+            oneData.put("imgUrl", SHARE_IMG_LIST[i] + "");
+            platformList.add(oneData);
+        }
+//        platformList.addAll(Arrays.asList(SHARE_PLATFORM_LIST));
     }
 
     private void initEventAndView() {
         TextView tv_title = findViewById(R.id.tv_title);
         tv_title.setText(dialog_title);
         mRecycleView = findViewById(R.id.recycleView);
-        GridLayoutManager layoutManager = new GridLayoutManager(context,platformList.size());
+        GridLayoutManager layoutManager = new GridLayoutManager(context, platformList.size());
         mRecycleView.setLayoutManager(layoutManager);
         ShareAdapter mAdapter = new ShareAdapter(platformList);
         mRecycleView.setAdapter(mAdapter);
@@ -101,11 +118,10 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         mAdapter.setOnItemClickListener(this);
     }
 
-    private void startShare(String shareName,Bitmap mBitmap) {
-        shareToWechat(shareName,mBitmap);//分享至微信好友/朋友圈/收藏
+    private void startShare(String shareName, Bitmap mBitmap) {
+        shareToWechat(shareName, mBitmap);//分享至微信好友/朋友圈/收藏
         dismiss();
     }
-
 
 
     private Bitmap getThumbBmp(Bitmap mSourceBitmap) {
@@ -124,14 +140,12 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
     }
 
 
-
-
-
     /**
      * 分享网页至微信好友/朋友圈/收藏
+     *
      * @param shareName
      */
-    private void shareToWechat(String shareName,Bitmap mSourceBitmap) {
+    private void shareToWechat(String shareName, Bitmap mSourceBitmap) {
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = pageUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
@@ -145,9 +159,9 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         req.transaction = buildTransaction("webpage");
         req.message = msg;
 
-        if(("微信好友").equals(shareName)){
+        if (("微信好友").equals(shareName)) {
             req.scene = SendMessageToWX.Req.WXSceneSession;
-        }else if("朋友圈".equals(shareName)){
+        } else if ("朋友圈".equals(shareName)) {
             req.scene = SendMessageToWX.Req.WXSceneTimeline;
         }
         api.sendReq(req);
@@ -156,6 +170,7 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
 
     /**
      * 获取默认图片
+     *
      * @return
      */
     private Bitmap getDefaultBitmap() {
@@ -178,7 +193,7 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
         Canvas localCanvas = new Canvas(localBitmap);
 
         while (true) {
-            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0,i, j), null);
+            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0, i, j), null);
             if (needRecycle)
                 bmp.recycle();
             ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
@@ -203,8 +218,6 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
     }
 
 
-
-
     @Override
     public void onClick(View view) {
         dismiss();
@@ -213,51 +226,55 @@ public class ShareDialog extends Dialog implements OnClickListener, BaseQuickAda
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        final String shareName = (String) adapter.getItem(position);
-        if (StringUtil.isBlank(imageUrl)) {
-            startShare(shareName,null);
-        } else {
-            Glide.with(context).asBitmap().load(imageUrl).into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    Bitmap thumbBmp = null;
-                    if (resource.getHeight()>100 && resource.getWidth()>100) {
-                        thumbBmp = Bitmap.createScaledBitmap(resource, 100, 100, true);
-                    }else {
-                        thumbBmp = resource;
+        Map<Object, String> item = (Map<Object, String>) adapter.getItem(position);
+        String shareName = item.get("name");
+        if (TextUtils.equals(shareName, "转发动态")) {
+            dynamicClickLister.dynamicClick();
+        } else if (TextUtils.equals(shareName, "微信好友") || TextUtils.equals(shareName, "朋友圈")) {
+            if (StringUtil.isBlank(imageUrl)) {
+                startShare(shareName, null);
+            } else {
+                Glide.with(context).asBitmap().load(imageUrl).into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Bitmap thumbBmp = null;
+                        if (resource.getHeight() > 100 && resource.getWidth() > 100) {
+                            thumbBmp = Bitmap.createScaledBitmap(resource, 100, 100, true);
+                        } else {
+                            thumbBmp = resource;
+                        }
+                        if (thumbBmp != null) {
+                            startShare(shareName, thumbBmp);
+                        } else {
+                            T.ss("获取分享图片失败");
+                        }
                     }
-                    if (thumbBmp != null) {
-                        startShare(shareName,thumbBmp);
-                    } else {
-                        T.ss("获取分享图片失败");
-                    }
-                }
-            });
+                });
+            }
+
         }
     }
 
 
-    class ShareAdapter extends BaseQuickAdapter<String, BaseViewHolder>  {
+    static class ShareAdapter extends BaseQuickAdapter<Map<Object, String>, BaseViewHolder> {
 
 
-        public ShareAdapter(List<String> data) {
-            super(R.layout.item_share,data);
+        public ShareAdapter(List<Map<Object, String>> data) {
+            super(R.layout.item_share, data);
         }
 
         @Override
-        protected void convert(BaseViewHolder helper, String item) {
-
+        protected void convert(BaseViewHolder helper, Map<Object, String> item) {
             ImageView iv_logo = helper.getView(R.id.iv_logo);
             TextView tv_name = helper.getView(R.id.tv_name);
-            tv_name.setText(item);
-            if(item.equals("微信好友")){
-                iv_logo.setImageResource(R.mipmap.weixin);
-            }else{
-                iv_logo.setImageResource(R.mipmap.pengyouquan);
-            }
-
+            tv_name.setText(item.get("name"));
+            iv_logo.setImageResource(Integer.parseInt(item.get("imgUrl")));
 
         }
+    }
+
+    public interface dynamicClickLister {
+        void dynamicClick();
     }
 
 }

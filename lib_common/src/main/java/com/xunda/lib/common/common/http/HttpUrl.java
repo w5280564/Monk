@@ -253,6 +253,7 @@ public class HttpUrl {
     public static final String Clear_Article = "user/user/clear-new-article";//删除查看发文状态
     public static final String System_Mes_Count = "user/user/system-message-count";//系统消息数
     public static final String System_Mes_Clear = "user/user/clear-remind";//系统消息数-清除提醒
+    public static final String Repeat_Article = "square/detail/repeat-article";//转发动态
 
 
 }
