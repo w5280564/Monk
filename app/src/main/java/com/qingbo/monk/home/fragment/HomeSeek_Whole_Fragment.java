@@ -39,12 +39,14 @@ import com.qingbo.monk.bean.Character_Bean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeInsiderBean;
 import com.qingbo.monk.bean.HomeSeekTopic_Bean;
+import com.qingbo.monk.bean.HomeSeekTopic_ListBean;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.SearchAll_Bean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_User;
+import com.qingbo.monk.home.adapter.HomeSeek_Topic_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.activity.MyInterestList_Activity;
@@ -194,6 +196,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         }
     }
 
+
     int page = 1;
 
     /**
@@ -225,14 +228,42 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
                             List<SearchAll_Bean.DataDTO.CompanyDTO> company = searchAll_bean.getData().getCompany();
                             fundLabelLin(fund_Lin, mActivity, company);
 
-                            List<SearchAll_Bean.DataDTO.TopicDTO> topic = searchAll_bean.getData().getTopic();
-                            topicLabelLin(topic_Lin, mActivity, topic);
+//                            List<SearchAll_Bean.DataDTO.TopicDTO> topic = searchAll_bean.getData().getTopic();
+//                            topicLabelLin(topic_Lin, mActivity, topic);
 
                             List<SearchAll_Bean.DataDTO.GroupDTO> group = searchAll_bean.getData().getGroup();
                             groupLabelLin(group_Lin, mActivity, group);
+//                            getExpertList(word,false);
                         }
                     }
 
+                }, isShowAnimal);
+        sender.setContext(mActivity);
+        sender.sendPost();
+    }
+
+    public void getExpertList(String word, boolean isShowAnimal) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("word", word);
+        requestMap.put("page", page + "");
+        requestMap.put("limit", 2 + "");
+        HttpSender sender = new HttpSender(HttpUrl.Search_Topic, "搜索资讯", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            HomeSeekTopic_ListBean homeSeekTopic_listBean = GsonUtil.getInstance().json2Bean(json_data, HomeSeekTopic_ListBean.class);
+                            if (homeSeekTopic_listBean != null) {
+                                List<HomeSeekTopic_Bean> list = homeSeekTopic_listBean.getList();
+                                topicLabelLin(topic_Lin, mActivity, list);
+//                                ((HomeSeek_Topic_Adapter)mAdapter).setFindStr(word);
+//                                handleSplitListData(homeSeekTopic_listBean, mAdapter, limit);
+                            }
+                        }
+                    }
                 }, isShowAnimal);
         sender.setContext(mActivity);
         sender.sendPost();
@@ -353,14 +384,15 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     /**
      * 资讯
      */
-    public void topicLabelLin(LinearLayout myLin, Context mContext, List<SearchAll_Bean.DataDTO.TopicDTO> item) {
+//    public void topicLabelLin(LinearLayout myLin, Context mContext, List<SearchAll_Bean.DataDTO.TopicDTO> item) {
+    public void topicLabelLin(LinearLayout myLin, Context mContext, List<HomeSeekTopic_Bean> item) {
         if (myLin != null) {
             myLin.removeAllViews();
         }
         if (ListUtils.isEmpty(item)) {
             return;
         }
-        for (SearchAll_Bean.DataDTO.TopicDTO s : item) {
+        for (HomeSeekTopic_Bean s : item) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.homeseek_topic, null);
             ImageView art_Img = view.findViewById(R.id.art_Img);
             TextView artName_tv = view.findViewById(R.id.artName_tv);

@@ -25,6 +25,8 @@ public class HomeInsiderBean {
     private String news_content;
     @SerializedName("news_url")
     private String news_url;
+    @SerializedName("file_url")
+    private String file_url;
 
 
 }

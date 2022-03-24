@@ -127,8 +127,9 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-                String newsUuid = item.getNewsUuid();
-                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+//                String newsUuid = item.getNewsUuid();
+//                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+                jumpToWebView(item.getNewsTitle(),item.getFile_url());
             }
         });
 
