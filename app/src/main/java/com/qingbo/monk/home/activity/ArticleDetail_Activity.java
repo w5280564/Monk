@@ -154,6 +154,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     boolean isExpanded = false; //是否展开
     private boolean isExpert;
     private boolean isInformation;
+    private boolean isStockOrFund;
 
     /**
      * @param context
@@ -198,6 +199,21 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         context.startActivity(intent);
     }
 
+    /**
+     *
+     * @param context
+     * @param articleId
+     * @param isInformation
+     * @param isStockOrFund 只有基金股票的文章才是资讯  资讯转发的type 不同
+     */
+    public static void startActivity(Context context, String articleId, boolean isInformation, boolean isStockOrFund) {
+        Intent intent = new Intent(context, ArticleDetail_Activity.class);
+        intent.putExtra("articleId", articleId);
+        intent.putExtra("isInformation", isInformation);
+        intent.putExtra("isStockOrFund", isStockOrFund);
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected int getLayoutId() {
@@ -212,6 +228,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         type = getIntent().getStringExtra("type");
         isExpert = getIntent().getBooleanExtra("isExpert", false);
         isInformation = getIntent().getBooleanExtra("isInformation", false);
+        isStockOrFund = getIntent().getBooleanExtra("isStockOrFund", false);
     }
 
     @Override
@@ -328,7 +345,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
+
+
     private void showShareDialog() {
+       if (isMy(homeFoucsDetail_bean.getData().getDetail().getAuthorId())){
+           T.ss("不能转发自己的文章");
+           return;
+       }
         if (homeFoucsDetail_bean != null) {
             String imgUrl = homeFoucsDetail_bean.getData().getDetail().getAvatar();
             String downURl = "https://www.pgyer.com/TvE6";
@@ -399,6 +422,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }
         return false;
     }
+
 
     /**
      * 点击弹出键盘
@@ -601,7 +625,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void postForwardingData(String articleId) {
         HashMap<String, String> requestMap = new HashMap<>();
         String type = "0";
-        if (isInformation) {
+        if (isStockOrFund) {
             type = "1";
         }
         requestMap.put("id", articleId);

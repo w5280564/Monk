@@ -30,6 +30,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -134,7 +135,11 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
                     return;
                 }
                 String articleId = item.getId();
-                ArticleDetail_Activity.startActivity(mActivity, articleId, "0", true);
+                if (TextUtils.isEmpty(articleId)){
+                    T.ss("文章不存在");
+                    return;
+                }
+                ArticleDetail_Activity.startActivity(mActivity, articleId,  true,true);
             }
         });
     }
