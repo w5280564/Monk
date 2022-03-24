@@ -321,7 +321,6 @@
 
         <activity
             android:name=".home.activity.BeginActivity"
-            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>

@@ -68,10 +68,8 @@ public class BeginActivity extends FragmentActivity {
      */
     private void setStatusBar() {
         ImmersionBar.with(this)
-                .fullScreen(true)
-                .fitsSystemWindows(true)
-                .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
-                .statusBarDarkFont(false)
+                .statusBarColor(R.color.app_begin_color_bag)     //状态栏颜色，不写默认透明色
+                .statusBarDarkFont(true)
                 .init();
     }
 
