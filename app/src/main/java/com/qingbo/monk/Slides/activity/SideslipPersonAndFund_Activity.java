@@ -296,14 +296,10 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                         String avatar = listDTO.getAvatar();
                         GlideUtils.loadCircleImage(mActivity, head_Img, avatar, R.mipmap.icon_logo);
 
-//                        nickName_Tv.setText(listDTO.getNickname());
-//                        company_Tv.setText(listDTO.getCompanyName());
                         originalValue(listDTO.getNickname(), "暂未填写", "", nickName_Tv);
                         originalValue(listDTO.getCompanyName(), "暂未填写", "", company_Tv);
-                        originalValue(listDTO.getDescription(), "暂未填写", "", brief_Tv);
-//                        brief_Tv.setText(listDTO.getDescription());
+//                        originalValue(listDTO.getDescription(), "暂未填写", "", brief_Tv);
                         labelFlow(lable_Flow, mActivity, listDTO.getTagName());
-//                        Keywords_Tv.setText(listDTO.getKeywords());
                         originalValue(listDTO.getKeywords(), "暂未填写", "", Keywords_Tv);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -543,7 +539,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                 setTime(listDTO);
                 break;
             case R.id.head_Img:
-                MyAndOther_Card.actionStart(mActivity, id);
+//                MyAndOther_Card.actionStart(mActivity, id);
                 break;
             case R.id.fundName_Tv:
                 setFundName(fundHaveList_bean);

@@ -31,6 +31,7 @@ import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
+import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
@@ -153,14 +154,14 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     public void onResume() {
         super.onResume();
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        SearchAllList(word, true);
+        SearchAllList(word, false);
     }
 
     @Override
     public void onRefresh() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
-        SearchAllList(word, true);
+        SearchAllList(word, false);
     }
 
     /**
@@ -233,7 +234,7 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
 
                             List<SearchAll_Bean.DataDTO.GroupDTO> group = searchAll_bean.getData().getGroup();
                             groupLabelLin(group_Lin, mActivity, group);
-//                            getExpertList(word,false);
+                            getExpertList(word,true);
                         }
                     }
 
@@ -363,21 +364,30 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
     /**
      * 股票
      */
-    public void fundLabelLin(LinearLayout myLin, Context mContext, List<SearchAll_Bean.DataDTO.CompanyDTO> tag) {
+    public void fundLabelLin(LinearLayout myLin, Context mContext, List<SearchAll_Bean.DataDTO.CompanyDTO> listData) {
         if (myLin != null) {
             myLin.removeAllViews();
         }
-        if (ListUtils.isEmpty(tag)) {
+        if (ListUtils.isEmpty(listData)) {
             return;
         }
-        for (SearchAll_Bean.DataDTO.CompanyDTO s : tag) {
+        for (int i = 0; i < listData.size(); i++) {
+//        for (SearchAll_Bean.DataDTO.CompanyDTO s : tag) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.homeseek_fund_label, null);
             TextView fundName_Tv = view.findViewById(R.id.fundName_Tv);
             TextView fundCode_Tv = view.findViewById(R.id.fundCode_Tv);
-            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), s.getName(), query_edit.getText().toString());
+            SpannableString searchChange = StringUtil.findSearchChange(ContextCompat.getColor(mContext, R.color.text_color_ff5b29), listData.get(i).getName(), query_edit.getText().toString());
             fundName_Tv.setText(searchChange);
-            fundCode_Tv.setText(s.getNumber());
+            fundCode_Tv.setText(listData.get(i).getNumber());
+            view.setTag(i);
             myLin.addView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int tag1 = (int) v.getTag();
+                    SideslipStock_Activity.startActivity(mActivity, listData.get(tag1).getName(), listData.get(tag1).getNumber());
+                }
+            });
         }
     }
 

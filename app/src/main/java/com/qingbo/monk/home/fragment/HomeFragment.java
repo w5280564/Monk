@@ -39,6 +39,7 @@ import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseFragment;
 import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -113,6 +114,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     @Override
     protected void initView(View mRootView) {
 //        super.initView(mRootView);
+        viewTouchDelegate.expandViewTouchDelegate(drawer_left_Img, 50);
         initTab();
         mRecyclerView = mRootView.findViewById(R.id.interest_recycler);
         initRecyclerView();

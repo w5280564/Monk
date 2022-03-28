@@ -57,8 +57,10 @@ public class ShareArticle_Dialog extends Dialog implements OnClickListener, Base
     private RecyclerView mRecycleView;
     private String appId;
     private IWXAPI api;
-    public static String[] SHARE_PLATFORM_LIST = {"转发动态", "微信好友", "朋友圈", "微博", "QQ"};//分享平台列表
-    public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan, R.mipmap.weibo, R.mipmap.qq};//分享平台列表
+//    public static String[] SHARE_PLATFORM_LIST = {"转发动态", "微信好友", "朋友圈", "微博", "QQ"};//分享平台列表
+//    public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan, R.mipmap.weibo, R.mipmap.qq};//分享平台列表
+        public static String[] SHARE_PLATFORM_LIST = {"转发动态", "微信好友", "朋友圈"};//分享平台列表
+    public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan};//分享平台列表
     private dynamicClickLister dynamicClickLister;
 
 

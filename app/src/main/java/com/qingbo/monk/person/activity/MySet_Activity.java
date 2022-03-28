@@ -1,10 +1,12 @@
 package com.qingbo.monk.person.activity;
 
 import androidx.annotation.RequiresApi;
+
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
@@ -28,6 +30,7 @@ import com.xunda.lib.common.view.MyArrowItemView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+
 import butterknife.BindView;
 
 /**
@@ -116,7 +119,11 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
                 break;
 
             case R.id.phone_MyView:
-                ChangePhoneNumberActivity.actionStart(mActivity);
+                if (userBean != null) {
+                    String username = userBean.getUsername();
+
+                    ChangePhoneNumberActivity.actionStart(mActivity,username);
+                }
                 break;
         }
 
@@ -156,6 +163,7 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
         getUserData();
     }
 
+    UserBean userBean;
 
     private void getUserData() {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -165,7 +173,7 @@ public class MySet_Activity extends BaseActivity implements View.OnClickListener
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    UserBean  userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
+                    userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
                         phone_MyView.getTvContent().setText(userBean.getUsername());
                     }

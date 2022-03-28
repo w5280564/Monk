@@ -41,9 +41,6 @@ public class BaseTabLayoutFragment extends BaseFragment {
     }
 
 
-
-
-
     public class MyOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
 
 
@@ -93,6 +90,7 @@ public class BaseTabLayoutFragment extends BaseFragment {
 
     /**
      * fragment中添加fragment 使用此方法
+     *
      * @param position 页面下标
      */
     protected void initChildViewPager(int position) {
@@ -129,13 +127,17 @@ public class BaseTabLayoutFragment extends BaseFragment {
 
     /**
      * 自定义Tab的View
+     *
      * @param currentPosition
      * @return
      */
+    public TextView unread_msg_Tv;
+
     public View getTabView(int currentPosition) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.layout_tab, null);
-        TextView textView = view.findViewById(R.id.tab_item_textview);
-        textView.setText(menuList.get(currentPosition).getName());
+        TextView tab_Name = view.findViewById(R.id.tab_item_textview);
+        unread_msg_Tv = view.findViewById(R.id.unread_msg_Tv);
+        tab_Name.setText(menuList.get(currentPosition).getName());
         return view;
     }
 

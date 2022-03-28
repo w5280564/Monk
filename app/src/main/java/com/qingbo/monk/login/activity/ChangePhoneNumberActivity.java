@@ -3,6 +3,7 @@ package com.qingbo.monk.login.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class ChangePhoneNumberActivity extends BaseActivity {
     CountDownTextView tv_send_code;
     private ActivityResultLauncher mActivityResultLauncher;
     private String area_code = "86";
+    private String username;
 
     @Override
     protected int getLayoutId() {
@@ -58,13 +60,15 @@ public class ChangePhoneNumberActivity extends BaseActivity {
     }
 
 
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, String username) {
         Intent intent = new Intent(context, ChangePhoneNumberActivity.class);
+        intent.putExtra("username", username);
         context.startActivity(intent);
     }
 
     @Override
     protected void initLocalData() {
+        username = getIntent().getStringExtra("username");
     }
 
     @Override
@@ -95,12 +99,14 @@ public class ChangePhoneNumberActivity extends BaseActivity {
                 break;
             case R.id.tv_send_code:
                 String phoneNumberCode = StringUtil.getEditText(et_phoneNumber);
-
                 if (StringUtil.isBlank(phoneNumberCode)) {
                     T.ss("请输入手机号");
                     return;
                 }
-
+                if (TextUtils.equals(phoneNumberCode, username)) {
+                    T.ss("请输入新手机号");
+                    return;
+                }
                 getSmsCode(area_code, phoneNumberCode, tv_send_code);
                 break;
             case R.id.tv_submit:

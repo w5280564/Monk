@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,11 +36,12 @@ public class Edit_ChangeExplain extends BaseActivity {
     @BindView(R.id.changeCount_Tv)
     TextView changeCount_Tv;
 
-    private String nickname;
+    private String nickname, desc;
 
-    public static void actionStart(Context context, String nickname) {
+    public static void actionStart(Context context, String nickname, String desc) {
         Intent intent = new Intent(context, Edit_ChangeExplain.class);
         intent.putExtra("nickname", nickname);
+        intent.putExtra("desc", desc);
         context.startActivity(intent);
     }
 
@@ -51,6 +53,16 @@ public class Edit_ChangeExplain extends BaseActivity {
     @Override
     protected void initLocalData() {
         nickname = getIntent().getStringExtra("nickname");
+        desc = getIntent().getStringExtra("desc");
+    }
+
+    @Override
+    protected void initView() {
+        if (!TextUtils.isEmpty(desc)) {
+            change_Edit.setText(desc);
+            int length = desc.length();
+            changeCount_Tv.setText(length + "/100");
+        }
     }
 
     @Override
@@ -63,8 +75,8 @@ public class Edit_ChangeExplain extends BaseActivity {
     public void onRightClick() {
         super.onRightClick();
         int length = change_Edit.getText().length();
-        if (length < 20){
-            T.s("内容不能少于20字",3000);
+        if (length < 20) {
+            T.s("内容不能少于20字", 3000);
             return;
         }
         edit_Info();
@@ -104,7 +116,7 @@ public class Edit_ChangeExplain extends BaseActivity {
                 Editable editable = change_Edit.getText();
                 int len = editable.length();
                 //显示还可以输入多少字
-                changeCount_Tv.setText(len + "/200");
+                changeCount_Tv.setText(len + "/100");
             }
 
             @Override

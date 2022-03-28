@@ -40,4 +40,7 @@ public class GroupBean {
         private String avatar;
 
     }
+
+    @SerializedName("itemType")
+    private String itemType;
 }

@@ -63,13 +63,16 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     LinearLayout label_Lin;
     @BindView(R.id.tv_follow_number)
     TextView tv_follow_number;
+    @BindView(R.id.follow_Tv)
+    TextView follow_Tv;
     @BindView(R.id.tv_fans_number)
     TextView tv_fans_number;
+    @BindView(R.id.fans_Tv)
+    TextView fans_Tv;
     @BindView(R.id.iv_qrcode)
     TextView iv_qrcode;
     @BindView(R.id.refresh_layout)
     SwipeRefreshLayout refresh_layout;
-
     @BindView(R.id.interest_EditView)
     MyCardEditView interest_EditView;
     @BindView(R.id.good_EditView)
@@ -113,7 +116,9 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
         viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
+        viewTouchDelegate.expandViewTouchDelegate(fans_Tv, 50);
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
     }
 
@@ -131,7 +136,9 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         tv_dongtai.setOnClickListener(this);
         tv_group.setOnClickListener(this);
         tv_follow_number.setOnClickListener(this);
+        follow_Tv.setOnClickListener(this);
         tv_fans_number.setOnClickListener(this);
+        fans_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -253,12 +260,13 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         String id = SharePref.user().getUserId();
         switch (v.getId()) {
             case R.id.tv_follow_number:
+            case R.id.follow_Tv:
                 skipAnotherActivity(MyFollowActivity.class);
                 break;
             case R.id.tv_fans_number:
+            case R.id.fans_Tv:
                 skipAnotherActivity(MyFansActivity.class);
                 break;
-
             case R.id.tv_my_wallet:
                 skipAnotherActivity(MyWallet_Activity.class);
                 break;

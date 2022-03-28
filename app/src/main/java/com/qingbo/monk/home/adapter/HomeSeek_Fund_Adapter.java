@@ -38,9 +38,9 @@ public class HomeSeek_Fund_Adapter extends BaseQuickAdapter<HomeSeekFund_Bean, B
             fundName_Tv.setText(searchChange);
         }
         TextView fundCode_Tv = helper.getView(R.id.fundCode_Tv);
-        if (!TextUtils.isEmpty(item.getNumber())) {
+//        if (!TextUtils.isEmpty(item.getNumber())) {
             fundCode_Tv.setText(item.getNumber());
-        }
+//        }
 
 //        helper.setText(R.id.fundName_Tv,item.getName());
 //        helper.setText(R.id.fundCode_Tv,item.getNumber());

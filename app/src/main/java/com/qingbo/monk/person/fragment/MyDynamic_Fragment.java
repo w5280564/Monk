@@ -143,19 +143,25 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            skipAnotherActivity(ArticleDetail_Activity.class);
             MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
-            String isReprint = item.getIsReprint();//0-原创 1-转发
-            String articleId;
-            if (TextUtils.equals(isReprint, "0")) {
-                articleId = item.getArticleId();
-            } else {
-                articleId = item.getPreArticleId();
-            }
-            String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+            toDetail(item);
         });
+    }
 
+    /**
+     * 详情 转发与原创用的 文章ID不一样
+     * @param item
+     */
+    private void toDetail(MyDynamic_MoreItem_Bean item) {
+        String isReprint = item.getIsReprint();//0-原创 1-转发
+        String articleId;
+        if (TextUtils.equals(isReprint, "0")) {
+            articleId = item.getArticleId();
+        } else {
+            articleId = item.getPreArticleId();
+        }
+        String type = item.getType();
+        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
     }
 
 

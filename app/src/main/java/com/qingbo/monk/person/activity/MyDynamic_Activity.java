@@ -15,19 +15,17 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.InterestCrate_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.FollowListBean;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
-import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
+import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -40,7 +38,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 
 /**
  * 我的动态
@@ -118,12 +115,13 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
     }
 
 
-    MyDynamicListBean myDynamicListBean;
+    MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
+        requestMap.put("trends", "1");
         HttpSender httpSender = new HttpSender(HttpUrl.UserCenter_Article, "社交主页-我/他的动态", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -132,7 +130,7 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamic_More_ListBean.class);
                     if (myDynamicListBean != null) {
                         originalValue(myDynamicListBean.getCount(), "0","", atrCount_Tv);
                         originalValue(myDynamicListBean.getReadTotal(), "0","", readCount_Tv);
@@ -154,26 +152,24 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyDynamic_Adapter(true);
+        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
-            String articleId = item.getArticleId();
-            String type = item.getType();
-            ArticleDetail_Activity.startActivity(mActivity, articleId, "0", type);
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
+            toDetail(item);
         });
 
-        ((MyDynamic_Adapter) mAdapter).setOnItemImgClickLister(new MyDynamic_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+//        ((MyDynamic_Adapter) mAdapter).setOnItemImgClickLister(new MyDynamic_Adapter.OnItemImgClickLister() {
+//            @Override
+//            public void OnItemImgClickLister(int position, List<String> strings) {
+//                jumpToPhotoShowActivity(position, strings);
+//            }
+//        });
 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+                MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
                 if (item == null) {
                     return;
                 }
@@ -195,7 +191,25 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
         });
     }
 
-    private void showPopMenu(ImageView more_Img, MyDynamic_Bean mQuestionBean, int position) {
+    /**
+     * 详情 转发与原创用的 文章ID不一样
+     * @param item
+     */
+    private void toDetail(MyDynamic_MoreItem_Bean item) {
+        String isReprint = item.getIsReprint();//0-原创 1-转发
+        String articleId;
+        if (TextUtils.equals(isReprint, "0")) {
+            articleId = item.getArticleId();
+        } else {
+            articleId = item.getPreArticleId();
+        }
+        String type = item.getType();
+        ArticleDetail_Activity.startActivity(mActivity, articleId, "0", type);
+    }
+
+
+
+    private void showPopMenu(ImageView more_Img, MyDynamic_MoreItem_Bean mQuestionBean, int position) {
         String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
         boolean haveEdit = false;
         if (TextUtils.equals(status, "2")) {//审核未通过才能删除
@@ -288,9 +302,10 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
                         }
                         follow_Count.setText(nowLike + "");
                     }
+                    onResume();
                 }
             }
-        }, true);
+        }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

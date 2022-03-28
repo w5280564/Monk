@@ -37,4 +37,5 @@ public class MyCardGroup_Bean {
     private String itemType;
 
 
+
 }

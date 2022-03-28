@@ -66,7 +66,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
         public void onTabUnselected(TabLayout.Tab tab) {
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, normalSize, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
+                setTextViewStyle(view, normalSize, R.color.text_color_6f6f6f, Typeface.DEFAULT, View.INVISIBLE);
             }
         }
 

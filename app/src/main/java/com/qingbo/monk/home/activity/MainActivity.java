@@ -38,6 +38,7 @@ import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.WebSocketHelper;
 import com.qingbo.monk.base.BaseActivityWithFragment;
 import com.qingbo.monk.bean.MainUpdateCount_Bean;
+import com.qingbo.monk.bean.System_MesCount_Bean;
 import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.home.fragment.HomeFragment;
 import com.qingbo.monk.home.fragment.MessageFragment;
@@ -75,6 +76,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+
 
 /**
  * 主首页
@@ -156,7 +158,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Subscribe
     public void onReceiveSocketMessageEvent(ReceiveSocketMessageEvent event) {
         if (event.type == ReceiveSocketMessageEvent.RECEIVE_MESSAGE) {
-            getAllUnreadNumber();
+            getNumList(false);
         }
     }
 
@@ -362,9 +364,9 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     @Override
     protected void onResume() {
         super.onResume();
-        getAllUnreadNumber();
         getUpdateCount(false);
         changeUser();
+        getNumList(false);
     }
 
     /**
@@ -406,33 +408,32 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
     }
 
     /**
-     * 获取所有未读消息数量
+     * 消息页面 有消息未查看
+     * @param isShowAnimal
      */
-    private void getAllUnreadNumber() {
+    private void getNumList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
-        HttpSender httpSender = new HttpSender(HttpUrl.getAllUnreadNumber, "获取所有未读消息数量", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    String tempNum = GsonUtil.getInstance().getValue(json_data, "num");
-                    if (StringUtil.isBlank(tempNum)) {
-                        return;
+        HttpSender sender = new HttpSender(HttpUrl.System_Mes_Count, "系统消息数", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            System_MesCount_Bean system_mesCount_bean = GsonUtil.getInstance().json2Bean(json_data, System_MesCount_Bean.class);
+                            String allCount = system_mesCount_bean.getAllCount();
+                            if (TextUtils.equals(allCount,"0")) {
+                                tv_unread_msg_number.setVisibility(View.GONE);
+                            } else {
+                                tv_unread_msg_number.setVisibility(View.VISIBLE);
+                                int count = Integer.parseInt(allCount);
+                                tv_unread_msg_number.setText(handleUnreadNum(count));
+                            }
+                        }
                     }
-
-                    int unreadNum = Integer.parseInt(tempNum);
-                    if (unreadNum == 0) {
-                        tv_unread_msg_number.setVisibility(View.GONE);
-                    } else {
-                        tv_unread_msg_number.setVisibility(View.VISIBLE);
-                        tv_unread_msg_number.setText(handleUnreadNum(unreadNum));
-                    }
-                }
-            }
-        }, false);
-        httpSender.setContext(mActivity);
-        httpSender.sendGet();
+                }, isShowAnimal);
+        sender.setContext(mActivity);
+        sender.sendGet();
     }
+
 
 
     private String handleUnreadNum(int unreadMsgCount) {
@@ -676,6 +677,7 @@ public class MainActivity extends BaseActivityWithFragment implements BottomNavi
             });
         }
     }
+
 
 
 }

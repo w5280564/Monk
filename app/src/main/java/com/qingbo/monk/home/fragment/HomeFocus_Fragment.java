@@ -176,6 +176,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
 
     /**
      * 人物跳转
+     *
      * @param item
      */
     private void startPerson(HomeFllowBean item) {
@@ -184,7 +185,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
             String nickname = item.getAuthorName();
             String id = item.getAuthorId();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
-        }else {
+        } else {
             String id = item.getAuthorId();
             MyAndOther_Card.actionStart(mActivity, id);
         }
@@ -223,26 +224,33 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
-                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
-                    if (likedStateBena != null) {
-                        //0取消点赞成功，1点赞成功
-                        int nowLike;
-                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLiked_status() == 0) {
-                            nowLike -= 1;
-                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLiked_status() == 1) {
-                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
-                            nowLike += 1;
-                        }
-                        follow_Count.setText(nowLike + "");
-                    }
+                    likeCount(position, likedStateBena);
                 }
             }
         }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    private void likeCount(int position, LikedStateBena likedStateBena) {
+        ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+        TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLiked_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLiked_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            if (nowLike < 0) {
+                nowLike = 0;
+            }
+            follow_Count.setText(nowLike + "");
+        }
     }
 
 }

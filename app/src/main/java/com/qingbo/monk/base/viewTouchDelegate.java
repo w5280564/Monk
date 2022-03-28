@@ -24,52 +24,46 @@ public class viewTouchDelegate {
      */
     public static void expandViewTouchDelegate(final View view, final int top,
                                                final int bottom, final int left, final int right) {
-        ((View) view.getParent()).post(new Runnable() {
-            @Override
-            public void run() {
-                Rect bounds = new Rect();
-                view.setEnabled(true);
-                view.getHitRect(bounds);
-                Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
-                Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
-                        " | right: "+bounds.right+" | bottom: "+bounds.bottom);
-                bounds.top -= top;
-                bounds.bottom += bottom;
-                bounds.left -= left;
-                bounds.right += right;
-                Log.d(TAG, "——————————扩大触摸区域后  矩阵区域————————");
-                Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
-                Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
-                        " | right: "+bounds.right+" | bottom: "+bounds.bottom);
-                TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
-                if (View.class.isInstance(view.getParent())) {
-                    ((View) view.getParent()).setTouchDelegate(touchDelegate);
-                }
+        ((View) view.getParent()).post(() -> {
+            Rect bounds = new Rect();
+            view.setEnabled(true);
+            view.getHitRect(bounds);
+            Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
+            Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
+                    " | right: "+bounds.right+" | bottom: "+bounds.bottom);
+            bounds.top -= top;
+            bounds.bottom += bottom;
+            bounds.left -= left;
+            bounds.right += right;
+            Log.d(TAG, "——————————扩大触摸区域后  矩阵区域————————");
+            Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
+            Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
+                    " | right: "+bounds.right+" | bottom: "+bounds.bottom);
+            TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
+            if (View.class.isInstance(view.getParent())) {
+                ((View) view.getParent()).setTouchDelegate(touchDelegate);
             }
         });
     }
         public static void expandViewTouchDelegate(final View view, final int index) {
-        ((View) view.getParent()).post(new Runnable() {
-            @Override
-            public void run() {
-                Rect bounds = new Rect();
-                view.setEnabled(true);
-                view.getHitRect(bounds);
-                Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
-                Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
-                        " | right: "+bounds.right+" | bottom: "+bounds.bottom);
-                bounds.top -= index;
-                bounds.bottom += index;
-                bounds.left -= index;
-                bounds.right += index;
-                Log.d(TAG, "——————————扩大触摸区域后  矩阵区域————————");
-                Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
-                Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
-                        " | right: "+bounds.right+" | bottom: "+bounds.bottom);
-                TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
-                if (View.class.isInstance(view.getParent())) {
-                    ((View) view.getParent()).setTouchDelegate(touchDelegate);
-                }
+        ((View) view.getParent()).post(() -> {
+            Rect bounds = new Rect();
+            view.setEnabled(true);
+            view.getHitRect(bounds);
+            Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
+            Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
+                    " | right: "+bounds.right+" | bottom: "+bounds.bottom);
+            bounds.top -= index;
+            bounds.bottom += index;
+            bounds.left -= index;
+            bounds.right += index;
+            Log.d(TAG, "——————————扩大触摸区域后  矩阵区域————————");
+            Log.d(TAG, "width: "+bounds.width()+" | height: "+bounds.height());
+            Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
+                    " | right: "+bounds.right+" | bottom: "+bounds.bottom);
+            TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
+            if (View.class.isInstance(view.getParent())) {
+                ((View) view.getParent()).setTouchDelegate(touchDelegate);
             }
         });
     }
@@ -80,15 +74,12 @@ public class viewTouchDelegate {
      * @param view
      */
     public static void restoreViewTouchDelegate(final View view) {
-        ((View) view.getParent()).post(new Runnable() {
-            @Override
-            public void run() {
-                Rect bounds = new Rect();
-                bounds.setEmpty();
-                TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
-                if (View.class.isInstance(view.getParent())) {
-                    ((View) view.getParent()).setTouchDelegate(touchDelegate);
-                }
+        ((View) view.getParent()).post(() -> {
+            Rect bounds = new Rect();
+            bounds.setEmpty();
+            TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
+            if (View.class.isInstance(view.getParent())) {
+                ((View) view.getParent()).setTouchDelegate(touchDelegate);
             }
         });
     }

@@ -25,11 +25,22 @@
         android:maxLines="1"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_13"
-        android:textColor="@color/text_color_a1a1a1"
+        android:textColor="@color/text_color_6f6f6f"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
+    <TextView
+        android:id="@+id/unread_msg_Tv"
+        android:layout_width="@dimen/dp_5"
+        android:layout_height="@dimen/dp_5"
+        app:layout_constraintTop_toTopOf="@id/tab_item_textview"
+        app:layout_constraintStart_toEndOf="@id/tab_item_textview"
+        android:layout_marginStart="@dimen/dp_5"
+        android:background="@drawable/shape_no_read_point"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
+        android:visibility="gone"
+        android:gravity="center"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

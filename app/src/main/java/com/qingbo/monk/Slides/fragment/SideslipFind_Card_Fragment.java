@@ -77,6 +77,7 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         mCardsView.addOnCardSwipedListener(this);
         mAdapter = new CardAdapter();
         mCardsView.setAdapter(mAdapter);
+
     }
 
     @Override

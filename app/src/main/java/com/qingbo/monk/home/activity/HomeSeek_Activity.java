@@ -122,7 +122,8 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         } else if (TextUtils.equals(type, "人物")) {
             ((HomeSeek_Person) fragments.get(2)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "股票")) {
-            ((HomeSeek_Fund) fragments.get(3)).getExpertList(seekStr, false);
+//            ((HomeSeek_Fund) fragments.get(3)).getExpertList(seekStr, false);
+            ((HomeSeek_Fund) fragments.get(3)).onRefreshData();
         } else if (TextUtils.equals(type, "资讯")) {
             ((HomeSeek_Topic) fragments.get(4)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "圈子")) {

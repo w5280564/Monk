@@ -41,19 +41,6 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:text="关注"
-                        android:textColor="@color/text_color_a1a1a1"
-                        android:textSize="@dimen/sp_12"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_follow_number"
-                        app:layout_constraintStart_toStartOf="@+id/tv_follow_number"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_follow_number" />
-
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="@dimen/dp_0"
@@ -80,7 +67,7 @@
                         app:layout_constraintTop_toBottomOf="@id/tv_name"
                         app:layout_constraintBottom_toBottomOf="@id/iv_userHeader"
                         android:layout_marginBottom="@dimen/dp_5"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"/>
 
 
@@ -114,7 +101,7 @@
                         android:layout_marginEnd="@dimen/dp_10"
                         android:text="进入我的主页"
                         android:padding="@dimen/dp_10"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_11"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_right"
                         app:layout_constraintEnd_toStartOf="@+id/iv_right"
@@ -129,15 +116,18 @@
                         android:textColor="@color/text_color_444444"
                         android:textSize="@dimen/sp_15"
                         android:textStyle="bold"
+                        android:padding="@dimen/dp_10"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_userHeader" />
+                        app:layout_constraintTop_toBottomOf="@id/iv_userHeader"
+                        tools:ignore="UsingOnClickInXml" />
+
 
                     <TextView
+                        android:id="@+id/follow_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
                         android:text="关注"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/tv_follow_number"
@@ -150,6 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_60"
+                        android:padding="@dimen/dp_10"
                         android:textColor="@color/text_color_444444"
                         android:textSize="@dimen/sp_15"
                         android:textStyle="bold"
@@ -158,11 +149,11 @@
                         app:layout_constraintTop_toTopOf="@id/tv_follow_number" />
 
                     <TextView
+                        android:id="@+id/fans_Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10"
                         android:text="粉丝"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/tv_fans_number"
@@ -189,7 +180,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="钱包"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_comment"
@@ -204,7 +195,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="评论"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_history"
@@ -218,7 +209,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="浏览"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_fankui"
@@ -233,7 +224,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="帮助反馈"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -249,7 +240,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="设置中心"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="@+id/tv_my_wallet"
@@ -298,7 +289,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="发布动态"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_caogao"
@@ -312,7 +303,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="草稿箱"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_dongtai"
@@ -326,7 +317,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="动态"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toStartOf="@id/tv_group"
@@ -340,7 +331,7 @@
                         android:drawablePadding="@dimen/dp_10"
                         android:gravity="center"
                         android:text="我的社群"
-                        android:textColor="@color/text_color_a1a1a1"
+                        android:textColor="@color/text_color_6f6f6f"
                         android:textSize="@dimen/sp_12"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"

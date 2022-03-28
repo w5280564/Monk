@@ -2,11 +2,14 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -39,11 +42,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 社群话题发布页
  */
 public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_More {
+    @BindView(R.id.tv_tag)
+    TextView tvTag;
+    @BindView(R.id.ll_tag)
+    LinearLayout llTag;
     @BindView(R.id.et_title)
     EditText et_title;
     @BindView(R.id.et_content)
@@ -109,6 +117,17 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
         tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+
+        String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
+        if (TextUtils.equals(is_anonymous, "1")) {
+            tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
+            llTag.setTag("1");
+        } else {
+            tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
+            llTag.setTag("0");
+        }
     }
 
     private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
@@ -129,6 +148,14 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
     }
 
 
+    private void setDrawableLeft(int mipmap) {
+        Drawable drawableLeft = getResources().getDrawable(mipmap);
+        tvTag.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                null, null, null);
+    }
+
+
+
     /**
      * 添加添加图片这个对象
      */
@@ -146,6 +173,20 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);
         recycleView_image.setAdapter(mAdapter);
+    }
+
+    @OnClick(R.id.ll_tag)
+    public void onClick() {
+        String tag = (String) llTag.getTag();
+        if ("0".equals(tag)) {
+            tvTag.setText("匿名");
+            setDrawableLeft(R.mipmap.niming);
+            llTag.setTag("1");
+        } else {
+            tvTag.setText("公开");
+            setDrawableLeft(R.mipmap.gongkai);
+            llTag.setTag("0");
+        }
     }
 
 
@@ -252,6 +293,7 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         baseMap.put("content", mContent);
         baseMap.put("images", images);
         baseMap.put("shequn_id", shequn_id);
+        baseMap.put("is_anonymous", (String) llTag.getTag());
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
         }else{

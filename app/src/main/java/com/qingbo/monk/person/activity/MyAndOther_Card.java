@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.google.android.material.appbar.AppBarLayout;
@@ -32,6 +34,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.baseview.ExpandTextView;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
@@ -48,6 +51,7 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.ColorUtils;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -69,7 +73,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @BindView(R.id.back_Btn)
     Button back_Btn;
     @BindView(R.id.brief_Tv)
-    TextView brief_Tv;
+    ExpandTextView brief_Tv;
     @BindView(R.id.iv_img)
     ImageView iv_img;
     @BindView(R.id.head_Img)
@@ -122,6 +126,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     Toolbar mToolbar;
     @BindView(R.id.appbar_Layout)
     AppBarLayout appbar_Layout;
+    @BindView(R.id.textview10)
+    TextView textview10;
+    @BindView(R.id.textview11)
+    TextView textview11;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -182,8 +190,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
         viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
         viewTouchDelegate.expandViewTouchDelegate(share_Btn, 50);
-        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
-        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
+        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 100);
+        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 100);
         initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
         if (isMe()) {
@@ -193,7 +201,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     @Override
     protected void getServerData() {
-        postDeleArticleData(userID,false);
+        postDeleArticleData(userID, false);
         getMyGroup(userID, false);
         getInterestData(userID, false);
     }
@@ -208,8 +216,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     protected void initEvent() {
         super.initEvent();
         back_Btn.setOnClickListener(this);
+        send_Mes.setOnClickListener(this);
         share_Btn.setOnClickListener(this);
-        brief_Tv.setOnClickListener(this);
         group_Con.setOnClickListener(this);
         interest_Con.setOnClickListener(this);
         follow_Tv.setOnClickListener(this);
@@ -217,19 +225,36 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         tv_follow_number.setOnClickListener(this);
         tv_fans_number.setOnClickListener(this);
         iv_bianji.setOnClickListener(this);
+        textview10.setOnClickListener(this);
+        textview11.setOnClickListener(this);
 
 
-        appbar_Layout.addOnOffsetChangedListener(new AppBarLayout.BaseOnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (verticalOffset == 0) {
-                    mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
-                    ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(false).init();//把标题栏和状态栏绑定在一块
-                } else {
-                    ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(true).init();
-                }
+        appbar_Layout.addOnOffsetChangedListener((AppBarLayout.BaseOnOffsetChangedListener) (appBarLayout, verticalOffset) -> {
+            if (verticalOffset == 0) {
+                mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+                ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(false).init();//把标题栏和状态栏绑定在一块
+                setTint(back_Btn, R.mipmap.icon_back, R.color.white);
+                setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.white);
+            } else {
+                ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(true).init();
+                setTint(back_Btn, R.mipmap.icon_back, R.color.text_color_6f6f6f);
+                setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.text_color_6f6f6f);
             }
         });
+    }
+
+    /**
+     * 修改按钮背景色
+     *
+     * @param button
+     * @param drawable
+     * @param color
+     */
+    public void setTint(Button button, int drawable, int color) {
+        Drawable originalDrawable = ContextCompat.getDrawable(this, drawable);
+        Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable).mutate();
+        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(this, color));
+        button.setBackground(wrappedDrawable);
     }
 
     @SuppressLint("WrongConstant")
@@ -255,6 +280,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     /**
      * 删除查看发文状态
+     *
      * @param followId
      */
     private void postDeleArticleData(String followId, boolean isShow) {
@@ -274,8 +300,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     }
 
 
-
     UserBean userBean;
+
     private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("userId", userId + "");
@@ -296,7 +322,15 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
 //
-                        originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
+//                        originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
+                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
+                        brief_Tv.initWidth(width);
+//                        if (userBean.getDescription().isEmpty()) {
+//                            brief_Tv.setText("暂未填写");
+//                        } else {
+                            brief_Tv.setCloseText("基金经理简介：\n" + userBean.getDescription());
+//                        }
+
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
                         originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
                         originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
@@ -339,7 +373,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                                     groupString = "他的社群";
                                 }
                                 groupName_Tv.setText(groupString);
-                                String format = String.format("加入%1$s个社群", myCardBean.getData().getCount());
+                                String format = String.format("拥有%1$s个社群", myCardBean.getData().getCount());
                                 joinCount_Tv.setText(format);
                                 groupHeadFlow(joinHead_Lin, mActivity, myCardBean);
                             }
@@ -435,24 +469,19 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_follow_number:
+            case R.id.textview10:
                 if (isMe()) {
                     skipAnotherActivity(MyFollowActivity.class);
                 }
                 break;
             case R.id.tv_fans_number:
+            case R.id.textview11:
                 if (isMe()) {
                     skipAnotherActivity(MyFansActivity.class);
                 }
                 break;
             case R.id.back_Btn:
                 finish();
-                break;
-            case R.id.brief_Tv:
-                if (brief_Tv.getMaxLines() == 2) {
-                    brief_Tv.setMaxLines(Integer.MAX_VALUE);
-                } else {
-                    brief_Tv.setMaxLines(2);
-                }
                 break;
             case R.id.group_Con:
                 if (isMe()) {
@@ -496,9 +525,9 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     private void showShareDialog() {
         if (userBean != null) {
             String imgUrl = userBean.getAvatar();
-            String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s",userBean.getId());
-            String title = String.format("分享 %1$s 的发现扫地僧主页",userBean.getNickname());
-            String content = String.format("%1$s粉丝 %2$s关注",userBean.getFansNum(),userBean.getFollowNum());
+            String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s", userBean.getId());
+            String title = String.format("分享 %1$s 的发现扫地僧主页", userBean.getNickname());
+            String content = String.format("%1$s粉丝 %2$s关注", userBean.getFansNum(), userBean.getFollowNum());
             ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
             mShareDialog.show();
         }
@@ -619,13 +648,13 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         } else if (TextUtils.equals(s, "2")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("已关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
             StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.GONE);
         } else if (TextUtils.equals(s, "4")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("互相关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
             StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.VISIBLE);
         }

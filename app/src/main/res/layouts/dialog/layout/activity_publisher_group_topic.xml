@@ -103,6 +103,35 @@
                     android:textColor="@color/text_color_6f6f6f"
                     android:textSize="@dimen/sp_12"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:layout_marginBottom="@dimen/dp_21"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_remains_image"
+                    android:background="@drawable/background_group_edit"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/dp_8"
+                    android:paddingRight="@dimen/dp_8"
+                    android:tag="0">
+
+                    <TextView
+                        android:id="@+id/tv_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@mipmap/gongkai"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="公开"
+                        android:textColor="@color/text_color_6f6f6f"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
 

@@ -96,21 +96,20 @@ public class QuestionFragment_Group extends BaseLazyFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 int count = adapter.getItemCount() - 1;
-               if (count == position){
-                   skipAnotherActivity(CreateGroupStepOneActivity.class);
-               }else {
-                   MyCardGroup_Bean item = (MyCardGroup_Bean) adapter.getItem(position);
-                   if (item == null) {
-                       return;
-                   }
-                   GroupDetailActivity.actionStart(mActivity, item.getId());
-               }
+                if (count == position) {
+                    skipAnotherActivity(CreateGroupStepOneActivity.class);
+                } else {
+                    MyGroupBean item = (MyGroupBean ) adapter.getItem(position);
+                    if (item == null) {
+                        return;
+                    }
+                    GroupDetailActivity.actionStart(mActivity, item.getId());
+                }
 
             }
         });
 
     }
-
 
 
     private void initRecyclerView() {
@@ -158,12 +157,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
 
     }
 
-
-
-
-
     private void getAllShequn() {
-
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", "1");
         requestMap.put("limit", "4");
@@ -176,6 +170,7 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                             if (obj != null) {
                                 List<GroupBean> list = obj.getList();
                                 mQuestionGroupAdapter.setNewData(list);
+
                             }
                         }
 //                        getMyGroup();
@@ -195,7 +190,15 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            handleData(json_root);
+//                            handleData(json_root);
+
+                            HttpBaseList<MyGroupBean> objList = GsonUtil.getInstance().json2List(json_root, new TypeToken<HttpBaseList<MyGroupBean>>() {
+                            }.getType());
+//                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            myGroupAdapter.setNewData(objList.getData());
+                            MyGroupBean myCardGroup_bean = new MyGroupBean();
+                            myCardGroup_bean.setItemType("2");
+                            myGroupAdapter.addData(myCardGroup_bean);
                         }
                     }
 
@@ -234,8 +237,9 @@ public class QuestionFragment_Group extends BaseLazyFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getMyGroup();
         getAllShequn();
-        getMyGroupHead("1");
+//        getMyGroupHead("1");
         img_top_banner.goOnScroll();
     }
 
@@ -260,11 +264,11 @@ public class QuestionFragment_Group extends BaseLazyFragment {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
-                            myGroupAdapter.setNewData( myGroupList_bean.getList());
-                            MyCardGroup_Bean myCardGroup_bean = new MyCardGroup_Bean();
-                            myCardGroup_bean.setItemType("2");
-                            myGroupAdapter.addData(myCardGroup_bean);
+//                            MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+//                            myGroupAdapter.setNewData(myGroupList_bean.getList());
+//                            MyCardGroup_Bean myCardGroup_bean = new MyCardGroup_Bean();
+//                            myCardGroup_bean.setItemType("2");
+//                            myGroupAdapter.addData(myCardGroup_bean);
                         }
                     }
 

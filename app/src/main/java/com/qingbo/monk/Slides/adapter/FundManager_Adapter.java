@@ -1,9 +1,12 @@
 package com.qingbo.monk.Slides.adapter;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,12 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.ExpandTextView;
 import com.qingbo.monk.bean.FundCombinationBean;
 import com.qingbo.monk.bean.FundManagerBean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
+
+import me.jessyan.autosize.utils.ScreenUtils;
 
 public class FundManager_Adapter extends BaseQuickAdapter<FundManagerBean, BaseViewHolder> {
     public FundManager_Adapter() {
@@ -38,25 +44,21 @@ public class FundManager_Adapter extends BaseQuickAdapter<FundManagerBean, BaseV
         FlowLayout lable_flow = helper.getView(R.id.lable_flow);
         TextView allTime_Tv = helper.getView(R.id.allTime_Tv);
         TextView startTime_Tv = helper.getView(R.id.startTime_Tv);
-        TextView content_Tv = helper.getView(R.id.content_Tv);
+        ExpandTextView content_Tv = helper.getView(R.id.content_Tv);
 
 
-        GlideUtils.loadCircleImage(mContext,head_Img,item.getAvatar(),R.mipmap.icon_logo);
+        GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
         nickName_Tv.setText(item.getNewsTitle());
-        allTime_Tv.setText("累计任职时间："+item.getDays());
-        startTime_Tv.setText("任职起始日期："+item.getNewsPosttime());
-//
-        content_Tv.setText("基金经理简介：\n"+item.getNewsContent());
+        allTime_Tv.setText("累计任职时间：" + item.getDays());
+        startTime_Tv.setText("任职起始日期：" + item.getNewsPosttime());
+
+
+        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mContext) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mContext, 40);
+        content_Tv.initWidth(width);
+        content_Tv.setCloseText("基金经理简介：\n" + item.getNewsContent());
 
         labelFlow(lable_flow, mContext, item.getTagName());
 
-        manager_Con.setOnClickListener(v -> {
-            if (content_Tv.getMaxLines() == 3) {
-                content_Tv.setMaxLines(Integer.MAX_VALUE);
-            }else {
-                content_Tv.setMaxLines(3);
-            }
-        });
     }
 
 

@@ -72,9 +72,9 @@
 
 
 
-    <TextView
+    <com.qingbo.monk.base.baseview.ExpandTextView
         android:id="@+id/content_Tv"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_9"
         android:layout_marginTop="@dimen/dp_10"

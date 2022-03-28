@@ -69,7 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="关注 1234       粉丝 5678"
-                    android:textColor="@color/text_color_a1a1a1"
+                    android:textColor="@color/text_color_f6f6f6"
                     android:textSize="10sp"
                     app:layout_constraintStart_toStartOf="@id/nickName_Tv"
                     app:layout_constraintTop_toBottomOf="@id/nickName_Tv" />

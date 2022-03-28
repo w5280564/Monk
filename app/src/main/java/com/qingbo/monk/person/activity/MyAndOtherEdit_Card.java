@@ -297,7 +297,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 mPicker.showCityPicker();//修改居住地
                 break;
             case R.id.explain_Con:
-                Edit_ChangeExplain.actionStart(mActivity, userBean.getNickname());//修改个人说明
+                Edit_ChangeExplain.actionStart(mActivity, userBean.getNickname(),userBean.getDescription());//修改个人说明
                 break;
             case R.id.home_Con:
                 Edit_ChangePage.actionStart(mActivity, userBean.getNickname());//修改头像

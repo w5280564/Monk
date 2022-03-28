@@ -151,13 +151,13 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         } else if (TextUtils.equals(s, "2")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("已关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
             StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.GONE);
         } else if (TextUtils.equals(s, "4")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("互相关注");
-            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
             StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.VISIBLE);
         }
