@@ -1,6 +1,7 @@
 package com.qingbo.monk.person.activity;
 
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
@@ -106,8 +108,8 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
             if (item==null) {
                 return;
             }
-            String id = item.getId();
-            MyAndOther_Card.actionStart(mActivity, id);
+
+            startPerson(item);
         });
 
         mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
@@ -144,6 +146,22 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 人物跳转
+     * @param item
+     */
+    private void startPerson(ArticleLikedBean item) {
+        String data_source = item.getData_source();//1是虚拟人物,为0是注册用户
+        if (TextUtils.equals(data_source, "1")) {
+            String nickname = item.getNickname();
+            String id = item.getId();
+            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
+        }else {
+            String id = item.getId();
+            MyAndOther_Card.actionStart(mActivity, id);
+        }
     }
 
 

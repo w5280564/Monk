@@ -14,6 +14,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.FundNotice_Insider_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.HomeInsiderBean;
 import com.qingbo.monk.bean.InsiderListBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -123,13 +124,7 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
 
         onBackTop(dingTop_Img);
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-//                String newsUuid = item.getNewsUuid();
-//                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
-            }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
         });
     }
 

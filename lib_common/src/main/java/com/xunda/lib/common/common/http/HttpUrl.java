@@ -254,6 +254,10 @@ public class HttpUrl {
     public static final String System_Mes_Count = "user/user/system-message-count";//系统消息数
     public static final String System_Mes_Clear = "user/user/clear-remind";//系统消息数-清除提醒
     public static final String Repeat_Article = "square/detail/repeat-article";//转发动态
+    public static final String Fund_Index = "fund/fund/index";//基金
+    public static final String thigh_List = "fund/fund/thigh-list";//A股切换
+    public static final String etf_List = "fund/fund/etf-list";//HK股切换
+    public static final String fund_Etf = "fund/fund/etf";//港股--十大股东
 
 
 }

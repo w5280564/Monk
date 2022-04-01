@@ -408,18 +408,18 @@
                             android:id="@+id/titleSend_Mes"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/dp_22"
-                            android:layout_marginTop="@dimen/dp_5"
                             android:background="@drawable/message_bg"
                             android:gravity="center"
                             android:paddingStart="@dimen/dp_8"
                             android:paddingEnd="@dimen/dp_8"
                             android:text="私信"
+                            android:visibility="gone"
                             android:textColor="@color/text_color_6f6f6f"
                             android:textSize="10sp"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="@+id/titleFollow_Tv"
-                            app:layout_constraintStart_toStartOf="@+id/titleFollow_Tv"
-                            app:layout_constraintTop_toBottomOf="@+id/titleFollow_Tv" />
+                            app:layout_constraintTop_toTopOf="@id/titleFollow_Tv"
+                            app:layout_constraintBottom_toBottomOf="@id/titleFollow_Tv"
+                            app:layout_constraintEnd_toStartOf="@id/titleFollow_Tv"
+                            android:layout_marginEnd="@dimen/dp_10"/>
 
 
                         <androidx.constraintlayout.widget.Group

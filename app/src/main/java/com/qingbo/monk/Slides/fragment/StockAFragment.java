@@ -3,11 +3,13 @@ package com.qingbo.monk.Slides.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.xunda.lib.common.bean.AppMenuBean;
+import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.ArrayList;
 
@@ -15,16 +17,23 @@ import java.util.ArrayList;
  * 侧滑——个股-A股
  */
 public class StockAFragment extends BaseTabLayoutFragment {
-    private String name;
-    private String code;
+    public String name;
+    public String code;
 
-    public static StockAFragment newInstance(String name,String code) {
+    public static StockAFragment newInstance(String name, String code) {
         Bundle args = new Bundle();
         args.putString("name", name);
         args.putString("code", code);
         StockAFragment fragment = new StockAFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void StockAFragment(Fragment fragment, String name, String code) {
+        Bundle args = new Bundle();
+        args.putString("name", name);
+        args.putString("code", code);
+        fragment.setArguments(args);
     }
 
     @Override
@@ -45,7 +54,12 @@ public class StockAFragment extends BaseTabLayoutFragment {
         code = getArguments().getString("code");
     }
 
-    private void initMenuData() {
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    public void initMenuData() {
         ArrayList<String> tabName = new ArrayList<>();
         tabName.add("资讯");
         tabName.add("问答");

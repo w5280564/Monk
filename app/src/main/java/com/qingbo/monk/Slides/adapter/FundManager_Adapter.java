@@ -53,7 +53,7 @@ public class FundManager_Adapter extends BaseQuickAdapter<FundManagerBean, BaseV
         startTime_Tv.setText("任职起始日期：" + item.getNewsPosttime());
 
 
-        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mContext) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mContext, 40);
+        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mContext) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mContext, 50);
         content_Tv.initWidth(width);
         content_Tv.setCloseText("基金经理简介：\n" + item.getNewsContent());
 

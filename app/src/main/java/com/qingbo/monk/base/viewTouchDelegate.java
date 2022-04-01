@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.TouchDelegate;
 import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * 扩大点击区域
@@ -46,7 +47,7 @@ public class viewTouchDelegate {
         });
     }
         public static void expandViewTouchDelegate(final View view, final int index) {
-        ((View) view.getParent()).post(() -> {
+        ((ViewGroup) view.getParent()).post(() -> {
             Rect bounds = new Rect();
             view.setEnabled(true);
             view.getHitRect(bounds);
@@ -62,8 +63,8 @@ public class viewTouchDelegate {
             Log.d(TAG, "left: "+bounds.left + " | Top: "+bounds.top +
                     " | right: "+bounds.right+" | bottom: "+bounds.bottom);
             TouchDelegate touchDelegate = new TouchDelegate(bounds, view);
-            if (View.class.isInstance(view.getParent())) {
-                ((View) view.getParent()).setTouchDelegate(touchDelegate);
+            if (view.getParent() instanceof View) {
+                ((ViewGroup) view.getParent()).setTouchDelegate(touchDelegate);
             }
         });
     }
@@ -83,4 +84,7 @@ public class viewTouchDelegate {
             }
         });
     }
+
+
+
 }

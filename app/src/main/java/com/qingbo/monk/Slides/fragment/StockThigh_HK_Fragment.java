@@ -2,7 +2,6 @@ package com.qingbo.monk.Slides.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,19 +9,11 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
-import com.qingbo.monk.Slides.adapter.InsiderHK_Adapter;
 import com.qingbo.monk.Slides.adapter.StockThighHK_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.HomeInsiderBean;
-import com.qingbo.monk.bean.HomeInsiderHKBean;
-import com.qingbo.monk.bean.InsiderHKListBean;
-import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.bean.StockThighHK_ListBean;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -33,36 +24,28 @@ import java.util.HashMap;
 import butterknife.BindView;
 
 /**
- * 侧边栏 个股-A股/港股--公告
+ * 侧边栏 股票—十大股东/十大流通股东/基金持股
  */
-public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
+public class StockThigh_HK_Fragment extends BaseRecyclerViewSplitFragment {
 
+    private String news_digest, type;
     @BindView(R.id.dingTop_Img)
     ImageView dingTop_Img;
-    private String search, type;
-
 
     /**
-     * @param type   1是A股2是港股
-     * @param search 查询股票code
+     * @param news_digest 股票代码
+     * @param type        1-十大股东 2-十大流通股东 3-基金持股 type 3的时候数据模型不一样
      * @return
      */
-    public static StockNitice_Fragment newInstance(String type, String search) {
+    public static StockThigh_HK_Fragment newInstance(String news_digest, String type) {
         Bundle args = new Bundle();
+        args.putString("news_digest", news_digest);
         args.putString("type", type);
-        args.putString("search", search);
-        StockNitice_Fragment fragment = new StockNitice_Fragment();
+        StockThigh_HK_Fragment fragment = new StockThigh_HK_Fragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-
-    @Override
-    protected void initLocalData() {
-        super.initLocalData();
-        type = getArguments().getString("type");
-        search = getArguments().getString("search");
-    }
 
     @Override
     protected int getLayoutId() {
@@ -74,7 +57,13 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无内容", 0, true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,true);
+    }
+
+    @Override
+    protected void initLocalData() {
+        news_digest = getArguments().getString("news_digest");
+        type = getArguments().getString("type");
     }
 
     @Override
@@ -88,9 +77,8 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        requestMap.put("type", type);
-        requestMap.put("search", search);
-        HttpSender httpSender = new HttpSender(HttpUrl.Insider_List, "个股/基金--公告", requestMap, new MyOnHttpResListener() {
+        requestMap.put("news_digest", news_digest);
+        HttpSender httpSender = new HttpSender(HttpUrl.fund_Etf, "港股--十大股东", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -98,18 +86,10 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    if (TextUtils.equals(type, "2")) {
-                        InsiderHKListBean hkListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderHKListBean.class);
-                        if (hkListBean != null) {
-                            handleSplitListData(hkListBean, mAdapter, limit);
-                        }
-                    } else {
-                        InsiderListBean insiderListBean = GsonUtil.getInstance().json2Bean(json_data, InsiderListBean.class);
-                        if (insiderListBean != null) {
-                            handleSplitListData(insiderListBean, mAdapter, limit);
-                        }
+                    StockThighHK_ListBean stockThighHK_listBean = GsonUtil.getInstance().json2Bean(json_data, StockThighHK_ListBean.class);
+                    if (stockThighHK_listBean != null) {
+                        handleSplitListData(stockThighHK_listBean, mAdapter, limit);
                     }
-
                 }
             }
         }, isShow);
@@ -137,28 +117,15 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        if (TextUtils.equals(type, "2")) {
-            mAdapter = new InsiderHK_Adapter();
-        } else {
-            mAdapter = new Insider_Adapter();
-        }
+        mAdapter = new StockThighHK_Adapter();
         mRecyclerView.setAdapter(mAdapter);
 
         onBackTop(dingTop_Img);
+    }
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (TextUtils.equals(type, "2")) {
-                    HomeInsiderHKBean item = (HomeInsiderHKBean) adapter.getItem(position);
-                    String newsUuid = item.getNewsUuid();
-                    AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
-                }else {
-                    HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-                    jumpToWebView(item.getNewsTitle(),item.getFile_url());
-                }
-            }
-        });
+    @Override
+    protected void initEvent() {
+        super.initEvent();
     }
 
 

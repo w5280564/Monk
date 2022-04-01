@@ -86,22 +86,10 @@
             android:textColor="@color/text_color_444444"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/imageView10"
-            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-        <TextView
-            android:id="@+id/sysytem_Tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:lines="1"
-            android:ellipsize="end"
-            android:layout_marginTop="@dimen/dp_5"
-            android:textColor="@color/text_color_a1a1a1"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/system_msg_Tv"
-            android:layout_marginEnd="@dimen/dp_10"
-            app:layout_constraintStart_toStartOf="@+id/textView27"
-            app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
         <TextView
             android:id="@+id/system_msg_Tv"

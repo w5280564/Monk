@@ -81,6 +81,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
     protected void initViewPager(int position) {
         mTabLayout.setTabMode(TabLayout.MODE_AUTO);
         NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
+        mFragmentAdapter.clear(mViewPager);
         //给ViewPager设置适配器
         mViewPager.setAdapter(mFragmentAdapter);
         mViewPager.setOffscreenPageLimit(menuList.size());

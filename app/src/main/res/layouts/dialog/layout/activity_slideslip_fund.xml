@@ -9,6 +9,20 @@
     tools:layout_editor_absoluteX="-1dp"
     tools:layout_editor_absoluteY="0dp">
 
+<!--    <com.xunda.lib.common.common.titlebar.CustomTitleBar-->
+<!--        android:id="@+id/title_bar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="@dimen/title_height"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:titleBarBackgroundColor="@color/app_main_color"-->
+<!--        app:titleBarLeftImg="@mipmap/icon_back"-->
+<!--        app:titleBarRightImg="@mipmap/icon_sousuo"-->
+<!--        app:titleBarRightShowFlag="VISIBLE"-->
+<!--        app:titleBarRightShowType="IMG"-->
+<!--        app:titleBarShowBottomLine="false"-->
+<!--        app:titleBarTitle="基金"-->
+<!--        tools:ignore="MissingConstraints" />-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/title_Con"
         android:layout_width="match_parent"
@@ -78,6 +92,8 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
     <com.google.android.material.tabs.TabLayout

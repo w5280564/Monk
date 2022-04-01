@@ -204,7 +204,8 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
     private void postFollowData(String otherUserId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap,
+                new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

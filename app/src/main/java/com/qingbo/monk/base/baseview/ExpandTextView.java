@@ -1,5 +1,6 @@
 package com.qingbo.monk.base.baseview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.Layout;
@@ -10,6 +11,7 @@ import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.qingbo.monk.R;
@@ -64,12 +66,9 @@ public class ExpandTextView extends androidx.appcompat.widget.AppCompatTextView 
     private void initCloseEnd() {
         String content = TEXT_EXPAND;
         SPAN_CLOSE = new SpannableString(content);
-        ButtonSpan span = new ButtonSpan(getContext(), new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ExpandTextView.super.setMaxLines(Integer.MAX_VALUE);
-                setExpandText(originText);
-            }
+        ButtonSpan span = new ButtonSpan(getContext(), v -> {
+            ExpandTextView.super.setMaxLines(Integer.MAX_VALUE);
+            setExpandText(originText);
         }, R.color.text_color_1F8FE5);
         SPAN_CLOSE.setSpan(span, 0, content.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
@@ -80,12 +79,9 @@ public class ExpandTextView extends androidx.appcompat.widget.AppCompatTextView 
     private void initExpandEnd() {
         String content = TEXT_CLOSE;
         SPAN_EXPAND = new SpannableString(content);
-        ButtonSpan span = new ButtonSpan(getContext(), new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ExpandTextView.super.setMaxLines(mMaxLines);
-                setCloseText(originText);
-            }
+        ButtonSpan span = new ButtonSpan(getContext(), v -> {
+            ExpandTextView.super.setMaxLines(mMaxLines);
+            setCloseText(originText);
         }, R.color.text_color_1F8FE5);
         SPAN_EXPAND.setSpan(span, 0, content.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
     }
@@ -135,6 +131,7 @@ public class ExpandTextView extends androidx.appcompat.widget.AppCompatTextView 
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void setExpandText(String text) {
         if (SPAN_EXPAND == null) {
             initExpandEnd();
@@ -160,6 +157,11 @@ public class ExpandTextView extends androidx.appcompat.widget.AppCompatTextView 
             return new StaticLayout(workingText, getPaint(), initWidth - getPaddingLeft() - getPaddingRight(),
                     Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 }
 

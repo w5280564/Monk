@@ -43,7 +43,6 @@ public abstract class BaseActivityWithFragment extends BaseActivity {
 	
 
 	protected void showFragment(int index, int fragmentId) {
-
 		if (cuurent != 0x001 && getCurrentFrl() == mFragmentList.get(index)) {
 			return;
 		}

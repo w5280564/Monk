@@ -2,10 +2,7 @@ package com.qingbo.monk.person.adapter;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
-import com.qingbo.monk.bean.FriendContactBean;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
-import com.qingbo.monk.message.adapter.ContactHeaderProvider;
-import com.qingbo.monk.message.adapter.ContactMemberProvider;
 
 import java.util.List;
 

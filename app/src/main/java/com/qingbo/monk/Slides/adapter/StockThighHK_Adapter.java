@@ -10,17 +10,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.bean.StockCombinationBean;
+import com.qingbo.monk.bean.StockThighHK_Bean;
+import com.xunda.lib.common.common.utils.ListUtils;
 
 /**
- * 侧边栏 股票—十大股东/十大流通股东 item
+ * 侧边栏 股票—港股-十大股东 item
  */
-public class StockCombination_Adapter extends BaseQuickAdapter<StockCombinationBean, BaseViewHolder> {
-    public StockCombination_Adapter() {
+public class StockThighHK_Adapter extends BaseQuickAdapter<StockThighHK_Bean, BaseViewHolder> {
+    public StockThighHK_Adapter() {
         super(R.layout.fundcombination_adapter);
     }
 
     @Override
-    protected void convert(@NonNull BaseViewHolder helper, StockCombinationBean item) {
+    protected void convert(@NonNull BaseViewHolder helper, StockThighHK_Bean item) {
         TextView fundTime_Tv = helper.getView(R.id.fundTime_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
 
@@ -28,13 +30,12 @@ public class StockCombination_Adapter extends BaseQuickAdapter<StockCombinationB
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         mNineView.setLayoutManager(linearLayoutManager);
-        StockCombination_Shares_Adapter stockCombination_shares_adapter = new StockCombination_Shares_Adapter();
-        mNineView.setAdapter(stockCombination_shares_adapter);
-        stockCombination_shares_adapter.setNewData(item.getData().getItems());
+        StockThighHk_Item_Adapter stockThighHk_item_adapter = new StockThighHk_Item_Adapter();
+        mNineView.setAdapter(stockThighHk_item_adapter);
+        if (!ListUtils.isEmpty(item.getData().getItems())) {
+            stockThighHk_item_adapter.setNewData(item.getData().getItems());
+        }
     }
-
-
-
 
 
 }

@@ -87,6 +87,7 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
                 new MyOnHttpResListener() {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
+
                         if (page == 1 && mSwipeRefreshLayout.isRefreshing()) {
                             mSwipeRefreshLayout.setRefreshing(false);
                         }

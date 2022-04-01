@@ -117,11 +117,6 @@ public class FundManager_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void initEvent() {
-        super.initEvent();
-    }
-
 
 
 }

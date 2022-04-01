@@ -3,7 +3,6 @@ package com.qingbo.monk.person.activity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
@@ -11,11 +10,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -33,13 +30,13 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.CustomCoordinatorLayout;
+import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.baseview.ExpandTextView;
-import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
-import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
+import com.qingbo.monk.bean.myCardBean;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.fragment.MyArchives_Fragment;
 import com.qingbo.monk.person.fragment.MyCollect_Fragment;
@@ -51,7 +48,6 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.utils.ColorUtils;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
@@ -130,6 +126,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView textview10;
     @BindView(R.id.textview11)
     TextView textview11;
+    @BindView(R.id.top_Con)
+    ConstraintLayout top_Con;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -188,10 +186,11 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         headLayout.setmMoveView(top_Src, bot_Lin);
         headLayout.setmZoomView(iv_img);
 
-        viewTouchDelegate.expandViewTouchDelegate(back_Btn, 50);
-        viewTouchDelegate.expandViewTouchDelegate(share_Btn, 50);
-        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 100);
-        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 100);
+        TouchRegion touchRegion = new TouchRegion(top_Con);
+        touchRegion.expandViewTouchRegion(tv_follow_number, 50);
+        touchRegion.expandViewTouchRegion(tv_fans_number, 50);
+
+        new TouchRegion(back_Btn).expandViewTouchRegion(back_Btn,100);
         initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
         if (isMe()) {
@@ -328,7 +327,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 //                        if (userBean.getDescription().isEmpty()) {
 //                            brief_Tv.setText("暂未填写");
 //                        } else {
-                            brief_Tv.setCloseText("基金经理简介：\n" + userBean.getDescription());
+                        brief_Tv.setCloseText("基金经理简介：\n" + userBean.getDescription());
 //                        }
 
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
@@ -359,6 +358,11 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         requestMap.put("userid", userid + "");
         requestMap.put("page", "1");
         requestMap.put("limit", "1");
+        if (isMe()) {
+            requestMap.put("type", "4");
+        } else {
+            requestMap.put("type", "3");
+        }
         HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群—Pc", requestMap,
                 new MyOnHttpResListener() {
                     @Override

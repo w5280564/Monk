@@ -24,6 +24,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +112,12 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     findListBean = GsonUtil.getInstance().json2Bean(json_data, FindListBean.class);
                     if (findListBean != null) {
-                        loadData(mStartIndex);
+                        if (ListUtils.isEmpty(findListBean.getList())) {//如果数据是空再次调取 第一页数据 实现循环
+                            page = 1;
+                            getServerData();
+                        } else {
+                            loadData(mStartIndex);
+                        }
                     }
                 }
             }
@@ -132,7 +138,7 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         mAdapter.remove(0);
         if (mAdapter.getCount() < 3) {
             page++;
-            getServerData();
+            getListData(true);
         }
         mAdapter.notifyDataSetChanged();
     }
@@ -203,7 +209,7 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
         List<BaseCardItem> result = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             FindBean findBean = findListBean.getList().get(i);
-            ImageCardItem item = new ImageCardItem(getActivity(),findBean);
+            ImageCardItem item = new ImageCardItem(getActivity(), findBean);
             item.dismissDir = StackCardsView.SWIPE_ALL;
             item.fastDismissAllowed = true;
             result.add(item);
@@ -232,9 +238,11 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
             case R.id.love_Img:
                 mCardsView.removeCover(StackCardsView.SWIPE_RIGHT);
                 List<BaseCardItem> baseCardItems = mAdapter.getmItems();
-                ImageCardItem baseCardItem1 = (ImageCardItem) baseCardItems.get(0);
-                String id = baseCardItem1.getFindBean().getId();
-                postFollowData(id);
+                if (!ListUtils.isEmpty(baseCardItems)) {
+                    ImageCardItem baseCardItem1 = (ImageCardItem) baseCardItems.get(0);
+                    String id = baseCardItem1.getFindBean().getId();
+                    postFollowData(id);
+                }
                 break;
         }
     }
@@ -248,7 +256,7 @@ public class SideslipFind_Card_Fragment extends BaseFragment implements StackCar
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    if (followStateBena != null){
+                    if (followStateBena != null) {
                     }
                 }
             }
