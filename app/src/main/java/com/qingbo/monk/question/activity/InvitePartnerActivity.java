@@ -51,7 +51,7 @@ public class InvitePartnerActivity extends BaseActivity {
 
 
     private void showShareDialog() {
-        ShareDialog mShareDialog = new ShareDialog(this,shareUrl_partner,"","邀请合伙人","快加入扫地僧吧","邀请合伙人");
+        ShareDialog mShareDialog = new ShareDialog(this,shareUrl_partner,"","邀请合伙人","快加入鹅先知吧","邀请合伙人");
         mShareDialog.show();
     }
 }

@@ -7,6 +7,7 @@ package com.xunda.lib.common.common.http;
  */
 public class HttpUrl {
 
+    public static final String appDownUrl = "https://www.pgyer.com/TvE6";//app下载地址
 
     /**
      * 获取区号列表

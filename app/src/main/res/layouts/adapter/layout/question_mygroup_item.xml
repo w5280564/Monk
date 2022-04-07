@@ -57,7 +57,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_10"
                 android:lines="1"
-                android:text="扫地僧的达摩院..."
+                android:text="鹅先知的达摩院..."
                 android:textColor="@color/text_color_444444"
                 android:textSize="@dimen/sp_14"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -92,6 +92,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;
+//            submitRequestUrl = HttpUrl.createTopic;
             OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy!=null) {
                 questionId = mQuestionBeanMy.getTopic_id();

@@ -29,7 +29,7 @@
             android:id="@+id/tv_group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="扫地僧的达摩院..."
+            android:text="鹅先知的达摩院..."
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_14" />
 

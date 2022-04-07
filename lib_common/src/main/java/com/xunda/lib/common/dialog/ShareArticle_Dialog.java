@@ -33,7 +33,6 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.xunda.lib.common.R;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 

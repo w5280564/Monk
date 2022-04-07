@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dp_11"
-        android:text="发现扫地僧"
+        android:text="鹅先知"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_20" />
 

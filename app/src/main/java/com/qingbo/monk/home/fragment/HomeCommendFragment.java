@@ -23,6 +23,7 @@ import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
@@ -34,6 +35,8 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ShareArticle_Dialog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -159,17 +162,15 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, item.getAuthorId(), item.getAuthorName(), item.getAvatar());
                         break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
+                        break;
                 }
             }
         });
 
 
-        ((Follow_Adapter) mAdapter).setOnItemImgClickLister(new Follow_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+        ((Follow_Adapter) mAdapter).setOnItemImgClickLister((position, strings) -> jumpToPhotoShowActivity(position, strings));
     }
 
 
@@ -206,18 +207,18 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         requestMap.put("otherUserId", otherUserId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap,
                 new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((Follow_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                            TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+                            TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
+                            ((Follow_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
 
-                }
-            }
-        }, true);
+                        }
+                    }
+                }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
@@ -267,5 +268,36 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         }
     }
 
+    /**
+     * 是否是自己
+     *
+     * @param authorId2
+     * @return
+     */
+    public boolean isMy(String authorId2) {
+        String id = PrefUtil.getUser().getId();
+        String authorId = authorId2;
+        if (TextUtils.equals(id, authorId)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(HomeFllowBean item) {
+        if (isMy(item.getAuthorId())) {
+            T.ss("不能转发自己的文章");
+            return;
+        }
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.show();
+    }
 
 }

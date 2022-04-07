@@ -126,9 +126,13 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
 
     @Override
     protected void getServerData() {
-        stockString = HttpUrl.thigh_List;
-        page = 1;
-        getListData(true);
+        if (TextUtils.isEmpty(stockName)) {
+            stockString = HttpUrl.thigh_List;
+            page = 1;
+            getListData(true);
+        }else {
+            initMenuData();
+        }
     }
 
     @SuppressLint("WrongConstant")

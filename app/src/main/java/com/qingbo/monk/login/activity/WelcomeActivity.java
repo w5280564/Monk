@@ -60,7 +60,7 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void showBindPhoneNumberDialog(String openid) {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定手机号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在鹅先知获得更好的用户体验，请绑定手机号。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
                 BindPhoneNumberActivity.actionStart(mActivity,openid);
@@ -75,7 +75,7 @@ public class WelcomeActivity extends BaseActivity {
     }
 
     private void showBindWechatDialog() {
-        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在扫地僧获得更好的用户体验，请绑定微信。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
+        TwoButtonDialogBlue_No_Finish mDialog = new TwoButtonDialogBlue_No_Finish(this,"为了您在鹅先知获得更好的用户体验，请绑定微信。","退出登录","去绑定", new TwoButtonDialogBlue_No_Finish.ConfirmListener() {
             @Override
             public void onClickRight() {
                 wechatThirdLogin();

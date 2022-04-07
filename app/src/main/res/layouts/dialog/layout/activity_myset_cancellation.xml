@@ -45,7 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="注销账号后，您在发现扫地僧的数据，账户信息，权益等会被删除，手机微信的绑定关系会解除且无法恢复，请谨慎操作。"
+        android:text="注销账号后，您在鹅先知的数据，账户信息，权益等会被删除，手机微信的绑定关系会解除且无法恢复，请谨慎操作。"
         android:textColor="@color/text_color_6f6f6f"
 android:layout_marginStart="@dimen/dp_15"
         android:layout_marginEnd="@dimen/dp_15"

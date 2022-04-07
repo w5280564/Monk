@@ -108,7 +108,7 @@ public class MyWallet_DetailedList_Detail extends BaseActivity {
                     if (walletDetailBean != null) {
 //                        moneyCount_Tv.setText(walletDetailBean.getMoney());
                         setMoney(walletDetailBean.getMoney(),moneyCount_Tv);
-//                        cost_Tv.setText("扫地僧手续费"+walletDetailBean.);
+//                        cost_Tv.setText("鹅先知手续费"+walletDetailBean.);
                         String s = styleString(walletDetailBean.getType());
                         style_MyView.getTvContent().setText(s);
                         from_MyView.getTvContent().setText(walletDetailBean.getPayUserName());

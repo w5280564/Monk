@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="收获 – 你想在扫地僧里面收获什么？"
+            android:text="收获 – 你想在鹅先知里面收获什么？"
             android:textColor="@color/text_color_444444"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold" />

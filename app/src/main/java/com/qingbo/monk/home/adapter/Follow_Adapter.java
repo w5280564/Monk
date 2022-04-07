@@ -1,18 +1,13 @@
 package com.qingbo.monk.home.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,6 +53,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         ImageView mes_Img = helper.getView(R.id.mes_Img);
+        ImageView share_Img = helper.getView(R.id.share_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
@@ -130,6 +126,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.group_Img);
         helper.addOnClickListener(R.id.send_Mes);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
     /**

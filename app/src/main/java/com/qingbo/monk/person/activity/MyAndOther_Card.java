@@ -530,7 +530,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         if (userBean != null) {
             String imgUrl = userBean.getAvatar();
             String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s", userBean.getId());
-            String title = String.format("分享 %1$s 的发现扫地僧主页", userBean.getNickname());
+            String title = String.format("分享 %1$s 的鹅先知主页", userBean.getNickname());
             String content = String.format("%1$s粉丝 %2$s关注", userBean.getFansNum(), userBean.getFollowNum());
             ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
             mShareDialog.show();

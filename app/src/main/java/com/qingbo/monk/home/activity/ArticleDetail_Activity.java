@@ -354,7 +354,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
        }
         if (homeFoucsDetail_bean != null) {
             String imgUrl = homeFoucsDetail_bean.getData().getDetail().getAvatar();
-            String downURl = "https://www.pgyer.com/TvE6";
+            String downURl =  HttpUrl.appDownUrl;
 //            String title = String.format("邀请%1$s")
             String title = homeFoucsDetail_bean.getData().getDetail().getTitle();
             String content = homeFoucsDetail_bean.getData().getDetail().getContent();
