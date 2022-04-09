@@ -99,6 +99,7 @@ public class Expert_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
     /**

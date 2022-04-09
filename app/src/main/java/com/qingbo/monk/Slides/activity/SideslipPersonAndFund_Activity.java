@@ -39,13 +39,16 @@ import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.FundHaveList_Bean;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.MyCardGroup_Bean;
+import com.qingbo.monk.bean.MyDynamicListBean;
+import com.qingbo.monk.bean.MyDynamic_Bean;
+import com.qingbo.monk.bean.MyDynamic_More_ListBean;
+import com.qingbo.monk.bean.StockOrFund_QuestionBean;
 import com.qingbo.monk.bean.StockOrFund_QuestionListBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.StockFund_Question_Adapter;
-import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.person.adapter.MyGroupAdapter;
-import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
+import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -73,11 +76,11 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
 
     private String stockCode = "";
     private ImageView head_Img;
-    private TextView nickName_Tv,company_Tv,brief_Tv,fundTime_Tv,Keywords_Tv,fundName_Tv;
+    private TextView nickName_Tv, company_Tv, brief_Tv, fundTime_Tv, Keywords_Tv, fundName_Tv;
     private FlowLayout lable_Flow;
     private PieChart chart;
     private RecyclerView mNineView;
-    private ConstraintLayout stock_Con,stockContent_Con;
+    private ConstraintLayout stock_Con, stockContent_Con;
 
     /**
      * @param context
@@ -124,12 +127,13 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     @Override
     protected void initView() {
         title_bar.setTitle(nickname);
-        title_bar.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.app_main_color));
+        title_bar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.card_Recycler);
         initRecyclerView();
-//        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        initSwipeRefreshLayoutAndAdapter(true);
     }
+
     @Override
     protected void initEvent() {
         head_Img.setOnClickListener(this);
@@ -158,14 +162,15 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         getListData(false);
     }
 
-    StockOrFund_QuestionListBean stockOrFund_questionListBean;
+    MyDynamicListBean myDynamicListBean;
 
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
-        requestMap.put("name", nickname + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.StockOrFund_Question, "人物详情-资讯", requestMap, new MyOnHttpResListener() {
+        requestMap.put("userid", id);
+        requestMap.put("trends", "1");
+        HttpSender httpSender = new HttpSender(HttpUrl.UserCenter_Article, "社交主页-我/他的动态", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
@@ -173,12 +178,9 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    stockOrFund_questionListBean = GsonUtil.getInstance().json2Bean(json_data, StockOrFund_QuestionListBean.class);
-                    if (stockOrFund_questionListBean != null) {
-                        handleSplitListData(stockOrFund_questionListBean, mAdapter, limit);
-                        if (page == 1) {
-//                            getPersonData(true);
-                        }
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+                    if (myDynamicListBean != null) {
+                        handleSplitListData(myDynamicListBean, mAdapter, limit);
                     }
                 }
             }
@@ -194,45 +196,57 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new StockFund_Question_Adapter();
+        mAdapter = new MyDynamic_Adapter();
         mRecyclerView.setAdapter(mAdapter);
         addHeadView();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-//            StockOrFund_QuestionBean item = (StockOrFund_QuestionBean) adapter.getItem(position);
-//            String id = item.getId();
-//            String type = "";
-//            ArticleDetail_Activity.startActivity(requireActivity(), id, "0",type);
+            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+            String id = item.getArticleId();
+            String type = item.getType();
+            ArticleDetail_Activity.startActivity(this, id, "0", type);
         });
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (stockOrFund_questionListBean == null) {
+                MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
+                position += 1;//添加了headView pos位置需要加1
                 switch (view.getId()) {
                     case R.id.follow_Tv:
-                        String otherUserId = stockOrFund_questionListBean.getList().get(position).getId();
+                        String otherUserId = item.getArticleId();
                         postFollowData(otherUserId, position);
                         break;
                     case R.id.follow_Img:
-                        String likeId = stockOrFund_questionListBean.getList().get(position).getId();
+                        String likeId = item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.mes_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
                         String articleId = item.getArticleId();
                         String type = item.getType();
-                        ArticleDetail_Activity.startActivity(mActivity, articleId, "1",type);
+                        ArticleDetail_Activity.startActivity(mActivity, articleId, "1", type);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
         });
-        ((StockFund_Question_Adapter) mAdapter).setOnItemImgClickLister(new StockFund_Question_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+        ((MyDynamic_Adapter) mAdapter).setOnItemImgClickLister((position, strings) -> jumpToPhotoShowActivity(position, strings));
+    }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(MyDynamic_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.show();
     }
 
     /**
@@ -240,27 +254,26 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
      */
     private void addHeadView() {
         View myView = LayoutInflater.from(this).inflate(R.layout.persondetail_fragment, null);
-         head_Img = myView.findViewById(R.id.head_Img);
-         nickName_Tv = myView.findViewById(R.id.nickName_Tv);
-         company_Tv = myView.findViewById(R.id.company_Tv);
-         brief_Tv = myView.findViewById(R.id.brief_Tv);
-         lable_Flow = myView.findViewById(R.id.lable_Flow);
+        head_Img = myView.findViewById(R.id.head_Img);
+        nickName_Tv = myView.findViewById(R.id.nickName_Tv);
+        company_Tv = myView.findViewById(R.id.company_Tv);
+        brief_Tv = myView.findViewById(R.id.brief_Tv);
+        lable_Flow = myView.findViewById(R.id.lable_Flow);
         chart = myView.findViewById(R.id.pieChart_View);
-         mNineView = myView.findViewById(R.id.nine_grid);
-         fundTime_Tv = myView.findViewById(R.id.fundTime_Tv);
-         Keywords_Tv = myView.findViewById(R.id.Keywords_Tv);
-         stock_Con = myView.findViewById(R.id.stock_Con);
-         stockContent_Con = myView.findViewById(R.id.stockContent_Con);
-         fundName_Tv = myView.findViewById(R.id.fundName_Tv);
+        mNineView = myView.findViewById(R.id.nine_grid);
+        fundTime_Tv = myView.findViewById(R.id.fundTime_Tv);
+        Keywords_Tv = myView.findViewById(R.id.Keywords_Tv);
+        stock_Con = myView.findViewById(R.id.stock_Con);
+        stockContent_Con = myView.findViewById(R.id.stockContent_Con);
+        fundName_Tv = myView.findViewById(R.id.fundName_Tv);
 
         initPie();
 
         mAdapter.addHeaderView(myView);
-
-
     }
 
     FundHaveList_Bean fundHaveList_bean;
+
     private void getFundData() {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("nickname", nickname);
@@ -280,6 +293,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
 
     CharacterDetail_Bean.DataDTO.ListDTO listDTO;
     PersomCombination_Shares_Adapter persomCombination_shares_adapter;
+
     private void getPersonData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("nickname", nickname);//孙伟
@@ -314,7 +328,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                             fundTime_Tv.setText(quarters);
                             persomCombination_shares_adapter.setNewData(list);
                             setData(0, listDTO);
-                        }else {
+                        } else {
                             stock_Con.setVisibility(View.VISIBLE);
                             stockContent_Con.setVisibility(View.GONE);
                             chart.setVisibility(View.VISIBLE);
@@ -330,10 +344,6 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     }
 
 
-
-
-
-
     private void postFollowData(String otherUserId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
@@ -342,14 +352,14 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((StockFund_Question_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
+//                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+//                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+//                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
+//                    ((MyDynamic_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+//                    if (followStateBena.getFollowStatus() == 0) {
+//                        mAdapter.remove(position);
+//                        mAdapter.notifyItemChanged(position);
+//                    }
                 }
             }
         }, true);
@@ -366,26 +376,33 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
-                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
-                    if (likedStateBena != null) {
-                        //0取消点赞成功，1点赞成功
-                        int nowLike;
-                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLiked_status() == 0) {
-                            nowLike -= 1;
-                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLiked_status() == 1) {
-                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
-                            nowLike += 1;
-                        }
-                        follow_Count.setText(nowLike + "");
-                    }
+                    likeCount(position, likedStateBena);
                 }
             }
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    private void likeCount(int position, LikedStateBena likedStateBena) {
+        ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+        TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLiked_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLiked_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            if (nowLike < 0) {
+                nowLike = 0;
+            }
+            follow_Count.setText(nowLike + "");
+        }
     }
 
 
@@ -516,7 +533,6 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     }
 
 
-
     /**
      * 没有数据添加默认值
      *
@@ -572,12 +588,12 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         if (ListUtils.isEmpty(fundHaveList_bean.getData())) {
             return;
         }
-        final List<Map<Object,String>> allMap = new ArrayList<>();
+        final List<Map<Object, String>> allMap = new ArrayList<>();
         final List<String> mOptionsItems = new ArrayList<>();
         for (FundHaveList_Bean.DataDTO oneData : fundHaveList_bean.getData()) {
-            Map<Object,String> oneMap = new HashMap<>();
-            oneMap.put("name",oneData.getName());
-            oneMap.put("code",oneData.getCode());
+            Map<Object, String> oneMap = new HashMap<>();
+            oneMap.put("name", oneData.getName());
+            oneMap.put("code", oneData.getCode());
             mOptionsItems.add(oneData.getName());
             allMap.add(oneMap);
         }
@@ -592,7 +608,6 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         pvOptions.setPicker(mOptionsItems);
         pvOptions.show();
     }
-
 
 
 }

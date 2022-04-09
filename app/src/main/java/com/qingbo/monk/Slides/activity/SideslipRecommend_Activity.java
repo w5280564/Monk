@@ -29,6 +29,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
@@ -38,13 +39,18 @@ import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeInterestBean;
+import com.qingbo.monk.bean.InterestBean;
+import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
+import com.qingbo.monk.home.adapter.HomeInterest_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -53,6 +59,8 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.io.Serializable;
@@ -70,6 +78,8 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
     private String type;
     private LinearLayout interest_Lin;
     private ImageView change_Img;
+    private HomeInterest_Adapter topAdapter;
+    private RecyclerView topRecyclerView;
 
 
     /**
@@ -110,28 +120,29 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
         page++;
         getServerData();
     }
-
-
     @Override
     protected void getServerData() {
         mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
-        getInterestLab(false);
-    }
 
-    private void getInterestLab(boolean isShow) {
+    }
+    /**
+     * 全部兴趣组
+     *
+     * @param isShow
+     */
+    InterestList_Bean interestList_bean;
+    private void getInterestData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-//        requestMap.put("page", page + "");
-        requestMap.put("limit", "3");
-        HttpSender httpSender = new HttpSender(HttpUrl.Interest_Group, "推荐--兴趣组列表", requestMap, new MyOnHttpResListener() {
+        requestMap.put("page", page + "");
+        requestMap.put("limit", 6 + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_All, "全部兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    HomeInterestBean interestBean = new Gson().fromJson(json_root, HomeInterestBean.class);
-                    if (interestBean != null) {
-                        labelList(mActivity, interest_Lin, interestBean.getData());
-                    }
+                interestList_bean = new Gson().fromJson(json_data, InterestList_Bean.class);
+                if (interestList_bean != null) {
+                    handleSplitListData(interestList_bean, topAdapter, 6, page);
                 }
             }
         }, isShow);
@@ -141,7 +152,6 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
 
 
     FollowListBean homeFllowBean;
-
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -157,6 +167,9 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
                     homeFllowBean = GsonUtil.getInstance().json2Bean(json_data, FollowListBean.class);
                     if (homeFllowBean != null) {
                         handleSplitListData(homeFllowBean, mAdapter, limit);
+                        if (page == 1){
+                            getInterestData(false);
+                        }
                     }
                 }
             }
@@ -164,6 +177,73 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
+
+    /**
+     * 我的兴趣组
+     */
+    public void initInterest() {
+        LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
+        mMangaer.setOrientation(RecyclerView.HORIZONTAL);
+        topRecyclerView.setLayoutManager(mMangaer);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        topRecyclerView.setHasFixedSize(true);
+        topAdapter = new HomeInterest_Adapter();
+        topRecyclerView.setAdapter(topAdapter);
+        //  使用加载更多
+        topAdapter.setEnableLoadMore(true);
+        addMore();
+        topAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                InterestBean item = (InterestBean) adapter.getItem(position);
+                InterestDetail_Activity.startActivity(SideslipRecommend_Activity.this, "0", item.getId());
+            }
+        });
+        topAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.join_Tv:
+                        InterestBean item = (InterestBean) adapter.getItem(position);
+                        String joinStatus = item.getJoinStatus();
+                        if (!TextUtils.equals(joinStatus, "1")) {
+                            changeJoin(item.getJoinStatus(), position, item);
+                            getJoin(item.getId());
+                        }
+                        break;
+                }
+            }
+        });
+    }
+
+    private void addMore() {
+        //加载更多
+        topAdapter.setOnLoadMoreListener(() -> {
+            page += 1;
+           getInterestData(false);
+        });
+    }
+
+    /**
+     * 修改加入状态
+     *
+     * @param stateIndex 1已加入 其他都是未加入
+     * @param position
+     */
+    private void changeJoin(String stateIndex, int position, InterestBean interestBean) {
+        if (interestBean != null) {
+            TextView join_Tv = (TextView) topAdapter.getViewByPosition(topRecyclerView, position, R.id.join_Tv);
+            if (TextUtils.equals(stateIndex, "1")) {
+                stateIndex = "0";
+            } else {
+                stateIndex = "1";
+            }
+            interestBean.setJoinStatus(stateIndex);
+            topAdapter.joinState(stateIndex, join_Tv);
+        }
+    }
+
 
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
@@ -214,6 +294,9 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, item.getAuthorId(), item.getAuthorName(), item.getAvatar());
                         break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
+                        break;
                 }
             }
         });
@@ -252,7 +335,7 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
         switch (v.getId()) {
             case R.id.change_Tv:
                 rotate(change_Img);
-                getInterestLab(false);
+//                getInterestLab(false);
                 break;
         }
     }
@@ -274,10 +357,12 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
     private void addHeadView() {
         View myView = LayoutInflater.from(this).inflate(R.layout.sidesliprecommend_top, null);
         interest_Lin = myView.findViewById(R.id.interest_Lin);
+        topRecyclerView = myView.findViewById(R.id.interest_recycler);
         TextView change_Tv = myView.findViewById(R.id.change_Tv);
         change_Img = myView.findViewById(R.id.change_Img);
         change_Tv.setOnClickListener(this);
         mAdapter.addHeaderView(myView);
+        initInterest();
     }
 
     /**
@@ -449,6 +534,63 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
             follow_Count.setText(nowLike + "");
         }
     }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(HomeFllowBean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
+
+    /**
+     * 全局处理分页的公共方法
+     *
+     * @param obj      具体的分页对象  列表适配器
+     * @param mAdapter
+     */
+    protected void handleSplitListData(BaseSplitIndexBean obj, BaseQuickAdapter mAdapter, int mPageSize, int page) {
+        if (obj != null) {
+            int allCount = StringUtil.isBlank(obj.getCount()) ? 0 : Integer.parseInt(obj.getCount());
+            int bigPage = 0;//最大页
+            if (allCount % mPageSize != 0) {
+                bigPage = allCount / mPageSize + 1;
+            } else {
+                bigPage = allCount / mPageSize;
+            }
+            if (page == bigPage) {
+                mAdapter.loadMoreEnd();//显示“没有更多数据”
+            }
+            boolean isRefresh = page == 1 ? true : false;
+            if (!ListUtils.isEmpty(obj.getList())) {
+                int size = obj.getList().size();
+
+                if (isRefresh) {
+                    mAdapter.setNewData(obj.getList());
+                } else {
+                    mAdapter.addData(obj.getList());
+                }
+                if (size < mPageSize) {
+                    mAdapter.loadMoreEnd(isRefresh);//第一页的话隐藏“没有更多数据”，否则显示“没有更多数据”
+                } else {
+                    mAdapter.loadMoreComplete();
+                }
+            } else {
+                if (isRefresh) {
+                    mAdapter.setNewData(null);//刷新列表
+                } else {
+                    mAdapter.loadMoreEnd(false);//显示“没有更多数据”
+                }
+            }
+        }
+    }
+
 
 
 }

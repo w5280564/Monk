@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +19,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -24,6 +27,7 @@ import com.qingbo.monk.bean.MyCommentList_Bean;
 import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.adapter.MyComment_Adapter;
+import com.qingbo.monk.person.adapter.MyFansOrFollow_Adapter;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -43,7 +47,14 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
     CustomTitleBar titleBar;
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+    private String userId;
 
+
+    public static void actionStart(Context context, String userId) {
+        Intent intent = new Intent(context, MyFollowActivity.class);
+        intent.putExtra("userId", userId);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -52,13 +63,21 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected void initView() {
-        titleBar.setTitle("我关注的人");
+        if (IsMe.isMy(userId)) {
+            titleBar.setTitle("我关注的人");
+        } else {
+            titleBar.setTitle("他关注的人");
+        }
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
+    @Override
+    protected void initLocalData() {
+        userId = getIntent().getStringExtra("userId");
+    }
 
     @Override
     protected void getServerData() {
@@ -83,6 +102,7 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
+        requestMap.put("userId", userId + "");
         HttpSender sender = new HttpSender(HttpUrl.User_Follow_List, "关注列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -106,37 +126,35 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
     }
 
     private void initRecyclerView() {
-        mAdapter = new MyFollow_Adapter();
+        mAdapter = new MyFansOrFollow_Adapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-            if (item==null) {
+            if (item == null) {
                 return;
             }
             startPerson(item);
         });
 
-        mAdapter.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
-                switch (view.getId()) {
-                    case R.id.follow_Tv:
-                        String likeId = item.getId();
-                        postFollowData(likeId, position);
-                        break;
-                    case R.id.send_Mes:
-                        ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            ArticleLikedBean item = (ArticleLikedBean) adapter.getItem(position);
+            switch (view.getId()) {
+                case R.id.follow_Tv:
+                    String likeId = item.getId();
+                    postFollowData(likeId, position);
+                    break;
+                case R.id.send_Mes:
+                    ChatActivity.actionStart(mActivity, item.getId(), item.getNickname(), item.getAvatar());
+                    break;
             }
         });
     }
 
     /**
      * 人物跳转
+     *
      * @param item
      */
     private void startPerson(ArticleLikedBean item) {
@@ -145,7 +163,7 @@ public class MyFollowActivity extends BaseRecyclerViewSplitActivity {
             String nickname = item.getNickname();
             String id = item.getId();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
-        }else {
+        } else {
             String id = item.getId();
             MyAndOther_Card.actionStart(mActivity, id);
         }

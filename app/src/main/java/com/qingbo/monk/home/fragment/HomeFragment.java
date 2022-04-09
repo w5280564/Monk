@@ -2,7 +2,7 @@ package com.qingbo.monk.home.fragment;
 
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
@@ -11,62 +11,48 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
-import com.qingbo.monk.Slides.adapter.Interest_Adapter;
 import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
-import com.qingbo.monk.base.BaseFragment;
-import com.qingbo.monk.base.BaseLazyFragment;
-import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeAllCount_Bean;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeInterestBean;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
-import com.qingbo.monk.bean.MainUpdateCount_Bean;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.activity.MainActivity;
 import com.qingbo.monk.home.adapter.HomeFollow_Adapter;
 import com.qingbo.monk.home.adapter.HomeInterest_Adapter;
-import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
+import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
-import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +63,7 @@ import butterknife.BindView;
 /**
  * 首页
  */
-public class HomeFragment extends BaseLazyFragment implements View.OnClickListener {
+public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickListener {
     @BindView(R.id.drawer_left_Img)
     ImageView drawer_left_Img;
     @BindView(R.id.change_Tv)
@@ -86,10 +72,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     ImageView change_Img;
     @BindView(R.id.interest_Lin)
     LinearLayout interest_Lin;
-    @BindView(R.id.card_Tab)
-    TabLayout card_Tab;
-    @BindView(R.id.card_ViewPager)
-    ViewPager card_ViewPager;
     @BindView(R.id.manCount_Tv)
     TextView manCount_Tv;
     @BindView(R.id.seek_Tv)
@@ -115,7 +97,9 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     protected void initView(View mRootView) {
 //        super.initView(mRootView);
         viewTouchDelegate.expandViewTouchDelegate(drawer_left_Img, 50);
-        initTab();
+        mTabLayout = mRootView.findViewById(R.id.card_Tab);
+        mViewPager = mRootView.findViewById(R.id.card_ViewPager);
+        initMenuData();
         mRecyclerView = mRootView.findViewById(R.id.interest_recycler);
         initRecyclerView();
 //        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
@@ -133,7 +117,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
     public void onResume() {
         super.onResume();
 //        getInterestLab(false);
-        if (card_Tab.getSelectedTabPosition() == 0) {
+        if (mTabLayout.getSelectedTabPosition() == 0) {
             followPage =1;
             getExpertList(false);
         } else {
@@ -143,10 +127,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         ((MainActivity) requireActivity()).changeUser();
     }
 
-    @Override
-    protected void loadData() {
-
-    }
 
     /**
      * 全部兴趣组
@@ -382,56 +362,30 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
 
 
 
-    private List<Object> tabFragmentList = new ArrayList<>();
-
-    private void initTab() {
-        List<String> tabsList = new ArrayList<>();
-        tabsList.add("关注");
-        tabsList.add("推荐");
-        tabsList.add("大咖");
-        tabsList.add("内部人");
-        tabsList.add("仓位组合");
-        String titleType = "";
-        card_Tab.setTabMode(TabLayout.MODE_SCROLLABLE);
-        card_Tab.setTabIndicatorFullWidth(false);//下标跟字一样宽
-        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
-        card_Tab.setTabTextColors(ContextCompat.getColor(mActivity, R.color.text_color_6f6f6f), ContextCompat.getColor(mActivity, R.color.text_color_444444));
-//        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity,R.color.text_color_444444));
-        //添加tab
-        int sizes = tabsList.size();
-        for (int i = 0; i < sizes; i++) {
-            card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
+    @SuppressLint("WrongConstant")
+    private void initMenuData() {
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("关注");
+        tabName.add("推荐");
+        tabName.add("大咖");
+        tabName.add("内部人");
+        tabName.add("仓位组合");
+        for (int i = 0; i < tabName.size(); i++) {
+            AppMenuBean bean = new AppMenuBean();
+            bean.setName(tabName.get(i));
+            menuList.add(bean);
         }
-        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
-        tabFragmentList.add(HomeCommendFragment.newInstance(titleType));
+        String titleType = "";
+        fragments.add(HomeFocus_Fragment.newInstance(titleType));
+        fragments.add(HomeCommendFragment.newInstance(titleType));
 //        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
-        tabFragmentList.add(SideslipMogul_Fragment.newInstance(""));
-        tabFragmentList.add(HomeInsider_Fragment.newInstance("1"));
-        tabFragmentList.add(HomeCombination_Fragment.newInstance(titleType));
+        fragments.add(SideslipMogul_Fragment.newInstance(""));
+        fragments.add(HomeInsider_Fragment.newInstance("1"));
+        fragments.add(HomeCombination_Fragment.newInstance(titleType));
+        setTabTextSize(16,14);
+        initChildViewPager(1);
 
-        card_ViewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return (Fragment) tabFragmentList.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return tabFragmentList.size();
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return tabsList.get(position);
-            }
-        });
-        card_ViewPager.setOffscreenPageLimit(tabFragmentList.size());
-        //设置TabLayout和ViewPager联动
-        card_Tab.setupWithViewPager(card_ViewPager);
-        changePager(1);
-        card_Tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -461,8 +415,8 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
 
             }
         });
-    }
 
+    }
 
     private void getJoin(String ID) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -493,18 +447,6 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
         animation.setDuration(animateTime);
         view.startAnimation(animation);
     }
-    // 左右滑动样式
-
-
-    /**
-     * 修改导航页数
-     *
-     * @param index
-     */
-    public void changePager(int index) {
-        card_ViewPager.setCurrentItem(index);
-    }
-
     /**
      * 全局处理分页的公共方法
      *
@@ -566,7 +508,7 @@ public class HomeFragment extends BaseLazyFragment implements View.OnClickListen
                 stateIndex = "1";
             }
             interestBean.setJoinStatus(stateIndex);
-            ((HomeInterest_Adapter) mAdapter).joinState(stateIndex, join_Tv);
+            mAdapter.joinState(stateIndex, join_Tv);
         }
     }
 

@@ -74,16 +74,7 @@
                             app:layout_constraintTop_toTopOf="@+id/person_Name" />
 
 
-                        <TextView
-                            android:id="@+id/time_Tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_6"
-                            android:text=""
-                            android:textColor="@color/text_color_a1a1a1"
-                            android:textSize="10sp"
-                            app:layout_constraintStart_toStartOf="@+id/person_Name"
-                            app:layout_constraintTop_toBottomOf="@+id/person_Name" />
+
 
 
                         <TextView
@@ -130,6 +121,7 @@
                         android:layout_marginEnd="@dimen/dp_27"
                         android:maxLength="40"
                         android:maxLines="2"
+                        android:textStyle="bold"
                         android:textColor="@color/text_color_444444"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -234,15 +226,44 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                    <TextView
+                        android:id="@+id/time_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_6"
+                        android:text=""
+                        app:layout_goneMarginTop="@dimen/dp_15"
+                        android:textColor="@color/text_color_a1a1a1"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="@dimen/dp_15"
+                        app:layout_constraintTop_toBottomOf="@+id/group_Con" />
+
+
+                    <TextView
+                        android:id="@+id/source_Tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@mipmap/icon_lianjie"
+                        android:drawablePadding="@dimen/dp_5"
+                        android:text="原文链接"
+                        android:textColor="@color/text_color_1F8FE5"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/time_Tv"
+                        app:layout_constraintStart_toEndOf="@id/time_Tv"
+                        android:layout_marginStart="@dimen/dp_15"
+                        app:layout_constraintTop_toTopOf="@+id/time_Tv" />
+
                     <ImageView
                         android:id="@+id/follow_Img"
                         android:layout_width="@dimen/dp_18"
                         android:layout_height="@dimen/dp_18"
                         android:layout_marginStart="@dimen/dp_15"
-                        android:layout_marginTop="@dimen/dp_15"
+                        android:layout_marginTop="@dimen/dp_30"
                         android:background="@mipmap/icon_dainzan"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/group_Con" />
+                        app:layout_constraintTop_toBottomOf="@+id/time_Tv" />
 
                     <TextView
                         android:id="@+id/follow_Count"
@@ -276,45 +297,20 @@
                         app:layout_constraintStart_toEndOf="@+id/mes_Img"
                         app:layout_constraintTop_toTopOf="@+id/mes_Img" />
 
-                    <TextView
-                        android:id="@+id/collect_Tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_15"
-                        android:drawableEnd="@mipmap/shoucang"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:text="收藏"
-                        android:textColor="@color/text_color_444444"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/follow_Img" />
 
                     <TextView
                         android:id="@+id/share_Tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dp_18"
+                        android:layout_height="@dimen/dp_18"
                         android:layout_marginEnd="@dimen/dp_20"
-                        android:drawableEnd="@mipmap/zhaunfa"
-                        android:drawablePadding="@dimen/dp_10"
-                        android:text="转发"
+                        android:background="@mipmap/zhaunfa"
                         android:textColor="@color/text_color_444444"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toStartOf="@id/collect_Tv"
-                        app:layout_constraintTop_toBottomOf="@id/follow_Img" />
+                        app:layout_constraintStart_toEndOf="@id/mes_Count"
+                        app:layout_constraintTop_toTopOf="@id/mes_Count"
+                        android:layout_marginStart="@dimen/dp_30"
+                        app:layout_constraintBottom_toBottomOf="@id/mes_Count"/>
 
-                    <TextView
-                        android:id="@+id/source_Tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@mipmap/icon_lianjie"
-                        android:layout_marginEnd="@dimen/dp_15"
-                        android:drawablePadding="@dimen/dp_5"
-                        android:text="原文链接"
-                        android:textColor="@color/text_color_1F8FE5"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/share_Tv"
-                        app:layout_constraintEnd_toStartOf="@+id/share_Tv"
-                        app:layout_constraintTop_toTopOf="@+id/share_Tv" />
 
                     <View
                         android:id="@+id/view9"
@@ -322,7 +318,7 @@
                         android:layout_height="@dimen/dp_10"
                         android:layout_marginTop="@dimen/dp_13"
                         android:background="@color/text_color_EFEFEF"
-                        app:layout_constraintTop_toBottomOf="@id/collect_Tv" />
+                        app:layout_constraintTop_toBottomOf="@id/share_Tv" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -380,6 +376,7 @@
                             android:layout_height="wrap_content"
                             android:maxLength="10"
                             android:text="详情"
+                            android:textStyle="bold"
                             android:textColor="@color/text_color_444444"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="parent"

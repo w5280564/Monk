@@ -17,12 +17,14 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeSeekTopic_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.StockFundMes_Bean;
 import com.qingbo.monk.bean.StockFundMes_ListBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.StockFund_Mess_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -63,7 +65,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无资讯", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无资讯", 0, true);
     }
 
     @Override
@@ -131,15 +133,15 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 StockFundMes_Bean item = (StockFundMes_Bean) adapter.getItem(position);
-                if (item==null) {
+                if (item == null) {
                     return;
                 }
                 String articleId = item.getId();
-                if (TextUtils.isEmpty(articleId)){
+                if (TextUtils.isEmpty(articleId)) {
                     T.ss("文章不存在");
                     return;
                 }
-                ArticleDetail_Activity.startActivity(mActivity, articleId,  true,true);
+                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
             }
         });
     }
@@ -150,17 +152,20 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                if (stockFundMes_listBean == null) {
+                StockFundMes_Bean item = (StockFundMes_Bean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Img:
-                        String likeId = stockFundMes_listBean.getList().get(position).getId();
+                        String likeId = item.getId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.group_Img:
-                        StockFundMes_Bean item = (StockFundMes_Bean) adapter.getItem(position);
                         startPerson(item);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
@@ -176,6 +181,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
 
     /**
      * 人物跳转
+     *
      * @param item
      */
     private void startPerson(StockFundMes_Bean item) {
@@ -184,15 +190,12 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
             String nickname = item.getAuthor();
             String id = item.getAuthor_id();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
-        }else {
+        } else {
 
             String id = item.getAuthor_id();
             MyAndOther_Card.actionStart(mActivity, id);
         }
     }
-
-
-
 
 
     private void postLikedData(String likeId, int position) {
@@ -225,5 +228,19 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(StockFundMes_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, true, downURl, imgUrl, title, content, "分享");
+        mShareDialog.show();
+    }
+
 
 }

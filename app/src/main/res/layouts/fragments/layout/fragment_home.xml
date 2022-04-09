@@ -31,10 +31,10 @@
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_15"
         android:text="搜索你感兴趣的人/公司"
+        app:layout_constraintBottom_toBottomOf="@id/drawer_left_Img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/drawer_left_Img"
-        app:layout_constraintTop_toTopOf="@+id/drawer_left_Img"
-        app:layout_constraintBottom_toBottomOf="@id/drawer_left_Img"/>
+        app:layout_constraintTop_toTopOf="@+id/drawer_left_Img" />
 
     <TextView
         android:id="@+id/manCount_Tv"
@@ -95,7 +95,7 @@
                     android:layout_height="@dimen/dp_15"
                     android:background="@color/app_main_color"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_white"/>
+                    app:layout_constraintTop_toBottomOf="@id/view_white" />
 
                 <TextView
                     android:id="@+id/listName_Tv"
@@ -146,8 +146,8 @@
                     android:id="@+id/refresh"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="@dimen/dp_14"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view">
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -171,10 +171,16 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/card_Tab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabRippleColor="@android:color/transparent"
-                app:tabTextAppearance="@style/TabLayoutTextStyle"
-                app:tabTextColor="@color/text_color_6f6f6f" />
+                android:layout_height="@dimen/dp_44"
+                app:tabBackground="@color/transparent"
+                app:tabGravity="start"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabIndicatorFullWidth="false"
+                app:tabMode="scrollable"
+                app:tabRippleColor="@color/transparent"
+                app:tabSelectedTextColor="@color/text_color_444444"
+                app:tabTextAppearance="@style/MyTabLayoutTextAppearance18"
+                app:tabTextColor="@color/text_color_6F6F6F" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

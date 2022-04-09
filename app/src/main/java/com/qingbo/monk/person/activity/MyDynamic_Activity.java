@@ -16,26 +16,26 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.MyDynamicListBean;
-import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
 import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -185,6 +185,9 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
                     case R.id.mes_Img:
                         String type = item.getType();
                         ArticleDetail_Activity.startActivity(mActivity, item.getArticleId(), "1", type);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
@@ -342,7 +345,19 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
     }
 
 
-
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(MyDynamic_MoreItem_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
 
 
 }

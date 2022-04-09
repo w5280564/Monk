@@ -2,11 +2,9 @@ package com.qingbo.monk.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Location;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -261,11 +259,11 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         switch (v.getId()) {
             case R.id.tv_follow_number:
             case R.id.follow_Tv:
-                skipAnotherActivity(MyFollowActivity.class);
+                MyFollowActivity.actionStart(requireActivity(),id);
                 break;
             case R.id.tv_fans_number:
             case R.id.fans_Tv:
-                skipAnotherActivity(MyFansActivity.class);
+                MyFansActivity.actionStart(requireActivity(),id);
                 break;
             case R.id.tv_my_wallet:
                 skipAnotherActivity(MyWallet_Activity.class);

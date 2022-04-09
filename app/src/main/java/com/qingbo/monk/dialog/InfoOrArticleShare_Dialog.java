@@ -25,6 +25,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -52,7 +53,7 @@ import java.util.Map;
  */
 public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener {
     private static final int THUMB_SIZE = 120;
-    private  boolean isStockOrFund;
+    private boolean isStockOrFund;
     private Context context;
     private String articleId;
     private String pageUrl, title, text, imageUrl, dialog_title;
@@ -61,7 +62,17 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     private IWXAPI api;
     public static String[] SHARE_PLATFORM_LIST = {"转发动态", "微信好友", "朋友圈"};//分享平台列表
     public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan};//分享平台列表
-    private TextView wechat_Tv, quan_Tv,sina_Tv,qq_Tv;
+    private TextView wechat_Tv, quan_Tv, sina_Tv, qq_Tv;
+    private String author_id;
+
+    /**
+     * 文章ID
+     *
+     * @param author_id
+     */
+    public void setAuthor_id(String author_id) {
+        this.author_id = author_id;
+    }
 
     public void setDynamicAndCollect_clickLister(dynamicAndCollect_ClickLister dynamicAndCollect_clickLister) {
         this.dynamicAndCollect_clickLister = dynamicAndCollect_clickLister;
@@ -83,16 +94,17 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
 
     /**
      * 文章分享
-     * @param context 上下文
-     * @param articleId 转发 分享使用 文章ID
+     *
+     * @param context       上下文
+     * @param articleId     转发 分享使用 文章ID
      * @param isStockOrFund 资讯传入此参数true 代表是资讯
-     * @param pageUrl 分享的 app下载地址  使用应用宝地址
-     * @param imageUrl 头像地址
-     * @param title 分享标题
-     * @param text 内容
-     * @param dialog_title 弹出框标题
+     * @param pageUrl       分享的 app下载地址  使用应用宝地址
+     * @param imageUrl      头像地址
+     * @param title         分享标题
+     * @param text          内容
+     * @param dialog_title  弹出框标题
      */
-    public InfoOrArticleShare_Dialog(Context context, String articleId,boolean isStockOrFund, String pageUrl, String imageUrl, String title, String text, String dialog_title) {
+    public InfoOrArticleShare_Dialog(Context context, String articleId, boolean isStockOrFund, String pageUrl, String imageUrl, String title, String text, String dialog_title) {
         super(context, R.style.bottomrDialogStyle);
         this.context = context;
         this.articleId = articleId;
@@ -260,11 +272,17 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
         switch (view.getId()) {
             case R.id.dynamic_Tv:
                 dismiss();
-//                dynamicAndCollect_clickLister.dynamicClick();
+                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+                    if (IsMe.isMy(author_id)) {
+                        T.ss("不能转发自己的文章");
+                        return;
+                    }
+                }
+//              dynamicAndCollect_clickLister.dynamicClick();
                 postForwardingData(articleId);
                 break;
             case R.id.collect_Tv:
-//                dynamicAndCollect_clickLister.collectClick();
+//              dynamicAndCollect_clickLister.collectClick();
                 dismiss();
                 postCollectData(articleId);
                 break;

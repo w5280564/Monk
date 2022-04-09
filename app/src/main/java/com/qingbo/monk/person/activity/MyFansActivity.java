@@ -1,5 +1,7 @@
 package com.qingbo.monk.person.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,10 +16,12 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleLikedBean;
 import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.adapter.MyFansOrFollow_Adapter;
 import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -37,7 +41,13 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
     CustomTitleBar titleBar;
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
+    private String userId;
 
+    public static void actionStart(Context context, String userId) {
+        Intent intent = new Intent(context, MyFansActivity.class);
+        intent.putExtra("userId", userId);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -45,8 +55,18 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
     }
 
     @Override
+    protected void initLocalData() {
+        userId = getIntent().getStringExtra("userId");
+    }
+
+
+    @Override
     protected void initView() {
-        titleBar.setTitle("我的粉丝");
+        if (IsMe.isMy(userId)) {
+            titleBar.setTitle("我的粉丝");
+        } else {
+            titleBar.setTitle("他的粉丝");
+        }
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
@@ -99,7 +119,7 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
     }
 
     private void initRecyclerView() {
-        mAdapter = new MyFollow_Adapter();
+        mAdapter = new MyFansOrFollow_Adapter(IsMe.isMy(userId));
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);

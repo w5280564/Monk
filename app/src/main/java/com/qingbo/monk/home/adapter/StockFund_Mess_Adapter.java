@@ -78,6 +78,7 @@ public class StockFund_Mess_Adapter extends BaseQuickAdapter<StockFundMes_Bean, 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
 

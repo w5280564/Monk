@@ -81,6 +81,7 @@ public class StockFund_Question_Adapter extends BaseQuickAdapter<StockOrFund_Que
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
     /**

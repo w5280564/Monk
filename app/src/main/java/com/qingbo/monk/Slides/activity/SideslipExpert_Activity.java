@@ -10,8 +10,10 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Expert_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
@@ -19,6 +21,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.mRecyclerView);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
 
@@ -62,6 +65,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
     }
 
     FollowListBean homeFllowBean;
+
     private void getExpertList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -97,16 +101,22 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String articleId = item.getArticleId();
             String type = item.getType();
-            ArticleDetail_Activity.startActivity(this, articleId, "0", type,true);
+            ArticleDetail_Activity.startActivity(this, articleId, "0", type, true);
         });
 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
+                if (item == null) {
+                    return;
+                }
+                switch (view.getId()) {
                     case R.id.group_Img:
-                        HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
                         startPerson(item);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
@@ -122,6 +132,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
 
     /**
      * 人物跳转
+     *
      * @param item
      */
     private void startPerson(HomeFllowBean item) {
@@ -130,12 +141,25 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
             String nickname = item.getAuthorName();
             String id = item.getAuthorId();
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
-        }else {
+        } else {
             String id = item.getAuthorId();
-            MyAndOther_Card.actionStart(mActivity, id,true);
+            MyAndOther_Card.actionStart(mActivity, id, true);
         }
     }
 
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(HomeFllowBean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
 
 
 }

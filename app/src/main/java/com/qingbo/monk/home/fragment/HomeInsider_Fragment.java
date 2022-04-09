@@ -2,6 +2,7 @@ package com.qingbo.monk.home.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -20,6 +21,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 
@@ -128,6 +130,9 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
                 HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
 //                String newsUuid = item.getNewsUuid();
 //                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+                if (TextUtils.isEmpty(item.getFile_url())){
+                    return;
+                }
                 jumpToWebView(item.getNewsTitle(),item.getFile_url());
             }
         });

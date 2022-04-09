@@ -66,12 +66,12 @@
         android:id="@+id/report_Tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_10"
         android:text="转发动态"
         android:textColor="@color/text_color_444444"
         android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/group_Img" />
 
 
@@ -80,8 +80,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_15"
         android:background="@drawable/background_bg_f5f5f5"
+        android:paddingBottom="@dimen/dp_15"
         app:layout_constraintTop_toBottomOf="@+id/report_Tv">
 
         <TextView
@@ -132,9 +132,9 @@
         android:id="@+id/follow_Img"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_15"
         android:layout_marginTop="@dimen/dp_16"
         android:background="@mipmap/icon_dainzan"
-        android:layout_marginStart="@dimen/dp_15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content_Con" />
 
@@ -180,6 +180,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/follow_Count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/follow_Count" />
+
+    <ImageView
+        android:id="@+id/share_Img"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_40"
+        android:background="@mipmap/zhaunfa"
+        app:layout_constraintBottom_toBottomOf="@+id/mes_Count"
+        app:layout_constraintStart_toEndOf="@+id/mes_Count"
+        app:layout_constraintTop_toTopOf="@+id/mes_Count" />
 
 
     <View

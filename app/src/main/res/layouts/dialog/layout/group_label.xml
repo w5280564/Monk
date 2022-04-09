@@ -18,7 +18,7 @@
         android:paddingEnd="@dimen/dp_4"
         android:text="我"
         android:textColor="@color/text_color_1F8FE5"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 

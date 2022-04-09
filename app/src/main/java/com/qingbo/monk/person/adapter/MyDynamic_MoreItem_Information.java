@@ -118,6 +118,7 @@ public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_M
         helper.addOnClickListener(R.id.follow_Img);
         more_Img.setVisibility(View.VISIBLE);
         helper.addOnClickListener(R.id.more_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
 

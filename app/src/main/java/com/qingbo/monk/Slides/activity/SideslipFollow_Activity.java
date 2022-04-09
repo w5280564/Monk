@@ -17,10 +17,12 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
@@ -32,6 +34,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -158,6 +161,9 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
                     case R.id.group_Img:
                         startPerson(item);
                         break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
+                        break;
                 }
             }
         });
@@ -242,5 +248,21 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
         httpSender.sendPost();
     }
 
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(HomeFllowBean item) {
+        if (IsMe.isMy(item.getAuthorId())) {
+            T.ss("不能转发自己的文章");
+            return;
+        }
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.show();
+    }
 
 }

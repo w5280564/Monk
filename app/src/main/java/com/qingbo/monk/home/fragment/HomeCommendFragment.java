@@ -34,6 +34,7 @@ import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
+import com.xunda.lib.common.common.utils.AndroidUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ShareArticle_Dialog;
@@ -287,17 +288,16 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
      * 资讯分享
      */
     private void showShareDialog(HomeFllowBean item) {
-        if (isMy(item.getAuthorId())) {
-            T.ss("不能转发自己的文章");
-            return;
-        }
         String imgUrl = item.getAvatar();
         String downURl = HttpUrl.appDownUrl;
         String articleId = item.getArticleId();
         String title = item.getTitle();
         String content = item.getContent();
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
         mShareDialog.show();
     }
+
+
 
 }

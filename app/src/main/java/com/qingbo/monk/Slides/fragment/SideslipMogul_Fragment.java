@@ -17,10 +17,12 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
@@ -29,6 +31,7 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -164,7 +167,9 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
                     case R.id.group_Img:
                        startPerson(item);
                         break;
-
+                    case R.id.share_Img:
+                        showShareDialog(item);
+                        break;
                 }
             }
         });
@@ -250,4 +255,17 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.sendPost();
     }
 
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(HomeFllowBean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
 }

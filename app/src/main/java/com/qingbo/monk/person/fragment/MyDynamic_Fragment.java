@@ -15,11 +15,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
@@ -29,6 +32,7 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
@@ -169,10 +173,10 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
                     return;
                 }
                 switch (view.getId()) {
-                    case R.id.follow_Tv:
-                        String otherUserId = item.getAuthorId();
-                        postFollowData(otherUserId, position);
-                        break;
+//                    case R.id.follow_Tv:
+//                        String otherUserId = item.getAuthorId();
+//                        postFollowData(otherUserId, position);
+//                        break;
                     case R.id.follow_Img:
                         String likeId = item.getArticleId();
                         postLikedData(likeId, position);
@@ -189,6 +193,9 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
                             ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
                             showPopMenu(more_Img, item, position);
                         }
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
@@ -335,17 +342,19 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
         }
     }
 
+
     /**
-     * 是否是我自己
-     *
-     * @return
+     * 资讯分享
      */
-    private boolean isMe() {
-        String id = PrefUtil.getUser().getId();
-        if (TextUtils.equals(userID, id)) {
-            return true;
-        }
-        return false;
+    private void showShareDialog(MyDynamic_MoreItem_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
     }
 
 

@@ -39,12 +39,15 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
@@ -141,8 +144,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView source_Tv;
     @BindView(R.id.top_Con)
     ConstraintLayout top_Con;
-    @BindView(R.id.collect_Tv)
-    TextView collect_Tv;
     @BindView(R.id.share_Tv)
     TextView share_Tv;
 
@@ -237,7 +238,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         viewTouchDelegate.expandViewTouchDelegate(back_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
-        viewTouchDelegate.expandViewTouchDelegate(collect_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(share_Tv, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
@@ -256,7 +256,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         person_Img.setOnClickListener(this);
         send_Mes.setOnClickListener(this);
         source_Tv.setOnClickListener(this);
-        collect_Tv.setOnClickListener(this);
         share_Tv.setOnClickListener(this);
     }
 
@@ -282,11 +281,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 String likeId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
                 postLikedData(likeId);
                 break;
-            case R.id.collect_Tv:
-                String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
-                postCollectData(articleId);
-                break;
-
             case R.id.join_Tv:
                 groupIsJoin();
                 break;
@@ -337,7 +331,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                 break;
             case R.id.share_Tv:
                 if (homeFoucsDetail_bean != null) {
-                    showShareDialog();
+                    HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
+                    showShareDialog(detail);
                 }
                 break;
 
@@ -345,27 +340,20 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
-
-
-    private void showShareDialog() {
-       if (isMy(homeFoucsDetail_bean.getData().getDetail().getAuthorId())){
-           T.ss("不能转发自己的文章");
-           return;
-       }
-        if (homeFoucsDetail_bean != null) {
-            String imgUrl = homeFoucsDetail_bean.getData().getDetail().getAvatar();
-            String downURl =  HttpUrl.appDownUrl;
-//            String title = String.format("邀请%1$s")
-            String title = homeFoucsDetail_bean.getData().getDetail().getTitle();
-            String content = homeFoucsDetail_bean.getData().getDetail().getContent();
-            ShareArticle_Dialog mShareDialog = new ShareArticle_Dialog(this, downURl, imgUrl, title, content, "分享");
-            mShareDialog.setDynamicClickLister(() -> {
-                mShareDialog.dismiss();
-                postForwardingData(articleId);
-            });
-            mShareDialog.show();
-        }
+    /**
+     * 分享
+     */
+    private void showShareDialog(HomeFoucsDetail_Bean.DataDTO.DetailDTO item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
     }
+
 
     /**
      * 人物跳转
@@ -532,7 +520,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
-                        isCollect(detailData.getCollect_status(), collect_Tv);
 
                         String action = detailData.getAction();
                         if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣组
@@ -643,25 +630,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.sendPost();
     }
 
-    private void postCollectData(String articleId) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("articleId", articleId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
-                    if (collectStateBean != null) {
-                        Integer collect_status = collectStateBean.getCollect_status();
-                        isCollect(collect_status + "", collect_Tv);
-                    }
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
+
 
 
     private void getJoinSheQun(String ID) {
@@ -773,21 +742,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         follow_Count.setText(nowLike + "");
     }
 
-    /**
-     * 收藏/取消收藏
-     *
-     * @param status
-     * @param collect_Tv
-     */
-    private void isCollect(String status, TextView collect_Tv) {
-        int mipmap = R.mipmap.shoucang;
-        if (TextUtils.equals(status, "1")) {
-            mipmap = R.mipmap.shoucang_select;
-        }
-        Drawable drawableEnd = getResources().getDrawable(mipmap);
-        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
-                null, drawableEnd, null);
-    }
+
 
 
     /**

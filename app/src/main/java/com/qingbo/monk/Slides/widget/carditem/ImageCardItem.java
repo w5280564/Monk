@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.widget.carditem.BaseCardItem;
 import com.qingbo.monk.bean.FindBean;
+import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 
@@ -63,6 +64,11 @@ public class ImageCardItem extends BaseCardItem {
         city_Tv.setText(findBean.getCity());
         content_Tv.setText(findBean.getDescription());
         labelFlow(lable_Lin, mContext, findBean.getTagName());
+
+        convertView.setOnClickListener(v -> {
+            String id = findBean.getId();
+            MyAndOther_Card.actionStart(mContext, id);
+        });
         return convertView;
     }
 

@@ -141,6 +141,7 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
 

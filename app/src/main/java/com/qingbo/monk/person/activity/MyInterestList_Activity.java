@@ -110,10 +110,10 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (isMe()) {
+//                if (isMe()) {
                     InterestBean item = (InterestBean) adapter.getItem(position);
                     InterestDetail_Activity.startActivity(mActivity, "0", item.getId());
-                }
+//                }
             }
         });
     }

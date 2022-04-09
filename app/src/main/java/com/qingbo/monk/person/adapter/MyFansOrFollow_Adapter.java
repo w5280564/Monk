@@ -19,14 +19,17 @@ import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.List;
 
-public class MyFollow_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseViewHolder> {
+/**
+ * 我的关注与粉丝
+ */
+public class MyFansOrFollow_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseViewHolder> {
     boolean isMe;
 
-    public MyFollow_Adapter() {
+    public MyFansOrFollow_Adapter() {
         super(R.layout.myfollow_adapter);
     }
 
-    public MyFollow_Adapter(boolean isMe) {
+    public MyFansOrFollow_Adapter(boolean isMe) {
         super(R.layout.myfollow_adapter);
         this.isMe = isMe;
     }
@@ -44,13 +47,16 @@ public class MyFollow_Adapter extends BaseQuickAdapter<ArticleLikedBean, BaseVie
         GlideUtils.loadCircleImage(mContext, head_Img, item.getAvatar(), R.mipmap.icon_logo);
         nickName_Tv.setText(item.getNickname());
 
-        isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
 //        String format = String.format("发布%1$s条，粉丝%2$s人，关注%3$s人", item.getArticleNum(), item.getFansNum(), item.getFollowerNum());
         content_Tv.setText(item.getDescription());
 
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Tv);
-
+        if (isMe) {
+            isFollow(item.getFollowStatus(), follow_Tv, send_Mes);
+        } else {
+            follow_Tv.setVisibility(View.GONE);
+        }
     }
 
     /**

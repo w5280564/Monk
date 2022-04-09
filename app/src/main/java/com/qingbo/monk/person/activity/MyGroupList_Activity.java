@@ -12,20 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.gson.Gson;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
-import com.qingbo.monk.bean.InterestBean;
-import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
-import com.qingbo.monk.bean.MyGroupBean;
 import com.qingbo.monk.bean.MyGroupList_Bean;
 import com.qingbo.monk.person.adapter.MyGroupAdapter;
-import com.qingbo.monk.person.adapter.MyInterestAdapter;
+import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
+import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
-import com.qingbo.monk.question.adapter.QuestionGroupAdapterMy;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -65,7 +60,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.my_recyleview_refresh;
+        return R.layout.group_list;
     }
 
     @Override
@@ -99,19 +94,25 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
 
     }
 
+    @Override
+    public void onRightClick() {
+        skipAnotherActivity(CreateGroupStepOneActivity.class);
+    }
 
     @Override
     protected void initView() {
         if (isMe()) {
             title_bar.setTitle("我的问答社群");
+            title_bar.showRight();
         } else {
             title_bar.setTitle("他的问答社群");
+            title_bar.hideRight();
         }
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-//        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
 
@@ -127,10 +128,15 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (isMe()) {
-                    MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
-                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+//                if (isMe()) {
+//                    MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
+//                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+//                }
+                MyCardGroup_Bean mGroupBean = (MyCardGroup_Bean) adapter.getItem(position);
+                if (mGroupBean==null) {
+                    return;
                 }
+                CheckOtherGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
             }
         });
     }

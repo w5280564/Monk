@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MyDynamic_Bean  implements Serializable {
-
+    @SerializedName("id")
+    private String id;
     @SerializedName("article_id")
     private String articleId;
     @SerializedName("title")

@@ -91,6 +91,7 @@
         android:layout_marginEnd="@dimen/dp_27"
         android:drawablePadding="@dimen/dp_6"
         android:maxLines="2"
+        android:textStyle="bold"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"

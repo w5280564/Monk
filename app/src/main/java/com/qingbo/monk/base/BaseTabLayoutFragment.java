@@ -28,7 +28,13 @@ public class BaseTabLayoutFragment extends BaseFragment {
     protected List<AppMenuBean> menuList = new ArrayList<>();
     protected TabLayout mTabLayout;
     protected ViewPager mViewPager;
+    private int selectSize = 18;
+    private int normalSize = 15;
 
+    public void setTabTextSize(int selectSize,int normalSize){
+        this.selectSize = selectSize;
+        this.normalSize = normalSize;
+    }
 
     @Override
     protected int getLayoutId() {
@@ -42,13 +48,11 @@ public class BaseTabLayoutFragment extends BaseFragment {
 
 
     public class MyOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
-
-
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
+                setTextViewStyle(view, selectSize, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
             }
         }
 
@@ -56,7 +60,7 @@ public class BaseTabLayoutFragment extends BaseFragment {
         public void onTabUnselected(TabLayout.Tab tab) {
             View view = tab.getCustomView();
             if (null != view) {
-                setTextViewStyle(view, 15, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
+                setTextViewStyle(view, normalSize, R.color.text_color_a1a1a1, Typeface.DEFAULT, View.INVISIBLE);
             }
         }
 
@@ -81,11 +85,11 @@ public class BaseTabLayoutFragment extends BaseFragment {
                 tab.setCustomView(getTabView(i));
             }
         }
-        View view = mTabLayout.getTabAt(0).getCustomView();
+        View view = mTabLayout.getTabAt(position).getCustomView();
         if (null != view) {
             setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(position);
     }
 
     /**
@@ -107,11 +111,11 @@ public class BaseTabLayoutFragment extends BaseFragment {
                 tab.setCustomView(getTabView(i));
             }
         }
-        View view = mTabLayout.getTabAt(0).getCustomView();
+        View view = mTabLayout.getTabAt(position).getCustomView();
         if (null != view) {
             setTextViewStyle(view, 18, R.color.text_color_444444, Typeface.DEFAULT_BOLD, View.VISIBLE);
         }
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(position);
     }
 
 

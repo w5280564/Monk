@@ -20,7 +20,7 @@ import java.util.List;
 
 
 /**
- * Created by wensefu on
+ * Created
  */
 
 public class StackCardsView extends FrameLayout {

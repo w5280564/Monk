@@ -118,6 +118,7 @@
         android:layout_marginTop="@dimen/dp_20"
         android:layout_marginEnd="@dimen/dp_27"
         android:maxLines="2"
+        android:textStyle="bold"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -199,7 +200,6 @@
         android:layout_height="@dimen/dp_18"
         android:layout_marginStart="@dimen/dp_40"
         android:background="@mipmap/zhaunfa"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/mes_Count"
         app:layout_constraintStart_toEndOf="@+id/mes_Count"
         app:layout_constraintTop_toTopOf="@+id/mes_Count" />

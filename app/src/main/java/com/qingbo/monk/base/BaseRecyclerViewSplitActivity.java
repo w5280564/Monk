@@ -40,6 +40,19 @@ public abstract class BaseRecyclerViewSplitActivity extends BaseActivity impleme
         }
     }
 
+    /**
+     * 无数据 不展示空数据界面
+     * @param isHaveRefresh
+     */
+    protected void initSwipeRefreshLayoutAndAdapter(boolean isHaveRefresh) {
+        mAdapter.setLoadMoreView(new CustomLoadMoreView());
+        mAdapter.setOnLoadMoreListener(this,mRecyclerView);
+        if (isHaveRefresh && mSwipeRefreshLayout!=null) {
+            mSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(mActivity,R.color.animal_color));
+            mSwipeRefreshLayout.setOnRefreshListener(this);
+        }
+    }
+
 
 
     /**
