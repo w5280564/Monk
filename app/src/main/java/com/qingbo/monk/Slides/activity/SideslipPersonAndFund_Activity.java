@@ -34,21 +34,15 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.PersomCombination_Shares_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.baseview.ScreenUtils;
 import com.qingbo.monk.bean.CharacterDetail_Bean;
-import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.FundHaveList_Bean;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
-import com.qingbo.monk.bean.MyDynamic_More_ListBean;
-import com.qingbo.monk.bean.StockOrFund_QuestionBean;
-import com.qingbo.monk.bean.StockOrFund_QuestionListBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.StockFund_Question_Adapter;
 import com.qingbo.monk.person.adapter.MyDynamic_Adapter;
-import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -81,6 +75,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     private PieChart chart;
     private RecyclerView mNineView;
     private ConstraintLayout stock_Con, stockContent_Con;
+    private ConstraintLayout tu_Con;
 
     /**
      * @param context
@@ -130,6 +125,8 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         title_bar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.card_Recycler);
+        tu_Con = findViewById(R.id.tu_Con);
+        ConstraintLayout myCl = findViewById(R.id.myCl);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter(true);
     }
@@ -331,7 +328,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                         } else {
                             stock_Con.setVisibility(View.VISIBLE);
                             stockContent_Con.setVisibility(View.GONE);
-                            chart.setVisibility(View.VISIBLE);
+                            chartViewLocation();
                         }
 
                         originalValue(listDTO.getStock_name(), "暂未填写", "", fundName_Tv);
@@ -343,6 +340,19 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         httpSender.sendGet();
     }
 
+    /**
+     * 饼状图没有数据  调整高度
+     */
+    private void chartViewLocation(){
+        chart.setVisibility(View.VISIBLE);
+        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(chart.getLayoutParams());
+        layoutParams.height = ScreenUtils.dip2px(mActivity, 100);
+        layoutParams.topToBottom = R.id.stock_Con;
+        layoutParams.startToStart = R.id.tu_Con;
+        layoutParams.endToEnd = R.id.tu_Con;
+        layoutParams.bottomToBottom =R.id.parent;
+        chart.setLayoutParams(layoutParams);
+    }
 
     private void postFollowData(String otherUserId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.InterestDetail_All_Fragment;
@@ -28,7 +27,6 @@ import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -104,6 +102,12 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
 
     @SuppressLint("WrongConstant")
     private void initMenuData() {
+        if (fragments != null) {
+            fragments.clear();
+        }
+        if (menuList != null) {
+            menuList.clear();
+        }
         ArrayList<String> tabName = new ArrayList<>();
         tabName.add("全部");
         tabName.add("我的发布");
@@ -116,7 +120,11 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
         fragments.add(InterestDetail_All_Fragment.newInstance(id));
         fragments.add(InterestDetail_My_Fragment.newInstance(id));
         fragments.add(InterestDetail_Member_Fragment.newInstance(id));
-        initViewPager(0);
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
+        initViewPager(selectedTabPosition);
     }
 
     InterestDetail_Bean interestDetail_bean;
@@ -187,6 +195,7 @@ public class InterestDetail_Activity extends BaseTabLayoutActivity implements Vi
                     String statusJoin = interestDetail_bean.getStatus_num();
                     changeJoin(statusJoin);
                     getJoin(id);
+                    initMenuData();
                 }
                 break;
         }

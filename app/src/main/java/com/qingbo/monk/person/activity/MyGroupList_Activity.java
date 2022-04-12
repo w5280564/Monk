@@ -42,7 +42,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     CustomTitleBar title_bar;
     private String userID;
     String type;
-    private TextView myCrate_Tv,group_Tv;
+    private TextView myCrate_Tv, group_Tv;
 
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyGroupList_Activity.class);
@@ -82,16 +82,15 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     }
 
     @Override
-    protected void getServerData() {
+    protected void onResume() {
+        super.onResume();
         if (isMe()) {
 //            getMyGroupHead("1");
             type = "2";
-            getMyGroup(type);
         } else {
             type = "3";
-            getMyGroup(type);
         }
-
+        getMyGroup(type);
     }
 
     @Override
@@ -133,10 +132,15 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
 //                    GroupDetailActivity.actionStart(mActivity, obj.getId());
 //                }
                 MyCardGroup_Bean mGroupBean = (MyCardGroup_Bean) adapter.getItem(position);
-                if (mGroupBean==null) {
+                if (mGroupBean == null) {
                     return;
                 }
-                CheckOtherGroupDetailActivity.actionStart(mActivity,mGroupBean.getId());
+                String is_join = mGroupBean.getIs_Join();
+                if (TextUtils.equals(is_join, "1")) {//1是已加入 其他都是未加入
+                    GroupDetailActivity.actionStart(mActivity, mGroupBean.getId());
+                } else {
+                    CheckOtherGroupDetailActivity.actionStart(mActivity, mGroupBean.getId());
+                }
             }
         });
     }
@@ -150,7 +154,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         View myView = LayoutInflater.from(this).inflate(R.layout.mygrouplist_top, null);
         ConstraintLayout top_Con = myView.findViewById(R.id.top_Con);
         myCrate_Tv = myView.findViewById(R.id.myCrate_Tv);
-         group_Tv = myView.findViewById(R.id.group_Tv);
+        group_Tv = myView.findViewById(R.id.group_Tv);
 
         if (isMe()) {
             top_Con.setVisibility(View.VISIBLE);
@@ -196,10 +200,10 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
-                            myGroupAdapter.addData(myGroupList_bean.getList());
+                            myGroupAdapter.setNewData(myGroupList_bean.getList());
 //                            handleSplitListData(myGroupList_bean, myGroupAdapter, limit);
-                                String format = String.format("我创建的社群(%1$s/8)", myGroupList_bean.getList().size());
-                                myCrate_Tv.setText(format);
+                            String format = String.format("我创建的社群(%1$s/8)", myGroupList_bean.getList().size());
+                            myCrate_Tv.setText(format);
                         }
                     }
 

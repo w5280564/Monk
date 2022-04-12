@@ -35,6 +35,8 @@ public class MyCardGroup_Bean {
 
     @SerializedName("itemType")
     private String itemType;
+    @SerializedName("is_join")
+    private String is_Join;
 
 
 

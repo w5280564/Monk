@@ -43,11 +43,11 @@ public class MyInterestAdapter extends BaseQuickAdapter<InterestBean, BaseViewHo
         }else{
             GlideUtils.loadCircleImage(mContext,iv_header,item.getGroupImage());
         }
-        if (isMe){
-            tv_join.setVisibility(View.VISIBLE);
-        }else {
-            tv_join.setVisibility(View.GONE);
-        }
+//        if (isMe){
+//            tv_join.setVisibility(View.VISIBLE);
+//        }else {
+//            tv_join.setVisibility(View.GONE);
+//        }
 
 
 

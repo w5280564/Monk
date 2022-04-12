@@ -19,7 +19,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -56,7 +55,6 @@ import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -296,7 +294,8 @@ public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickL
             if (item == null) {
                 return;
             }
-            startPerson(item);
+            postDeleArticleData(item.getId(), item);
+
         });
 
         mAdapterFollow.setOnItemChildClickListener(new MyFollow_Adapter.OnItemChildClickListener() {
@@ -606,6 +605,27 @@ public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickL
             joinTv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
             changeShapColor(joinTv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
         }
+    }
+
+    /**
+     * 删除查看发文状态
+     *
+     * @param followId
+     */
+    private void postDeleArticleData(String followId,ArticleLikedBean item) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("followId", followId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Clear_Article, "删除查看发文状态", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    startPerson(item);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 

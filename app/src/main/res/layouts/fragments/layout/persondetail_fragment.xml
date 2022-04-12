@@ -2,15 +2,18 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myCl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tu_Con"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -33,9 +36,9 @@
                     android:layout_height="@dimen/dp_56"
                     android:layout_marginStart="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_13"
+                    android:layout_marginBottom="@dimen/dp_10"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="@dimen/dp_10"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,8 +73,8 @@
                     android:layout_marginEnd="@dimen/dp_5"
                     android:layout_marginBottom="@dimen/dp_5"
                     android:textColor="@color/text_color_a1a1a1"
-                    android:visibility="gone"
                     android:textSize="10sp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -297,6 +300,8 @@
                 android:layout_marginTop="@dimen/dp_52"
                 android:layout_marginEnd="@dimen/dp_15"
                 android:layout_marginBottom="@dimen/dp_105"
+                android:minHeight="@dimen/dp_100"
+                android:tooltipText="@string/Dialog_XZSJ"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

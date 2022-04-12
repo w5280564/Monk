@@ -1,22 +1,17 @@
 package com.qingbo.monk.Slides.activity;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
+import com.qingbo.monk.Slides.fragment.InterestAll_Fragment;
 import com.qingbo.monk.Slides.fragment.InterestMy_Fragment;
 import com.qingbo.monk.base.BaseActivity;
-import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.Slides.fragment.InterestAll_Fragment;
 import com.xunda.lib.common.base.NormalFragmentAdapter;
 import com.xunda.lib.common.bean.AppMenuBean;
 

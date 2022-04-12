@@ -200,7 +200,6 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     @Override
     protected void getServerData() {
-        postDeleArticleData(userID, false);
         getMyGroup(userID, false);
         getInterestData(userID, false);
     }
@@ -277,26 +276,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         initViewPager(0);
     }
 
-    /**
-     * 删除查看发文状态
-     *
-     * @param followId
-     */
-    private void postDeleArticleData(String followId, boolean isShow) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("followId", followId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.Clear_Article, "删除查看发文状态", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
 
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
-    }
 
 
     UserBean userBean;
@@ -484,18 +464,10 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                 finish();
                 break;
             case R.id.group_Con:
-                if (isMe()) {
-                    MyGroupList_Activity.actionStart(mActivity, userID);
-                } else {
-                    MyGroupList_Activity.actionStart(mActivity, userID);
-                }
+                MyGroupList_Activity.actionStart(mActivity, userID);
                 break;
             case R.id.interest_Con:
-                if (isMe()) {
-                    MyInterestList_Activity.actionStart(mActivity, userID);
-                } else {
-                    MyInterestList_Activity.actionStart(mActivity, userID);
-                }
+                MyInterestList_Activity.actionStart(mActivity, userID);
                 break;
             case R.id.follow_Tv:
                 String id = userBean.getId();

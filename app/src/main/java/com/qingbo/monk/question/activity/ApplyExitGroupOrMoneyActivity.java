@@ -8,10 +8,12 @@ import android.widget.TextView;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.GroupQuit_Bean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
@@ -84,6 +86,7 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     private void exitGroup() {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("id", id);
+        baseMap.put("client", "1");
         HttpSender sender = new HttpSender(HttpUrl.joinGroup, "退出社群", baseMap,
                 new MyOnHttpResListener() {
                     @Override
@@ -92,10 +95,36 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
                             T.ss("操作成功");
                             EventBus.getDefault().post(new FinishEvent(FinishEvent.EXIT_GROUP));
                             finish();
+                        }else if (code == 45661){//3天内的付费用户退出社群
+                            GroupQuit_Bean groupQuit_bean = GsonUtil.getInstance().json2Bean(json_root, GroupQuit_Bean.class);
+                            leaveGroup();
                         }
                     }
                 }, true);
         sender.setContext(mActivity);
         sender.sendPost();
     }
+
+    /**
+     * 三天内付费用户退款
+     */
+    private void leaveGroup() {
+        HashMap<String, String> baseMap = new HashMap<>();
+        baseMap.put("id", id);
+        HttpSender sender = new HttpSender(HttpUrl.Leave_Group, "退款", baseMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            T.ss("退款成功");
+                            EventBus.getDefault().post(new FinishEvent(FinishEvent.EXIT_GROUP));
+                            finish();
+                        }
+                    }
+                }, true);
+        sender.setContext(mActivity);
+        sender.sendPost();
+    }
+
+
 }

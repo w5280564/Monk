@@ -75,7 +75,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 仓位组合详情
+ * 组合详情
  */
 public class CombinationDetail_Activity extends BaseTabLayoutActivity implements View.OnClickListener {
     @BindView(R.id.time_Tv)

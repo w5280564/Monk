@@ -129,15 +129,6 @@ public class HomeSeek_Person extends BaseRecyclerViewSplitFragment {
             SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
         });
 
-        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            HomeSeekPerson_Bean item = (HomeSeekPerson_Bean) adapter.getItem(position);
-            switch (view.getId()) {
-                case R.id.head_Img:
-                    String id = item.getId();
-                    MyAndOther_Card.actionStart(mActivity, id);
-                    break;
-            }
-        });
     }
 
 

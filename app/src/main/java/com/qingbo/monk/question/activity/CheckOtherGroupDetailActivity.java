@@ -357,6 +357,7 @@ public class CheckOtherGroupDetailActivity extends BaseActivity {
     private void joinGroup() {
         HashMap<String, String> baseMap = new HashMap<>();
         baseMap.put("id", id);
+        baseMap.put("client", "1");
         HttpSender sender = new HttpSender(HttpUrl.joinGroup, "加入社群", baseMap,
                 new MyOnHttpResListener() {
                     @Override

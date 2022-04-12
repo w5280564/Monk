@@ -35,6 +35,7 @@
         <entry key="..\:/Monk/app/src/main/res/drawable/text_bottom_line.xml" value="0.36666666666666664" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/actiivty_check_other_group_detail.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_all_group.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_apply_group_money.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_bind_phone.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_change_phone.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_choose_industry.xml" value="0.3605128205128205" />
@@ -136,7 +137,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_my_feed_back.xml" value="0.32838038632986627" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_my_fllow.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_my_wallet.xml" value="0.33" />
-        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myandother_card.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myandother_card.xml" value="0.29159212880143115" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset.xml" value="0.3359375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset_aboutme.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_myset_cancellation.xml" value="0.35052083333333334" />

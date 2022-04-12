@@ -348,10 +348,6 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
             originalValue(s.getCompanyName(), "暂未填写", "", company_Tv);
             labelFlow(lable_Lin, mContext, s.getTagName());
             myLin.addView(view);
-            head_Img.setOnClickListener(v -> {
-                String id = s.getId();
-                MyAndOther_Card.actionStart(mActivity, id);
-            });
             view.setOnClickListener(v -> {
                 String nickname = s.getNickname();
                 String id = s.getId();

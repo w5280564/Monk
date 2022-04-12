@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_13"
                     android:background="@drawable/text_bottom_line"
-                    android:text="策略A"
+                    android:textStyle="bold"
                     android:textColor="@color/text_color_444444"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"

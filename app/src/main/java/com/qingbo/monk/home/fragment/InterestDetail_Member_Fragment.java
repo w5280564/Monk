@@ -15,12 +15,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.ArticleLikedBean;
-import com.qingbo.monk.bean.ArticleLikedListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestMember_Bean;
 import com.qingbo.monk.bean.InterestMember_ListBean;
-import com.qingbo.monk.home.adapter.ArticleZan_Adapter;
 import com.qingbo.monk.home.adapter.InterestMember_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -83,6 +80,8 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id + "");
+        requestMap.put("page", page + "");
+        requestMap.put("limit", limit + "");
         HttpSender httpSender = new HttpSender(HttpUrl.Interest_AllMember, "兴趣组成员", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
