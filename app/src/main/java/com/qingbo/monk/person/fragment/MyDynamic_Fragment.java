@@ -15,16 +15,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.base.baseview.IsMe;
-import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
@@ -32,7 +28,6 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
@@ -173,10 +168,6 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
                     return;
                 }
                 switch (view.getId()) {
-//                    case R.id.follow_Tv:
-//                        String otherUserId = item.getAuthorId();
-//                        postFollowData(otherUserId, position);
-//                        break;
                     case R.id.follow_Img:
                         String likeId = item.getArticleId();
                         postLikedData(likeId, position);
@@ -200,38 +191,6 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
                 }
             }
         });
-
-
-//         mAdapter.setOnItemImgClickLister(new MyDynamic_Adapter.OnItemImgClickLister() {
-//            @Override
-//            public void OnItemImgClickLister(int position, List<String> strings) {
-//                jumpToPhotoShowActivity(position, strings);
-//            }
-//        });
-    }
-
-
-    private void postFollowData(String otherUserId, int position) {
-        HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("otherUserId", otherUserId + "");
-        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((Focus_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                    if (followStateBena.getFollowStatus() == 0) {
-                        mAdapter.remove(position);
-                        mAdapter.notifyItemChanged(position);
-                    }
-                }
-            }
-        }, true);
-        httpSender.setContext(mActivity);
-        httpSender.sendPost();
     }
 
     private void postLikedData(String likeId, int position) {

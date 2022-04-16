@@ -260,6 +260,8 @@ public class HttpUrl {
     public static final String etf_List = "fund/fund/etf-list";//HK股切换
     public static final String fund_Etf = "fund/fund/etf";//港股--十大股东
     public static final String Leave_Group = "square/square/refund-leave-group";//三天内退出社群
+    public static final String Wallet_Balance = "pay/wallet/withdrawable";//可提现金额
+    public static final String Wallet_Withdrawal = "pay/wallet/withdraw";//提现
 
 
 }

@@ -140,6 +140,7 @@ public class MyCollect_Adapter extends BaseQuickAdapter<MyDynamic_Bean, BaseView
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
 

@@ -210,6 +210,7 @@
     <dimen name="dp_300">300dp</dimen>
     <dimen name="dp_320">320dp</dimen>
     <dimen name="dp_340">340dp</dimen>
+    <dimen name="dp_350">350dp</dimen>
     <dimen name="dp_400">400dp</dimen>
 
 

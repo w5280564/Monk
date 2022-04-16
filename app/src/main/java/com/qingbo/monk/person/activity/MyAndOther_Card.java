@@ -1,8 +1,11 @@
 package com.qingbo.monk.person.activity;
 
+import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
@@ -21,7 +24,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.NestedScrollView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.gson.Gson;
@@ -29,11 +31,9 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.base.CustomCoordinatorLayout;
 import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
-import com.qingbo.monk.base.baseview.ExpandTextView;
-import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.base.behavior.AppBarLayoutOverScrollViewBehavior;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.myCardBean;
@@ -69,7 +69,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @BindView(R.id.back_Btn)
     Button back_Btn;
     @BindView(R.id.brief_Tv)
-    ExpandTextView brief_Tv;
+    TextView brief_Tv;
     @BindView(R.id.iv_img)
     ImageView iv_img;
     @BindView(R.id.head_Img)
@@ -112,8 +112,6 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView send_Mes;
     @BindView(R.id.urlLabel_Lin)
     LinearLayout urlLabel_Lin;
-    @BindView(R.id.sex_Tv)
-    TextView sex_Tv;
     @BindView(R.id.iv_bianji)
     ImageView iv_bianji;
     @BindView(R.id.share_Btn)
@@ -128,6 +126,14 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     TextView textview11;
     @BindView(R.id.top_Con)
     ConstraintLayout top_Con;
+    @BindView(R.id.toolbar_Head_Img)
+    ImageView toolbar_Head_Img;
+    @BindView(R.id.toolbar_name_Tv)
+    TextView toolbar_name_Tv;
+    @BindView(R.id.setting_Btn)
+    Button setting_Btn;
+    @BindView(R.id.sex_Img)
+    ImageView sex_Img;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -180,22 +186,18 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     protected void initView() {
         mTabLayout = findViewById(R.id.card_Tab);
         mViewPager = findViewById(R.id.card_ViewPager);
-        NestedScrollView top_Src = findViewById(R.id.top_Src);
-        CustomCoordinatorLayout headLayout = findViewById(R.id.headLayout);
-        LinearLayout bot_Lin = findViewById(R.id.bot_Lin);
-        headLayout.setmMoveView(top_Src, bot_Lin);
-        headLayout.setmZoomView(iv_img);
 
         TouchRegion touchRegion = new TouchRegion(top_Con);
         touchRegion.expandViewTouchRegion(tv_follow_number, 50);
         touchRegion.expandViewTouchRegion(tv_fans_number, 50);
 
-        new TouchRegion(back_Btn).expandViewTouchRegion(back_Btn,100);
+        touchRegion.expandViewTouchRegion(back_Btn, 100);
         initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
         if (isMe()) {
             iv_bianji.setVisibility(View.VISIBLE);
         }
+        setting_Btn.setVisibility(View.GONE);
     }
 
     @Override
@@ -226,19 +228,65 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         textview10.setOnClickListener(this);
         textview11.setOnClickListener(this);
 
+        appbar_Layout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            float percent = (float) Math.abs(verticalOffset) / (float) appBarLayout.getTotalScrollRange();
+            if (percent == 0) {
+                groupChange(1f, 1);
+            } else if (percent == 1) {
+                groupChange(1f, 2);
+            } else {
+                groupChange(percent, 0);
+            }
+        });
 
-        appbar_Layout.addOnOffsetChangedListener((AppBarLayout.BaseOnOffsetChangedListener) (appBarLayout, verticalOffset) -> {
-            if (verticalOffset == 0) {
-                mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+        AppBarLayoutOverScrollViewBehavior myAppBarLayoutBehavoir = (AppBarLayoutOverScrollViewBehavior)
+                ((CoordinatorLayout.LayoutParams) appbar_Layout.getLayoutParams()).getBehavior();
+        myAppBarLayoutBehavoir.setOnProgressChangeListener(new AppBarLayoutOverScrollViewBehavior.onProgressChangeListener() {
+            @Override
+            public void onProgressChange(float progress, boolean isRelease) {
+                if (progress == 0 && isRelease) {//进度条回到0 并且已释放 刷新一次数据
+                    getUserData(userID, true);
+                    initMenuData();
+                }
+            }
+        });
+    }
+
+    private int lastState = 1;
+
+    /**
+     * @param alpha
+     * @param state 0-正在变化 1展开 2 关闭
+     */
+    public void groupChange(float alpha, int state) {
+        lastState = state;
+        mToolbar.setAlpha(1);//一直需要展示的状态
+        switch (state) {
+            case 1://完全展开 显示白色
+//                mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
                 ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(false).init();//把标题栏和状态栏绑定在一块
                 setTint(back_Btn, R.mipmap.icon_back, R.color.white);
                 setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.white);
-            } else {
+//                mViewPager.setNoScroll(false);
+                toolbar_Head_Img.setVisibility(View.GONE);
+                toolbar_name_Tv.setVisibility(View.GONE);
+                break;
+            case 2://完全关闭 显示黑色
                 ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(true).init();
                 setTint(back_Btn, R.mipmap.icon_back, R.color.text_color_6f6f6f);
                 setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.text_color_6f6f6f);
-            }
-        });
+                toolbar_Head_Img.setVisibility(View.VISIBLE);
+                toolbar_name_Tv.setVisibility(View.VISIBLE);
+//                mViewPager.setNoScroll(false);
+                break;
+            case 0://介于两种临界值之间 显示黑色
+                if (lastState != 0) {
+                    setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.text_color_6f6f6f);
+                }
+                //为什么禁止滑动？在介于开关状态之间，不允许滑动，开启可能会导致不好的体验
+//                mViewPager.setNoScroll(true);
+                break;
+        }
     }
 
     /**
@@ -257,6 +305,12 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
 
     @SuppressLint("WrongConstant")
     private void initMenuData() {
+        if (fragments != null) {
+            fragments.clear();
+        }
+        if (menuList != null) {
+            menuList.clear();
+        }
         ArrayList<String> tabName = new ArrayList<>();
         tabName.add("动态");
         if (isMe()) {
@@ -273,10 +327,13 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             fragments.add(MyCollect_Fragment.newInstance(userID));
         }
         fragments.add(MyArchives_Fragment.newInstance(userID));
-        initViewPager(0);
+
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
+        initViewPager(selectedTabPosition);
     }
-
-
 
 
     UserBean userBean;
@@ -288,32 +345,37 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-//                if (refresh_layout.isRefreshing()) {
-//                    refresh_layout.setRefreshing(false);
-//                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.card_bg);
+                        iv_img.setTag("overScroll"); //BaseApplication中添加了ViewTarget
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.mycard_bg);
+
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
+                        GlideUtils.loadCircleImage(mActivity, toolbar_Head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
+                        toolbar_name_Tv.setText(userBean.getNickname());
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
-//
-//                        originalValue(userBean.getDescription(), "暂未填写", "", brief_Tv);
-                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
-                        brief_Tv.initWidth(width);
+                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
+//                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
+//                        brief_Tv.initWidth(width);
 //                        if (userBean.getDescription().isEmpty()) {
 //                            brief_Tv.setText("暂未填写");
 //                        } else {
-                        brief_Tv.setCloseText("基金经理简介：\n" + userBean.getDescription());
+//                        brief_Tv.setCloseText("个人说明：\n" + userBean.getDescription());
 //                        }
 
+                        String sex = userBean.getSex();
+                        if (TextUtils.equals(sex,"女")){
+                            sex_Img.setBackgroundResource(R.mipmap.nv);
+                        }else {
+                            sex_Img.setBackgroundResource(R.mipmap.nan);
+                        }
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
                         originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
                         originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
-                        originalValue(userBean.getSex(), "未知", "性别：", sex_Tv);
 
                         if (isMe()) {
                             mesHomepage_Tv.setText("我的社交主页");
@@ -454,11 +516,11 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.tv_follow_number:
             case R.id.textview10:
-                MyFollowActivity.actionStart(this,userID);
+                MyFollowActivity.actionStart(this, userID);
                 break;
             case R.id.tv_fans_number:
             case R.id.textview11:
-                MyFansActivity.actionStart(this,userID);
+                MyFansActivity.actionStart(this, userID);
                 break;
             case R.id.back_Btn:
                 finish();
@@ -531,10 +593,24 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             itemParams.setMargins(0, 0, 0, 0);
             view.setLayoutParams(itemParams);
             TextView label_Name = view.findViewById(R.id.label_Name);
-            StringUtil.setColor(mContext, i, label_Name);
+            setColor(mContext, i, label_Name);
             label_Name.setText(tagS[i]);
             label_Name.setTag(i);
             myFlow.addView(view);
+        }
+    }
+
+    public static void setColor(Context context, int index, TextView tv) {
+        tv.setTextColor(Color.WHITE);
+        int dex = index % 4;
+        if (dex == 0) {
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_80ff801f));
+        } else if (dex == 1) {
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_801F8FE5));
+        } else if (dex == 2) {
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_8076AD45));
+        } else if (dex == 3) {
+            changeShapColor(tv, ContextCompat.getColor(context, R.color.lable_color_807622BD));
         }
     }
 
@@ -612,7 +688,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("关注");
             follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
-            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
             send_Mes.setVisibility(View.GONE);
         } else if (TextUtils.equals(s, "1")) {
             follow_Tv.setVisibility(View.GONE);
@@ -621,13 +697,13 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("已关注");
             follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
-            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.GONE);
         } else if (TextUtils.equals(s, "4")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("互相关注");
             follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
-            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
             send_Mes.setVisibility(View.VISIBLE);
         }
     }

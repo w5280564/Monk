@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
@@ -90,6 +91,10 @@ public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickL
         return R.layout.fragment_home;
     }
 
+    @Override
+    public void initImmersionBar() {
+       setStatusBar();
+    }
 
     @Override
     protected void initView(View mRootView) {
@@ -101,6 +106,18 @@ public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickL
         mRecyclerView = mRootView.findViewById(R.id.interest_recycler);
         initRecyclerView();
 //        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+
+    }
+
+    /**
+     * 设置状态栏
+     */
+    protected void setStatusBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(true)
+                .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
+                .statusBarDarkFont(true)
+                .init();
     }
 
     @Override

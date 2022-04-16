@@ -1,12 +1,10 @@
 package com.qingbo.monk.home.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
@@ -35,6 +33,22 @@ public class MessageFragment extends BaseTabLayoutFragment {
     TextView system_msg_Tv;
 
     @Override
+    public void initImmersionBar() {
+     setStatusBar();
+    }
+
+    /**
+     * 设置状态栏
+     */
+    protected void setStatusBar() {
+        ImmersionBar.with(this)
+                .fitsSystemWindows(true)
+                .statusBarColor(R.color.white)     //状态栏颜色，不写默认透明色
+                .statusBarDarkFont(true)
+                .init();
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_message;
     }
@@ -44,7 +58,6 @@ public class MessageFragment extends BaseTabLayoutFragment {
         mViewPager = mView.findViewById(R.id.viewpager);
         mTabLayout = mView.findViewById(R.id.tabs);
         initMenuData();
-
     }
 
     @OnClick({R.id.seek_Tv, R.id.ll_contact, R.id.system_Con})

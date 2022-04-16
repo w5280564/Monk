@@ -91,6 +91,7 @@
             android:text="￥0.00"
             android:textColor="@color/text_color_444444"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView21"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView21" />
@@ -118,6 +119,7 @@
             android:text="￥0.00"
             android:textColor="@color/text_color_444444"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView23"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView23" />
@@ -135,7 +137,6 @@
         android:text="提现"
         android:textColor="@color/text_color_444444"
         android:textSize="@dimen/sp_16"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/dp_64"
         android:layout_marginStart="@dimen/dp_15"

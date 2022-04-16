@@ -18,6 +18,7 @@ import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowListBean;
+import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
@@ -33,6 +34,7 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 首页滑动tab页--
@@ -204,16 +206,39 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                     @Override
                     public void onComplete(String json_root, int code, String msg, String json_data) {
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
-//                            FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                            FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
 //                            TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
 //                            TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
 //                            ((Follow_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-                            getListData(false);
+
+//                            mAdapter.notifyDataSetChanged();
+                            updateAdapter(otherUserId, followStateBena.getFollowStatus());
                         }
                     }
                 }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 更新数据源
+     *
+     * @param otherUserId
+     * @param status
+     */
+    private void updateAdapter(String otherUserId, int status) {
+        if (mAdapter == null) {
+            return;
+        }
+        List<HomeFllowBean> data = mAdapter.getData();
+        int index = 0;
+        for (HomeFllowBean s : data) {
+            if (TextUtils.equals(otherUserId, s.getAuthorId())) {
+                s.setFollow_status(status);
+                mAdapter.notifyItemChanged(index);
+            }
+            index++;
+        }
     }
 
 
@@ -289,7 +314,6 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         mShareDialog.setAuthor_id(item.getAuthorId());
         mShareDialog.show();
     }
-
 
 
 }

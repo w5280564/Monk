@@ -38,7 +38,6 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" /> <!-- Oppo推送配置（如果应用无透传权限，则不用配置） start -->
 
 
-
     <queries>
         <package android:name="com.tencent.mm" />
         // Android 11-第三方应用无法拉起微信适配 指定微信包名
@@ -62,8 +61,9 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Android Q后台定位权限 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
     <!--xiaomi_permission_start-->
@@ -120,7 +120,6 @@
     <!--jpush_permission_end-->
 
 
-
     <application
         android:name=".base.MonkApplication"
         android:allowBackup="true"
@@ -133,10 +132,15 @@
         android:theme="@style/BaseAppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
+
+        <activity
+            android:name=".person.activity.MySetting_Activity"
+            android:exported="false" />
         <activity
             android:name=".person.activity.Person_System_At"
             android:exported="false" />
-                <activity
+
+        <activity
             android:name=".person.activity.MyCrateArticle_At_Seek"
             android:exported="false" />
 
@@ -402,8 +406,8 @@
         <!-- 这个是自定义Service，要继承极光JCommonService，可以在更多手机平台上使得推送通道保持的更稳定 -->
         <service
             android:name=".base.jpush.PushService"
-            android:process=":pushcore"
-            android:exported="true">
+            android:exported="true"
+            android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
@@ -416,13 +420,12 @@
         <receiver
             android:name=".base.jpush.PushMessageReceiver"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
                 <category android:name="com.qingbo.monk" />
             </intent-filter>
         </receiver>
-
 
 
     </application>

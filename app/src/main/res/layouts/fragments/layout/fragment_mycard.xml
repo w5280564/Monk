@@ -13,6 +13,7 @@
         android:clipChildren="false"
         android:clipToPadding="false">
 
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_Layout"
             android:layout_width="match_parent"
@@ -28,6 +29,7 @@
                 android:clipToPadding="false"
                 app:contentScrim="@color/white"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
 
                 <com.qingbo.monk.base.baseview.DisInterceptNestedScrollView
                     android:layout_width="match_parent"
@@ -69,6 +71,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
 
                         <Button
                             android:id="@+id/setting_Btn"
@@ -132,7 +135,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
         <LinearLayout
             android:id="@+id/bot_Lin"
             android:layout_width="match_parent"
@@ -148,7 +150,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/card_Tab"
                         android:layout_width="wrap_content"

@@ -65,15 +65,15 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
     private TwoButtonDialogBlue mDialog;
-    private String mTitle,mContent,images,questionId;
+    private String mTitle, mContent, images, questionId;
     private String submitRequestUrl;
     private boolean isEdit;
 
 
     public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, PublisherQuestionActivity.class);
-        intent.putExtra("obj",mQuestionBeanMy);
-        intent.putExtra("isEdit",isEdit);
+        intent.putExtra("obj", mQuestionBeanMy);
+        intent.putExtra("isEdit", isEdit);
         context.startActivity(intent);
     }
 
@@ -89,17 +89,17 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         initImageRecyclerViewAndAdapter();
 
         title = "问答广场";
-        isEdit = getIntent().getBooleanExtra("isEdit",false);
+        isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {//编辑
-            submitRequestUrl = HttpUrl.editQuestion;
-//            submitRequestUrl = HttpUrl.createTopic;
+//            submitRequestUrl = HttpUrl.editQuestion;
+            submitRequestUrl = HttpUrl.createTopic;
             OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
-            if (mQuestionBeanMy!=null) {
+            if (mQuestionBeanMy != null) {
                 questionId = mQuestionBeanMy.getTopic_id();
                 handleEditOtherData(mQuestionBeanMy);
                 handleEditImageData(mQuestionBeanMy);
             }
-        }else{
+        } else {
             submitRequestUrl = HttpUrl.createTopic;
         }
 
@@ -108,7 +108,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
-        tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+        tv_remains_text.setText(String.format("%s/2000", StringUtil.getEditText(et_content).length()));
         String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
             tvTag.setText("匿名");
@@ -126,7 +126,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         if (!StringUtil.isBlank(images)) {
             List<String> tempStringUrlList = StringUtil.stringToList(images);
             List<UploadPictureBean> urlList = new ArrayList<>();
-            for (String imageUrl:tempStringUrlList) {
+            for (String imageUrl : tempStringUrlList) {
                 UploadPictureBean obj = new UploadPictureBean();
                 obj.setImageUrl(imageUrl);
                 obj.setType(0);
@@ -151,7 +151,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
     private void initImageRecyclerViewAndAdapter() {
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false, DisplayUtil.sp2px(mContext,32),getResources().getColor(R.color.white));
+        GridDividerItemDecoration mItemDecoration = new GridDividerItemDecoration(false, DisplayUtil.sp2px(mContext, 32), getResources().getColor(R.color.white));
         recycleView_image.addItemDecoration(mItemDecoration);
         recycleView_image.setLayoutManager(layoutManager);
         mAdapter = new ChooseImageAdapter(imageList);
@@ -183,7 +183,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tv_remains_text.setText(String.format("%s/2000",StringUtil.getEditText(et_content).length()));
+                tv_remains_text.setText(String.format("%s/2000", StringUtil.getEditText(et_content).length()));
             }
 
             @Override
@@ -192,9 +192,6 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
             }
         });
     }
-
-
-
 
 
     @Override
@@ -211,7 +208,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     private void showBackDialog() {
         getPramsValue();
 
-        if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
+        if (!StringUtil.isBlank(mTitle) || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
@@ -245,7 +242,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
             tvTag.setText("匿名");
             setDrawableLeft(R.mipmap.niming);
             llTag.setTag("1");
-        }else{
+        } else {
             tvTag.setText("公开");
             setDrawableLeft(R.mipmap.gongkai);
             llTag.setTag("0");
@@ -263,8 +260,8 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     public void onRightClick() {
         getPramsValue();
 
-        if (StringUtil.isBlank(mTitle)  && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
+        if (StringUtil.isBlank(mContent)) {
+            T.ss("内容必须填写");
             return;
         }
 
@@ -286,13 +283,11 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         baseMap.put("content", mContent);
         baseMap.put("is_anonymous", (String) llTag.getTag());
         baseMap.put("images", images);
+        baseMap.put("type", "1");
+        baseMap.put("action", "3");
+        baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         if (isEdit) {//编辑
-            baseMap.put("id", questionId);
-            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
-        }else{
-            baseMap.put("type", "1");
-            baseMap.put("action", "3");
-            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
+            baseMap.put("topic_id", questionId);
         }
         HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题或提问，或保存至草稿", baseMap,
                 new MyOnHttpResListener() {
@@ -302,7 +297,7 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
                             if ("0".equals(optype)) {
                                 EventBus.getDefault().post(new FinishEvent(FinishEvent.PUBLISH_QUESTION));
                                 showToastDialog("发布成功！");
-                            }else{
+                            } else {
                                 showToastDialog("已保存至草稿箱！");
                             }
                         }
@@ -319,9 +314,9 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         int all_size = imageList.size();
         if (all_size < 8) {
             if (position == all_size - 1 && imageList.get(position).getType() == 1) {//添加照片
-                checkGalleryPermission(7-all_size);
-            }else{
-                jumpToPhotoShowActivity(position,imageStringList);
+                checkGalleryPermission(7 - all_size);
+            } else {
+                jumpToPhotoShowActivity(position, imageStringList);
             }
         }
     }
@@ -331,9 +326,9 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
      * 展示选择的图片
      */
     private void showImageListImages(List<UploadPictureBean> mTempList) {
-        imageList.addAll(imageList.size()-1, mTempList);
+        imageList.addAll(imageList.size() - 1, mTempList);
         deleteLastOne();
-        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/6", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -356,18 +351,16 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
                 imageList.add(imageList.size(), addBean);
             }
         }
-        tv_remains_image.setText(String.format("%s/6",imageStringList.size()));
+        tv_remains_image.setText(String.format("%s/6", imageStringList.size()));
         mAdapter.notifyDataSetChanged();
     }
 
 
-
-
     @Override
-    protected void onUploadSuccess(List<String> urlList,List<File> fileList) {
+    protected void onUploadSuccess(List<String> urlList, List<File> fileList) {
         List<UploadPictureBean> uriList = new ArrayList<>();
-        for (File mFile:fileList) {
-            Uri filePath = FileProvider7.getUriForFile(mContext,mFile);
+        for (File mFile : fileList) {
+            Uri filePath = FileProvider7.getUriForFile(mContext, mFile);
             UploadPictureBean obj = new UploadPictureBean();
             obj.setImageUri(filePath);
             obj.setType(2);

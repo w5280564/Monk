@@ -14,12 +14,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.OwnPublishBean;
-import com.qingbo.monk.bean.QuestionBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.PublisherQuestionActivity;
@@ -142,6 +141,9 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.group_Img:
                         startPerson(mQuestionBean);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(mQuestionBean);
                         break;
                 }
             }
@@ -284,4 +286,20 @@ public class QuestionListFragmentMy extends BaseRecyclerViewSplitFragment {
     public void onClick() {
         skipAnotherActivity(PublisherQuestionActivity.class);
     }
+
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(OwnPublishBean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
+
 }

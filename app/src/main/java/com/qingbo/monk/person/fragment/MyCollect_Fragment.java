@@ -18,6 +18,7 @@ import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
@@ -173,6 +174,9 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
 //                        showPopMenu(more_Img, item, position);
                     }
                     break;
+                case R.id.share_Img:
+                    showShareDialog(item);
+                    break;
             }
         });
 
@@ -183,6 +187,20 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+    }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(MyDynamic_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
     }
 
 

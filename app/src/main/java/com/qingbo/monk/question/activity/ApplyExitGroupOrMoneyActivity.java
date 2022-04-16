@@ -3,6 +3,7 @@ package com.qingbo.monk.question.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.qingbo.monk.HttpSender;
@@ -31,14 +32,21 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     TextView tvToast2;
     @BindView(R.id.tv_confirm)
     TextView tvConfirm;
-    private String back;//1可以退款0不可以退款
-    private String id;//社群id
+    private String back;
+    private String id;
+    private String shequn_fee;
 
-
-    public static void actionStart(Context context, String back, String id) {
+    /**
+     * @param context
+     * @param back       1可以退款0不可以退款
+     * @param id         社群id
+     * @param shequn_fee 退群费
+     */
+    public static void actionStart(Context context, String back, String id, String shequn_fee) {
         Intent intent = new Intent(context, ApplyExitGroupOrMoneyActivity.class);
-        intent.putExtra("back",back);
-        intent.putExtra("id",id);
+        intent.putExtra("back", back);
+        intent.putExtra("id", id);
+        intent.putExtra("shequn_fee", shequn_fee);
         context.startActivity(intent);
     }
 
@@ -51,10 +59,11 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     protected void initLocalData() {
         back = getIntent().getStringExtra("back");
         id = getIntent().getStringExtra("id");
-        if ("1".equals(back)){//申请退款
+        shequn_fee = getIntent().getStringExtra("shequn_fee");
+        if ("1".equals(back)) {//申请退款
             tvToast1.setText("申请确定后入群费用自动退回至APP钱包");
             tvConfirm.setText("申请确认");
-        }else{
+        } else {
             tvToast1.setText("申请确定后入群费用概不退还");
             tvConfirm.setText("退出社群");
         }
@@ -66,7 +75,15 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     }
 
     private void showCancelRoleDialog() {
-        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this,"确定退出该社群吗","取消","确定", new TwoButtonDialogBlue.ConfirmListener() {
+        String format = "确定退出该社群吗";
+        if (TextUtils.equals(back, "1")) {
+            double v = Double.parseDouble(shequn_fee);
+            if (v > 0) {
+                format = String.format("退出社群将返还%1$s到钱包", shequn_fee);
+            }
+
+        }
+        TwoButtonDialogBlue mDialog = new TwoButtonDialogBlue(this, format, "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
                 exitGroup();
@@ -95,7 +112,7 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
                             T.ss("操作成功");
                             EventBus.getDefault().post(new FinishEvent(FinishEvent.EXIT_GROUP));
                             finish();
-                        }else if (code == 45661){//3天内的付费用户退出社群
+                        } else if (code == 45661) {//3天内的付费用户退出社群
                             GroupQuit_Bean groupQuit_bean = GsonUtil.getInstance().json2Bean(json_root, GroupQuit_Bean.class);
                             leaveGroup();
                         }

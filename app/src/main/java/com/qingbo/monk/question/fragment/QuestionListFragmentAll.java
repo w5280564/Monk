@@ -8,20 +8,17 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.BaseQuestionBean;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.QuestionBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -41,10 +38,6 @@ import butterknife.OnClick;
  * 问答列表（全部）
  */
 public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
-
-
-
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_question_list;
@@ -136,6 +129,9 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.group_Img:
                         startPerson(mQuestionBean);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(mQuestionBean);
                         break;
                 }
             }
@@ -238,5 +234,19 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
     @OnClick(R.id.iv_bianji)
     public void onClick() {
         skipAnotherActivity(PublisherQuestionActivity.class);
+    }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(QuestionBean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
     }
 }

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_background"
+    tools:ignore="MissingConstraints">
+
+    <com.xunda.lib.common.common.titlebar.CustomTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        app:titleBarLeftImg="@mipmap/icon_back"
+        app:titleBarShowBottomLine="false"
+        app:titleBarTitle="更多" />
+
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_comment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:background="@color/white"
+        android:paddingStart="@dimen/dp_10"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/punlun"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="评论"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_history"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/liulan"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="浏览"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_fankui"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/fankui2"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="帮助反馈"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/tv_history" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_my_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/qianbao"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="钱包"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/tv_fankui" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_shezhi"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/shezhi2"
+        app:arrowItemShowAvatar="true"
+        android:background="@color/white"
+        app:arrowItemTitle="设置中心"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@id/tv_my_wallet" />
+
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_fabu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/fabu"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="发布动态"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/tv_shezhi" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_caogao"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/caogao"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="草稿箱"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/tv_fabu" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_dongtai"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/dongtai"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="动态"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/tv_caogao" />
+
+    <com.xunda.lib.common.view.MyArrowItemView
+        android:id="@+id/tv_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_43"
+        android:paddingStart="@dimen/dp_10"
+        android:background="@color/white"
+        app:arrowItemAvatarHeight="@dimen/dp_12"
+        app:arrowItemAvatarSrc="@mipmap/sheuqn"
+        app:arrowItemShowAvatar="true"
+        app:arrowItemTitle="我的社群"
+        app:arrowItemTitleColor="@color/text_color_6f6f6f"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dongtai" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

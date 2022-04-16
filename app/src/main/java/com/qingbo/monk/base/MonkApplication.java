@@ -2,14 +2,17 @@ package com.qingbo.monk.base;
 
 import android.content.Context;
 import android.content.res.Configuration;
+
 import com.baoyz.treasure.Treasure;
+import com.bumptech.glide.request.target.ViewTarget;
+import com.qingbo.monk.R;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Config;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.OkhttpInitUtil;
 import com.xunda.lib.common.common.language.MultiLanguageUtil;
 import com.xunda.lib.common.common.preferences.GsonConverterFactory;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.jpush.android.api.JPushInterface;
 
@@ -29,6 +32,8 @@ public class MonkApplication extends BaseApplication {
 
         JPushInterface.setDebugMode(true);//打开日志
         JPushInterface.init(this);//初始化
+        ViewTarget.setTagId(R.id.glideIndexTag);
+        
     }
 
 

@@ -8,8 +8,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
-import com.bumptech.glide.Glide;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
@@ -20,7 +21,6 @@ import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.eventbus.GroupManagerEvent;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.imgloader.ImgLoader;
@@ -32,10 +32,11 @@ import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.RoundImageView;
 
 import org.greenrobot.eventbus.Subscribe;
+
 import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
-import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
  * 社群详情
@@ -245,7 +246,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 SelectMemberListActivity.actionStart(mActivity,id,1);
                 break;
             case R.id.arrowItemView_apply_exit:
-                ApplyExitGroupOrMoneyActivity.actionStart(mActivity,back,id);
+                ApplyExitGroupOrMoneyActivity.actionStart(mActivity,back,id,sheQunBean.getShequnFee());
                 break;
             case R.id.ll_back:
                 back();

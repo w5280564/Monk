@@ -166,6 +166,17 @@
         app:layout_constraintStart_toEndOf="@+id/mes_Img"
         app:layout_constraintTop_toTopOf="@+id/mes_Img" />
 
+
+    <ImageView
+        android:id="@+id/share_Img"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_40"
+        android:background="@mipmap/zhaunfa"
+        app:layout_constraintBottom_toBottomOf="@+id/mes_Count"
+        app:layout_constraintStart_toEndOf="@+id/mes_Count"
+        app:layout_constraintTop_toTopOf="@+id/mes_Count" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"

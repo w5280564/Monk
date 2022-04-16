@@ -1,50 +1,67 @@
 package com.qingbo.monk.home.fragment;
 
+import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseFragment;
+import com.qingbo.monk.base.BaseTabLayoutFragment;
+import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
-import com.qingbo.monk.base.baseview.MyCardEditView;
-import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.person.activity.MyComment_Activity;
+import com.qingbo.monk.base.behavior.AppBarLayoutOverScrollViewBehavior;
+import com.qingbo.monk.bean.FollowStateBena;
+import com.qingbo.monk.bean.InterestList_Bean;
+import com.qingbo.monk.bean.myCardBean;
+import com.qingbo.monk.message.activity.ChatActivity;
+import com.qingbo.monk.person.activity.MyAndOtherEdit_Card;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
-import com.qingbo.monk.person.activity.MyDrafts_Activity;
-import com.qingbo.monk.person.activity.MyDynamic_Activity;
 import com.qingbo.monk.person.activity.MyFansActivity;
-import com.qingbo.monk.person.activity.MyFeedBack_Activity;
 import com.qingbo.monk.person.activity.MyFollowActivity;
 import com.qingbo.monk.person.activity.MyGroupList_Activity;
-import com.qingbo.monk.person.activity.MyHistory_Activity;
-import com.qingbo.monk.person.activity.MySet_Activity;
-import com.qingbo.monk.person.activity.MyWallet_Activity;
+import com.qingbo.monk.person.activity.MyInterestList_Activity;
+import com.qingbo.monk.person.activity.MySetting_Activity;
+import com.qingbo.monk.person.fragment.MyArchives_Fragment;
+import com.qingbo.monk.person.fragment.MyCollect_Fragment;
+import com.qingbo.monk.person.fragment.MyDynamic_Fragment;
+import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
-import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.view.flowlayout.FlowLayout;
+import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.ShareDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -52,135 +69,492 @@ import butterknife.BindView;
  * 我的
  */
 @SuppressLint("NonConstantResourceId")
-public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
-    @BindView(R.id.iv_userHeader)
-    ImageView iv_userHeader;
+public class MineFragment extends BaseTabLayoutFragment implements View.OnClickListener {
+    @BindView(R.id.mesHomepage_Tv)
+    TextView mesHomepage_Tv;
+    @BindView(R.id.back_Btn)
+    Button back_Btn;
+    @BindView(R.id.brief_Tv)
+    TextView brief_Tv;
+    @BindView(R.id.iv_img)
+    ImageView iv_img;
+    @BindView(R.id.head_Img)
+    ImageView head_Img;
+    @BindView(R.id.tv_follow_number)
+    TextView tv_follow_number;
+    @BindView(R.id.tv_fans_number)
+    TextView tv_fans_number;
     @BindView(R.id.tv_name)
     TextView tv_name;
     @BindView(R.id.label_Lin)
     LinearLayout label_Lin;
-    @BindView(R.id.tv_follow_number)
-    TextView tv_follow_number;
+    @BindView(R.id.address_Tv)
+    TextView address_Tv;
+    @BindView(R.id.industry_Tv)
+    TextView industry_Tv;
+    @BindView(R.id.job_Tv)
+    TextView job_Tv;
+    @BindView(R.id.groupName_Tv)
+    TextView groupName_Tv;
+    @BindView(R.id.joinCount_Tv)
+    TextView joinCount_Tv;
+    @BindView(R.id.interestName_Tv)
+    TextView interestName_Tv;
+    @BindView(R.id.interestJoinCount_Tv)
+    TextView interestJoinCount_Tv;
+    @BindView(R.id.joinHead_Lin)
+    LinearLayout joinHead_Lin;
+    @BindView(R.id.interestHead_Lin)
+    LinearLayout interestHead_Lin;
+    @BindView(R.id.group_Con)
+    ConstraintLayout group_Con;
+    @BindView(R.id.interest_Con)
+    ConstraintLayout interest_Con;
+    @BindView(R.id.editUser_Tv_)
+    TextView editUser_Tv_;
     @BindView(R.id.follow_Tv)
     TextView follow_Tv;
-    @BindView(R.id.tv_fans_number)
-    TextView tv_fans_number;
-    @BindView(R.id.fans_Tv)
-    TextView fans_Tv;
-    @BindView(R.id.iv_qrcode)
-    TextView iv_qrcode;
-    @BindView(R.id.refresh_layout)
-    SwipeRefreshLayout refresh_layout;
-    @BindView(R.id.interest_EditView)
-    MyCardEditView interest_EditView;
-    @BindView(R.id.good_EditView)
-    MyCardEditView good_EditView;
-    @BindView(R.id.resources_EditView)
-    MyCardEditView resources_EditView;
-    @BindView(R.id.achievement_EditView)
-    MyCardEditView achievement_EditView;
-    @BindView(R.id.learn_EditView)
-    MyCardEditView learn_EditView;
-    @BindView(R.id.harvest_EditView)
-    MyCardEditView harvest_EditView;
-    @BindView(R.id.tv_comment)
-    TextView tv_comment;
-    @BindView(R.id.tv_history)
-    TextView tv_history;
-    @BindView(R.id.tv_fankui)
-    TextView tv_fankui;
-    @BindView(R.id.tv_shezhi)
-    TextView tv_shezhi;
-    @BindView(R.id.tv_fabu)
-    TextView tv_fabu;
-    @BindView(R.id.tv_caogao)
-    TextView tv_caogao;
-    @BindView(R.id.tv_dongtai)
-    TextView tv_dongtai;
-    @BindView(R.id.tv_group)
-    TextView tv_group;
-    @BindView(R.id.tv_my_wallet)
-    TextView tv_my_wallet;
-    @BindView(R.id.sex_Tv)
-    TextView sex_Tv;
+    @BindView(R.id.send_Mes)
+    TextView send_Mes;
+    @BindView(R.id.urlLabel_Lin)
+    LinearLayout urlLabel_Lin;
+    //    @BindView(R.id.sex_Tv)
+//    TextView sex_Tv;
+    @BindView(R.id.iv_bianji)
+    ImageView iv_bianji;
+    @BindView(R.id.share_Btn)
+    Button share_Btn;
+    @BindView(R.id.mToolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.appbar_Layout)
+    AppBarLayout appbar_Layout;
+    @BindView(R.id.textview10)
+    TextView textview10;
+    @BindView(R.id.textview11)
+    TextView textview11;
+    @BindView(R.id.top_Con)
+    ConstraintLayout top_Con;
+    @BindView(R.id.toolbar_Head_Img)
+    ImageView toolbar_Head_Img;
+    @BindView(R.id.toolbar_name_Tv)
+    TextView toolbar_name_Tv;
+    @BindView(R.id.setting_Btn)
+    Button setting_Btn;
+    @BindView(R.id.sex_Img)
+    ImageView sex_Img;
+
+    private String userID;
+
+    @Override
+    public void initImmersionBar() {
+        setStatusBar();
+    }
+
+    /**
+     * 设置状态栏
+     */
+    protected void setStatusBar() {
+        ImmersionBar.with(this)
+                .titleBar(mToolbar)
+                .statusBarDarkFont(false)
+                .init();
+    }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_mine;
+        return R.layout.activity_myandother_card;
     }
 
     @Override
-    protected void initView() {
-        refresh_layout.setColorSchemeColors(ContextCompat.getColor(mActivity, R.color.animal_color));
-        viewTouchDelegate.expandViewTouchDelegate(iv_qrcode, 50);
-        viewTouchDelegate.expandViewTouchDelegate(tv_follow_number, 50);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Tv, 50);
-        viewTouchDelegate.expandViewTouchDelegate(tv_fans_number, 50);
-        viewTouchDelegate.expandViewTouchDelegate(fans_Tv, 50);
+    protected void initLocalData() {
+        userID = PrefUtil.getUser().getId();
+    }
+
+    @Override
+    protected void initView(View mRootView) {
+        mTabLayout = mRootView.findViewById(R.id.card_Tab);
+        mViewPager = mRootView.findViewById(R.id.card_ViewPager);
+
+        TouchRegion touchRegion = new TouchRegion(top_Con);
+        touchRegion.expandViewTouchRegion(tv_follow_number, 50);
+        touchRegion.expandViewTouchRegion(tv_fans_number, 50);
+
+        touchRegion.expandViewTouchRegion(back_Btn, 100);
+        back_Btn.setVisibility(View.GONE);
+        initMenuData();
         tv_name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+        toolbar_name_Tv.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+        if (isMe()) {
+            iv_bianji.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
-    protected void initEvent() {
-        tv_my_wallet.setOnClickListener(this);
-        iv_qrcode.setOnClickListener(this);
-        refresh_layout.setOnRefreshListener(this);
-        tv_comment.setOnClickListener(this);
-        tv_history.setOnClickListener(this);
-        tv_fankui.setOnClickListener(this);
-        tv_shezhi.setOnClickListener(this);
-        tv_fabu.setOnClickListener(this);
-        tv_caogao.setOnClickListener(this);
-        tv_dongtai.setOnClickListener(this);
-        tv_group.setOnClickListener(this);
-        tv_follow_number.setOnClickListener(this);
-        follow_Tv.setOnClickListener(this);
-        tv_fans_number.setOnClickListener(this);
-        fans_Tv.setOnClickListener(this);
+    protected void getServerData() {
+        getMyGroup(userID, false);
+        getInterestData(userID, false);
     }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        getUserData();
+        getUserData(userID, true);
     }
+
+    @Override
+    protected void initEvent() {
+        super.initEvent();
+        back_Btn.setOnClickListener(this);
+        setting_Btn.setOnClickListener(this);
+        send_Mes.setOnClickListener(this);
+        share_Btn.setOnClickListener(this);
+        group_Con.setOnClickListener(this);
+        interest_Con.setOnClickListener(this);
+        follow_Tv.setOnClickListener(this);
+        editUser_Tv_.setOnClickListener(this);
+        tv_follow_number.setOnClickListener(this);
+        tv_fans_number.setOnClickListener(this);
+        iv_bianji.setOnClickListener(this);
+        textview10.setOnClickListener(this);
+        textview11.setOnClickListener(this);
+
+        appbar_Layout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            float percent = (float) Math.abs(verticalOffset) / (float) appBarLayout.getTotalScrollRange();
+            if (percent == 0) {
+                groupChange(1f, 1);
+            } else if (percent == 1) {
+                groupChange(1f, 2);
+            } else {
+                groupChange(percent, 0);
+            }
+        });
+
+        AppBarLayoutOverScrollViewBehavior myAppBarLayoutBehavoir = (AppBarLayoutOverScrollViewBehavior)
+                ((CoordinatorLayout.LayoutParams) appbar_Layout.getLayoutParams()).getBehavior();
+        myAppBarLayoutBehavoir.setOnProgressChangeListener(new AppBarLayoutOverScrollViewBehavior.onProgressChangeListener() {
+            @Override
+            public void onProgressChange(float progress, boolean isRelease) {
+                if (progress == 0 && isRelease) {//进度条回到0 并且已释放 刷新一次数据
+                    getUserData(userID, true);
+                    initMenuData();
+                }
+            }
+        });
+    }
+
+    private int lastState = 1;
+
+    /**
+     * @param alpha
+     * @param state 0-正在变化 1展开 2 关闭
+     */
+    public void groupChange(float alpha, int state) {
+        lastState = state;
+        mToolbar.setAlpha(1);//一直需要展示的状态
+        switch (state) {
+            case 1://完全展开 显示白色
+//                mToolbar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+                ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(false).init();//状态栏浅色字体
+                setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.white);
+                setTint(setting_Btn, R.mipmap.card_settings, R.color.white);
+//                mViewPager.setNoScroll(false);
+                toolbar_Head_Img.setVisibility(View.GONE);
+                toolbar_name_Tv.setVisibility(View.GONE);
+                break;
+            case 2://完全关闭 显示黑色
+                ImmersionBar.with(mActivity).titleBar(mToolbar).statusBarDarkFont(true).init();//状态栏深色字体
+                setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.text_color_6f6f6f);
+                setTint(setting_Btn, R.mipmap.card_settings, R.color.text_color_6f6f6f);
+                toolbar_Head_Img.setVisibility(View.VISIBLE);
+                toolbar_name_Tv.setVisibility(View.VISIBLE);
+//                mViewPager.setNoScroll(false);
+                break;
+            case 0://介于两种临界值之间 显示黑色
+                if (lastState != 0) {
+                    setTint(share_Btn, R.mipmap.person_zhaunfa, R.color.text_color_6f6f6f);
+                }
+                //为什么禁止滑动？在介于开关状态之间，不允许滑动，开启可能会导致不好的体验
+//                mViewPager.setNoScroll(true);
+                break;
+        }
+    }
+
+
+    /**
+     * 修改按钮背景色
+     *
+     * @param button
+     * @param drawable
+     * @param color
+     */
+    public void setTint(Button button, int drawable, int color) {
+        Drawable originalDrawable = ContextCompat.getDrawable(requireActivity(), drawable);
+        Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable).mutate();
+        DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(requireActivity(), color));
+        button.setBackground(wrappedDrawable);
+    }
+
+    @SuppressLint("WrongConstant")
+    private void initMenuData() {
+        if (fragments != null) {
+            fragments.clear();
+        }
+        if (menuList != null) {
+            menuList.clear();
+        }
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("动态");
+        if (isMe()) {
+            tabName.add("收藏");
+        }
+        tabName.add("档案");
+        for (int i = 0; i < tabName.size(); i++) {
+            AppMenuBean bean = new AppMenuBean();
+            bean.setName(tabName.get(i));
+            menuList.add(bean);
+        }
+        fragments.add(MyDynamic_Fragment.newInstance(userID));
+        if (isMe()) {
+            fragments.add(MyCollect_Fragment.newInstance(userID));
+        }
+        fragments.add(MyArchives_Fragment.newInstance(userID));
+
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
+        initChildViewPager(selectedTabPosition);
+    }
+
 
     UserBean userBean;
 
-    private void getUserData() {
+    private void getUserData(String userId, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
-        requestMap.put("userId", SharePref.user().getUserId());
+        requestMap.put("userId", userId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Info, "用户信息", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
-                if (refresh_layout.isRefreshing()) {
-                    refresh_layout.setRefreshing(false);
-                }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        PrefUtil.saveUser(userBean, "");
-                        GlideUtils.loadCircleImage(requireActivity(), iv_userHeader, userBean.getAvatar());
+                        iv_img.setTag("overScroll"); //BaseApplication中添加了ViewTarget
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.mycard_bg);
+                        GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
+                        GlideUtils.loadCircleImage(mActivity, toolbar_Head_Img, userBean.getAvatar());
                         tv_name.setText(userBean.getNickname());
-                        labelFlow(label_Lin, requireActivity(), userBean.getTagName());
+                        toolbar_name_Tv.setText(userBean.getNickname());
+                        labelFlow(label_Lin, mActivity, userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
-                        interestLabelFlow(interest_EditView.getLabel_Flow(), requireActivity(), userBean.getInterested());
-                        interestLabelFlow(good_EditView.getLabel_Flow(), requireActivity(), userBean.getDomain());
-                        interestLabelFlow(resources_EditView.getLabel_Flow(), requireActivity(), userBean.getResource());
-                        interestLabelFlow(learn_EditView.getLabel_Flow(), requireActivity(), userBean.getResearch());
-                        interestLabelFlow(harvest_EditView.getLabel_Flow(), requireActivity(), userBean.getGetResource());
+//
+//                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
+//                        brief_Tv.initWidth(width);
+//                        brief_Tv.setCloseText("基金经理简介：\n" + userBean.getDescription());
 
-                        originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
-                        originalValue(userBean.getSex(), "未知", "性别：", sex_Tv);
+                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
+                        originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
+                        originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
+                        originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
+
+                        String sex = userBean.getSex();
+                        if (TextUtils.equals(sex, "女")) {
+                            sex_Img.setBackgroundResource(R.mipmap.nv);
+                        } else {
+                            sex_Img.setBackgroundResource(R.mipmap.nan);
+                        }
+                        if (isMe()) {
+                            mesHomepage_Tv.setText("我的社交主页");
+                            editUser_Tv_.setVisibility(View.VISIBLE);
+                        } else {
+                            mesHomepage_Tv.setText("他的社交主页");
+                            isFollow(userBean.getFollow_status(), follow_Tv, send_Mes);
+                        }
+                        List<UserBean.ColumnDTO> column = userBean.getColumn();
+                        urlLabelFlow(urlLabel_Lin, mActivity, column);
                     }
                 }
             }
-        }, false);
+        }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
     }
+
+
+    private void getMyGroup(String userid, boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userid", userid + "");
+        requestMap.put("page", "1");
+        requestMap.put("limit", "1");
+        if (isMe()) {
+            requestMap.put("type", "4");
+        } else {
+            requestMap.put("type", "3");
+        }
+        HttpSender sender = new HttpSender(HttpUrl.My_SheQun_Pc, "我的社群—Pc", requestMap,
+                new MyOnHttpResListener() {
+                    @Override
+                    public void onComplete(String json_root, int code, String msg, String json_data) {
+                        if (code == Constants.REQUEST_SUCCESS_CODE) {
+                            myCardBean myCardBean = GsonUtil.getInstance().json2Bean(json_root, myCardBean.class);
+                            if (myCardBean != null) {
+                                String groupString = "";
+                                if (isMe()) {
+                                    groupString = "我的问答社群";
+                                } else {
+                                    groupString = "他的社群";
+                                }
+                                groupName_Tv.setText(groupString);
+                                String format = String.format("拥有%1$s个社群", myCardBean.getData().getCount());
+                                joinCount_Tv.setText(format);
+                                groupHeadFlow(joinHead_Lin, mActivity, myCardBean);
+                            }
+                        }
+                    }
+
+                }, isShow);
+
+        sender.setContext(mActivity);
+        sender.sendGet();
+    }
+
+    private void getInterestData(String id, boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("userid", id);
+        requestMap.put("page", "1");
+        requestMap.put("limit", "3");
+        HttpSender httpSender = new HttpSender(HttpUrl.Interest_My, "我的兴趣组", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                InterestList_Bean interestList_bean = new Gson().fromJson(json_data, InterestList_Bean.class);
+                if (interestList_bean != null) {
+                    String groupString = "";
+                    if (isMe()) {
+                        groupString = "我的兴趣组";
+                    } else {
+                        groupString = "他的兴趣组";
+                    }
+                    interestName_Tv.setText(groupString);
+                    String format = String.format("加入%1$s个兴趣组", interestList_bean.getCount());
+                    interestJoinCount_Tv.setText(format);
+                    InterestHeadFlow(interestHead_Lin, mActivity, interestList_bean);
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+    private void postFollowData(String otherUserId, TextView followView, View sendView) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("otherUserId", otherUserId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
+                    if (userBean != null) {
+                        Integer followStatus = followStateBena.getFollowStatus();
+                        userBean.setFollow_status(followStatus);
+                        isFollow(followStatus, follow_Tv, send_Mes);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 是否是我自己
+     *
+     * @return
+     */
+    private boolean isMe() {
+        String id = PrefUtil.getUser().getId();
+        if (TextUtils.equals(userID, id)) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * 加载完成后
+     * 解决-->Tablayout+viewpager 刷新数据后不能滑动问题
+     */
+    private void initAppBarStatus(AppBarLayout mAppBarLayout) {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior();
+        behavior.setDragCallback(new AppBarLayout.Behavior.DragCallback() {
+            @Override
+            public boolean canDrag(@NonNull AppBarLayout appBarLayout) {
+                return true;
+            }
+        });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_follow_number:
+            case R.id.textview10:
+                MyFollowActivity.actionStart(requireActivity(), userID);
+                break;
+            case R.id.tv_fans_number:
+            case R.id.textview11:
+                MyFansActivity.actionStart(requireActivity(), userID);
+                break;
+            case R.id.setting_Btn:
+                MySetting_Activity.actionStart(mActivity, userBean.getIsOriginator());
+                break;
+            case R.id.group_Con:
+                MyGroupList_Activity.actionStart(mActivity, userID);
+                break;
+            case R.id.interest_Con:
+                MyInterestList_Activity.actionStart(mActivity, userID);
+                break;
+            case R.id.follow_Tv:
+                String id = userBean.getId();
+                postFollowData(id, follow_Tv, send_Mes);
+                break;
+            case R.id.send_Mes:
+                if (userBean == null) {
+                    return;
+                }
+                ChatActivity.actionStart(mActivity, userBean.getId(), userBean.getNickname(), userBean.getAvatar());
+                break;
+            case R.id.editUser_Tv_:
+                MyAndOtherEdit_Card.actionStart(mActivity, userID);
+                break;
+            case R.id.iv_bianji:
+                if (isMe()) {
+                    String isOriginator = PrefUtil.getUser().getIsOriginator();
+                    MyCrateArticle_Avtivity.actionStart(mActivity, isOriginator);
+                }
+                break;
+            case R.id.share_Btn:
+                showShareDialog();
+                break;
+        }
+    }
+
+    private void showShareDialog() {
+        if (userBean != null) {
+            String imgUrl = userBean.getAvatar();
+            String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s", userBean.getId());
+            String title = String.format("分享 %1$s 的鹅先知主页", userBean.getNickname());
+            String content = String.format("%1$s粉丝 %2$s关注", userBean.getFansNum(), userBean.getFollowNum());
+            ShareDialog mShareDialog = new ShareDialog(requireActivity(), downURl, imgUrl, title, content, "分享");
+            mShareDialog.show();
+        }
+    }
+
 
     /**
      * 我的标签
@@ -193,6 +567,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         if (myFlow != null) {
             myFlow.removeAllViews();
         }
+//        tag ="基金,大v";
         if (TextUtils.isEmpty(tag)) {
             return;
         }
@@ -207,6 +582,7 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             itemParams.setMargins(0, 0, 0, 0);
             view.setLayoutParams(itemParams);
             TextView label_Name = view.findViewById(R.id.label_Name);
+
             StringUtil.setColor(mContext, i, label_Name);
             label_Name.setText(tagS[i]);
             label_Name.setTag(i);
@@ -215,21 +591,47 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     /**
-     * 我的兴趣
+     * 我的社群
+     *
+     * @param myFlow
+     * @param mContext
      */
-    public void interestLabelFlow(FlowLayout myFlow, Context mContext, String tag) {
+    public void groupHeadFlow(LinearLayout myFlow, Context mContext, myCardBean interestList_bean) {
         if (myFlow != null) {
             myFlow.removeAllViews();
         }
-        if (TextUtils.isEmpty(tag)) {
-            return;
+        int length = interestList_bean.getData().getList().size();
+        for (int i = 0; i < length; i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.interest_head, null);
+            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            itemParams.setMargins(0, 0, 0, 0);
+            view.setLayoutParams(itemParams);
+            ImageView head_Img = view.findViewById(R.id.head_Img);
+            String groupImage = interestList_bean.getData().getList().get(i).getShequnImage();
+            GlideUtils.loadRoundImage(mContext, head_Img, groupImage, 5);
+            myFlow.addView(view);
         }
-        String[] tagS = tag.split(",");
-        for (String s : tagS) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.group_label, null);
-            TextView label_Name = view.findViewById(R.id.label_Name);
-            StringUtil.changeShapColor(label_Name, ContextCompat.getColor(mContext, com.xunda.lib.common.R.color.lable_color_1F8FE5));
-            label_Name.setText(s);
+    }
+
+    /**
+     * 我的兴趣组
+     *
+     * @param myFlow
+     * @param mContext
+     */
+    public void InterestHeadFlow(LinearLayout myFlow, Context mContext, InterestList_Bean interestList_bean) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        int length = interestList_bean.getList().size();
+        for (int i = 0; i < length; i++) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.interest_head, null);
+            LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            itemParams.setMargins(0, 0, 0, 0);
+            view.setLayoutParams(itemParams);
+            ImageView head_Img = view.findViewById(R.id.head_Img);
+            String groupImage = interestList_bean.getList().get(i).getGroupImage();
+            GlideUtils.loadRoundImage(mContext, head_Img, groupImage, 5);
             myFlow.addView(view);
         }
     }
@@ -248,57 +650,72 @@ public class MineFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         }
     }
 
-    @Override
-    public void onRefresh() {
-        getUserData();
+    /**
+     * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
+     * @param follow_Tv
+     * @param send_Mes
+     */
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+        String s = String.valueOf(follow_status);
+        if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "1")) {
+            follow_Tv.setVisibility(View.GONE);
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "2")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("已关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "4")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("互相关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_6f6f6f));
+            changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.VISIBLE);
+        }
     }
 
-    @Override
-    public void onClick(View v) {
-        String id = SharePref.user().getUserId();
-        switch (v.getId()) {
-            case R.id.tv_follow_number:
-            case R.id.follow_Tv:
-                MyFollowActivity.actionStart(requireActivity(),id);
-                break;
-            case R.id.tv_fans_number:
-            case R.id.fans_Tv:
-                MyFansActivity.actionStart(requireActivity(),id);
-                break;
-            case R.id.tv_my_wallet:
-                skipAnotherActivity(MyWallet_Activity.class);
-                break;
+    /**
+     * 我的专栏
+     */
+    public void urlLabelFlow(LinearLayout myFlow, Context mContext, List<UserBean.ColumnDTO> urlList) {
+        if (myFlow != null) {
+            myFlow.removeAllViews();
+        }
+        if (ListUtils.isEmpty(urlList)) {
+            return;
+        }
+        int index = 0;
+        for (UserBean.ColumnDTO columnDTO : urlList) {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.user_page, null);
+            TextView name_Tv = view.findViewById(R.id.name_Tv);
+            TextView contentUrl_Tv = view.findViewById(R.id.contentUrl_Tv);
+            name_Tv.setText(columnDTO.getColumnName());
+            contentUrl_Tv.setText(columnDTO.getColumnUrl());
+            contentUrl_Tv.setTag(index);
+            myFlow.addView(view);
+            index++;
 
-            case R.id.iv_qrcode:
-                MyAndOther_Card.actionStart(mActivity, id);
-                break;
-            case R.id.tv_comment:
-                skipAnotherActivity(MyComment_Activity.class);
-                break;
-            case R.id.tv_history:
-                skipAnotherActivity(MyHistory_Activity.class);
-                break;
-            case R.id.tv_fankui:
-                skipAnotherActivity(MyFeedBack_Activity.class);
-                break;
-            case R.id.tv_shezhi:
-                skipAnotherActivity(MySet_Activity.class);
-                break;
-            case R.id.tv_fabu:
-                if (userBean != null) {
-                    String isOriginator = userBean.getIsOriginator();
-                    MyCrateArticle_Avtivity.actionStart(mActivity, isOriginator);
-                }
-                break;
-            case R.id.tv_caogao:
-                skipAnotherActivity(MyDrafts_Activity.class);
-                break;
-            case R.id.tv_dongtai:
-                skipAnotherActivity(MyDynamic_Activity.class);
-                break;
-            case R.id.tv_group:
-                MyGroupList_Activity.actionStart(mActivity, id);
-                break;
+            contentUrl_Tv.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                String columnName = urlList.get(tag).getColumnName();
+                String columnUrl = urlList.get(tag).getColumnUrl();
+                jumpToWebView(columnName, columnUrl);
+            });
+
+            contentUrl_Tv.setOnLongClickListener(v -> {
+                int tag = (int) v.getTag();
+                String columnUrl = urlList.get(tag).getColumnUrl();
+                StringUtil.copy(columnUrl, mContext);
+                T.s("已复制到剪切板", 2000);
+                return true;
+            });
         }
     }
 

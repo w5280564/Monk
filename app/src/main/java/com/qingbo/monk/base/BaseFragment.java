@@ -13,19 +13,20 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.gyf.barlibrary.SimpleImmersionFragment;
+import com.qingbo.monk.HttpSender;
+import com.qingbo.monk.R;
 import com.qingbo.monk.webview.WebviewActivity;
 import com.xunda.lib.common.common.Constants;
-import com.qingbo.monk.HttpSender;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.ToastDialog;
-import com.qingbo.monk.R;
-import com.gyf.barlibrary.SimpleImmersionFragment;
 import com.xunda.lib.common.view.CountDownTextView;
 
 import org.greenrobot.eventbus.EventBus;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         //请求服务端接口数据
         getServerData();
         return mRootView;
-
     }
 
 
@@ -111,10 +111,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
 
     }
 
-
-
-
-
     /**
      * 注册EventBus
      */
@@ -123,7 +119,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
             EventBus.getDefault().register(this);
         }
     }
-
 
     @Override
     public void onDestroyView() {
@@ -135,11 +130,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         }
     }
 
-
-
-
-
-
     /**
      * 功能描述:简单地Activity的跳转(不携带任何数据)
      */
@@ -147,16 +137,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         Intent intent = new Intent(mActivity, targetActivity);
         startActivity(intent);
     }
-
-
-
-
-
-
-
-
-
-
 
     /**
      * 跳转到默认H5展示页面
@@ -168,10 +148,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         startActivity(intent);
     }
 
-
-
-
-
     protected void showCommonToastDialog(String description) {
         ToastDialog mDialog = new ToastDialog(mActivity, getString(R.string.toast_warm_prompt), description, getString(R.string.Sure), new ToastDialog.DialogConfirmListener() {
             @Override
@@ -181,8 +157,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         });
         mDialog.show();
     }
-
-
 
     /**
      * 跳转到查看图片页
@@ -198,7 +172,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         mActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-
     /**
      * 跳转到查看图片页(单张图片)
      *
@@ -211,7 +184,6 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         startActivity(intent);
         mActivity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
-
 
     protected View addEmptyView(String text, int imgResource) {
         View emptyView = LayoutInflater.from(mActivity).inflate(R.layout.empty_view_layout, null);
@@ -233,13 +205,9 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         return emptyView;
     }
 
-
-
     @Override
     public void initImmersionBar() {
-
     }
-
 
     /**
      * 获取验证码
@@ -263,6 +231,7 @@ public abstract class BaseFragment extends SimpleImmersionFragment{
         sender.setContext(mActivity);
         sender.sendGet();
     }
+
 
 
 

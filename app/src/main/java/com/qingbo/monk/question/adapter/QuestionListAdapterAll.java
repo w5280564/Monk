@@ -2,7 +2,6 @@ package com.qingbo.monk.question.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,6 +118,7 @@ public class QuestionListAdapterAll extends BaseQuickAdapter<QuestionBean, BaseV
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
     /**

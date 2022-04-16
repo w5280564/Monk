@@ -28,7 +28,6 @@ import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FriendContactBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
-import com.qingbo.monk.message.activity.ContactListActivity;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.fileprovider.FileProvider7;
@@ -43,7 +42,6 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,7 +71,6 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     @BindView(R.id.at_Img)
     ImageView at_Img;
 
-
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
@@ -82,7 +79,6 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     private String submitRequestUrl, shequn_id;
     private boolean isEdit;
     private String isOriginator;
-
 
     public static void actionStart(Context context, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, MyCrateArticle_Avtivity.class);
@@ -435,8 +431,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         switch (v.getId()) {
             case R.id.tv_next:
                 getPramsValue();
-                if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-                    T.ss("标题、内容、图片必须填写一项");
+                if (StringUtil.isBlank(mContent)) {
+                    T.ss("内容必须填写");
                     return;
                 }
                 createOrEditSaveQuestion("0");

@@ -128,6 +128,7 @@ public class QuestionListAdapterMy extends BaseQuickAdapter<OwnPublishBean, Base
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
         helper.addOnClickListener(R.id.group_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
 

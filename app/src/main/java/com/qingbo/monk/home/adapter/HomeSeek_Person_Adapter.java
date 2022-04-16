@@ -19,7 +19,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.bean.HomeSeekPerson_Bean;
-import com.qingbo.monk.bean.HomeSeekUser_Bean;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 

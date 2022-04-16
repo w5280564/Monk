@@ -262,8 +262,8 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     public void onRightClick() {
         getPramsValue();
 
-        if (StringUtil.isBlank(mTitle) && StringUtil.isBlank(mContent) && StringUtil.isBlank(images)) {
-            T.ss("标题、内容、图片必须填写一项");
+        if (StringUtil.isBlank(mContent)) {
+            T.ss("内容必须填写");
             return;
         }
 

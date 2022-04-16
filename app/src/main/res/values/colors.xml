@@ -114,9 +114,15 @@
     <color name="lable_color_76AD45">#1a76AD45</color>
     <color name="lable_color_7622BD">#1a7622BD</color>
 
+    <color name="lable_color_80ff801f">#80ff801f</color>
+    <color name="lable_color_801F8FE5">#801F8FE5</color>
+    <color name="lable_color_8076AD45">#8076AD45</color>
+    <color name="lable_color_807622BD">#807622BD</color>
+
 
     <color name="text_color_EFEFEF">#EFEFEF</color>
     <color name="text_color_FC0000">#FC0000</color>
     <color name="text_color_ff5f2e">#FF5F2E</color>
     <color name="text_color_617C97">#617C97</color>
+    <color name="text_color_EFB46E">#EFB46E </color>
 </resources>

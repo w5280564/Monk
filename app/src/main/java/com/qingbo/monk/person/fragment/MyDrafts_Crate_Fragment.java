@@ -16,7 +16,6 @@ import com.qingbo.monk.bean.MyDraftsList_Bean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.adapter.MyDraftsAdapter;
-import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
