@@ -69,4 +69,12 @@ public class ArticleCommentBean implements Serializable {
         private String del;
 
     }
+
+    @SerializedName("images")
+    private String images;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("content")
+    private String content;
+
 }

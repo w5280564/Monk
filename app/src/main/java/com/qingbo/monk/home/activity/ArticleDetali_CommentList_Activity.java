@@ -22,11 +22,14 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
+import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
+import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
@@ -38,7 +41,6 @@ import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.MyEditPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.Serializable;
@@ -66,17 +68,22 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
     private boolean haveEditMes = false;
 
     boolean isTopComment = false;//回复头部评论，或者列表评论 true是回复列表
+    private boolean isStockOrFund;
+    private boolean isGroup;
 
     /**
      * @param context
      */
-    public static void startActivity(Context context, ArticleCommentBean item, String articleId, String type) {
+    public static void startActivity(Context context, ArticleCommentBean item, String articleId, String type, boolean isStockOrFund, boolean isGroup) {
         Intent intent = new Intent(context, ArticleDetali_CommentList_Activity.class);
         intent.putExtra("item", (Serializable) item);
         intent.putExtra("articleId", articleId);
         intent.putExtra("type", type);
+        intent.putExtra("isStockOrFund", isStockOrFund);
+        intent.putExtra("isGroup", isGroup);
         context.startActivity(intent);
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -88,6 +95,8 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         item = (ArticleCommentBean) getIntent().getSerializableExtra("item");
         articleId = getIntent().getStringExtra("articleId");
         type = getIntent().getStringExtra("type");
+        isStockOrFund = getIntent().getBooleanExtra("isStockOrFund", false);
+        isGroup = getIntent().getBooleanExtra("isGroup", false);
     }
 
     @Override
@@ -120,6 +129,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         if (item != null) {
             getListData(true, item.getId());
         }
+        getUserDetail(false);
     }
 
     CommentListBean commentListBean;
@@ -161,7 +171,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
                 CommentBean item = (CommentBean) adapter.getItem(position);
-                editAndDelMesParent(view, item);
+                editAndDelMesParent(view, item, position);
                 return false;
             }
         });
@@ -265,7 +275,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
 
     private void addHeadView() {
         LinearLayout headerLayout = mAdapter.getHeaderLayout();
-        if (headerLayout != null){
+        if (headerLayout != null) {
             headerLayout.removeAllViews();
         }
         View myView = LayoutInflater.from(this).inflate(R.layout.commentlist_top, null);
@@ -400,17 +410,29 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
      * @param view
      * @param item
      */
-    private void editAndDelMesParent(View view, CommentBean item) {
+    private void editAndDelMesParent(View view, CommentBean item, int position) {
         String del = item.getDel();
         String edit = item.getEdit();
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+
+        boolean haveForWard = true;
+        if (isGroup) {
+            haveForWard = false;
+        }
         if (isAll) {
-            showPopMenu(view, item, true, true);
+            showPopMenu(view, item, position, haveForWard, true, true, true);
+        } else if (isDel) {
+            showPopMenu(view, item, position, haveForWard, false, true, true);
+        } else {
+            if (isGroup) {
+                return;
+            }
+            showPopMenu(view, item, position, haveForWard, false, false, true);
         }
-        if (isDel) {
-            showPopMenu(view, item, false, true);
-        }
+
+
+
     }
 
     /**
@@ -421,8 +443,31 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
      * @param haveEdit
      * @param parentOrChildren true是一级评论 false 是子评论
      */
-    private void showPopMenu(View more_Img, CommentBean data, boolean haveEdit, boolean parentOrChildren) {
-        MyEditPopWindow morePopWindow = new MyEditPopWindow(mActivity, haveEdit, new MyEditPopWindow.OnPopWindowClickListener() {
+    private void showPopMenu(View more_Img, CommentBean data, int position, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
+
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity,haveForWard, haveEdit, haveDele);
+        mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
+            @Override
+            public void onClickForWard() {
+                boolean forWard = isForWard(parentOrChildren, data);
+                if (forWard){
+                    return;
+                }
+                if (homeFoucsDetail_bean != null) {
+                    HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
+                    if (item != null) {
+                        //多张图片
+                        if (!TextUtils.isEmpty(detailData.getImages())) {
+                            commentListBean.setImages(detailData.getImages());
+                        }
+                        commentListBean.setTitle(detailData.getTitle());
+                        commentListBean.setContent(detailData.getContent());
+
+                    }
+                }
+                Article_Forward.startActivity(mActivity, articleId, commentListBean, parentOrChildren, position, isStockOrFund);
+            }
+
             @Override
             public void onClickEdit() {
                 editMes(data, parentOrChildren);
@@ -439,9 +484,8 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                 }
                 showDeleteDialog(id);
             }
-
         });
-        morePopWindow.showPopupWindow(more_Img);
+        mesMore_dialog.show();
     }
 
 
@@ -482,6 +526,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         haveEditMes = true;
         commentId = id;
     }
+
 
     /**
      * 修改评论
@@ -568,5 +613,47 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         String format = String.format("回复：%1$s", s);
         view.setHint(format);
     }
+
+    public HomeFoucsDetail_Bean homeFoucsDetail_bean;
+
+    private void getUserDetail(boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId);
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
+                    if (homeFoucsDetail_bean != null) {
+                        HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
+                    }
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
+    }
+
+    /**
+     * 自己不能转发
+     * @param parentOrChildren
+     * @param data
+     */
+    private boolean isForWard(boolean parentOrChildren, CommentBean data) {
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            CommentBean commentData = commentListBean.getCommentData();
+            authorId = commentData.getAuthorId();
+        }
+        if (IsMe.isMy(authorId)) {
+            T.s("不能转发自己评论", 3000);
+            return true;
+        }
+        return false;
+    }
+
 
 }

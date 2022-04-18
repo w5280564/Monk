@@ -34,19 +34,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
-import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
@@ -65,8 +60,6 @@ import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.ShareArticle_Dialog;
-import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
 
 import java.util.ArrayList;
@@ -155,7 +148,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     boolean isExpanded = false; //是否展开
     private boolean isExpert;
     private boolean isInformation;
-    private boolean isStockOrFund;
+    public boolean isStockOrFund;
 
     /**
      * @param context
@@ -444,7 +437,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }
         String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
         String type = homeFoucsDetail_bean.getData().getDetail().getType();
-        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type));
+        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type,isStockOrFund));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -469,7 +462,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
-    HomeFoucsDetail_Bean homeFoucsDetail_bean;
+   public HomeFoucsDetail_Bean homeFoucsDetail_bean;
 
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -905,26 +898,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void isChangeFold() {
         if (TextUtils.equals(isShowTop, "1")) {
             appLayout.setExpanded(false);
-        }
-    }
-
-
-    /**
-     * 判断AppBarLayout         伸展状态
-     *
-     * @param scrollRange    滚动范围，根据屏幕大小的滚动范围决定，比如最终值为300\494
-     * @param verticalOffset 垂直偏移量
-     * @return true 展开状态； false 收缩状态
-     */
-    public static boolean isExpanded(int scrollRange, int verticalOffset) {
-        if (verticalOffset == 0) {
-            //展开状态
-            return true;
-        } else if (scrollRange >= verticalOffset) {
-            //收缩状态
-            return false;
-        } else {
-            return true;
         }
     }
 

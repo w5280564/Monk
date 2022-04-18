@@ -158,6 +158,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     protected void initView() {
         viewTouchDelegate.expandViewTouchDelegate(at_Img, 50);
         apply();
+
+//        et_content.setText("\t");
         //接收at人的实体类
         LiveDataBus.get().with(MyConstant.FRIEND_DATA, FriendContactBean.class).observe(this, new Observer<FriendContactBean>() {
             @Override

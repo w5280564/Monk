@@ -3,6 +3,8 @@ package com.qingbo.monk.bean;
 import com.google.gson.annotations.SerializedName;
 import com.xunda.lib.common.bean.BaseSplitIndexBean;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommentListBean extends BaseSplitIndexBean<CommentBean> {
+public class CommentListBean extends BaseSplitIndexBean<CommentBean> implements Serializable {
     @SerializedName("commentData")
     private CommentBean commentData;
 //    @NoArgsConstructor
@@ -43,5 +45,11 @@ public class CommentListBean extends BaseSplitIndexBean<CommentBean> {
 //
 //    }
 
+    @SerializedName("images")
+    private String images;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("content")
+    private String content;
 
 }

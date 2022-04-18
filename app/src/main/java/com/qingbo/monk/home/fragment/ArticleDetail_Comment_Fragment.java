@@ -1,6 +1,7 @@
 package com.qingbo.monk.home.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,30 +19,27 @@ import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
-import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
+import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
-import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
+import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.question.activity.PublisherQuestionActivity;
+import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.MyEditPopWindow;
-import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
-import com.xunda.lib.common.view.CustomLoadMoreView;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * 文章详情-评论
@@ -53,11 +51,41 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     //    private TextView release_Tv;
     private boolean haveEditMes = false;
     private String commentId;
+    boolean isStockOrFund;
+    private boolean isGroup;
 
     public static ArticleDetail_Comment_Fragment newInstance(String articleId, String type) {
         Bundle args = new Bundle();
         args.putString("articleId", articleId);
         args.putString("type", type);
+        ArticleDetail_Comment_Fragment fragment = new ArticleDetail_Comment_Fragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ArticleDetail_Comment_Fragment newInstance(String articleId, String type, boolean isStockOrFund) {
+        Bundle args = new Bundle();
+        args.putString("articleId", articleId);
+        args.putString("type", type);
+        args.putBoolean("isStockOrFund", isStockOrFund);
+        ArticleDetail_Comment_Fragment fragment = new ArticleDetail_Comment_Fragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    /**
+     * @param articleId
+     * @param type
+     * @param isStockOrFund
+     * @param isGroup       是否是社群 社群不能转发评论
+     * @return
+     */
+    public static ArticleDetail_Comment_Fragment newInstance(String articleId, String type, boolean isStockOrFund, boolean isGroup) {
+        Bundle args = new Bundle();
+        args.putString("articleId", articleId);
+        args.putString("type", type);
+        args.putBoolean("isStockOrFund", isStockOrFund);
+        args.putBoolean("isGroup", isGroup);
         ArticleDetail_Comment_Fragment fragment = new ArticleDetail_Comment_Fragment();
         fragment.setArguments(args);
         return fragment;
@@ -84,6 +112,8 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     protected void initLocalData() {
         articleId = getArguments().getString("articleId");
         type = getArguments().getString("type");
+        isStockOrFund = getArguments().getBoolean("isStockOrFund", false);
+        isGroup = getArguments().getBoolean("isGroup", false);
     }
 
 
@@ -91,6 +121,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     protected void loadData() {
         mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
+        getUserDetail(false);
     }
 
     ArticleCommentListBean articleCommentListBean;
@@ -138,7 +169,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new ArticleComment_Adapter(articleId, type);
+        mAdapter = new ArticleComment_Adapter(articleId, type, isStockOrFund,isGroup);
 //        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -171,12 +202,21 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         String edit = item.getEdit();
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+        boolean haveForWard = true;
+        if (isGroup) {
+            haveForWard = false;
+        }
         if (isAll) {
-            showPopMenu(view, item, pos, true, true);
+            showPopMenu(view, item, pos, haveForWard, true, true, true);
+        } else if (isDel) {
+            showPopMenu(view, item, pos, haveForWard, false, true, true);
+        } else {
+            if (isGroup) {
+                return;
+            }
+            showPopMenu(view, item, pos, haveForWard, false, false, true);
         }
-        if (isDel) {
-            showPopMenu(view, item, pos, false, true);
-        }
+
     }
 
 
@@ -192,12 +232,22 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         String edit = item.getChildrens().get(pos).getEdit();
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+        boolean haveForWard = true;
+        if (isGroup) {
+            haveForWard = false;
+        }
         if (isAll) {
-            showPopMenu(view, item, pos, true, false);
+            showPopMenu(view, item, pos, haveForWard, true, true, false);
+        } else if (isDel) {
+            showPopMenu(view, item, pos, haveForWard, false, true, false);
+        } else {
+            if (isGroup) {
+                return;
+            }
+            showPopMenu(view, item, pos, haveForWard, false, false, false);
         }
-        if (isDel) {
-            showPopMenu(view, item, pos, false, false);
-        }
+
+
     }
 
 
@@ -216,13 +266,18 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type);
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type, isStockOrFund,isGroup);
                     break;
                 case R.id.mes_Img:
                     String authorId = item.getAuthorId();
-                    boolean my = ((ArticleDetail_Activity) requireActivity()).isMy(authorId);
+                    boolean my = IsMe.isMy(authorId);
                     if (!my) {
-                        ((ArticleDetail_Activity) requireActivity()).showInput(sendComment_Et, true);
+                        if (requireActivity() instanceof ArticleDetail_Activity) {
+                            showActicleActivity();
+                        }
+                        if (requireActivity() instanceof GroupTopicDetailActivity) {
+                            showGroupActivity();
+                        }
                         setHint(item, sendComment_Et);
                         haveEditMes = false;
                     }
@@ -238,6 +293,18 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             }
         });
     }
+
+//    /**
+//     * 点击弹出键盘
+//     *
+//     * @param editView
+//     * @param editView 是否回复评论  true是对评论回复
+//     */
+//    public void showInput(View editView, boolean isReply) {
+//        InputMethodManager inputMethodManager = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+//        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//        editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
+//    }
 
     /**
      * 回复谁的评论
@@ -273,7 +340,6 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                 break;
         }
     }
-
 
     private void postLikedData(String likeId, int position) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -353,8 +419,28 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
      * @param haveEdit
      * @param parentOrChildren true是一级评论 false 是子评论
      */
-    private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveEdit, boolean parentOrChildren) {
-        MyEditPopWindow morePopWindow = new MyEditPopWindow(mActivity, haveEdit, new MyEditPopWindow.OnPopWindowClickListener() {
+    private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele);
+        mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
+            @Override
+            public void onClickForWard() {
+                boolean forWard = isForWard(parentOrChildren, data, position);
+                if (forWard) {
+                    return;
+                }
+
+                if (homeFoucsDetail_bean != null) {
+                    HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
+                    //多张图片
+                    if (!TextUtils.isEmpty(detail.getImages())) {
+                        data.setImages(detail.getImages());
+                    }
+                    data.setTitle(detail.getTitle());
+                    data.setContent(detail.getContent());
+                }
+                Article_Forward.startActivity(mActivity, articleId, data, parentOrChildren, position, isStockOrFund);
+            }
+
             @Override
             public void onClickEdit() {
                 editMes(data, position, parentOrChildren);
@@ -364,15 +450,14 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             public void onClickDelete() {
                 String id = "";
                 if (parentOrChildren) {
-                   id =  data.getId();
-                }else {
+                    id = data.getId();
+                } else {
                     id = data.getChildrens().get(position).getCommentId();
                 }
                 showDeleteDialog(id, position);
             }
-
         });
-        morePopWindow.showPopupWindow(more_Img);
+        mesMore_dialog.show();
     }
 
 
@@ -395,7 +480,6 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
 
     private void editMes(ArticleCommentBean data, int pos, boolean parentOrChildren) {
-        ((ArticleDetail_Activity) requireActivity()).showInput(sendComment_Et, true);//弹出键盘
         String id = "";
         String comment;
         int length;
@@ -411,6 +495,26 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         sendComment_Et.setSelection(length);
         haveEditMes = true;
         commentId = id;
+    }
+
+    /**
+     * 文章详情 弹出键盘
+     */
+    private void showActicleActivity() {
+        ArticleDetail_Activity articleDetail_activity = (ArticleDetail_Activity) requireActivity();
+        if (articleDetail_activity != null) {
+            articleDetail_activity.showInput(sendComment_Et, true);
+        }
+    }
+
+    /**
+     * 群详情 弹出键盘
+     */
+    private void showGroupActivity() {
+        GroupTopicDetailActivity groupTopicDetailActivity = (GroupTopicDetailActivity) requireActivity();
+        if (groupTopicDetailActivity != null) {
+            groupTopicDetailActivity.showInput(sendComment_Et, true);
+        }
     }
 
     /**
@@ -439,6 +543,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
     /**
      * 删除评论
+     *
      * @param id
      */
     private void delMesData(String id) {
@@ -456,6 +561,47 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 自己不能转发
+     *
+     * @param parentOrChildren
+     * @param data
+     */
+    private boolean isForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            authorId = data.getChildrens().get(position).getAuthorId();
+        }
+        if (IsMe.isMy(authorId)) {
+            T.s("不能转发自己评论", 3000);
+            return true;
+        }
+        return false;
+    }
+
+    public HomeFoucsDetail_Bean homeFoucsDetail_bean;
+
+    private void getUserDetail(boolean isShow) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId);
+        HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
+                    if (homeFoucsDetail_bean != null) {
+                        HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
+                    }
+                }
+            }
+        }, isShow);
+        httpSender.setContext(mActivity);
+        httpSender.sendGet();
     }
 
 

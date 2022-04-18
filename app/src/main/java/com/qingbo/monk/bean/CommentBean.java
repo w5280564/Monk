@@ -2,14 +2,14 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.io.Serializable;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class CommentBean {
+public class CommentBean implements Serializable {
 
         @SerializedName("id")
         private String id;
@@ -39,5 +39,6 @@ public class CommentBean {
         private String edit;
         @SerializedName("del")
         private String del;
+
 
 }

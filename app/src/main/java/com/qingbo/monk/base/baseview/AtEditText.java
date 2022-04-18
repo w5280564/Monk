@@ -15,7 +15,6 @@ import android.widget.EditText;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.qingbo.monk.R;
-import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,18 +78,21 @@ public class AtEditText extends AppCompatEditText {
      * @param parm 最多传4个 ,分别对应 id,name,parm1,parm2
      */
     public void addAtContent(String... parm) {
-        atList.add(new Entity(parm[0], parm[1], parm[2]));
+        atList.add(0, new Entity(parm[0], parm[1], parm[2]));
         // 光标位置之前的字符是否是 @ , 如果不是 加上一个@
         int selectionStart = getSelectionStart();
 //        int selectionStart = 0;
-        // 获取当前内容
-        String sss = Objects.requireNonNull(getText()).toString();
+        // 获取当前内容 添加一条空格
+        String sss = " " + Objects.requireNonNull(getText());
         // 获取光标前以为字符
         String s = selectionStart != 0 ? sss.toCharArray()[selectionStart - 1] + "" : "";
         // 将内容插入 , 改变文字颜色
-        setText(changeTextColor(sss.substring(0, selectionStart) + (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(selectionStart, sss.length()))); //字符串替换，删掉符合条件的字符串
+//        setText(changeTextColor(sss.substring(0, selectionStart) + (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(selectionStart, sss.length()))); //字符串替换，删掉符合条件的字符串
+        String s1 = (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(0, selectionStart) + sss.substring(selectionStart);
+        setText(changeTextColor(s1)); //字符串替换，删掉符合条件的字符串
         // 设置光标位置
-        setSelection((sss.substring(0, selectionStart) + (!s.equals("@") ? "@" : "") + parm[1]).length());
+        int length = s1.length();
+        setSelection(length);
     }
 
     /**

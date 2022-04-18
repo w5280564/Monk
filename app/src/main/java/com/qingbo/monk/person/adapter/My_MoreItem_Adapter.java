@@ -17,6 +17,7 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
     public static final int TYPE_MY = 1;
     public static final int TYPE_ARTICLE = 2;
     public static final int TYPE_INFORMATION = 3;
+    public static final int TYPE_FORWARD = 4;
 
     public My_MoreItem_Adapter(List<MyDynamic_MoreItem_Bean> data) {
         super(data);
@@ -30,10 +31,12 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
             String isReprint = entity.getIsReprint();//0-原创 1-转发
             if (isReprint.equals("1")) {
                 String reprintType = entity.getReprintType();
-                if (reprintType.equals("0")) { //0-文章 1-资讯
+                if (reprintType.equals("0")) { //0-文章 1-资讯 2-转发评论 3-是仓位组合
                     return TYPE_ARTICLE;
-                } else {
+                } else if (reprintType.equals("1")) {
                     return TYPE_INFORMATION;
+                }else if (reprintType.equals("2")) {
+                    return TYPE_FORWARD;
                 }
             } else {
                 return TYPE_MY;
@@ -47,6 +50,7 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Adapter());
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Article());
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Information());
+        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
     }
 
 

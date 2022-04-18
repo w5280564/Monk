@@ -362,14 +362,10 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
     private void setDrawableLeft(int mipmap,TextView status) {
-        Drawable drawableLeft = mContext.getResources().getDrawable(
-                mipmap);
+        Drawable drawableLeft = mContext.getResources().getDrawable( mipmap);
         status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }
-
-
-
 
 
     @Override
@@ -524,7 +520,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
         }
-        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type));
+        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type,false,true));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -714,7 +710,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
                 center_Tv.setVisibility(View.VISIBLE);
                 titleFollow_Tv.setVisibility(View.GONE);
                 titleSend_Mes.setVisibility(View.GONE);
-                titleSeek_Img.setVisibility(View.VISIBLE);
+                titleSeek_Img.setVisibility(View.GONE);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
                 isExpanded = false;

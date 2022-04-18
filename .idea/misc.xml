@@ -128,6 +128,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/wallet_detailed_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/actiivty_preview_group_detail.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_article_detali_comment_list.xml" value="0.33" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_article_forward.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_ask_question_to_people.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_choose_theme.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_edit_changadd.xml" value="0.35052083333333334" />
@@ -172,6 +173,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_two.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/itme_one.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/layout_more.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mes_more.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myandother_edit_card.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/mycrate_articleat_seek.xml" value="0.3359375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/myinterest_label.xml" value="0.75" />
