@@ -64,7 +64,7 @@ public class StartPDF_Activity extends BaseActivity {
         pdfView.setOffscreenPageLimit(2);// 设置当前显示页的前后缓存个数，效果类似 ViewPager 的这个属性
         pdfView.isCanZoom(true);// 是否支持缩放
         pdfView.setMaxScale(10f); // 设置最大缩放倍数,最大支持20倍
-        pdfView.setWatermark(R.mipmap.app_logo);// 添加水印
+//        pdfView.setWatermark(R.mipmap.app_logo);// 添加水印
         // 设置当前页变化的回调监听
         pdfView.setOnPageChangedListener(new PDFView.OnPageChangedListener() {
             @Override
