@@ -131,6 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_43"
                         app:arrowItemAvatarHeight="@dimen/dp_12"
+                        android:visibility="gone"
                         app:arrowItemAvatarSrc="@mipmap/neiburen"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="内部人"

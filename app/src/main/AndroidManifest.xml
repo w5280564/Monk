@@ -82,6 +82,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme,allowBackup">
         <activity
+            android:name=".home.activity.StartPDF_Activity"
+            android:exported="false" />
+        <activity
             android:name=".home.activity.Article_Forward"
             android:exported="false" />
         <activity

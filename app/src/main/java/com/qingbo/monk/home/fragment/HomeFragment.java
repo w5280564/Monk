@@ -396,7 +396,7 @@ public class HomeFragment extends BaseTabLayoutFragment implements View.OnClickL
         fragments.add(HomeCommendFragment.newInstance(titleType));
 //        tabFragmentList.add(HomeFocus_Fragment.newInstance(titleType));
         fragments.add(SideslipMogul_Fragment.newInstance(""));
-        fragments.add(HomeInsider_Fragment.newInstance("1"));
+        fragments.add(HomeInsiderAll_Fragment.newInstance("1"));
         fragments.add(HomeCombination_Fragment.newInstance(titleType));
         setTabTextSize(16,14);
         initChildViewPager(1);

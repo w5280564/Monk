@@ -156,6 +156,7 @@ public class PersonDetail_Fragment extends BaseFragment implements View.OnClickL
         requestMap.put("nickname", nickname);//孙伟
         requestMap.put("id", id);//868
         requestMap.put("stock", stockCode);//"513060"
+        requestMap.put("client", "2");
         HttpSender httpSender = new HttpSender(HttpUrl.Fund_Postion, "人物持仓", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

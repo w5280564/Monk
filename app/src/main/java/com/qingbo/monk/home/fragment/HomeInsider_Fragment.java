@@ -16,6 +16,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeInsiderBean;
 import com.qingbo.monk.bean.InsiderListBean;
+import com.qingbo.monk.home.activity.StartPDF_Activity;
 import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -133,7 +134,8 @@ public class HomeInsider_Fragment extends BaseRecyclerViewSplitFragment {
                 if (TextUtils.isEmpty(item.getFile_url())){
                     return;
                 }
-                jumpToWebView(item.getNewsTitle(),item.getFile_url());
+//                jumpToWebView(item.getNewsTitle(),item.getFile_url());
+                StartPDF_Activity.startActivity(requireActivity(),item.getNewsTitle(),item.getFile_url());
             }
         });
 

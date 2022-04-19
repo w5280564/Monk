@@ -296,6 +296,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         requestMap.put("nickname", nickname);//孙伟
         requestMap.put("id", id);//868
         requestMap.put("stock", stockCode);//"513060"
+        requestMap.put("client", "2");
         HttpSender httpSender = new HttpSender(HttpUrl.Fund_Postion, "人物持仓", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -320,11 +321,13 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
                         if (!ListUtils.isEmpty(listDTO.getInfo())) {
                             stock_Con.setVisibility(View.VISIBLE);
                             chart.setVisibility(View.VISIBLE);
-                            List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = listDTO.getInfo().get(0).getList();
-                            String quarters = listDTO.getInfo().get(0).getQuarters();
-                            fundTime_Tv.setText(quarters);
-                            persomCombination_shares_adapter.setNewData(list);
-                            setData(0, listDTO);
+                            if (listDTO.getInfo().get(0).getList() !=null){
+                                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = listDTO.getInfo().get(0).getList();
+                                String quarters = listDTO.getInfo().get(0).getQuarters();
+                                fundTime_Tv.setText(quarters);
+                                persomCombination_shares_adapter.setNewData(list);
+                                setData(0, listDTO);
+                            }
                         } else {
                             stock_Con.setVisibility(View.VISIBLE);
                             stockContent_Con.setVisibility(View.GONE);
@@ -338,6 +341,15 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    /**
+     * 饼状图没有数据
+     */
+    private void noChartData(){
+        stock_Con.setVisibility(View.VISIBLE);
+        stockContent_Con.setVisibility(View.GONE);
+        chartViewLocation();
     }
 
     /**
@@ -584,10 +596,11 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         }
         OptionsPickerView pvOptions = new OptionsPickerBuilder(mActivity, (options1, option2, options3, v) -> {
             fundTime_Tv.setText(mOptionsItems.get(options1));
-            List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(options1).getList();
-            persomCombination_shares_adapter.setNewData(list);
-            setData(options1, characterDetail_bean);
-
+            if (listDTO.getInfo().get(0).getList() !=null) {
+                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(options1).getList();
+                persomCombination_shares_adapter.setNewData(list);
+                setData(options1, characterDetail_bean);
+            }
         }).build();
         pvOptions.setPicker(mOptionsItems);
         pvOptions.show();
