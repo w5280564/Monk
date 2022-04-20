@@ -32,6 +32,7 @@ public class Constants {
     public static final String BRAND_OPPO = "OPPO";
     public static final String BRAND_VIVO = "vivo";
 
+    public static final String QQ_APP_ID = "101997485";
 
     /**
      * 写入权限的请求code,提示语，和权限码

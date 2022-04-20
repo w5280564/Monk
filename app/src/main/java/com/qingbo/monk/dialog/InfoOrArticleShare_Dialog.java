@@ -1,5 +1,8 @@
 package com.qingbo.monk.dialog;
 
+import static com.xunda.lib.common.common.Constants.QQ_APP_ID;
+
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,31 +30,46 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.CollectStateBean;
+import com.qingbo.monk.home.activity.ForWardGroup_Activity;
+import com.qingbo.monk.home.activity.ForWardInterest_Activity;
+import com.sina.weibo.sdk.api.WebpageObject;
+import com.sina.weibo.sdk.api.WeiboMultiMessage;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.openapi.IWBAPI;
+import com.sina.weibo.sdk.openapi.WBAPIFactory;
+import com.sina.weibo.sdk.share.WbShareCallback;
+import com.tencent.connect.share.QQShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
+import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 文章分享弹出框
  *
  * @author Administrator 欧阳
  */
-public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener {
+public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener, WbShareCallback {
     private static final int THUMB_SIZE = 120;
     private boolean isStockOrFund;
     private Context context;
@@ -64,6 +82,19 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     public static int[] SHARE_IMG_LIST = {R.mipmap.zhuanfa, R.mipmap.weixin, R.mipmap.pengyouquan};//分享平台列表
     private TextView wechat_Tv, quan_Tv, sina_Tv, qq_Tv;
     private String author_id;
+    private Tencent mTencent;
+
+
+    //在微博开发平台为应用申请的App Key
+    private static final String APP_KY = "887009180";
+    //在微博开放平台设置的授权回调页
+    private static final String REDIRECT_URL = "http://toptopv.com/";
+    //在微博开放平台为应用申请的高级权限
+    private static final String SCOPE =
+            "email,direct_messages_read,direct_messages_write,"
+                    + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
+                    + "follow_app_official_microblog," + "invitation_write";
+    private IWBAPI mWBAPI;
 
     /**
      * 文章ID
@@ -129,9 +160,12 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
 
         appId = Constants.WECHAT_APPID; // 填应用AppId
         api = WXAPIFactory.createWXAPI(context, appId, false);
+        regToQQ();
+        regSina();
 
         initPlatformList();
         initEventAndView();
+
     }
 
 
@@ -150,6 +184,8 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     private void initEventAndView() {
         TextView dynamic_Tv = findViewById(R.id.dynamic_Tv);
         TextView collect_Tv = findViewById(R.id.collect_Tv);
+        TextView group_Tv = findViewById(R.id.group_Tv);
+        TextView interest_Tv = findViewById(R.id.interest_Tv);
         wechat_Tv = findViewById(R.id.wechat_Tv);
         quan_Tv = findViewById(R.id.quan_Tv);
         sina_Tv = findViewById(R.id.sina_Tv);
@@ -157,6 +193,8 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
 
         dynamic_Tv.setOnClickListener(this);
         collect_Tv.setOnClickListener(this);
+        group_Tv.setOnClickListener(this);
+        interest_Tv.setOnClickListener(this);
         wechat_Tv.setOnClickListener(this);
         quan_Tv.setOnClickListener(this);
         sina_Tv.setOnClickListener(this);
@@ -286,6 +324,28 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                 dismiss();
                 postCollectData(articleId);
                 break;
+            case R.id.group_Tv:
+                dismiss();
+                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+                    if (IsMe.isMy(author_id)) {
+                        T.ss("不能转发自己的文章");
+                        return;
+                    }
+                }
+                String id = PrefUtil.getUser().getId();
+                ForWardGroup_Activity.actionStart(context, id, articleId);
+                break;
+            case R.id.interest_Tv:
+                dismiss();
+                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+                    if (IsMe.isMy(author_id)) {
+                        T.ss("不能转发自己的文章");
+                        return;
+                    }
+                }
+                String id1 = PrefUtil.getUser().getId();
+                ForWardInterest_Activity.actionStart(context, id1, articleId);
+                break;
             case R.id.cancel:
                 dismiss();
                 break;
@@ -297,11 +357,13 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                 break;
             case R.id.sina_Tv:
                 dismiss();
-                T.ss("暂无微博分享");
+//                T.ss("暂无微博分享");
+                doWeiboShare();
                 break;
             case R.id.qq_Tv:
                 dismiss();
-                T.ss("暂无QQ分享");
+//                T.ss("暂无QQ分享");
+                shareToQQ(QQShare.SHARE_TO_QQ_FLAG_QZONE_ITEM_HIDE);
                 break;
 
         }
@@ -334,6 +396,99 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                 }
             });
         }
+    }
+
+    private void regToQQ() {
+        mTencent = Tencent.createInstance(QQ_APP_ID, context, "com.qingbo.monk.fileprovider");
+    }
+
+
+    private void shareToQQ(int QQType) {
+        Bundle shareParams = new Bundle();
+        shareParams.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE, QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
+        shareParams.putString(QQShare.SHARE_TO_QQ_TITLE, title);
+        shareParams.putString(QQShare.SHARE_TO_QQ_SUMMARY, text);
+        shareParams.putString(QQShare.SHARE_TO_QQ_TARGET_URL, pageUrl);
+//        shareParams.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, R.drawable.app_logo);
+        shareParams.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, imageUrl); //不传图片 默认使用applogo
+        shareParams.putString(QQShare.SHARE_TO_QQ_APP_NAME, "");//修改返回按钮名字 不是修改分享app名
+        shareParams.putInt(QQShare.SHARE_TO_QQ_EXT_INT, QQType);
+        mTencent.shareToQQ((Activity) context, shareParams, new BaseUiListener());
+    }
+
+    @Override
+    public void onComplete() {
+        T.ss("分享成功");
+    }
+
+    @Override
+    public void onError(com.sina.weibo.sdk.common.UiError uiError) {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+
+    private static class BaseUiListener implements IUiListener {
+        protected void doComplete(Object values) {
+        }
+
+        @Override
+        public void onComplete(Object o) {
+            doComplete(o);
+        }
+
+        @Override
+        public void onError(UiError e) {
+        }
+
+        @Override
+        public void onCancel() {
+        }
+
+        @Override
+        public void onWarning(int i) {
+
+        }
+    }
+
+    private void regSina() {
+        AuthInfo authInfo = new AuthInfo(context, APP_KY, REDIRECT_URL, SCOPE);
+        mWBAPI = WBAPIFactory.createWBAPI(context);
+        mWBAPI.registerApp(context, authInfo);
+        mWBAPI.setLoggerEnable(true);
+    }
+
+    private void doWeiboShare() {
+        WeiboMultiMessage message = new WeiboMultiMessage();
+        // 分享网页
+        WebpageObject webObject = new WebpageObject();
+        webObject.identify = UUID.randomUUID().toString();
+        webObject.title = title;
+        webObject.description = text;
+        ByteArrayOutputStream os = null;
+        try {
+            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_logo);
+            os = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
+            webObject.thumbData = os.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (os != null) {
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        webObject.actionUrl = pageUrl;
+        webObject.defaultText = "分享网页";
+        message.mediaObject = webObject;
+        mWBAPI.shareMessage((Activity) context, message, true);
     }
 
 

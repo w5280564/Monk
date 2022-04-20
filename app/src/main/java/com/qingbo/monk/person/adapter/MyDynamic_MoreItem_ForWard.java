@@ -82,9 +82,12 @@ public class MyDynamic_MoreItem_ForWard extends BaseItemProvider<MyDynamic_MoreI
 
         int startLength = "转发评论//".length();
         int endLength = (String.format("转发评论//@%1$s：", name)).length();
-        setName(format, startLength, startLength, endLength, report_Tv);
-
-//        report_Tv.setText("转发评论");
+        String extraContent = item.getExtraContent();
+        if (TextUtils.isEmpty(extraContent)) {
+            setName(format, startLength, startLength, endLength, report_Tv);
+        }else {
+            setName(extraContent, startLength, startLength, endLength, report_Tv);
+        }
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -270,7 +273,6 @@ public class MyDynamic_MoreItem_ForWard extends BaseItemProvider<MyDynamic_MoreI
         spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         viewName.setText(spannableString);
     }
-
 
 
 }

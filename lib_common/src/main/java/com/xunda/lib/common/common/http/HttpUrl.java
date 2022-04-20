@@ -262,6 +262,7 @@ public class HttpUrl {
     public static final String Leave_Group = "square/square/refund-leave-group";//三天内退出社群
     public static final String Wallet_Balance = "pay/wallet/withdrawable";//可提现金额
     public static final String Wallet_Withdrawal = "pay/wallet/withdraw";//提现
+    public static final String ForWard_Group = "square/detail/transfer-to-group";//动态转发到社群
 
 
 }

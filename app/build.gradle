@@ -63,6 +63,12 @@ android {
                 VIVO_APPID    : "vivo的APPID"
         ]
 
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters 'arm64-v8a', 'armeabi' //, 'x86', 'x86_64', 'arm64-v8a'
+        }
+
+
     }
     buildTypes {
         debug {
@@ -157,6 +163,10 @@ android {
         implementation 'commons-codec:commons-codec:1.10'
         implementation 'androidx.annotation:annotation:1.3.0'
         implementation 'com.wdeo3601:pdf-view:1.0.4'
+        implementation 'com.tencent.tauth:qqopensdk:3.53.0'
+//        implementation 'com.squareup.okhttp3:okhttp:3.12.13'//QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
+
+        implementation 'io.github.sinaweibosdk:core:12.3.1@aar'
     }
 
 

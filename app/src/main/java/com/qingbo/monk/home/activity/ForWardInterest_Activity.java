@@ -1,18 +1,17 @@
-package com.qingbo.monk.person.activity;
+package com.qingbo.monk.home.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
-import android.view.View;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
@@ -22,24 +21,28 @@ import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
+import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 
 /**
- * 我/他的兴趣组
+ * 转发到 ——我/他的兴趣组
  */
-public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
+public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.title_bar)
     CustomTitleBar title_bar;
     private String userID;
+    private String articleId;
 
-    public static void actionStart(Context context, String userID) {
-        Intent intent = new Intent(context, MyInterestList_Activity.class);
+    public static void actionStart(Context context, String userID, String biz_id) {
+        Intent intent = new Intent(context, ForWardInterest_Activity.class);
         intent.putExtra("userID", userID);
+        intent.putExtra("biz_id", biz_id);
         context.startActivity(intent);
     }
 
@@ -65,6 +68,7 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
+        articleId = getIntent().getStringExtra("biz_id");
     }
 
 
@@ -93,14 +97,11 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
         mAdapter = new MyInterestAdapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (isMe()) {
-                    InterestBean item = (InterestBean) adapter.getItem(position);
-                    InterestDetail_Activity.startActivity(mActivity, "0", item.getId());
-//                }
-            }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            InterestBean item = (InterestBean) adapter.getItem(position);
+//            InterestDetail_Activity.startActivity(mActivity, "0", item.getId());
+            String id = item.getId();
+            startForWard(id);
         });
     }
 
@@ -146,6 +147,50 @@ public class MyInterestList_Activity extends BaseRecyclerViewSplitActivity {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 转发到兴趣组 弹窗
+     *
+     * @param id
+     */
+    private void startForWard(String id) {
+        new TwoButtonDialogBlue(mActivity, "确定转发到该兴趣组？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                postForwardingData(articleId, id);
+            }
+
+            @Override
+            public void onClickLeft() {
+
+            }
+        }).show();
+    }
+
+    /**
+     * 转发 到兴趣组
+     *
+     * @param articleId
+     * @param //type 1社群 2兴趣组
+     */
+    private void postForwardingData(String articleId, String shequn_id) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("biz_id", articleId);
+        requestMap.put("shequn_id", shequn_id);
+        requestMap.put("type", "2");
+        HttpSender httpSender = new HttpSender(HttpUrl.ForWard_Group, "转发动态_社群/兴趣组", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    finish();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
 

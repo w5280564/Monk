@@ -1,12 +1,14 @@
-package com.qingbo.monk.person.activity;
+package com.qingbo.monk.home.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,24 +20,24 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.MyGroupList_Bean;
 import com.qingbo.monk.person.adapter.MyGroupAdapter;
-import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
-import com.qingbo.monk.question.activity.GroupDetailActivity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.T;
+import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
 
 /**
- * 我/他的社群
+ * 转发到 ——我/他的社群
  */
-public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
+public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
     @BindView(R.id.mRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.title_bar)
@@ -43,10 +45,12 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     private String userID;
     String type;
     private TextView myCrate_Tv, group_Tv;
+    private String articleId;
 
-    public static void actionStart(Context context, String userID) {
-        Intent intent = new Intent(context, MyGroupList_Activity.class);
+    public static void actionStart(Context context, String userID, String biz_id) {
+        Intent intent = new Intent(context, ForWardGroup_Activity.class);
         intent.putExtra("userID", userID);
+        intent.putExtra("biz_id", biz_id);
         context.startActivity(intent);
     }
 
@@ -72,6 +76,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
+        articleId = getIntent().getStringExtra("biz_id");
     }
 
     @Override
@@ -95,11 +100,10 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     protected void initView() {
         if (isMe()) {
             title_bar.setTitle("我的问答社群");
-            title_bar.showRight();
         } else {
             title_bar.setTitle("他的问答社群");
-            title_bar.hideRight();
         }
+        title_bar.hideRight();
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
@@ -117,24 +121,13 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         mAdapter = new MyGroupAdapter(isMe());
         mRecyclerView.setAdapter(mAdapter);
         addHeadView();
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                if (isMe()) {
-//                    MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
-//                    GroupDetailActivity.actionStart(mActivity, obj.getId());
-//                }
-                MyCardGroup_Bean mGroupBean = (MyCardGroup_Bean) adapter.getItem(position);
-                if (mGroupBean == null) {
-                    return;
-                }
-                String is_join = mGroupBean.getIs_Join();
-                if (TextUtils.equals(is_join, "1")) {//1是已加入 其他都是未加入
-                    GroupDetailActivity.actionStart(mActivity, mGroupBean.getId());
-                } else {
-                    CheckOtherGroupDetailActivity.actionStart(mActivity, mGroupBean.getId());
-                }
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            MyCardGroup_Bean mGroupBean = (MyCardGroup_Bean) adapter.getItem(position);
+            if (mGroupBean == null) {
+                return;
             }
+            String id = mGroupBean.getId();
+            startForWard(id);
         });
     }
 
@@ -171,10 +164,30 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (isMe()) {
                     MyCardGroup_Bean obj = (MyCardGroup_Bean) adapter.getItem(position);
-                    GroupDetailActivity.actionStart(mActivity, obj.getId());
+                    String id = obj.getId();
+                    startForWard(id);
                 }
             }
         });
+    }
+
+    /**
+     * 转发到社群 弹窗
+     *
+     * @param id
+     */
+    private void startForWard(String id) {
+        new TwoButtonDialogBlue(mActivity, "确定转发到该社群？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
+            @Override
+            public void onClickRight() {
+                postForwardingData(articleId, id);
+            }
+
+            @Override
+            public void onClickLeft() {
+
+            }
+        }).show();
     }
 
 
@@ -253,5 +266,30 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         return false;
     }
 
+
+    /**
+     * 转发 到社群
+     *
+     * @param articleId
+     * @param //type 1社群 2兴趣组
+     */
+    private void postForwardingData(String articleId, String shequn_id) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("biz_id", articleId);
+        requestMap.put("shequn_id", shequn_id);
+        requestMap.put("type", "1");
+        HttpSender httpSender = new HttpSender(HttpUrl.ForWard_Group, "转发动态_社群/兴趣组", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    finish();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
 
 }

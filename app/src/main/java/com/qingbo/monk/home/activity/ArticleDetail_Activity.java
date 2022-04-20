@@ -51,6 +51,9 @@ import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.openapi.IWBAPI;
+import com.sina.weibo.sdk.openapi.WBAPIFactory;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -227,6 +230,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     @Override
     protected void initView() {
+//        regSina();
         person_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});//昵称字数
         viewTouchDelegate.expandViewTouchDelegate(back_Tv, 50);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
@@ -347,6 +351,46 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         mShareDialog.show();
     }
 
+    private IWBAPI mWBAPI;
+    //在微博开发平台为应用申请的App Key
+    private static final String APP_KY = "887009180";
+    //在微博开放平台设置的授权回调页
+    private static final String REDIRECT_URL = "http://toptopv.com/";
+    //在微博开放平台为应用申请的高级权限
+    private static final String SCOPE =
+            "email,direct_messages_read,direct_messages_write,"
+                    + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
+                    + "follow_app_official_microblog," + "invitation_write";
+
+    private void regSina(){
+        AuthInfo authInfo = new AuthInfo(mActivity, APP_KY, REDIRECT_URL, SCOPE);
+        mWBAPI = WBAPIFactory.createWBAPI(mActivity);
+        mWBAPI.registerApp(mActivity, authInfo);
+        mWBAPI.setLoggerEnable(true);
+
+//        mWBAPI.authorize((Activity) mActivity, new WbAuthListener() {
+//            @Override
+//            public void onComplete(Oauth2AccessToken oauth2AccessToken) {
+//                T.ss("成功");
+//            }
+//
+//            @Override
+//            public void onError(com.sina.weibo.sdk.common.UiError uiError) {
+//                T.ss("失败");
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     /**
      * 人物跳转

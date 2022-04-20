@@ -52,6 +52,7 @@ public class Article_Forward extends BaseActivity {
 
     /**
      * 文章页面 评论转发  使用数据ArticleCommentBean
+     *
      * @param context
      * @param articleId        文章ID
      * @param data             转发的评论数据
@@ -71,6 +72,7 @@ public class Article_Forward extends BaseActivity {
 
     /**
      * 评论详情 转发   使用数据CommentListBean
+     *
      * @param context
      * @param articleId
      * @param commentBean
@@ -100,14 +102,14 @@ public class Article_Forward extends BaseActivity {
         parentOrChildren = getIntent().getBooleanExtra("parentOrChildren", false);
         position = getIntent().getIntExtra("position", 0);
         isStockOrFund = getIntent().getBooleanExtra("isStockOrFund", false);
-         commentBean = (CommentListBean) getIntent().getSerializableExtra("commentBean");
+        commentBean = (CommentListBean) getIntent().getSerializableExtra("commentBean");
     }
 
     @Override
     protected void initView() {
         if (data != null) {
             addData();
-        }else {
+        } else {
             addCommentBean();
         }
     }
@@ -115,6 +117,7 @@ public class Article_Forward extends BaseActivity {
 
     String name = "";
     String comment = "";
+
     /**
      * 文章详情 转发评论
      */
@@ -147,7 +150,7 @@ public class Article_Forward extends BaseActivity {
     /**
      * 评论详情 转发评论
      */
-    private void addCommentBean(){
+    private void addCommentBean() {
         if (parentOrChildren) {
             name = commentBean.getCommentData().getAuthorName();
             comment = commentBean.getCommentData().getComment();
@@ -206,6 +209,7 @@ public class Article_Forward extends BaseActivity {
         postForwardingData(id);
     }
 
+
     /**
      * 转发
      *
@@ -216,6 +220,9 @@ public class Article_Forward extends BaseActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
         requestMap.put("type", type);
+        if (TextUtils.equals(type, "2")) {
+            requestMap.put("content", et_content.getText().toString());
+        }
         HttpSender httpSender = new HttpSender(HttpUrl.Repeat_Article, "转发动态", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
