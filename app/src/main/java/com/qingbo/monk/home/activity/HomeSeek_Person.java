@@ -1,30 +1,18 @@
 package com.qingbo.monk.home.activity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
-import com.qingbo.monk.Slides.activity.SideslipPersonDetail_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.ArticleLikedBean;
-import com.qingbo.monk.bean.Character_Bean;
-import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeSeekPerson_Bean;
 import com.qingbo.monk.bean.HomeSeekPerson_ListBean;
 import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
-import com.qingbo.monk.home.adapter.HomeSeek_User_Adapter;
-import com.qingbo.monk.message.activity.ChatActivity;
-import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.person.adapter.MyFollow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;

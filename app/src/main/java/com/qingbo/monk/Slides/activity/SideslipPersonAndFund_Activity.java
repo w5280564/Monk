@@ -293,6 +293,8 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
 
     private void getPersonData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("page", "1");
+        requestMap.put("limit", "1");
         requestMap.put("nickname", nickname);//孙伟
         requestMap.put("id", id);//868
         requestMap.put("stock", stockCode);//"513060"
