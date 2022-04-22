@@ -234,6 +234,8 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         String title = item.getTitle();
         String content = item.getContent();
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, true, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setArticleType("1");
+        mShareDialog.setCollectType("3");
         mShareDialog.show();
     }
 

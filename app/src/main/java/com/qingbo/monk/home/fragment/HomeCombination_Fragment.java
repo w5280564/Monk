@@ -17,18 +17,14 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.CombinationListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
-import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
-import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 
 import java.util.HashMap;
 
@@ -131,6 +127,9 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                     String id = item.getId();
                     CombinationDetail_Activity.startActivity(requireActivity(), "1", id);
                     break;
+                case R.id.share_Img:
+                    showShareDialog(item);
+                    break;
             }
         });
     }
@@ -170,6 +169,23 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 仓位组合分享
+     */
+    private void showShareDialog(HomeCombinationBean item) {
+        String imgUrl = "";
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getId();
+        String title = item.getName();
+        String content = "";
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id("");
+        mShareDialog.setArticleType("3");
+        mShareDialog.setCollectType("2");
+        mShareDialog.setForGroupType("1");
+        mShareDialog.show();
     }
 
 

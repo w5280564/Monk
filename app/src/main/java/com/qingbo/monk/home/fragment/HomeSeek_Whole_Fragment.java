@@ -26,7 +26,6 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
-import com.qingbo.monk.base.BaseLazyFragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
@@ -60,7 +59,7 @@ import butterknife.BindView;
 /**
  * ——综合
  */
-public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class HomeSeek_Whole_Fragment extends BaseRecyclerViewSplitFragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
     @BindView(R.id.label_Flow)
     public FlowLayout label_Flow;
     @BindView(R.id.user_Lin)
@@ -148,6 +147,16 @@ public class HomeSeek_Whole_Fragment extends BaseLazyFragment implements SwipeRe
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
         mSwipeRefreshLayout.setRefreshing(true);
         SearchAllList(word, false);
+    }
+
+    @Override
+    protected void onRefreshData() {
+
+    }
+
+    @Override
+    protected void onLoadMoreData() {
+
     }
 
     /**

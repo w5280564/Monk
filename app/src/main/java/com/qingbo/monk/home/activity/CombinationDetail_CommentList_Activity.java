@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -21,11 +22,13 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
+import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
@@ -37,7 +40,6 @@ import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.MyEditPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.Serializable;
@@ -66,16 +68,18 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
 
     private String commentId;
     private boolean haveEditMes = false;
+    private String combinationName;
 
     /**
      * @param context
      * @param item
      * @param id      策略ID 用于 回复评论
      */
-    public static void startActivity(Context context, ArticleCommentBean item, String id) {
+    public static void startActivity(Context context, ArticleCommentBean item, String id, String combinationName) {
         Intent intent = new Intent(context, CombinationDetail_CommentList_Activity.class);
         intent.putExtra("item", (Serializable) item);
         intent.putExtra("id", id);
+        intent.putExtra("combinationName", combinationName);
         context.startActivity(intent);
     }
 
@@ -88,6 +92,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
     protected void initLocalData() {
         item = (ArticleCommentBean) getIntent().getSerializableExtra("item");
         id = getIntent().getStringExtra("id");
+        combinationName = getIntent().getStringExtra("combinationName");
     }
 
     @Override
@@ -185,17 +190,18 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                         MyAndOther_Card.actionStart(mActivity, authorId1);
                     }
                     break;
-//                case R.id.mes_Img:
-//                String authorId = commentItem.getAuthorId();
-//                boolean my = isMy(authorId);
-//                if (!my) {
-//                    isTopComment = true;
-//                    showInput(sendComment_Et);
-//                    String isAnonymous = this.commentItem.getIsAnonymous();
-//                    String authorName = this.commentItem.getAuthorName();
-//                    setHint(isAnonymous, authorName, sendComment_Et);
-//                }
-//                    break;
+                case R.id.mes_Img:
+                    String authorId = commentItem.getAuthorId();
+                    boolean my = isMy(authorId);
+                    if (!my) {
+                        isTopComment = true;
+                        showInput(sendComment_Et);
+                        String isAnonymous = this.commentItem.getIsAnonymous();
+                        String authorName = this.commentItem.getAuthorName();
+                        setHint(isAnonymous, authorName, sendComment_Et);
+                        haveEditMes = false;
+                    }
+                    break;
             }
         });
 
@@ -247,16 +253,17 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
             return;
         }
         String commentID, authorId, authorName1 = "";
-//        if (isTopComment) {
-//            commentID = commentItem.getId();
-//            authorId = commentItem.getAuthorId();
-//            authorName1 = commentItem.getAuthorName();
-//        } else {
-        CommentBean commentData = commentListBean.getCommentData();
-        commentID = commentData.getId();
-        authorId = commentData.getAuthorId();
-        authorName1 = commentData.getAuthorName();
-//        }
+        if (isTopComment) {
+            commentID = commentItem.getId();
+            authorId = commentItem.getAuthorId();
+            authorName1 = commentItem.getAuthorName();
+        } else {
+            CommentBean commentData = commentListBean.getCommentData();
+            commentID = commentData.getId();
+            authorId = commentData.getAuthorId();
+            authorName1 = commentData.getAuthorName();
+        }
+
         if (haveEditMes) {
             editMesData(commentId, s);
         } else {
@@ -265,6 +272,10 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
     }
 
     private void addHeadView() {
+        LinearLayout headerLayout = mAdapter.getHeaderLayout();
+        if (headerLayout != null) {
+            headerLayout.removeAllViews();
+        }
         View myView = LayoutInflater.from(this).inflate(R.layout.commentlist_top, null);
         ImageView head_Img = myView.findViewById(R.id.head_Img);
         TextView nickName_Tv = myView.findViewById(R.id.nickName_Tv);
@@ -399,10 +410,11 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
         if (isAll) {
-            showPopMenu(view, item, true, true);
-        }
-        if (isDel) {
-            showPopMenu(view, item, false, true);
+            showPopMenu(view, item, true, true, true, true);
+        } else if (isDel) {
+            showPopMenu(view, item, true, false, true, true);
+        } else {
+            showPopMenu(view, item, true, false, false, true);
         }
     }
 
@@ -414,8 +426,30 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
      * @param haveEdit
      * @param parentOrChildren true是一级评论 false 是子评论
      */
-    private void showPopMenu(View more_Img, CommentBean data, boolean haveEdit, boolean parentOrChildren) {
-        MyEditPopWindow morePopWindow = new MyEditPopWindow(mActivity, haveEdit, new MyEditPopWindow.OnPopWindowClickListener() {
+    private void showPopMenu(View more_Img, CommentBean data, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele, id);
+        mesMore_dialog.setCollectType("1");
+
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            authorId = commentListBean.getCommentData().getAuthorId();
+
+        }
+        mesMore_dialog.setAuthorId(authorId);
+
+        mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
+            @Override
+            public void onClickForWard() {
+                startForWard(parentOrChildren, data);
+            }
+
+            @Override
+            public void onClickCollect() {
+
+            }
+
             @Override
             public void onClickEdit() {
                 editMes(data, parentOrChildren);
@@ -427,15 +461,66 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                 if (parentOrChildren) {
                     id = data.getId();
                 } else {
-                    CommentBean commentData = commentListBean.getCommentData();
-                    id = commentData.getId();
+                    id = commentListBean.getCommentData().getId();
+
                 }
                 showDeleteDialog(id);
             }
-
         });
-        morePopWindow.showPopupWindow(more_Img);
+        mesMore_dialog.show();
     }
+
+    /**
+     * 打开转发页面
+     *
+     * @param parentOrChildren
+     * @param data
+     */
+    private void startForWard(boolean parentOrChildren, CommentBean data) {
+        boolean forWard = isForWard(parentOrChildren, data);
+        if (forWard) {
+            return;
+        }
+        String id = "";
+        String name = "";
+        String comment = "";
+        String imgurl = "";
+        if (parentOrChildren) {
+            id = data.getId();
+            name = data.getAuthorName();
+            comment = data.getComment();
+        } else {
+            id = commentListBean.getCommentData().getId();
+            name = commentListBean.getCommentData().getAuthorName();
+            comment = commentListBean.getCommentData().getComment();
+        }
+        String type = "3";
+//        String title = combinationName;
+        String title = "";
+        String content = "";
+        Article_Forward.startActivity(mActivity, data.getId(), type, id, name, comment, title, content, imgurl);
+    }
+
+    /**
+     * 自己不能转发
+     *
+     * @param parentOrChildren
+     * @param data
+     */
+    private boolean isForWard(boolean parentOrChildren, CommentBean data) {
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            authorId = commentListBean.getCommentData().getAuthorId();;
+        }
+        if (IsMe.isMy(authorId)) {
+            T.s("不能转发自己评论", 3000);
+            return true;
+        }
+        return false;
+    }
+
 
 
     private void showDeleteDialog(String commentId) {
@@ -524,13 +609,13 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
     }
 
 
-
     /**
      * 是否是自己
+     *
      * @param authorId2
      * @return
      */
-    public boolean isMy(String authorId2){
+    public boolean isMy(String authorId2) {
         String id = PrefUtil.getUser().getId();
         String authorId = authorId2;
         if (TextUtils.equals(id, authorId)) {//是自己不能评论

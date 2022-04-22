@@ -38,11 +38,20 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
     CustomTitleBar title_bar;
     private String userID;
     private String articleId;
+    private String op_type;
 
-    public static void actionStart(Context context, String userID, String biz_id) {
+    /**
+     *
+     * @param context
+     * @param userID
+     * @param biz_id 文章id或者仓位组合ID
+     * @param op_type 0：文章类【默认】 1：仓位组合
+     */
+    public static void actionStart(Context context, String userID, String biz_id, String op_type) {
         Intent intent = new Intent(context, ForWardInterest_Activity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("biz_id", biz_id);
+        intent.putExtra("op_type", op_type);
         context.startActivity(intent);
     }
 
@@ -69,6 +78,7 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
     protected void initLocalData() {
         userID = getIntent().getStringExtra("userID");
         articleId = getIntent().getStringExtra("biz_id");
+        op_type = getIntent().getStringExtra("op_type");
     }
 
 
@@ -179,6 +189,7 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
         requestMap.put("biz_id", articleId);
         requestMap.put("shequn_id", shequn_id);
         requestMap.put("type", "2");
+        requestMap.put("op_type", op_type);
         HttpSender httpSender = new HttpSender(HttpUrl.ForWard_Group, "转发动态_社群/兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

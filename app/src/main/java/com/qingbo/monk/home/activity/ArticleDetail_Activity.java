@@ -51,9 +51,6 @@ import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
-import com.sina.weibo.sdk.auth.AuthInfo;
-import com.sina.weibo.sdk.openapi.IWBAPI;
-import com.sina.weibo.sdk.openapi.WBAPIFactory;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -197,7 +194,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
     /**
-     *
      * @param context
      * @param articleId
      * @param isInformation
@@ -348,48 +344,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         String content = item.getContent();
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
         mShareDialog.setAuthor_id(item.getAuthorId());
+        if (isStockOrFund){
+            mShareDialog.setArticleType("1");
+            mShareDialog.setCollectType("3");
+        }
         mShareDialog.show();
-    }
-
-    private IWBAPI mWBAPI;
-    //在微博开发平台为应用申请的App Key
-    private static final String APP_KY = "887009180";
-    //在微博开放平台设置的授权回调页
-    private static final String REDIRECT_URL = "http://toptopv.com/";
-    //在微博开放平台为应用申请的高级权限
-    private static final String SCOPE =
-            "email,direct_messages_read,direct_messages_write,"
-                    + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
-                    + "follow_app_official_microblog," + "invitation_write";
-
-    private void regSina(){
-        AuthInfo authInfo = new AuthInfo(mActivity, APP_KY, REDIRECT_URL, SCOPE);
-        mWBAPI = WBAPIFactory.createWBAPI(mActivity);
-        mWBAPI.registerApp(mActivity, authInfo);
-        mWBAPI.setLoggerEnable(true);
-
-//        mWBAPI.authorize((Activity) mActivity, new WbAuthListener() {
-//            @Override
-//            public void onComplete(Oauth2AccessToken oauth2AccessToken) {
-//                T.ss("成功");
-//            }
-//
-//            @Override
-//            public void onError(com.sina.weibo.sdk.common.UiError uiError) {
-//                T.ss("失败");
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//
-//            }
-//        });
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
@@ -481,7 +440,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }
         String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
         String type = homeFoucsDetail_bean.getData().getDetail().getType();
-        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type,isStockOrFund));
+        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type, isStockOrFund));
         tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -506,11 +465,14 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
-   public HomeFoucsDetail_Bean homeFoucsDetail_bean;
+    public HomeFoucsDetail_Bean homeFoucsDetail_bean;
 
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId);
+        if (isStockOrFund) {
+            requestMap.put("type", "1");
+        }
         HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -559,7 +521,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
 
                         String action = detailData.getAction();
-                        if (TextUtils.equals(action, "3")) {//3是个人文章 1是社群 2是兴趣组
+                        if (TextUtils.equals(action, "3") || TextUtils.equals(action, "0")) {//0是资讯  3是个人文章 1是社群 2是兴趣组
                             group_Con.setVisibility(View.GONE);
                         } else {
                             group_Con.setVisibility(View.VISIBLE);
@@ -666,8 +628,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
-
-
 
 
     private void getJoinSheQun(String ID) {
@@ -778,8 +738,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }
         follow_Count.setText(nowLike + "");
     }
-
-
 
 
     /**

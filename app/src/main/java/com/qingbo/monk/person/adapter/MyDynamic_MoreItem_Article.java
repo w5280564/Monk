@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,8 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -146,8 +143,7 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
 
 
     private void setDrawableLeft(int mipmap, TextView status) {
-        Drawable drawableLeft = mContext.getResources().getDrawable(
-                mipmap);
+        Drawable drawableLeft = mContext.getResources().getDrawable(mipmap);
         status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }

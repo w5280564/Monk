@@ -17,7 +17,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
@@ -25,8 +24,8 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import java.util.List;
 
 public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean, BaseViewHolder> {
-    private  boolean isStockOrFund;
-    private  boolean isGroup;
+    private boolean isStockOrFund;
+    private boolean isGroup;
     String articleId, type;
 
     public ArticleComment_Adapter(String articleId, String type) {
@@ -144,8 +143,12 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         childrens_adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (onItemClick != null) {
+
+                    onItemClick.onItemClick(view, position, data);
+                }
 //                onClickLister.onItemClick(view, position, data);
-                ArticleDetali_CommentList_Activity.startActivity(mContext, data, articleId, type,isStockOrFund,isGroup);
+//                ArticleDetali_CommentList_Activity.startActivity(mContext, data, articleId, type,isStockOrFund,isGroup);
             }
         });
         childrens_adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -158,8 +161,19 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
 
     }
 
+    public interface onItemLister {
+        void onItemClick(View view, int pos, ArticleCommentBean data);
+    }
+
+    private onItemLister onItemClick;
+
+    public void setOnItemClick(onItemLister onItemClick) {
+        this.onItemClick = onItemClick;
+    }
+
+
     public interface OnClickLister {
-        void onLongClick(View view, int pos,ArticleCommentBean data);
+        void onLongClick(View view, int pos, ArticleCommentBean data);
     }
 
 

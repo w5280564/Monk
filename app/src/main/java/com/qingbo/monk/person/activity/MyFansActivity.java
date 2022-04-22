@@ -96,6 +96,7 @@ public class MyFansActivity extends BaseRecyclerViewSplitActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
+        requestMap.put("userId", userId + "");
         HttpSender sender = new HttpSender(HttpUrl.fans_Like_List, "粉丝列表", requestMap,
                 new MyOnHttpResListener() {
                     @Override

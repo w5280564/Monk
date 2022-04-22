@@ -40,11 +40,14 @@ import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -432,7 +435,6 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         }
 
 
-
     }
 
     /**
@@ -444,28 +446,22 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
      * @param parentOrChildren true是一级评论 false 是子评论
      */
     private void showPopMenu(View more_Img, CommentBean data, int position, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
-
-        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity,haveForWard, haveEdit, haveDele);
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele, articleId);
+        mesMore_dialog.setCollectType("1");
         mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
             @Override
             public void onClickForWard() {
                 boolean forWard = isForWard(parentOrChildren, data);
-                if (forWard){
+                if (forWard) {
                     return;
                 }
-                if (homeFoucsDetail_bean != null) {
-                    HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
-                    if (item != null) {
-                        //多张图片
-                        if (!TextUtils.isEmpty(detailData.getImages())) {
-                            commentListBean.setImages(detailData.getImages());
-                        }
-                        commentListBean.setTitle(detailData.getTitle());
-                        commentListBean.setContent(detailData.getContent());
+                startForWard(parentOrChildren, data,position);
 
-                    }
-                }
-                Article_Forward.startActivity(mActivity, articleId, commentListBean, parentOrChildren, position, isStockOrFund);
+            }
+
+            @Override
+            public void onClickCollect() {
+
             }
 
             @Override
@@ -486,6 +482,49 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             }
         });
         mesMore_dialog.show();
+    }
+
+    /**
+     * 打开转发页面
+     *
+     * @param parentOrChildren
+     * @param data
+     * @param position
+     */
+    private void startForWard(boolean parentOrChildren, CommentBean data,int position) {
+        boolean forWard = isForWard(parentOrChildren, data);
+        if (forWard) {
+            return;
+        }
+        if (homeFoucsDetail_bean != null) {
+            HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
+            String id = "";
+            String name = "";
+            String comment = "";
+            String imgurl = "";
+            if (parentOrChildren) {
+                id = commentListBean.getCommentData().getId();
+                name = commentListBean.getCommentData().getAuthorName();
+                comment = commentListBean.getCommentData().getComment();
+            } else {
+                id = commentListBean.getList().get(position).getId();
+                name = commentListBean.getList().get(position).getAuthorName();
+                comment = commentListBean.getList().get(position).getComment();
+            }
+            type = "0";
+            if (isStockOrFund) {
+                type = "1";
+            }
+            String title = detail.getTitle();
+            String content = detail.getContent();
+            if (!TextUtils.isEmpty(detail.getImages())) {
+                List<String> strings = Arrays.asList(detail.getImages().split(","));
+                if (!ListUtils.isEmpty(strings)) {
+                    imgurl = strings.get(0);
+                }
+            }
+            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
+        }
     }
 
 
@@ -619,6 +658,9 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId);
+        if (isStockOrFund) {
+            requestMap.put("type", "1");
+        }
         HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -637,6 +679,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
 
     /**
      * 自己不能转发
+     *
      * @param parentOrChildren
      * @param data
      */

@@ -2,7 +2,6 @@ package com.qingbo.monk.Slides.activity;
 
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,22 +10,17 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.bean.CombinationListBean;
-import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
-import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
-import com.qingbo.monk.home.adapter.Focus_Adapter;
-import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -142,16 +136,16 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
     @Override
     protected void initEvent() {
         super.initEvent();
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
-                    case R.id.follow_Img:
-                        HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
-                        String likeId = item.getId();
-                        postLikedData(likeId, position);
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+                    HomeCombinationBean item = (HomeCombinationBean) adapter.getItem(position);
+            switch (view.getId()){
+                case R.id.follow_Img:
+                    String likeId = item.getId();
+                    postLikedData(likeId, position);
+                    break;
+                case R.id.share_Img:
+                    showShareDialog(item);
+                    break;
             }
         });
     }
@@ -187,9 +181,26 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
         httpSender.sendPost();
     }
 
-
     @Override
     public void onRightClick() {
         skipAnotherActivity(HomeSeek_Activity.class);
     }
+
+    /**
+     * 仓位组合分享
+     */
+    private void showShareDialog(HomeCombinationBean item) {
+        String imgUrl = "";
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getId();
+        String title = item.getName();
+        String content = "";
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(mActivity, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id("");
+        mShareDialog.setArticleType("3");
+        mShareDialog.setCollectType("2");
+        mShareDialog.setForGroupType("1");
+        mShareDialog.show();
+    }
+
 }

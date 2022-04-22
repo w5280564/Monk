@@ -67,7 +67,7 @@ import java.util.UUID;
 /**
  * 文章分享弹出框
  *
- * @author Administrator 欧阳
+ * @author
  */
 public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener, WbShareCallback {
     private static final int THUMB_SIZE = 120;
@@ -83,7 +83,9 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     private TextView wechat_Tv, quan_Tv, sina_Tv, qq_Tv;
     private String author_id;
     private Tencent mTencent;
-
+    private String articleType;
+    private String collectType;
+    private String forGroupType = "0";
 
     //在微博开发平台为应用申请的App Key
     private static final String APP_KY = "887009180";
@@ -95,6 +97,34 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                     + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
                     + "follow_app_official_microblog," + "invitation_write";
     private IWBAPI mWBAPI;
+
+
+    /**
+     * 转发到我的动态
+     * 文章类型 默认0是文章 1是资讯 2是评论 3：仓位组合【id：仓位组合ID】
+     *
+     * @param articleType
+     */
+    public void setArticleType(String articleType) {
+        this.articleType = articleType;
+    }
+
+    /**
+     * 收藏 type  0:文章 1：评论 2：仓位组合 3：资讯
+     *
+     * @param collectType
+     */
+    public void setCollectType(String collectType) {
+        this.collectType = collectType;
+    }
+
+    /**
+     *  转发到社群/兴趣圈
+     * @param forGroupType 转发操作类型 0：文章类【默认】 1：仓位组合
+     */
+    public void setForGroupType(String forGroupType) {
+        this.forGroupType = forGroupType;
+    }
 
     /**
      * 文章ID
@@ -333,7 +363,7 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                     }
                 }
                 String id = PrefUtil.getUser().getId();
-                ForWardGroup_Activity.actionStart(context, id, articleId);
+                ForWardGroup_Activity.actionStart(context, id, articleId,forGroupType);
                 break;
             case R.id.interest_Tv:
                 dismiss();
@@ -344,7 +374,7 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                     }
                 }
                 String id1 = PrefUtil.getUser().getId();
-                ForWardInterest_Activity.actionStart(context, id1, articleId);
+                ForWardInterest_Activity.actionStart(context, id1, articleId,forGroupType);
                 break;
             case R.id.cancel:
                 dismiss();
@@ -512,6 +542,9 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
         if (isStockOrFund) {
             type = "1";
         }
+        if (!TextUtils.isEmpty(articleType)) {
+            type = articleType;
+        }
         requestMap.put("id", articleId);
         requestMap.put("type", type);
         HttpSender httpSender = new HttpSender(HttpUrl.Repeat_Article, "转发动态", requestMap, new MyOnHttpResListener() {
@@ -535,6 +568,9 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     private void postCollectData(String articleId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId + "");
+        if (!TextUtils.isEmpty(collectType)) {
+            requestMap.put("type", collectType);
+        }
         HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

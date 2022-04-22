@@ -142,6 +142,20 @@
                     app:layout_constraintStart_toEndOf="@+id/mes_Img"
                     app:layout_constraintTop_toTopOf="@+id/mes_Img" />
 
+                <TextView
+                    android:id="@+id/share_Tv"
+                    android:layout_width="@dimen/dp_18"
+                    android:layout_height="@dimen/dp_18"
+                    android:layout_marginEnd="@dimen/dp_20"
+                    android:background="@mipmap/zhaunfa"
+                    android:textColor="@color/text_color_444444"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/mes_Count"
+                    app:layout_constraintTop_toTopOf="@id/mes_Count"
+                    android:layout_marginStart="@dimen/dp_30"
+                    app:layout_constraintBottom_toBottomOf="@id/mes_Count"/>
+
+
                 <View
                     android:id="@+id/line"
                     android:layout_width="match_parent"

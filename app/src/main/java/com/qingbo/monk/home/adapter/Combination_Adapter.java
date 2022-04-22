@@ -50,6 +50,7 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
 
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
+        helper.addOnClickListener(R.id.share_Img);
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {

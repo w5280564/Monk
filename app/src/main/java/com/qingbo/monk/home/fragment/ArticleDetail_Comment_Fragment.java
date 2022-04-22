@@ -1,7 +1,6 @@
 package com.qingbo.monk.home.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,14 +31,18 @@ import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.xunda.lib.common.common.Constants;
+import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 文章详情-评论
@@ -169,7 +172,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         LinearLayoutManager mManager = new LinearLayoutManager(mContext);
         mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new ArticleComment_Adapter(articleId, type, isStockOrFund,isGroup);
+        mAdapter = new ArticleComment_Adapter(articleId, type, isStockOrFund, isGroup);
 //        mAdapter.setEmptyView(addEmptyView("暂无点赞", R.mipmap.wupinglun));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -179,6 +182,12 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                 ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
                 editAndDelMesParent(view, item, position);
                 return false;
+            }
+        });
+        ((ArticleComment_Adapter) mAdapter).setOnItemClick(new ArticleComment_Adapter.onItemLister() {
+            @Override
+            public void onItemClick(View view, int pos, ArticleCommentBean data) {
+                ArticleDetali_CommentList_Activity.startActivity(requireActivity(), data, articleId, type, isStockOrFund, isGroup);
             }
         });
 
@@ -266,7 +275,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     break;
                 case R.id.commentMore_Tv:
                     String id = item.getId();
-                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type, isStockOrFund,isGroup);
+                    ArticleDetali_CommentList_Activity.startActivity(requireActivity(), item, articleId, type, isStockOrFund, isGroup);
                     break;
                 case R.id.mes_Img:
                     String authorId = item.getAuthorId();
@@ -420,25 +429,24 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
      * @param parentOrChildren true是一级评论 false 是子评论
      */
     private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
-        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele);
+        String id = "";
+        if (parentOrChildren) {
+            id = data.getId();
+        } else {
+            id = data.getChildrens().get(position).getCommentId();
+        }
+        String finalId = id;
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele, id);
+        mesMore_dialog.setCollectType("1");
         mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
             @Override
             public void onClickForWard() {
-                boolean forWard = isForWard(parentOrChildren, data, position);
-                if (forWard) {
-                    return;
-                }
+                startForWard(parentOrChildren, data, position);
+            }
 
-                if (homeFoucsDetail_bean != null) {
-                    HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
-                    //多张图片
-                    if (!TextUtils.isEmpty(detail.getImages())) {
-                        data.setImages(detail.getImages());
-                    }
-                    data.setTitle(detail.getTitle());
-                    data.setContent(detail.getContent());
-                }
-                Article_Forward.startActivity(mActivity, articleId, data, parentOrChildren, position, isStockOrFund);
+            @Override
+            public void onClickCollect() {
+
             }
 
             @Override
@@ -448,16 +456,55 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
 
             @Override
             public void onClickDelete() {
-                String id = "";
-                if (parentOrChildren) {
-                    id = data.getId();
-                } else {
-                    id = data.getChildrens().get(position).getCommentId();
-                }
-                showDeleteDialog(id, position);
+
+                showDeleteDialog(finalId, position);
             }
         });
         mesMore_dialog.show();
+    }
+
+    /**
+     * 打开转发页面
+     *
+     * @param parentOrChildren
+     * @param data
+     * @param position
+     */
+    private void startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+        boolean forWard = isForWard(parentOrChildren, data, position);
+        if (forWard) {
+            return;
+        }
+        if (homeFoucsDetail_bean != null) {
+            HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
+//                Article_Forward.startActivity(mActivity, articleId, data, parentOrChildren, position, isStockOrFund);
+            String id = "";
+            String name = "";
+            String comment = "";
+            String imgurl = "";
+            if (parentOrChildren) {
+                id = data.getId();
+                name = data.getAuthorName();
+                comment = data.getComment();
+            } else {
+                id = data.getChildrens().get(position).getCommentId();
+                name = data.getChildrens().get(position).getAuthorName();
+                comment = data.getChildrens().get(position).getComment();
+            }
+            type = "0";
+            if (isStockOrFund) {
+                type = "1";
+            }
+            String title = detail.getTitle();
+            String content = detail.getContent();
+            if (!TextUtils.isEmpty(detail.getImages())) {
+                List<String> strings = Arrays.asList(detail.getImages().split(","));
+                if (!ListUtils.isEmpty(strings)) {
+                    imgurl = strings.get(0);
+                }
+            }
+            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
+        }
     }
 
 
@@ -588,6 +635,9 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId);
+        if (isStockOrFund) {
+            requestMap.put("type", "1");
+        }
         HttpSender httpSender = new HttpSender(HttpUrl.User_Article_Detail, "个人文章详情", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

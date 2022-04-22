@@ -31,28 +31,21 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.CombinationLineChart_Bean;
 import com.qingbo.monk.bean.HomeCombinationBean;
-import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.adapter.Combination_Shares_Adapter;
-import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
-import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.qingbo.monk.home.fragment.CombinationDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.CombinationDetail_Zan_Fragment;
 import com.xunda.lib.common.common.Constants;
@@ -62,13 +55,11 @@ import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -106,6 +97,9 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     LineChart chart;
     @BindView(R.id.label_Name)
     TextView label_Name;
+    @BindView(R.id.share_Tv)
+    TextView share_Tv;
+
     private String isShowTop;
     boolean isReply = false;
     private String id;
@@ -115,7 +109,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
      * @param id
      * @param isShowTop 评论进入隐藏头部 正常是0 点击评论是1
      */
-    public static void startActivity(Context context, String isShowTop,  String id) {
+    public static void startActivity(Context context, String isShowTop, String id) {
         Intent intent = new Intent(context, CombinationDetail_Activity.class);
         intent.putExtra("isShowTop", isShowTop);
         intent.putExtra("id", id);
@@ -139,7 +133,6 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     }
 
 
-
     @Override
     protected int getLayoutId() {
         return R.layout.activity_home_combinationdetail;
@@ -156,10 +149,11 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     protected void initView() {
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
+        viewTouchDelegate.expandViewTouchDelegate(share_Tv, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
         initLineChart();
-        StringUtil.setColor(mContext,0,label_Name);
+        StringUtil.setColor(mContext, 0, label_Name);
     }
 
 
@@ -168,12 +162,13 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         follow_Img.setOnClickListener(this);
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
+        share_Tv.setOnClickListener(this);
     }
 
     @Override
     protected void getServerData() {
         getUserDetail(true);
-        addLineData(id, "6",false);
+        addLineData(id, "6", false);
     }
 
     @Override
@@ -193,7 +188,29 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             case R.id.release_Tv:
                 sendMes();
                 break;
+            case R.id.share_Tv:
+                if (homeCombinationBean != null) {
+                    showShareDialog(homeCombinationBean);
+                }
+                break;
         }
+    }
+
+    /**
+     * 分享
+     */
+    private void showShareDialog(HomeCombinationBean item) {
+        String imgUrl = "";
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getId();
+        String title = item.getName();
+        String content = "";
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id("");
+        mShareDialog.setArticleType("3");
+        mShareDialog.setCollectType("2");
+        mShareDialog.setForGroupType("1");
+        mShareDialog.show();
     }
 
     /**
@@ -219,10 +236,11 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     /**
      * 是否是自己
+     *
      * @param authorId2
      * @return
      */
-    public boolean isMy(String authorId2){
+    public boolean isMy(String authorId2) {
         String id = PrefUtil.getUser().getId();
         String authorId = authorId2;
         if (TextUtils.equals(id, authorId)) {//是自己不能评论
@@ -261,7 +279,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         for (int i = 0; i < sizes; i++) {
             card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
         }
-        tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id));
+        tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id, homeCombinationBean.getName()));
         tabFragmentList.add(CombinationDetail_Zan_Fragment.newInstance(id, ""));
 
         card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -287,6 +305,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     }
 
     HomeCombinationBean homeCombinationBean;
+
     private void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
@@ -327,7 +346,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
      * @param id
      * @param type
      */
-    public void addLineData(String id, String type,boolean isShow) {
+    public void addLineData(String id, String type, boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
         requestMap.put("type", type);
@@ -435,6 +454,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
 
     /**
      * 折线图加载数据
+     *
      * @param combinationLineChart_bean
      */
     private void setLineChartData(CombinationLineChart_Bean combinationLineChart_bean) {

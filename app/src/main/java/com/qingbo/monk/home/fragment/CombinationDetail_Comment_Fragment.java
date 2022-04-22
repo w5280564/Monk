@@ -13,14 +13,16 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
+import com.qingbo.monk.dialog.MesMore_Dialog;
+import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
@@ -31,7 +33,6 @@ import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.MyEditPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
@@ -46,10 +47,12 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 
     private boolean haveEditMes = false;
     private String commentId;
+    private String combinationName;
 
-    public static CombinationDetail_Comment_Fragment newInstance(String id) {
+    public static CombinationDetail_Comment_Fragment newInstance(String id, String combinationName) {
         Bundle args = new Bundle();
         args.putString("id", id);
+        args.putString("combinationName", combinationName);
         CombinationDetail_Comment_Fragment fragment = new CombinationDetail_Comment_Fragment();
         fragment.setArguments(args);
         return fragment;
@@ -68,12 +71,13 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无评论",  R.mipmap.wupinglun, true);
+        initSwipeRefreshLayoutAndAdapter("暂无评论", R.mipmap.wupinglun, true);
     }
 
     @Override
     protected void initLocalData() {
         id = getArguments().getString("id");
+        combinationName = getArguments().getString("combinationName");
     }
 
 
@@ -134,21 +138,18 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 //        mAdapter.setLoadMoreView(new CustomLoadMoreView());
 //        mAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
-                editAndDelMesParent(view, item, position);
-                return false;
-            }
+        mAdapter.setOnItemLongClickListener((adapter, view, position) -> {
+            ArticleCommentBean item = (ArticleCommentBean) adapter.getItem(position);
+            editAndDelMesParent(view, item, position);
+            return false;
         });
 
-        ((ArticleComment_Adapter) mAdapter).setOnClickLister(new ArticleComment_Adapter.OnClickLister() {
-            @Override
-            public void onLongClick(View view, int pos, ArticleCommentBean data) {
-                editAndDelMesChildren(view, data, pos);
-            }
+        ((ArticleComment_Adapter) mAdapter).setOnItemClick((view, pos, data) -> {
+//            String id = data.getId();
+            CombinationDetail_CommentList_Activity.startActivity(requireActivity(), data, id,combinationName);
         });
+
+        ((ArticleComment_Adapter) mAdapter).setOnClickLister((view, pos, data) -> editAndDelMesChildren(view, data, pos));
 
     }
 
@@ -164,11 +165,13 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         String edit = item.getEdit();
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+
         if (isAll) {
-            showPopMenu(view, item, pos, true, true);
-        }
-        if (isDel) {
-            showPopMenu(view, item, pos, false, true);
+            showPopMenu(view, item, pos, true, true, true, true);
+        } else if (isDel) {
+            showPopMenu(view, item, pos, true, false, true, true);
+        } else {
+            showPopMenu(view, item, pos, true, false, false, true);
         }
     }
 
@@ -185,11 +188,13 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         String edit = item.getChildrens().get(pos).getEdit();
         boolean isAll = TextUtils.equals(del, "1") && TextUtils.equals(edit, "1");//可编辑 可删除
         boolean isDel = TextUtils.equals(del, "1") && TextUtils.equals(edit, "0");//可删除
+
         if (isAll) {
-            showPopMenu(view, item, pos, true, false);
-        }
-        if (isDel) {
-            showPopMenu(view, item, pos, false, false);
+            showPopMenu(view, item, pos, true, true, true, false);
+        } else if (isDel) {
+            showPopMenu(view, item, pos, true, false, true, false);
+        } else {
+            showPopMenu(view, item, pos, true, false, false, false);
         }
     }
 
@@ -208,8 +213,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     postLikedData(likeId, position);
                     break;
                 case R.id.commentMore_Tv:
-                    String id = item.getId();
-                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), item, id);
+//                    String id = item.getId();
+                    CombinationDetail_CommentList_Activity.startActivity(requireActivity(), item, id,combinationName);
                     break;
                 case R.id.mes_Img:
                     String authorId = item.getAuthorId();
@@ -344,8 +349,29 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
      * @param haveEdit
      * @param parentOrChildren true是一级评论 false 是子评论
      */
-    private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveEdit, boolean parentOrChildren) {
-        MyEditPopWindow morePopWindow = new MyEditPopWindow(mActivity, haveEdit, new MyEditPopWindow.OnPopWindowClickListener() {
+    private void showPopMenu(View more_Img, ArticleCommentBean data, int position, boolean haveForWard, boolean haveEdit, boolean haveDele, boolean parentOrChildren) {
+        MesMore_Dialog mesMore_dialog = new MesMore_Dialog(mActivity, haveForWard, haveEdit, haveDele, id);
+        mesMore_dialog.setCollectType("1");
+
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            authorId = data.getChildrens().get(position).getAuthorId();
+        }
+        mesMore_dialog.setAuthorId(authorId);
+
+        mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
+            @Override
+            public void onClickForWard() {
+                startForWard(parentOrChildren, data, position);
+            }
+
+            @Override
+            public void onClickCollect() {
+
+            }
+
             @Override
             public void onClickEdit() {
                 editMes(data, position, parentOrChildren);
@@ -355,15 +381,65 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
             public void onClickDelete() {
                 String id = "";
                 if (parentOrChildren) {
-                    id =  data.getId();
-                }else {
+                    id = data.getId();
+                } else {
                     id = data.getChildrens().get(position).getCommentId();
                 }
                 showDeleteDialog(id, position);
             }
-
         });
-        morePopWindow.showPopupWindow(more_Img);
+        mesMore_dialog.show();
+    }
+
+    /**
+     * 打开转发页面
+     *
+     * @param parentOrChildren
+     * @param data
+     * @param position
+     */
+    private void startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+        boolean forWard = isForWard(parentOrChildren, data, position);
+        if (forWard) {
+            return;
+        }
+        String id = "";
+        String name = "";
+        String comment = "";
+        String imgurl = "";
+        if (parentOrChildren) {
+            id = data.getId();
+            name = data.getAuthorName();
+            comment = data.getComment();
+        } else {
+            id = data.getChildrens().get(position).getCommentId();
+            name = data.getChildrens().get(position).getAuthorName();
+            comment = data.getChildrens().get(position).getComment();
+        }
+        String type = "3";
+        String title = combinationName;
+        String content = "";
+        Article_Forward.startActivity(mActivity, data.getId(), type, id, name, comment, title, content, imgurl);
+    }
+
+    /**
+     * 自己不能转发
+     *
+     * @param parentOrChildren
+     * @param data
+     */
+    private boolean isForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+        String authorId = "";
+        if (parentOrChildren) {
+            authorId = data.getAuthorId();
+        } else {
+            authorId = data.getChildrens().get(position).getAuthorId();
+        }
+        if (IsMe.isMy(authorId)) {
+            T.s("不能转发自己评论", 3000);
+            return true;
+        }
+        return false;
     }
 
 
@@ -430,6 +506,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
 
     /**
      * 删除评论
+     *
      * @param id
      */
     private void delMesData(String id) {
@@ -448,7 +525,6 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
-
 
 
 }

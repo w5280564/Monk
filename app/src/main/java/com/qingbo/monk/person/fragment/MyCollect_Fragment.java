@@ -20,6 +20,7 @@ import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.adapter.MyCollect_Adapter;
@@ -137,12 +138,33 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
-            String articleId = item.getArticleId();
-            String type = item.getType();
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+//            String articleId = item.getArticleId();
+//            String type = item.getType();
+//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+
+            toDetail(item);
         });
 
     }
+
+    /**
+     *
+     * Collect_type 0：文章【默认】1：评论 2：仓位组合 3：资讯
+     */
+    private void toDetail(MyDynamic_Bean item) {
+        String type = item.getType();
+        String collect_type = item.getCollect_type();
+        String biz_id = item.getBiz_id();
+        if (collect_type.equals("2")) {
+            CombinationDetail_Activity.startActivity(requireActivity(), "0", biz_id);
+        } else if (collect_type.equals("3")){
+            ArticleDetail_Activity.startActivity(mActivity, biz_id, true, true);
+        }else {
+            ArticleDetail_Activity.startActivity(requireActivity(), biz_id, "0", type);
+        }
+    }
+
+
 
 
     @Override
@@ -201,6 +223,16 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
         mShareDialog.setAuthor_id(item.getAuthorId());
         mShareDialog.show();
+
+        String collect_type = item.getCollect_type();
+        if (collect_type.equals("2")) {
+            mShareDialog.setArticleType("3");
+            mShareDialog.setCollectType("2");
+            mShareDialog.setForGroupType("1");
+        } else if (collect_type.equals("3")){
+            mShareDialog.setArticleType("1");
+            mShareDialog.setCollectType("3");
+        }
     }
 
 

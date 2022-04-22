@@ -1,12 +1,18 @@
 package com.qingbo.monk.home.activity;
 
 import android.annotation.SuppressLint;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
@@ -52,6 +58,9 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         super.initEvent();
         seek_Tv.setOnClickListener(this);
         back_Img.setOnClickListener(this);
+
+        changeTab();
+        query_Edit.addTextChangedListener(new query_EditTextChangeListener());
     }
 
     @SuppressLint("WrongConstant")
@@ -80,6 +89,7 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         initViewPager(0);
     }
 
+
     @Override
     public void onClick(View v) {
         int selectedTabPosition = mTabLayout.getSelectedTabPosition();
@@ -93,6 +103,24 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
                 break;
         }
     }
+
+    private class query_EditTextChangeListener implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (!TextUtils.isEmpty(s)) {
+                int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+                CharSequence text = mTabLayout.getTabAt(selectedTabPosition).getText();
+                changeSeekData(text.toString(), s.toString());
+            }
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    }
+
 
     private void addSeekStr(String text) {
         if (query_Edit.getText().toString().trim().length() != 0) {
@@ -114,21 +142,55 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
     }
 
     private void changeSeekData(String type, String seekStr) {
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
         if (TextUtils.equals(type, "综合")) {
 //                ((HomeSeek_Whole_Fragment) fragments.get(0)).onResume();
-            ((HomeSeek_Whole_Fragment) fragments.get(0)).SearchAllList(seekStr, true);
+            ((HomeSeek_Whole_Fragment) fragments.get(selectedTabPosition)).SearchAllList(seekStr, true);
         } else if (TextUtils.equals(type, "用户")) {
-            ((HomeSeek_User) fragments.get(1)).getExpertList(seekStr, false);
+            ((HomeSeek_User) fragments.get(selectedTabPosition)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "人物")) {
-            ((HomeSeek_Person) fragments.get(2)).getExpertList(seekStr, false);
+            ((HomeSeek_Person) fragments.get(selectedTabPosition)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "股票")) {
 //            ((HomeSeek_Fund) fragments.get(3)).getExpertList(seekStr, false);
-            ((HomeSeek_Fund) fragments.get(3)).onRefreshData();
+            ((HomeSeek_Fund) fragments.get(selectedTabPosition)).onRefreshData();
         } else if (TextUtils.equals(type, "资讯")) {
-            ((HomeSeek_Topic) fragments.get(4)).getExpertList(seekStr, false);
+            ((HomeSeek_Topic) fragments.get(selectedTabPosition)).getExpertList(seekStr, false);
         } else if (TextUtils.equals(type, "圈子")) {
-            ((HomeSeek_Group) fragments.get(5)).getExpertList(seekStr, false);
+            ((HomeSeek_Group) fragments.get(selectedTabPosition)).getExpertList(seekStr, false);
         }
+    }
+
+    /**
+     * 切换tab刷新数据
+     */
+    private void changeTab() {
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                changeTabAndRefresh(position);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void changeTabAndRefresh(int index) {
+        mViewPager.setCurrentItem(index);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        BaseRecyclerViewSplitFragment fragment = (BaseRecyclerViewSplitFragment) fragments.get(index);
+        fragment.onRefresh();
     }
 
 }

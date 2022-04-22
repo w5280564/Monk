@@ -21,6 +21,7 @@ import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
 import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
@@ -143,9 +144,11 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
 
     /**
      * 详情 转发与原创用的 文章ID不一样
+     *
      * @param item
      */
     private void toDetail(MyDynamic_MoreItem_Bean item) {
+        String reprintType = item.getReprintType();//0-文章 1-资讯 2-转发评论 4-是仓位组合
         String isReprint = item.getIsReprint();//0-原创 1-转发
         String articleId;
         if (TextUtils.equals(isReprint, "0")) {
@@ -154,7 +157,13 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
             articleId = item.getPreArticleId();
         }
         String type = item.getType();
-        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+        if (reprintType.equals("4")) {
+            CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+        } else if (reprintType.equals("1")) {
+            ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+        } else {
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+        }
     }
 
 
