@@ -96,6 +96,19 @@
         app:layout_constraintStart_toEndOf="@+id/head_Img"
         app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
+
+    <TextView
+        android:id="@+id/share_Tv"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:background="@mipmap/zhaunfa"
+        android:textColor="@color/text_color_444444"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/children_Comment"
+        android:layout_marginTop="@dimen/dp_19"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <TextView
         android:id="@+id/mes_Count"
         android:layout_width="wrap_content"
@@ -104,7 +117,7 @@
         android:layout_marginEnd="@dimen/dp_18"
         android:textColor="@color/text_color_6f6f6f"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/share_Tv"
         app:layout_constraintTop_toBottomOf="@+id/children_Comment" />
 
     <ImageView

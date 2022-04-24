@@ -1,7 +1,10 @@
 package com.qingbo.monk.person.adapter;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +46,7 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
 
     @Override
     public void convert(@NonNull BaseViewHolder helper, MyDynamic_MoreItem_Bean item, int position) {
+        TextView report_Tv = helper.getView(R.id.report_Tv);
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         LinearLayout lable_Lin = helper.getView(R.id.lable_Lin);
@@ -55,8 +59,22 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         TextView mes_Count = helper.getView(R.id.mes_Count);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         TextView more_Tv = helper.getView(R.id.more_Tv);
-        TextView more_Img = helper.getView(R.id.more_Img);
+        ImageView more_Img = helper.getView(R.id.more_Img);
 
+        report_Tv.setText("转发仓位组合");
+        if (!TextUtils.isEmpty(item.getExtraContent())) {
+            String name = item.getCommentAuthorName();
+            String comment = item.getCommentComment();
+            String format = String.format("转发评论//@%1$s：%2$s", name, comment);
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", name)).length();
+            String extraContent = item.getExtraContent();
+            if (TextUtils.isEmpty(extraContent)) {
+                setName(format, startLength, startLength, endLength, report_Tv);
+            } else {
+                setName(extraContent, startLength, startLength, endLength, report_Tv);
+            }
+        }
 
         GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
         group_Name.setText(item.getNickname());
@@ -173,5 +191,19 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
 
         }
     }
+
+    /**
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
+     */
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
+    }
+
 
 }

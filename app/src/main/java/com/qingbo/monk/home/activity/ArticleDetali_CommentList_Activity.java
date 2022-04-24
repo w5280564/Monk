@@ -28,7 +28,9 @@ import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
+import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
+import com.qingbo.monk.dialog.CommentShare_Dialog;
 import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.adapter.CommentDetail_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
@@ -209,6 +211,9 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                         MyAndOther_Card.actionStart(mActivity, authorId1);
                     }
                     break;
+                case R.id.share_Tv:
+                    showShareDialog(false,position);
+                    break;
             }
         });
     }
@@ -241,6 +246,9 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                 if (!TextUtils.equals(authorId1, id1)) {
                     MyAndOther_Card.actionStart(mActivity, authorId1);
                 }
+                break;
+            case R.id.share_Tv:
+                showShareDialog(true,0);
                 break;
         }
     }
@@ -283,6 +291,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         }
         View myView = LayoutInflater.from(this).inflate(R.layout.commentlist_top, null);
         ImageView head_Img = myView.findViewById(R.id.head_Img);
+        TextView share_Tv = myView.findViewById(R.id.share_Tv);
         TextView nickName_Tv = myView.findViewById(R.id.nickName_Tv);
         TextView content_Tv = myView.findViewById(R.id.content_Tv);
         TextView time_Tv = myView.findViewById(R.id.time_Tv);
@@ -295,6 +304,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         topFollow_Img.setOnClickListener(this);
         topMes_Img.setOnClickListener(this);
         head_Img.setOnClickListener(this);
+        share_Tv.setOnClickListener(this);
         mAdapter.addHeaderView(myView);
         if (commentListBean != null) {
             CommentBean commentData = commentListBean.getCommentData();
@@ -427,12 +437,13 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             showPopMenu(view, item, position, haveForWard, true, true, true);
         } else if (isDel) {
             showPopMenu(view, item, position, haveForWard, false, true, true);
-        } else {
-            if (isGroup) {
-                return;
-            }
-            showPopMenu(view, item, position, haveForWard, false, false, true);
         }
+//        else {
+//            if (isGroup) {
+//                return;
+//            }
+//            showPopMenu(view, item, position, haveForWard, false, false, true);
+//        }
 
 
     }
@@ -455,8 +466,8 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                 if (forWard) {
                     return;
                 }
-                startForWard(parentOrChildren, data,position);
-
+                ForWardBean forWardBean = startForWard(parentOrChildren, position);
+                Article_Forward.startActivity(mActivity, forWardBean);
             }
 
             @Override
@@ -488,25 +499,27 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
      * 打开转发页面
      *
      * @param parentOrChildren
-     * @param data
      * @param position
      */
-    private void startForWard(boolean parentOrChildren, CommentBean data,int position) {
-        boolean forWard = isForWard(parentOrChildren, data);
-        if (forWard) {
-            return;
-        }
+    private ForWardBean startForWard(boolean parentOrChildren,int position) {
+//        boolean forWard = isForWard(parentOrChildren, data);
+//        if (forWard) {
+//            return;
+//        }
         if (homeFoucsDetail_bean != null) {
             HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
             String id = "";
             String name = "";
             String comment = "";
             String imgurl = "";
+            String commentAuthorId = "";
             if (parentOrChildren) {
+                commentAuthorId = commentListBean.getCommentData().getAuthorId();
                 id = commentListBean.getCommentData().getId();
                 name = commentListBean.getCommentData().getAuthorName();
                 comment = commentListBean.getCommentData().getComment();
             } else {
+                commentAuthorId = commentListBean.getList().get(position).getAuthorId();
                 id = commentListBean.getList().get(position).getId();
                 name = commentListBean.getList().get(position).getAuthorName();
                 comment = commentListBean.getList().get(position).getComment();
@@ -523,8 +536,21 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                     imgurl = strings.get(0);
                 }
             }
-            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
+            ForWardBean forWardBean = new ForWardBean();
+            forWardBean.setArtOrComID(articleId);
+            forWardBean.setCommentAuthorId(commentAuthorId);
+            forWardBean.setCommentId(id);
+            forWardBean.setName(name);
+            forWardBean.setComment(comment);
+            forWardBean.setType(type);
+            forWardBean.setStockOrFund(isStockOrFund);
+            forWardBean.setTitle(title);
+            forWardBean.setContent(content);
+            forWardBean.setImgurl(imgurl);
+            return forWardBean;
+//            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
         }
+        return null;
     }
 
 
@@ -696,6 +722,24 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
             return true;
         }
         return false;
+    }
+
+    /**
+     * 分享
+     * @param
+     */
+    private void showShareDialog(boolean parentOrChildren,int position) {
+        ForWardBean forWardBean = startForWard(parentOrChildren, position);
+        forWardBean.setGroup(isGroup);
+        CommentShare_Dialog mShareDialog = new CommentShare_Dialog(this, articleId, isGroup, "分享");
+        mShareDialog.setForWardBean(forWardBean);
+        mShareDialog.setAuthor_id(forWardBean.getCommentAuthorId());
+        mShareDialog.setForGroupType("2");
+        if (isStockOrFund){
+            mShareDialog.setArticleType("1");
+            mShareDialog.setCollectType("3");
+        }
+        mShareDialog.show();
     }
 
 

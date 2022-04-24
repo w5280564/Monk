@@ -159,8 +159,19 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
             CombinationDetail_Activity.startActivity(requireActivity(), "0", biz_id);
         } else if (collect_type.equals("3")){
             ArticleDetail_Activity.startActivity(mActivity, biz_id, true, true);
-        }else {
+        }else if (collect_type.equals("0")){
             ArticleDetail_Activity.startActivity(requireActivity(), biz_id, "0", type);
+        }else if (collect_type.equals("1")){
+
+            String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+            if (TextUtils.equals(source_type,"4")){
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", biz_id);
+            }  else if (TextUtils.equals(source_type,"5")) {
+                ArticleDetail_Activity.startActivity(mActivity, biz_id, true, true);
+            }else {
+                ArticleDetail_Activity.startActivity(requireActivity(), biz_id, "0", type);
+            }
+
         }
     }
 

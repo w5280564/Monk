@@ -78,6 +78,7 @@ public class CommentDetail_Adapter extends BaseQuickAdapter<CommentBean, BaseVie
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.head_Img);
+        helper.addOnClickListener(R.id.share_Tv);
     }
 
 

@@ -148,7 +148,6 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
      * @param item
      */
     private void toDetail(MyDynamic_MoreItem_Bean item) {
-        String reprintType = item.getReprintType();//0-文章 1-资讯 2-转发评论 4-是仓位组合
         String isReprint = item.getIsReprint();//0-原创 1-转发
         String articleId;
         if (TextUtils.equals(isReprint, "0")) {
@@ -157,12 +156,25 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
             articleId = item.getPreArticleId();
         }
         String type = item.getType();
+
+        String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
         if (reprintType.equals("4")) {
             CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
         } else if (reprintType.equals("1")) {
             ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
-        } else {
+        } else if (reprintType.equals("0")){
             ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+        }else if (reprintType.equals("3")){
+
+            String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+            if (TextUtils.equals(source_type,"4")){
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+            }  else if (TextUtils.equals(source_type,"5")) {
+                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+            }else {
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+            }
+
         }
     }
 

@@ -113,10 +113,14 @@ public class MesMore_Dialog extends Dialog implements OnClickListener {
         TextView dele_Tv = findViewById(R.id.dele_Tv);
         TextView cancel_Tv = findViewById(R.id.cancel_Tv);
 
-        forward_Tv.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
-        collect_Tv.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
-        view11.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
-        view12.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
+//        forward_Tv.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
+//        collect_Tv.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
+//        view11.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
+//        view12.setVisibility(haveForWard ? View.VISIBLE : View.GONE);
+        forward_Tv.setVisibility(View.GONE);
+        collect_Tv.setVisibility(View.GONE);
+        view11.setVisibility(View.GONE);
+        view12.setVisibility(View.GONE);
 
         edit_Tv.setVisibility(haveEdit ? View.VISIBLE : View.GONE);
         dele_Tv.setVisibility(haveDele ? View.VISIBLE : View.GONE);

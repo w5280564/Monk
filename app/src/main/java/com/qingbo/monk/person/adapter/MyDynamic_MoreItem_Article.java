@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -56,6 +57,7 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
 
     @Override
     public void convert(@NonNull BaseViewHolder helper, MyDynamic_MoreItem_Bean item, int position) {
+        TextView report_Tv = helper.getView(R.id.report_Tv);
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView tv_status = helper.getView(R.id.tv_status);
@@ -83,6 +85,21 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
             GlideUtils.loadCircleImage(mContext, group_Img, item.getAvatar());
             group_Name.setText(item.getNickname());
             labelFlow(lable_Lin, mContext, item.getTagName());
+        }
+
+        report_Tv.setText("转发动态");
+        if (!TextUtils.isEmpty(item.getExtraContent())) {
+            String name = item.getCommentAuthorName();
+            String comment = item.getCommentComment();
+            String format = String.format("转发评论//@%1$s：%2$s", name, comment);
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", name)).length();
+            String extraContent = item.getExtraContent();
+            if (TextUtils.isEmpty(extraContent)) {
+                setName(format, startLength, startLength, endLength, report_Tv);
+            } else {
+                setName(extraContent, startLength, startLength, endLength, report_Tv);
+            }
         }
 
 
@@ -231,6 +248,21 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
         viewName.setText(spannableString);
     }
 
+
+    /**
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
+     */
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
+    }
+
+
     /**
      * 跳转到查看图片页
      *
@@ -244,7 +276,6 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
         mContext.startActivity(intent);
         ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
-
 
 
 }

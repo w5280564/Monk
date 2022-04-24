@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.bean.InterestBean;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.person.adapter.MyInterestAdapter;
@@ -39,12 +40,12 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
     private String userID;
     private String articleId;
     private String op_type;
+    private ForWardBean forWardBean;
 
     /**
-     *
      * @param context
      * @param userID
-     * @param biz_id 文章id或者仓位组合ID
+     * @param biz_id  文章id或者仓位组合ID
      * @param op_type 0：文章类【默认】 1：仓位组合
      */
     public static void actionStart(Context context, String userID, String biz_id, String op_type) {
@@ -52,6 +53,15 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
         intent.putExtra("userID", userID);
         intent.putExtra("biz_id", biz_id);
         intent.putExtra("op_type", op_type);
+        context.startActivity(intent);
+    }
+
+    public static void actionStart(Context context, String userID, String biz_id, String op_type, ForWardBean forWardBean) {
+        Intent intent = new Intent(context, ForWardInterest_Activity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("biz_id", biz_id);
+        intent.putExtra("op_type", op_type);
+        intent.putExtra("forWardBean", forWardBean);
         context.startActivity(intent);
     }
 
@@ -79,6 +89,7 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
         userID = getIntent().getStringExtra("userID");
         articleId = getIntent().getStringExtra("biz_id");
         op_type = getIntent().getStringExtra("op_type");
+        forWardBean = (ForWardBean) getIntent().getSerializableExtra("forWardBean");
     }
 
 
@@ -168,7 +179,12 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
         new TwoButtonDialogBlue(mActivity, "确定转发到该兴趣组？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
-                postForwardingData(articleId, id);
+                if (TextUtils.equals(op_type, "2")) {
+                    forWardBean.setGroupId(id);
+                    Article_Forward.startActivity(mActivity, forWardBean, op_type);
+                } else {
+                    postForwardingData(articleId, id);
+                }
             }
 
             @Override
@@ -182,7 +198,7 @@ public class ForWardInterest_Activity extends BaseRecyclerViewSplitActivity {
      * 转发 到兴趣组
      *
      * @param articleId
-     * @param //type 1社群 2兴趣组
+     * @param //type    1社群 2兴趣组
      */
     private void postForwardingData(String articleId, String shequn_id) {
         HashMap<String, String> requestMap = new HashMap<>();

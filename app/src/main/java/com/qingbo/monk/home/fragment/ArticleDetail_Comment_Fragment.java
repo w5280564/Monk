@@ -22,7 +22,9 @@ import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
+import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
+import com.qingbo.monk.dialog.CommentShare_Dialog;
 import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
@@ -31,7 +33,6 @@ import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
@@ -197,6 +198,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                 editAndDelMesChildren(view, data, pos);
             }
         });
+
     }
 
     /**
@@ -219,12 +221,13 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             showPopMenu(view, item, pos, haveForWard, true, true, true);
         } else if (isDel) {
             showPopMenu(view, item, pos, haveForWard, false, true, true);
-        } else {
-            if (isGroup) {
-                return;
-            }
-            showPopMenu(view, item, pos, haveForWard, false, false, true);
         }
+//        else {
+//            if (isGroup) {
+//                return;
+//            }
+//            showPopMenu(view, item, pos, haveForWard, false, false, true);
+//        }
 
     }
 
@@ -249,12 +252,13 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
             showPopMenu(view, item, pos, haveForWard, true, true, false);
         } else if (isDel) {
             showPopMenu(view, item, pos, haveForWard, false, true, false);
-        } else {
-            if (isGroup) {
-                return;
-            }
-            showPopMenu(view, item, pos, haveForWard, false, false, false);
         }
+//        else {
+//            if (isGroup) {
+//                return;
+//            }
+//            showPopMenu(view, item, pos, haveForWard, false, false, false);
+//        }
 
 
     }
@@ -298,6 +302,9 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     if (!TextUtils.equals(authorId1, id1)) {
                         MyAndOther_Card.actionStart(mActivity, authorId1);
                     }
+                    break;
+                case R.id.share_Tv:
+                    showShareDialog(item);
                     break;
             }
         });
@@ -441,7 +448,9 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
             @Override
             public void onClickForWard() {
-                startForWard(parentOrChildren, data, position);
+                ForWardBean forWardBean = startForWard(parentOrChildren, data, position);
+                Article_Forward.startActivity(mActivity, forWardBean);
+//                Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
             }
 
             @Override
@@ -470,23 +479,25 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
      * @param data
      * @param position
      */
-    private void startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
-        boolean forWard = isForWard(parentOrChildren, data, position);
-        if (forWard) {
-            return;
-        }
+    private ForWardBean startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+//        boolean forWard = isForWard(parentOrChildren, data, position);
+//        if (forWard) {
+//            return null;
+//        }
         if (homeFoucsDetail_bean != null) {
             HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
-//                Article_Forward.startActivity(mActivity, articleId, data, parentOrChildren, position, isStockOrFund);
             String id = "";
             String name = "";
             String comment = "";
             String imgurl = "";
+            String commentAuthorId = "";
             if (parentOrChildren) {
+                commentAuthorId = data.getAuthorId();
                 id = data.getId();
                 name = data.getAuthorName();
                 comment = data.getComment();
             } else {
+                commentAuthorId = data.getChildrens().get(position).getAuthorId();
                 id = data.getChildrens().get(position).getCommentId();
                 name = data.getChildrens().get(position).getAuthorName();
                 comment = data.getChildrens().get(position).getComment();
@@ -503,8 +514,21 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     imgurl = strings.get(0);
                 }
             }
-            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
+            ForWardBean forWardBean = new ForWardBean();
+            forWardBean.setArtOrComID(articleId);
+            forWardBean.setCommentAuthorId(commentAuthorId);
+            forWardBean.setCommentId(id);
+            forWardBean.setName(name);
+            forWardBean.setComment(comment);
+            forWardBean.setType(type);
+            forWardBean.setStockOrFund(isStockOrFund);
+            forWardBean.setTitle(title);
+            forWardBean.setContent(content);
+            forWardBean.setImgurl(imgurl);
+            return forWardBean;
+//            Article_Forward.startActivity(mActivity, articleId, type, id, name, comment, title, content, imgurl);
         }
+        return null;
     }
 
 
@@ -652,6 +676,23 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    /**
+     * 分享
+     */
+    private void showShareDialog(ArticleCommentBean item) {
+        ForWardBean forWardBean = startForWard(true, item, 0);
+        forWardBean.setGroup(isGroup);
+        CommentShare_Dialog mShareDialog = new CommentShare_Dialog(requireActivity(), articleId, isGroup, "分享");
+        mShareDialog.setForWardBean(forWardBean);
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.setForGroupType("2");
+        if (isStockOrFund){
+            mShareDialog.setArticleType("1");
+            mShareDialog.setCollectType("3");
+        }
+        mShareDialog.show();
     }
 
 

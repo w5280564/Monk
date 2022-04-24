@@ -57,6 +57,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_sideslip_insider.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_sideslip_interest.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/activity_sideslip_mogulr.xml" value="0.32564102564102565" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/card_head_middle.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/commentlist_top.xml" value="0.35" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/item_recyclerview_v.xml" value="0.3388888888888889" />
         <entry key="..\:/Monk/app/src/main/res/layouts/activites/layout/item_scrollcard.xml" value="0.3388888888888889" />
@@ -95,6 +96,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_group_shequn.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_interest_my.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_article.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_information.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_nine_grid.xml" value="0.30104166666666665" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_all.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.35052083333333334" />
@@ -136,6 +138,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_recommend.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_stock.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/card_itemview.xml" value="0.36614583333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/commentshare_dialog.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/edit_change_achievement.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/edit_change_harvest.xml" value="0.3515625" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/edit_change_industry.xml" value="0.37864583333333335" />

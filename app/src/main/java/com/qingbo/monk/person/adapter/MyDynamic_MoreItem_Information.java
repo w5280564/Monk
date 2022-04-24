@@ -3,7 +3,6 @@ package com.qingbo.monk.person.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,9 +16,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
@@ -27,15 +24,12 @@ import com.qingbo.monk.base.PhotoShowActivity;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
-import com.qingbo.monk.home.NineGrid.NineGridAdapter;
-import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,6 +51,7 @@ public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_M
 
     @Override
     public void convert(@NonNull BaseViewHolder helper, MyDynamic_MoreItem_Bean item, int position) {
+        TextView report_Tv = helper.getView(R.id.report_Tv);
         ImageView group_Img = helper.getView(R.id.group_Img);
         TextView group_Name = helper.getView(R.id.group_Name);
         TextView title_Tv = helper.getView(R.id.title_Tv);
@@ -73,6 +68,21 @@ public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_M
         more_Img.setVisibility(View.GONE);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
 
+
+        report_Tv.setText("转发资讯");
+        if (!TextUtils.isEmpty(item.getExtraContent())) {
+            String name = item.getCommentAuthorName();
+            String comment = item.getCommentComment();
+            String format = String.format("转发评论//@%1$s：%2$s", name, comment);
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", name)).length();
+            String extraContent = item.getExtraContent();
+            if (TextUtils.isEmpty(extraContent)) {
+                setName(format, startLength, startLength, endLength, report_Tv);
+            } else {
+                setName(extraContent, startLength, startLength, endLength, report_Tv);
+            }
+        }
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -191,6 +201,20 @@ public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_M
         spannableString.setSpan(new ForegroundColorSpan(color), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         viewName.setText(spannableString);
     }
+
+    /**
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
+     */
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
+    }
+
 
     /**
      * 跳转到查看图片页

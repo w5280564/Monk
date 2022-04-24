@@ -1,5 +1,7 @@
 package com.qingbo.monk.person.adapter;
 
+import android.text.TextUtils;
+
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
@@ -30,20 +32,40 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
     protected int getViewType(MyDynamic_MoreItem_Bean entity) {
         if (entity != null) {
             String isReprint = entity.getIsReprint();//0-原创 1-转发
-            if (isReprint.equals("1")) {
-                String reprintType = entity.getReprintType();
-                if (reprintType.equals("0")) { //0-文章 1-资讯 2-转发评论 4-是仓位组合
-                    return TYPE_ARTICLE;
-                } else if (reprintType.equals("1")) {
-                    return TYPE_INFORMATION;
-                }else if (reprintType.equals("2")) {
-                    return TYPE_FORWARD;
-                }else if (reprintType.equals("4")) {
+//            if (isReprint.equals("1")) {
+//                String reprintType = entity.getReprintType();
+//                if (reprintType.equals("0")) { //0-文章 1-资讯 3-转发评论 4-是仓位组合
+//                    return TYPE_ARTICLE;
+//                } else if (reprintType.equals("1")) {
+//                    return TYPE_INFORMATION;
+//                }else if (reprintType.equals("3")) {
+//                    return TYPE_FORWARD;
+//                }else if (reprintType.equals("4")) {
+//                    return TYPE_Combination;
+//                }
+//            } else {
+//                return TYPE_MY;
+//            }
+            String reprintType = entity.getReprintType(); //0-文章 1-资讯 3-转发评论 4-是仓位组合
+            if (reprintType.equals("0")){
+                return TYPE_ARTICLE;
+            }else if (reprintType.equals("1")){
+                return TYPE_INFORMATION;
+            }else if (reprintType.equals("4")) {
+                return TYPE_Combination;
+            }else if (reprintType.equals("3")){
+
+                String source_type = entity.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+                if (TextUtils.equals(source_type,"4")){
                     return TYPE_Combination;
+                }else if (TextUtils.equals(source_type,"5")) {
+                    return TYPE_INFORMATION;
+                }else {
+                    return TYPE_ARTICLE;
                 }
-            } else {
-                return TYPE_MY;
+
             }
+
         }
         return TYPE_MY;
     }
@@ -53,8 +75,9 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Adapter());
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Article());
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Information());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
         mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Combination());
+
+//        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
     }
 
 

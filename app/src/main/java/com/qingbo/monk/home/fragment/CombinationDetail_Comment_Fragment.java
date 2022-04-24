@@ -21,6 +21,8 @@ import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
+import com.qingbo.monk.bean.ForWardBean;
+import com.qingbo.monk.dialog.CommentShare_Dialog;
 import com.qingbo.monk.dialog.MesMore_Dialog;
 import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
@@ -170,9 +172,10 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
             showPopMenu(view, item, pos, true, true, true, true);
         } else if (isDel) {
             showPopMenu(view, item, pos, true, false, true, true);
-        } else {
-            showPopMenu(view, item, pos, true, false, false, true);
         }
+//        else {
+//            showPopMenu(view, item, pos, true, false, false, true);
+//        }
     }
 
 
@@ -193,9 +196,10 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
             showPopMenu(view, item, pos, true, true, true, false);
         } else if (isDel) {
             showPopMenu(view, item, pos, true, false, true, false);
-        } else {
-            showPopMenu(view, item, pos, true, false, false, false);
         }
+//        else {
+//            showPopMenu(view, item, pos, true, false, false, false);
+//        }
     }
 
 
@@ -231,6 +235,9 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     if (!TextUtils.equals(authorId1, id1)) {
                         MyAndOther_Card.actionStart(mActivity, authorId1);
                     }
+                    break;
+                case R.id.share_Tv:
+                    showShareDialog(item);
                     break;
             }
         });
@@ -364,7 +371,8 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mesMore_dialog.setMoreClickLister(new MesMore_Dialog.moreClickLister() {
             @Override
             public void onClickForWard() {
-                startForWard(parentOrChildren, data, position);
+                ForWardBean forWardBean = startForWard(parentOrChildren, data, position);
+                Article_Forward.startActivity(mActivity, forWardBean);
             }
 
             @Override
@@ -398,20 +406,23 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
      * @param data
      * @param position
      */
-    private void startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
-        boolean forWard = isForWard(parentOrChildren, data, position);
-        if (forWard) {
-            return;
-        }
+    private ForWardBean startForWard(boolean parentOrChildren, ArticleCommentBean data, int position) {
+//        boolean forWard = isForWard(parentOrChildren, data, position);
+//        if (forWard) {
+//            return;
+//        }
         String id = "";
         String name = "";
         String comment = "";
         String imgurl = "";
+        String commentAuthorId = "";
         if (parentOrChildren) {
+            commentAuthorId = data.getAuthorId();
             id = data.getId();
             name = data.getAuthorName();
             comment = data.getComment();
         } else {
+            commentAuthorId = data.getChildrens().get(position).getAuthorId();
             id = data.getChildrens().get(position).getCommentId();
             name = data.getChildrens().get(position).getAuthorName();
             comment = data.getChildrens().get(position).getComment();
@@ -419,7 +430,19 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         String type = "3";
         String title = combinationName;
         String content = "";
-        Article_Forward.startActivity(mActivity, data.getId(), type, id, name, comment, title, content, imgurl);
+
+        ForWardBean forWardBean = new ForWardBean();
+        forWardBean.setArtOrComID(id);
+        forWardBean.setCommentAuthorId(commentAuthorId);
+        forWardBean.setCommentId(id);
+        forWardBean.setName(name);
+        forWardBean.setComment(comment);
+        forWardBean.setType(type);
+//        forWardBean.setStockOrFund(isStockOrFund);
+        forWardBean.setTitle(title);
+        forWardBean.setContent(content);
+        forWardBean.setImgurl(imgurl);
+        return forWardBean;
     }
 
     /**
@@ -525,6 +548,24 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+
+    /**
+     * 分享
+     */
+    private void showShareDialog(ArticleCommentBean item) {
+        ForWardBean forWardBean = startForWard(true, item, 0);
+        String articleId = item.getId();
+        CommentShare_Dialog mShareDialog = new CommentShare_Dialog(requireActivity(), articleId, false, "分享");
+        mShareDialog.setForWardBean(forWardBean);
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.setArticleType("3");
+        mShareDialog.setCollectType("2");
+        mShareDialog.setForGroupType("1");
+        mShareDialog.show();
+    }
+
+
 
 
 }

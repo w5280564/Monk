@@ -119,7 +119,8 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     }
 
     /**
-     *  转发到社群/兴趣圈
+     * 转发到社群/兴趣圈
+     *
      * @param forGroupType 转发操作类型 0：文章类【默认】 1：仓位组合
      */
     public void setForGroupType(String forGroupType) {
@@ -363,7 +364,7 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                     }
                 }
                 String id = PrefUtil.getUser().getId();
-                ForWardGroup_Activity.actionStart(context, id, articleId,forGroupType);
+                ForWardGroup_Activity.actionStart(context, id, articleId, forGroupType);
                 break;
             case R.id.interest_Tv:
                 dismiss();
@@ -374,7 +375,7 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                     }
                 }
                 String id1 = PrefUtil.getUser().getId();
-                ForWardInterest_Activity.actionStart(context, id1, articleId,forGroupType);
+                ForWardInterest_Activity.actionStart(context, id1, articleId, forGroupType);
                 break;
             case R.id.cancel:
                 dismiss();
@@ -498,9 +499,9 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
         webObject.identify = UUID.randomUUID().toString();
         webObject.title = title;
         webObject.description = text;
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_logo);
         ByteArrayOutputStream os = null;
         try {
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.app_logo);
             os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 85, os);
             webObject.thumbData = os.toByteArray();

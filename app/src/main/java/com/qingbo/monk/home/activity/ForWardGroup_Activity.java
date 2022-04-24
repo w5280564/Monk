@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.bean.MyCardGroup_Bean;
 import com.qingbo.monk.bean.MyGroupList_Bean;
 import com.qingbo.monk.person.adapter.MyGroupAdapter;
@@ -47,19 +48,28 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
     private TextView myCrate_Tv, group_Tv;
     private String articleId;
     private String op_type;
+    private ForWardBean forWardBean;
 
     /**
-     *
      * @param context
      * @param userID
-     * @param biz_id 文章id或者仓位组合ID
-     * @param op_type 0：文章类【默认】 1：仓位组合
+     * @param biz_id  文章id或者仓位组合ID
+     * @param op_type 0：文章类【默认】 1：仓位组合 2：评论
      */
     public static void actionStart(Context context, String userID, String biz_id, String op_type) {
         Intent intent = new Intent(context, ForWardGroup_Activity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("biz_id", biz_id);
         intent.putExtra("op_type", op_type);
+        context.startActivity(intent);
+    }
+
+    public static void actionStart(Context context, String userID, String biz_id, String op_type, ForWardBean forWardBean) {
+        Intent intent = new Intent(context, ForWardGroup_Activity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("biz_id", biz_id);
+        intent.putExtra("op_type", op_type);
+        intent.putExtra("forWardBean", forWardBean);
         context.startActivity(intent);
     }
 
@@ -87,6 +97,7 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
         userID = getIntent().getStringExtra("userID");
         articleId = getIntent().getStringExtra("biz_id");
         op_type = getIntent().getStringExtra("op_type");
+         forWardBean = (ForWardBean) getIntent().getSerializableExtra("forWardBean");
     }
 
     @Override
@@ -190,7 +201,12 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
         new TwoButtonDialogBlue(mActivity, "确定转发到该社群？", "取消", "确定", new TwoButtonDialogBlue.ConfirmListener() {
             @Override
             public void onClickRight() {
-                postForwardingData(articleId, id);
+                if (TextUtils.equals(op_type, "2")) {
+                    forWardBean.setGroupId(id);
+                    Article_Forward.startActivity(mActivity, forWardBean,op_type);
+                } else {
+                    postForwardingData(articleId, id);
+                }
             }
 
             @Override
@@ -203,6 +219,7 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
 
     //我创建的群
     MyGroupList_Bean myGroupList_bean;
+
     private void getMyGroupHead(String type) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("page", page + "");
@@ -280,7 +297,7 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
      * 转发 到社群
      *
      * @param articleId
-     * @param //type 1社群 2兴趣组
+     * @param //type    1社群 2兴趣组
      */
     private void postForwardingData(String articleId, String shequn_id) {
         HashMap<String, String> requestMap = new HashMap<>();

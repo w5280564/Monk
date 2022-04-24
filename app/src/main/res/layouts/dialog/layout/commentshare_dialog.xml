@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_180"
+    android:background="@drawable/shape_background_white_radius9"
+    android:orientation="vertical"
+    tools:ignore="MissingConstraints">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:gravity="center"
+        android:text="分享到"
+        android:textColor="@color/text_color_444444"
+        android:textSize="16sp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
+
+
+    <TextView
+        android:id="@+id/dynamic_Tv"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:drawableTop="@mipmap/zaunfa"
+        android:drawablePadding="@dimen/dp_15"
+        android:text="转发动态"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/collect_Tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/collect_Tv"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:drawableTop="@mipmap/info_shoucang"
+        android:drawablePadding="@dimen/dp_15"
+        android:gravity="center"
+        android:text="收藏"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/dynamic_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/group_Tv"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:drawableTop="@mipmap/shequn"
+        android:drawablePadding="@dimen/dp_15"
+        android:gravity="center"
+        android:text="社群"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/interest_Tv"
+        app:layout_constraintStart_toEndOf="@+id/collect_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/interest_Tv"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:drawableTop="@mipmap/xingquzu"
+        android:drawablePadding="@dimen/dp_15"
+        android:gravity="center"
+        android:text="兴趣组"
+        android:textColor="@color/text_color_6f6f6f"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/group_Tv"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+
+
+    <View
+        style="@style/app_line"
+        app:layout_constraintBottom_toTopOf="@id/cancel" />
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:gravity="center"
+        android:text="@string/Cancel"
+        android:textColor="@color/text_color_444444"
+        android:textSize="@dimen/button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

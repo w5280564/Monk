@@ -100,6 +100,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         helper.addOnClickListener(R.id.commentMore_Tv);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.head_Img);
+        helper.addOnClickListener(R.id.share_Tv);
     }
 
 
@@ -144,7 +145,6 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (onItemClick != null) {
-
                     onItemClick.onItemClick(view, position, data);
                 }
 //                onClickLister.onItemClick(view, position, data);

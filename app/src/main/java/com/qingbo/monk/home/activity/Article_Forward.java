@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.ForWardBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -37,37 +38,20 @@ public class Article_Forward extends BaseActivity {
     @BindView(R.id.artContent_Tv)
     TextView artContent_Tv;
     String id = "";
-    private String type;
-    private String artOrComID;
-    private String commentId;
-    private String authorName;
-    private String comment;
-    private String titleName;
-    private String content;
-    private String imgUrl;
+    private ForWardBean forWardBean;
+    private String op_type;
 
-    /**
-     *
-     * @param context
-     * @param artOrComID 文章或者仓位组合ID
-     * @param type 默认0是文章 1是资讯 2是评论 3：仓位组合【id：仓位组合ID】
-     * @param commentId
-     * @param authorName
-     * @param comment
-     * @param title
-     * @param content
-     * @param imgUrl
-     */
-    public static void startActivity(Context context, String artOrComID, String type, String commentId, String authorName, String comment, String title, String content, String imgUrl) {
+
+    public static void startActivity(Context context, ForWardBean forWardBean) {
         Intent intent = new Intent(context, Article_Forward.class);
-        intent.putExtra("artOrComID", artOrComID);
-        intent.putExtra("type", type);
-        intent.putExtra("commentId", commentId);
-        intent.putExtra("authorName", authorName);
-        intent.putExtra("comment", comment);
-        intent.putExtra("title", title);
-        intent.putExtra("content", content);
-        intent.putExtra("imgUrl", imgUrl);
+        intent.putExtra("forWardBean", forWardBean);
+        context.startActivity(intent);
+    }
+
+    public static void startActivity(Context context, ForWardBean forWardBean, String op_type) {
+        Intent intent = new Intent(context, Article_Forward.class);
+        intent.putExtra("forWardBean", forWardBean);
+        intent.putExtra("op_type", op_type);
         context.startActivity(intent);
     }
 
@@ -79,14 +63,8 @@ public class Article_Forward extends BaseActivity {
 
     @Override
     protected void initLocalData() {
-        artOrComID = getIntent().getStringExtra("artOrComID");
-        type = getIntent().getStringExtra("type");
-        commentId = getIntent().getStringExtra("commentId");
-        authorName = getIntent().getStringExtra("authorName");
-        comment = getIntent().getStringExtra("comment");
-        titleName = getIntent().getStringExtra("title");
-        content = getIntent().getStringExtra("content");
-        imgUrl = getIntent().getStringExtra("imgUrl");
+        forWardBean = (ForWardBean) getIntent().getSerializableExtra("forWardBean");
+        op_type = getIntent().getStringExtra("op_type");
     }
 
     @Override
@@ -98,17 +76,19 @@ public class Article_Forward extends BaseActivity {
      * 文章详情 转发评论
      */
     private void addData() {
-        String format = String.format("转发评论//@%1$s：%2$s", authorName, comment);
-        int startLength = "转发评论//".length();
-        int endLength = (String.format("转发评论//@%1$s：", authorName)).length();
-        setName(format, startLength, startLength, endLength, et_content);
-        if (!TextUtils.isEmpty(imgUrl)) {
-            GlideUtils.loadRoundImage(mActivity, article_Img, imgUrl, 9);
-        } else {
-            article_Img.setImageResource(R.mipmap.img_pic_none_square);
+        if (forWardBean != null) {
+            String format = String.format("转发评论//@%1$s：%2$s", forWardBean.getName(), forWardBean.getComment());
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", forWardBean.getName())).length();
+            setName(format, startLength, startLength, endLength, et_content);
+            if (!TextUtils.isEmpty(forWardBean.getImgurl())) {
+                GlideUtils.loadRoundImage(mActivity, article_Img, forWardBean.getImgurl(), 9);
+            } else {
+                article_Img.setImageResource(R.mipmap.img_pic_none_square);
+            }
+            artName_tv.setText(forWardBean.getTitle());
+            artContent_Tv.setText(forWardBean.getContent());
         }
-        artName_tv.setText(titleName);
-        artContent_Tv.setText(content);
     }
 
     /**
@@ -126,18 +106,23 @@ public class Article_Forward extends BaseActivity {
 
     @Override
     public void onRightClick() {
-        if (TextUtils.isEmpty(et_content.getText())) {
-            id = artOrComID;
-        }else{
-            type = "2";
-            id = commentId;
+        if (forWardBean != null) {
+            if (TextUtils.isEmpty(et_content.getText())) {
+                id = forWardBean.getArtOrComID();
+            } else {
+                forWardBean.setType("2");
+                id = forWardBean.getCommentId();
+            }
         }
-        postForwardingData(id);
+        if (TextUtils.equals(op_type, "2")) {
+            postForwardingData(id,forWardBean.getGroupId());
+        } else {
+            postForwardingData(id);
+        }
     }
 
-
     /**
-     * 转发
+     * 转发 到动态
      *
      * @param id
      * @param //type 默认0是文章 1是资讯 2是评论  3仓位组合
@@ -145,11 +130,41 @@ public class Article_Forward extends BaseActivity {
     private void postForwardingData(String id) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
-        requestMap.put("type", type);
-        if (TextUtils.equals(type, "2")) {
-            requestMap.put("content", et_content.getText().toString());
+        if (forWardBean != null) {
+            requestMap.put("type", forWardBean.getType());
+            if (TextUtils.equals(forWardBean.getType(), "2")) {
+                requestMap.put("content", et_content.getText().toString());
+            }
         }
         HttpSender httpSender = new HttpSender(HttpUrl.Repeat_Article, "转发动态", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    T.s(json_data, 3000);
+                    finish();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
+    /**
+     * 转发到 社群/兴趣组
+     *
+     * @param articleId
+     * @param //type    1社群 2兴趣组
+     */
+    private void postForwardingData(String articleId, String shequn_id) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("biz_id", articleId);
+        requestMap.put("shequn_id", shequn_id);
+        requestMap.put("type", forWardBean.getGroupOrInterest());
+        requestMap.put("op_type", op_type);
+        requestMap.put("content", et_content.getText().toString());
+        HttpSender httpSender = new HttpSender(HttpUrl.ForWard_Group, "转发动态_社群/兴趣组", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {

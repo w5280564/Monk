@@ -83,6 +83,9 @@ public class MyDynamic_MoreItem_Bean implements Serializable {
     private Integer likedStatus;
     @SerializedName("like")
     private Integer like;
+    @SerializedName("source_type")
+    private String source_type;
+
 
     @SerializedName("id")
     private String id;

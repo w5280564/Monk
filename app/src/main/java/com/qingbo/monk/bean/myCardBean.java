@@ -25,6 +25,8 @@ public class myCardBean {
         private List<ListDTO> list;
         @SerializedName("count")
         private String count;
+        @SerializedName("user_group_count")
+        private String user_group_count;
 
         @NoArgsConstructor
         @Data
