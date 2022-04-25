@@ -82,7 +82,6 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
                 requestUrl = HttpUrl.getOwnPublishList;
             }
         }
-
         registerEventBus();
     }
 
@@ -172,18 +171,13 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
             }
         });
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
-                if (mQuestionBean == null) {
-                    return;
-                }
-
-                String type = mQuestionBean.getTopicType();
-                GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type,mQuestionBean,fragmentType,role);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
+            if (mQuestionBean == null) {
+                return;
             }
+            String type = mQuestionBean.getTopicType();
+            GroupTopicDetailActivity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0",type,mQuestionBean,fragmentType,role);
         });
 
 

@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
@@ -21,9 +23,9 @@ import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.SharePref;
 import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.L;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +38,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
     private String role_self;
     private String id_self;
 
-    public GroupDetailTopicListAdapter(int type,String role) {
+    public GroupDetailTopicListAdapter(int type, String role) {
         super(R.layout.item_group_detail_topic);
         this.type = type;
         this.role_self = role;
@@ -63,7 +65,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         TextView mes_Count = helper.getView(R.id.mes_Count);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(follow_Img,100);
+        viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView iv_delete = helper.getView(R.id.iv_delete);
         viewTouchDelegate.expandViewTouchDelegate(iv_delete, 100);
         helper.addOnClickListener(R.id.iv_delete);
@@ -83,15 +85,14 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
 
 
-
-        if (type==0) {
+        if (type == 0) {
             more_Img.setVisibility(View.GONE);
             ll_bottom.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
             read_number_Tv.setVisibility(View.VISIBLE);
-            read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
-        }else{
+            read_number_Tv.setText(String.format("阅读人数：%s", item.getReadNum()));
+        } else {
             more_Img.setVisibility(View.VISIBLE);
             iv_delete.setVisibility(View.GONE);
             tv_answer.setVisibility(View.GONE);
@@ -101,21 +102,21 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
                 tv_status.setVisibility(View.VISIBLE);
                 read_number_Tv.setVisibility(View.GONE);
                 tv_status.setText("待审核");
-                setDrawableLeft(R.mipmap.weishenhe,tv_status);
-            } else if(TextUtils.equals(status, "1")){
+                setDrawableLeft(R.mipmap.weishenhe, tv_status);
+            } else if (TextUtils.equals(status, "1")) {
                 ll_bottom.setVisibility(View.VISIBLE);
                 tv_status.setVisibility(View.VISIBLE);
                 read_number_Tv.setVisibility(View.VISIBLE);
                 tv_status.setText("审核通过");
-                setDrawableLeft(R.mipmap.shenhetongguo,tv_status);
-                read_number_Tv.setText(String.format("阅读人数：%s",item.getReadNum()));
-            } else if(TextUtils.equals(status, "2")){
+                setDrawableLeft(R.mipmap.shenhetongguo, tv_status);
+                read_number_Tv.setText(String.format("阅读人数：%s", item.getReadNum()));
+            } else if (TextUtils.equals(status, "2")) {
                 ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.VISIBLE);
                 read_number_Tv.setVisibility(View.GONE);
-                setDrawableLeft(R.mipmap.weitongguo,tv_status);
+                setDrawableLeft(R.mipmap.weitongguo, tv_status);
                 tv_status.setText("未通过");
-            } else{
+            } else {
                 ll_bottom.setVisibility(View.GONE);
                 tv_status.setVisibility(View.GONE);
                 read_number_Tv.setVisibility(View.GONE);
@@ -129,25 +130,25 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
             if (!StringUtil.isBlank(item.getTitle())) {
                 title_Tv.setVisibility(View.VISIBLE);
                 title_Tv.setText(item.getTitle());
-            }else{
+            } else {
                 title_Tv.setVisibility(View.GONE);
             }
-            handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum()
-                    ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
+            handleCommonData(item.getAvatar(), item.getNickname(), item.getContent(), item.getRole(), item.getAuthorId(), item.getStatusNum()
+                    , group_Img, group_Name, content_Tv, tv_role, iv_delete, follow_Tv, send_Mes);
             handleImageList(item, mNineView);
             ll_container_answer.setVisibility(View.GONE);
-        }else{
+        } else {
             title_Tv.setVisibility(View.GONE);
             List<OwnPublishBean.DetailDTO> details = item.getDetail();
             if (!ListUtils.isEmpty(details)) {
                 ll_container_answer.setVisibility(View.VISIBLE);
                 OwnPublishBean.DetailDTO answerObj = details.get(0);
-                handleCommonData(answerObj.getAvatar(),answerObj.getNickname(),answerObj.getAnswerContent(),answerObj.getRole(),answerObj.getAuthorId(),answerObj.getStatusNum()
-                ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
-                createQuestionList(ll_container_answer,item);
-            }else{
-                handleCommonData(item.getAvatar(),item.getNickname(),item.getContent(),item.getRole(),item.getAuthorId(),item.getStatusNum()
-                        ,group_Img,group_Name,content_Tv,tv_role,iv_delete,follow_Tv,send_Mes);
+                handleCommonData(answerObj.getAvatar(), answerObj.getNickname(), answerObj.getAnswerContent(), answerObj.getRole(), answerObj.getAuthorId(), answerObj.getStatusNum()
+                        , group_Img, group_Name, content_Tv, tv_role, iv_delete, follow_Tv, send_Mes);
+                createQuestionList(ll_container_answer, item);
+            } else {
+                handleCommonData(item.getAvatar(), item.getNickname(), item.getContent(), item.getRole(), item.getAuthorId(), item.getStatusNum()
+                        , group_Img, group_Name, content_Tv, tv_role, iv_delete, follow_Tv, send_Mes);
                 handleImageList(item, mNineView);
                 ll_container_answer.setVisibility(View.GONE);
             }
@@ -155,50 +156,50 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
 
     }
 
-    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status
-            ,ImageView iv_headImg ,TextView tv_headName,TextView tv_content,TextView tv_role,ImageView iv_delete,TextView tv_follow,TextView tv_send_mes) {
+    private void handleCommonData(String headImg, String headName, String content, String role, String publish_user_id, int follow_status
+            , ImageView iv_headImg, TextView tv_headName, TextView tv_content, TextView tv_role, ImageView iv_delete, TextView tv_follow, TextView tv_send_mes) {
         GlideUtils.loadCircleImage(mContext, iv_headImg, headImg);
         tv_headName.setText(headName);
 
         if (!StringUtil.isBlank(content)) {
             tv_content.setVisibility(View.VISIBLE);
             tv_content.setText(content);
-        }else{
+        } else {
             tv_content.setVisibility(View.GONE);
         }
 
         if ("1".equals(role)) {//1管理员2合伙人0一般用户3群主
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("管理员");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else if("2".equals(role)) {
+            tv_headName.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_ff5f2e));
+        } else if ("2".equals(role)) {
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("合伙人");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else if("3".equals(role)) {
+            tv_headName.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_ff5f2e));
+        } else if ("3".equals(role)) {
             tv_role.setVisibility(View.VISIBLE);
             tv_role.setText("群主");
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_ff5f2e));
-        }else{
+            tv_headName.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_ff5f2e));
+        } else {
             tv_role.setVisibility(View.GONE);
-            tv_headName.setTextColor(ContextCompat.getColor(mContext,R.color.text_color_444444));
+            tv_headName.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
         }
 
-        if (type==0) {
+        if (type == 0) {
             if (id_self.equals(publish_user_id)) {
                 iv_delete.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 if ("3".equals(role_self)) {//1管理员2合伙人0一般用户3群主
                     iv_delete.setVisibility(View.VISIBLE);
-                }else if ("2".equals(role_self)) {
-                    if ("1".equals(role)||"0".equals(role)) {
+                } else if ("2".equals(role_self)) {
+                    if ("1".equals(role) || "0".equals(role)) {
                         iv_delete.setVisibility(View.VISIBLE);
                     }
-                }else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
+                } else if ("1".equals(role_self)) {//1管理员2合伙人0一般用户3群主
                     if ("0".equals(role)) {
                         iv_delete.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     iv_delete.setVisibility(View.GONE);
                 }
             }
@@ -214,7 +215,7 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
      */
     public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
         String s = String.valueOf(follow_status);
-        if (TextUtils.equals(s, "0")|| TextUtils.equals(s, "3")) {
+        if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
             follow_Tv.setVisibility(View.VISIBLE);
             follow_Tv.setText("关注");
             follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
@@ -241,14 +242,14 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
     /**
      * 提问
      */
-    private void createQuestionList(LinearLayout ll_container_answer, OwnPublishBean item ) {
+    private void createQuestionList(LinearLayout ll_container_answer, OwnPublishBean item) {
         ll_container_answer.removeAllViews();
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_answer, null);
         TextView tv_answer_name = itemView.findViewById(R.id.tv_answer_name);
         TextView tv_answer_content = itemView.findViewById(R.id.tv_answer_content);
         RecyclerView mNineView = itemView.findViewById(R.id.nine_grid_answer);
         tv_answer_name.setText(item.getNickname());
-        tv_answer_content.setText("提问："+item.getContent());
+        tv_answer_content.setText("提问：" + item.getContent());
 
         handleImageList(item, mNineView);
         ll_container_answer.addView(itemView);
@@ -280,13 +281,12 @@ public class GroupDetailTopicListAdapter extends BaseQuickAdapter<OwnPublishBean
     }
 
 
-    private void setDrawableLeft(int mipmap,TextView status) {
+    private void setDrawableLeft(int mipmap, TextView status) {
         Drawable drawableLeft = mContext.getResources().getDrawable(
                 mipmap);
         status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
     }
-
 
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {

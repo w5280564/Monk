@@ -15,13 +15,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.InterestDetail_All_Adapter;
+import com.qingbo.monk.Slides.adapter.Interest_MoreItem;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
-import com.qingbo.monk.bean.HomeFllowBean;
-import com.qingbo.monk.bean.InterestDetailAll_Bean;
-import com.qingbo.monk.bean.InterestDetailAll_ListBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
@@ -65,7 +66,6 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-
     @Override
     protected void initView(View mView) {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
@@ -84,7 +84,8 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(true);
     }
 
-    InterestDetailAll_ListBean interestDetailAll_listBean;
+    //    InterestDetailAll_ListBean interestDetailAll_listBean;
+    MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
 
     /**
      * action 1是社群 2是兴趣组 3是问答广场
@@ -105,9 +106,10 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    interestDetailAll_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestDetailAll_ListBean.class);
-                    if (interestDetailAll_listBean != null) {
-                        handleSplitListData(interestDetailAll_listBean, mAdapter, limit);
+//                    interestDetailAll_listBean = GsonUtil.getInstance().json2Bean(json_data, InterestDetailAll_ListBean.class);
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamic_More_ListBean.class);
+                    if (myDynamicListBean != null) {
+                        handleSplitListData(myDynamicListBean, mAdapter, limit);
                     }
                 }
             }
@@ -117,9 +119,6 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-
-
-
     public void initRecyclerView() {
         LinearLayoutManager mMangaer = new LinearLayoutManager(mContext);
         mMangaer.setOrientation(RecyclerView.VERTICAL);
@@ -127,13 +126,18 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new InterestDetail_All_Adapter();
+        mAdapter = new Interest_MoreItem(myDynamicListBean.getList());
+//        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
-            String articleId = item.getArticleId();
-//            String type = item.getType();
-            String type = "2";//1是社群 2是兴趣组 3是个人
-            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+//            InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
+//            String articleId = item.getArticleId();
+////            String type = item.getType();
+//            String type = "2";//1是社群 2是兴趣组 3是个人
+//            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
+            toDetail(item);
         });
     }
 
@@ -143,7 +147,8 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
+//                InterestDetailAll_Bean item = (InterestDetailAll_Bean) adapter.getItem(position);
+                MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
                 if (item == null) {
                     return;
                 }
@@ -173,12 +178,12 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((InterestDetail_All_Adapter) mAdapter).setOnItemImgClickLister(new InterestDetail_All_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+//        ((InterestDetail_All_Adapter) mAdapter).setOnItemImgClickLister(new InterestDetail_All_Adapter.OnItemImgClickLister() {
+//            @Override
+//            public void OnItemImgClickLister(int position, List<String> strings) {
+//                jumpToPhotoShowActivity(position, strings);
+//            }
+//        });
     }
 
 
@@ -191,13 +196,11 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
-                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
-                    ((InterestDetail_All_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
-//                    if (followStateBena.getFollowStatus() == 0) {
-//                        mAdapter.remove(position);
-//                        mAdapter.notifyItemChanged(position);
-//                    }
+//                    TextView follow_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Tv);
+//                    TextView send_Mes = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.send_Mes);
+//                    ((InterestDetail_All_Adapter) mAdapter).isFollow(followStateBena.getFollowStatus(), follow_Tv, send_Mes);
+//                    updateAdapter(otherUserId, followStateBena.getFollowStatus());
+                    getListData(false);
                 }
             }
         }, true);
@@ -235,5 +238,65 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+    /**
+     * 更新数据源
+     *
+     * @param otherUserId
+     * @param status
+     */
+    private void updateAdapter(String otherUserId, int status) {
+        if (mAdapter == null) {
+            return;
+        }
+        List<MyDynamic_MoreItem_Bean> data = mAdapter.getData();
+        int index = 0;
+        for (MyDynamic_MoreItem_Bean s : data) {
+            if (TextUtils.equals(otherUserId, s.getAuthorId())) {
+                s.setFollowStatus(status);
+                mAdapter.notifyItemChanged(index);
+            }
+            index++;
+        }
+    }
+
+    /**
+     * 详情 转发与原创用的 文章ID不一样
+     *
+     * @param item
+     */
+    private void toDetail(MyDynamic_MoreItem_Bean item) {
+        String isReprint = item.getIsReprint();//0-原创 1-转发
+        String articleId;
+        if (TextUtils.equals(isReprint, "0")) {
+            articleId = item.getArticleId();
+        } else {
+            articleId = item.getPreArticleId();
+        }
+        String type = item.getType();
+        if (TextUtils.equals(isReprint, "0")) {
+            type = "2";//1是社群 2是兴趣组 3是个人
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+        } else {
+            String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
+            if (reprintType.equals("4")) {
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+            } else if (reprintType.equals("1")) {
+                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+            } else if (reprintType.equals("0")) {
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+            } else if (reprintType.equals("3")) {
+
+                String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+                if (TextUtils.equals(source_type, "4")) {
+                    CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+                } else if (TextUtils.equals(source_type, "5")) {
+                    ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                } else {
+                    ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+                }
+            }
+        }
+    }
+
 
 }

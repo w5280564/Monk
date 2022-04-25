@@ -19,7 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
-import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.UploadPictureBean;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -70,7 +70,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     private boolean isEdit;
 
 
-    public static void actionStart(Context context, String shequn_id, OwnPublishBean mQuestionBeanMy, boolean isEdit) {
+    public static void actionStart(Context context, String shequn_id, MyDynamic_MoreItem_Bean mQuestionBeanMy, boolean isEdit) {
         Intent intent = new Intent(context, InterestCrate_Activity.class);
         intent.putExtra("shequn_id", shequn_id);
         intent.putExtra("obj", mQuestionBeanMy);
@@ -99,7 +99,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {//编辑
             submitRequestUrl = HttpUrl.editQuestion;
-            OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
+            MyDynamic_MoreItem_Bean mQuestionBeanMy = (MyDynamic_MoreItem_Bean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy != null) {
                 questionId = mQuestionBeanMy.getId();
                 handleEditOtherData(mQuestionBeanMy);
@@ -111,7 +111,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
 
     }
 
-    private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
+    private void handleEditOtherData(MyDynamic_MoreItem_Bean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
         et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
         String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
@@ -132,7 +132,7 @@ public class InterestCrate_Activity extends BaseCameraAndGalleryActivity_More {
     }
 
 
-    private void handleEditImageData(OwnPublishBean mQuestionBeanMy) {
+    private void handleEditImageData(MyDynamic_MoreItem_Bean mQuestionBeanMy) {
         String images = mQuestionBeanMy.getImages();
         if (!StringUtil.isBlank(images)) {
             List<String> tempStringUrlList = StringUtil.stringToList(images);

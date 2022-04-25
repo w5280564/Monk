@@ -7,6 +7,9 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,6 +72,7 @@ public class Article_Forward extends BaseActivity {
 
     @Override
     protected void initView() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);//自动弹出键盘
         addData();
     }
 
@@ -81,6 +85,9 @@ public class Article_Forward extends BaseActivity {
             int startLength = "转发评论//".length();
             int endLength = (String.format("转发评论//@%1$s：", forWardBean.getName())).length();
             setName(format, startLength, startLength, endLength, et_content);
+            showInput(et_content);
+            et_content.setSelection(0);
+
             if (!TextUtils.isEmpty(forWardBean.getImgurl())) {
                 GlideUtils.loadRoundImage(mActivity, article_Img, forWardBean.getImgurl(), 9);
             } else {
@@ -176,6 +183,17 @@ public class Article_Forward extends BaseActivity {
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 点击弹出键盘
+     *
+     * @param editView
+     */
+    public void showInput(View editView) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
     }
 
 

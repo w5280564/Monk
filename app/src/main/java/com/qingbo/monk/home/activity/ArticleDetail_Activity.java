@@ -337,9 +337,12 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
      * 分享
      */
     private void showShareDialog(HomeFoucsDetail_Bean.DataDTO.DetailDTO item) {
+        String articleId = item.getArticleId();
+        if (isStockOrFund){
+
+        }
         String imgUrl = item.getAvatar();
         String downURl = HttpUrl.appDownUrl;
-        String articleId = item.getArticleId();
         String title = item.getTitle();
         String content = item.getContent();
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");

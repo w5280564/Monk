@@ -250,3 +250,8 @@
 -keep class com.tencent.connect.** {*;}
 -keep class com.tencent.open.** {*;}
 -keep class com.tencent.tauth.** {*;}
+
+#不混淆sina微博
+-keep class com.sina.weibo.sdk.**{*;}
+
+

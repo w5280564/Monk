@@ -16,14 +16,14 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestCrate_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
-import com.qingbo.monk.bean.BaseOwnPublishBean;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.OwnPublishBean;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.bean.MyDynamic_More_ListBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.qingbo.monk.question.activity.PublisherGroupTopicActivity;
-import com.qingbo.monk.question.activity.PublisherQuestionActivity;
-import com.qingbo.monk.question.adapter.QuestionListAdapterMy;
+import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -35,7 +35,6 @@ import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.OnClick;
 
@@ -44,6 +43,7 @@ import butterknife.OnClick;
  */
 public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
     private String id;
+
     public static InterestDetail_My_Fragment newInstance(String id) {
         Bundle args = new Bundle();
         args.putString("id", id);
@@ -87,8 +87,11 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
+    MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
+
     /**
      * 默认是1 1是社群,2是兴趣组 3是问答广场
+     *
      * @param isShowAnimal
      */
     private void getSquareList(boolean isShowAnimal) {
@@ -106,8 +109,9 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseOwnPublishBean.class);
-                    handleSplitListData(obj, mAdapter, limit);
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamic_More_ListBean.class);
+//                    BaseOwnPublishBean obj = GsonUtil.getInstance().json2Bean(json_data, BaseOwnPublishBean.class);
+                    handleSplitListData(myDynamicListBean, mAdapter, limit);
                 }
             }
         }, isShowAnimal);
@@ -116,24 +120,24 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
 
-
     private void initRecyclerView() {
         LinearLayoutManager mManager = new LinearLayoutManager(mActivity);
         mManager.setOrientation(RecyclerView.VERTICAL);
         mRecyclerView.setLayoutManager(mManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new QuestionListAdapterMy();
+//        mAdapter = new QuestionListAdapterMy();
+        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-
-            if (mQuestionBean == null) {
-                return;
-            }
-
-            String type = mQuestionBean.getTopicType();
-            ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0", type);
+//            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
+//            if (mQuestionBean == null) {
+//                return;
+//            }
+//            String type = mQuestionBean.getTopicType();
+//            ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "0", type);
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
+            toDetail(item);
         });
 
     }
@@ -144,42 +148,84 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
-                if (mQuestionBean == null) {
+//                OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);
+                MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
+                if (item == null) {
                     return;
                 }
                 switch (view.getId()) {
                     case R.id.follow_Img:
-                        String likeId = mQuestionBean.getArticleId();
+                        String likeId = item.getArticleId();
                         postLikedData(likeId, position);
                         break;
                     case R.id.more_Img:
                         ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                        showPopMenu(more_Img, mQuestionBean, position);
+                        showPopMenu(more_Img, item, position);
                         break;
                     case R.id.mes_Img:
-                        String type = mQuestionBean.getTopicType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), mQuestionBean.getArticleId(), "1", type);
+                        String type = item.getTopicType();
+                        ArticleDetail_Activity.startActivity(requireActivity(), item.getArticleId(), "1", type);
                         break;
                     case R.id.group_Img:
-                        String id = mQuestionBean.getAuthorId();
+                        String id = item.getAuthorId();
                         MyAndOther_Card.actionStart(mActivity, id);
+                        break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
                         break;
                 }
             }
         });
 
 
-        ((QuestionListAdapterMy) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
+//        ((QuestionListAdapterMy) mAdapter).setOnItemImgClickLister(new QuestionListAdapterMy.OnItemImgClickLister() {
+//            @Override
+//            public void OnItemImgClickLister(int position, List<String> strings) {
+//                jumpToPhotoShowActivity(position, strings);
+//            }
+//        });
+    }
+
+    /**
+     * 详情 转发与原创用的 文章ID不一样
+     *
+     * @param item
+     */
+    private void toDetail(MyDynamic_MoreItem_Bean item) {
+        String isReprint = item.getIsReprint();//0-原创 1-转发
+        String articleId;
+        if (TextUtils.equals(isReprint, "0")) {
+            articleId = item.getArticleId();
+        } else {
+            articleId = item.getPreArticleId();
+        }
+        String type = item.getType();
+        if (TextUtils.equals(isReprint, "0")) {
+            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+        } else {
+            String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
+            if (reprintType.equals("4")) {
+                CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+            } else if (reprintType.equals("1")) {
+                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+            } else if (reprintType.equals("0")) {
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+            } else if (reprintType.equals("3")) {
+
+                String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+                if (TextUtils.equals(source_type, "4")) {
+                    CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
+                } else if (TextUtils.equals(source_type, "5")) {
+                    ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                } else {
+                    ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
+                }
             }
-        });
+        }
     }
 
 
-    private void showPopMenu(ImageView more_Img, OwnPublishBean mQuestionBean, int position) {
+    private void showPopMenu(ImageView more_Img, MyDynamic_MoreItem_Bean mQuestionBean, int position) {
         String status = mQuestionBean.getStatus();//0待审核 1通过 2未通过
         boolean haveEdit = false;
         if (TextUtils.equals(status, "2")) {//审核未通过才能删除
@@ -189,7 +235,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onClickEdit() {
                 String shequnId = mQuestionBean.getShequnId();
-                InterestCrate_Activity.actionStart(mActivity,shequnId, mQuestionBean, true);
+                InterestCrate_Activity.actionStart(mActivity, shequnId, mQuestionBean, true);
             }
 
             @Override
@@ -288,6 +334,21 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
     @OnClick(R.id.iv_bianji)
     public void onClick() {
-        InterestCrate_Activity.actionStart(mActivity,id);
+        InterestCrate_Activity.actionStart(mActivity, id);
     }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(MyDynamic_MoreItem_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
+    }
+
 }

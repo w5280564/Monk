@@ -11,7 +11,6 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
@@ -181,35 +180,32 @@ public class MyDynamic_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
-                if (item == null) {
-                    return;
-                }
-                switch (view.getId()) {
-                    case R.id.follow_Img:
-                        String likeId = item.getArticleId();
-                        postLikedData(likeId, position);
-                        break;
-                    case R.id.mes_Img:
-                        String articleId = item.getArticleId();
-                        String type = item.getType();
-                        ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
-                        break;
-                    case R.id.more_Img:
-                        String id = PrefUtil.getUser().getId();
-                        String authorId = item.getAuthorId();
-                        if (TextUtils.equals(authorId, id)) {
-                            ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
-                            showPopMenu(more_Img, item, position);
-                        }
-                        break;
-                    case R.id.share_Img:
-                        showShareDialog(item);
-                        break;
-                }
+        mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
+            if (item == null) {
+                return;
+            }
+            switch (view.getId()) {
+                case R.id.follow_Img:
+                    String likeId = item.getArticleId();
+                    postLikedData(likeId, position);
+                    break;
+                case R.id.mes_Img:
+                    String articleId = item.getArticleId();
+                    String type = item.getType();
+                    ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
+                    break;
+                case R.id.more_Img:
+                    String id = PrefUtil.getUser().getId();
+                    String authorId = item.getAuthorId();
+                    if (TextUtils.equals(authorId, id)) {
+                        ImageView more_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.more_Img);
+                        showPopMenu(more_Img, item, position);
+                    }
+                    break;
+                case R.id.share_Img:
+                    showShareDialog(item);
+                    break;
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.qingbo.monk.person.adapter;
+package com.qingbo.monk.Slides.adapter;
 
 import android.content.Context;
 import android.text.SpannableString;
@@ -22,6 +22,8 @@ import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.person.adapter.MyDynamic_MoreItem_Combination_Shares;
+import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.itemdecoration.CustomDecoration;
 import com.xunda.lib.common.common.utils.DateUtil;
@@ -31,7 +33,7 @@ import com.xunda.lib.common.common.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+public class Interest_MoreItem_Combination extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_Combination;
@@ -39,7 +41,7 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
 
     @Override
     public int layout() {
-        return R.layout.mydynamic_combination;
+        return R.layout.interest_combination;
     }
 
 
@@ -51,7 +53,8 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         TextView group_Name = helper.getView(R.id.group_Name);
         LinearLayout lable_Lin = helper.getView(R.id.lable_Lin);
         TextView time_Tv = helper.getView(R.id.time_Tv);
-
+        TextView follow_Tv = helper.getView(R.id.follow_Tv);
+        TextView send_Mes = helper.getView(R.id.send_Mes);
         TextView comName_TV = helper.getView(R.id.comName_TV);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
@@ -90,6 +93,7 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
         addRecycleData(mNineView, item,more_Tv);
 
+        isFollow(item.getStatusNum(), follow_Tv, send_Mes);
 
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
@@ -202,6 +206,38 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         viewName.setText(spannableString);
     }
+
+    /**
+     * @param follow_status 0是没关系 1是自己 2已关注 3当前用户粉丝 4互相关注
+     * @param follow_Tv
+     * @param send_Mes
+     */
+    public void isFollow(int follow_status, TextView follow_Tv, View send_Mes) {
+        String s = String.valueOf(follow_status);
+        if (TextUtils.equals(s, "0")|| TextUtils.equals(s, "3")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_444444));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.app_main_color));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "1")) {
+            follow_Tv.setVisibility(View.GONE);
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "2")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("已关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.GONE);
+        } else if (TextUtils.equals(s, "4")) {
+            follow_Tv.setVisibility(View.VISIBLE);
+            follow_Tv.setText("互相关注");
+            follow_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_a1a1a1));
+            StringUtil.changeShapColor(follow_Tv, ContextCompat.getColor(mContext, R.color.text_color_F5F5F5));
+            send_Mes.setVisibility(View.VISIBLE);
+        }
+    }
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.qingbo.monk.person.adapter;
+package com.qingbo.monk.Slides.adapter;
 
 import android.text.TextUtils;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * <p>
  * ================================================
  */
-public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+public class Interest_MoreItem extends MultipleItemRvAdapter<MyDynamic_MoreItem_Bean, BaseViewHolder> {
     public static final int TYPE_MY = 1;
     public static final int TYPE_ARTICLE = 2;
     public static final int TYPE_INFORMATION = 3;
@@ -23,7 +23,7 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
     public static final int TYPE_Combination = 5;
 
 
-    public My_MoreItem_Adapter(List<MyDynamic_MoreItem_Bean> data) {
+    public Interest_MoreItem(List<MyDynamic_MoreItem_Bean> data) {
         super(data);
         finishInitialize();
     }
@@ -63,10 +63,10 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
 
     @Override
     public void registerItemProvider() {
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Adapter());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Article());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Information());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Combination());
+        mProviderDelegate.registerProvider(new Interest_MoreItem_Original());
+        mProviderDelegate.registerProvider(new Interest_MoreItem_Article());
+        mProviderDelegate.registerProvider(new Interest_MoreItem_Information());
+        mProviderDelegate.registerProvider(new Interest_MoreItem_Combination());
 
 //        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
     }

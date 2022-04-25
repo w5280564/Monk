@@ -64,6 +64,9 @@ public class OwnPublishBean implements Serializable {
     @SerializedName("data_source")
     private String data_source;
 
+    @SerializedName("fragmentType")
+    private String fragmentType;
+
 
     @NoArgsConstructor
     @Data

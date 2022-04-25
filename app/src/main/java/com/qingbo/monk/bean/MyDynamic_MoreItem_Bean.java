@@ -107,7 +107,39 @@ public class MyDynamic_MoreItem_Bean implements Serializable {
         private String num;
         @SerializedName("position")
         private String position;
+
+        //兴趣组
+        @SerializedName("answer_content")
+        private String answerContent;
+        @SerializedName("author_id")
+        private String authorId;
+        @SerializedName("status_num")
+        private int statusNum;
+        @SerializedName("nickname")
+        private String nickname;
+        @SerializedName("create_time")
+        private String createTime;
+        @SerializedName("avatar")
+        private String avatar;
+        @SerializedName("role")
+        private String role;
     }
+
+    //兴趣组
+    @SerializedName("shequn_id")
+    private String shequnId;
+    @SerializedName("topic_id")
+    private String topic_id;
+    @SerializedName("topic_type")
+    private String topicType;
+    @SerializedName("role")
+    private String role;
+    @SerializedName("status_num")
+    private int statusNum;
+    @SerializedName("isCheck")
+    private boolean isCheck;
+    @SerializedName("data_source")
+    private String data_source;
 
 }
 
