@@ -1,10 +1,10 @@
-package com.qingbo.monk.Slides.adapter;
+package com.qingbo.monk.question.adapter;
 
 import android.text.TextUtils;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
-import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.bean.OwnPublishBean;
 
 import java.util.List;
 
@@ -15,21 +15,24 @@ import java.util.List;
  * <p>
  * ================================================
  */
-public class Interest_MoreItem extends MultipleItemRvAdapter<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+public class Group_MoreItem extends MultipleItemRvAdapter<OwnPublishBean, BaseViewHolder> {
     public static final int TYPE_MY = 1;
     public static final int TYPE_ARTICLE = 2;
     public static final int TYPE_INFORMATION = 3;
     public static final int TYPE_FORWARD = 4;
     public static final int TYPE_Combination = 5;
+    int fragmentType;
+    String role;
 
-
-    public Interest_MoreItem(List<MyDynamic_MoreItem_Bean> data) {
+    public Group_MoreItem(List<OwnPublishBean> data,int fragmentType,String role) {
         super(data);
+        this.fragmentType = fragmentType;
+        this.role = role;
         finishInitialize();
     }
 
     @Override
-    protected int getViewType(MyDynamic_MoreItem_Bean entity) {
+    protected int getViewType(OwnPublishBean entity) {
         if (entity != null) {
             String isReprint = entity.getIsReprint();//0-原创 1-转发
             if (isReprint.equals("1")) {
@@ -40,9 +43,9 @@ public class Interest_MoreItem extends MultipleItemRvAdapter<MyDynamic_MoreItem_
                     return TYPE_INFORMATION;
                 }else if (reprintType.equals("4")) {
                     return TYPE_Combination;
-                }else if (reprintType.equals("3")){
+                } else if (reprintType.equals("3")){
 
-                    String source_type = entity.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+                    String source_type = entity.getSourceType(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
                     if (TextUtils.equals(source_type,"4")){
                         return TYPE_Combination;
                     }else if (TextUtils.equals(source_type,"5")) {
@@ -62,12 +65,10 @@ public class Interest_MoreItem extends MultipleItemRvAdapter<MyDynamic_MoreItem_
 
     @Override
     public void registerItemProvider() {
-        mProviderDelegate.registerProvider(new Interest_MoreItem_Original());
-        mProviderDelegate.registerProvider(new Interest_MoreItem_Article());
-        mProviderDelegate.registerProvider(new Interest_MoreItem_Information());
-        mProviderDelegate.registerProvider(new Interest_MoreItem_Combination());
-
-//        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
+        mProviderDelegate.registerProvider(new GroupDetailTopicListAdapter(fragmentType, role));
+        mProviderDelegate.registerProvider(new Group_MoreItem_Article(fragmentType, role));
+        mProviderDelegate.registerProvider(new Group_MoreItem_Information(fragmentType, role));
+        mProviderDelegate.registerProvider(new Group_MoreItem_Combination(fragmentType, role));
     }
 
 

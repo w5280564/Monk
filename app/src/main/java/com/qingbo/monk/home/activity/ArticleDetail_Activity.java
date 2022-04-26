@@ -350,6 +350,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         if (isStockOrFund){
             mShareDialog.setArticleType("1");
             mShareDialog.setCollectType("3");
+            mShareDialog.setForGroupType("3");
         }
         mShareDialog.show();
     }

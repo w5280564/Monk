@@ -13,24 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.MultipleItemRvAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.PhotoShowActivity;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
-import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
-import com.qingbo.monk.question.adapter.GroupManagerOrPartnerBigAdapter;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.utils.DateUtil;
@@ -45,6 +39,15 @@ import java.util.List;
  * 我的动态item 多种布局 我的文章动态
  */
 public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+    private boolean isCollect;
+
+    public MyDynamic_MoreItem_Adapter() {
+
+    }
+    public MyDynamic_MoreItem_Adapter(boolean isCollect) {
+        this.isCollect = isCollect;
+    }
+
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_MY;
@@ -74,6 +77,7 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
         more_Img.setVisibility(View.GONE);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
+
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -151,6 +155,10 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
             }
         }
 
+        if (isCollect){
+            tv_status.setVisibility(View.GONE);
+            more_Img.setVisibility(View.GONE);
+        }
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
@@ -249,7 +257,6 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
         mContext.startActivity(intent);
         ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
-
 
 
 }

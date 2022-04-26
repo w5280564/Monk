@@ -16,6 +16,7 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.bean.GroupMoreInfoBean;
+import com.qingbo.monk.dialog.MShareDialog;
 import com.xunda.lib.common.base.BaseApplication;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.EditGroupEvent;
@@ -27,7 +28,6 @@ import com.xunda.lib.common.common.imgloader.ImgLoader;
 import com.xunda.lib.common.common.utils.FastBlurUtil;
 import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
-import com.xunda.lib.common.dialog.ShareDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.RoundImageView;
 
@@ -261,7 +261,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
         if (sheQunBean==null) {
             return;
         }
-        ShareDialog mShareDialog = new ShareDialog(this,shareUrl_group,groupImage,sheQunBean.getShequnName(),sheQunBean.getShequnDes(),"分享社群");
+        MShareDialog mShareDialog = new MShareDialog(this,shareUrl_group,groupImage,sheQunBean.getShequnName(),sheQunBean.getShequnDes(),"分享社群");
         mShareDialog.show();
     }
 }

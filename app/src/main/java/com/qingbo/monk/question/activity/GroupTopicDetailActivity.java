@@ -142,7 +142,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
     boolean isExpanded = false; //是否展开
     private int fragmentType;
     private String role_self;
-    private Integer followStatus;
+    private String followStatus;
 
     /**
      * @param context
@@ -260,7 +260,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
 
 
 
-    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,int follow_status) {
+    private void handleCommonData(String headImg,String headName,String content,String role,String publish_user_id,String follow_status) {
         AuthorId = publish_user_id;
         userName = headName;
         userHeader = headImg;
@@ -316,7 +316,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             handleFollowStatus(followStatus, follow_Tv, send_Mes);
             handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
         }else{
-            followStatus = 1;//自己
+            followStatus = "1";//自己
         }
     }
 
@@ -555,7 +555,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     FollowStateBena followStateBena = GsonUtil.getInstance().json2Bean(json_data, FollowStateBena.class);
-                    followStatus = followStateBena.getFollowStatus();
+                    followStatus = followStateBena.getFollowStatus()+"";
                     if (!isExpanded) {
                         handleFollowStatus(followStatus, titleFollow_Tv, titleSend_Mes);
                     }
@@ -624,7 +624,7 @@ public class GroupTopicDetailActivity extends BaseActivity implements View.OnCli
      * @param follow_Tv
      * @param send_Mes
      */
-    public void handleFollowStatus(int follow_status, TextView follow_Tv, View send_Mes) {
+    public void handleFollowStatus(String follow_status, TextView follow_Tv, View send_Mes) {
         String s = String.valueOf(follow_status);
         if (TextUtils.equals(s, "0") || TextUtils.equals(s, "3")) {
             follow_Tv.setVisibility(View.VISIBLE);

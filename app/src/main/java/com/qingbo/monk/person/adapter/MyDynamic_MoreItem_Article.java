@@ -43,7 +43,14 @@ import java.util.List;
  * 我的动态item 多种布局 转发的文章
  */
 public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+    private boolean isCollect;
 
+    public MyDynamic_MoreItem_Article() {
+
+    }
+    public MyDynamic_MoreItem_Article(boolean isCollect) {
+        this.isCollect = isCollect;
+    }
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_ARTICLE;
@@ -151,6 +158,11 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
             nineGridAdapter.setNewData(null);
         }
         more_Img.setVisibility(View.VISIBLE);
+
+        if (isCollect){
+            tv_status.setVisibility(View.GONE);
+            more_Img.setVisibility(View.GONE);
+        }
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);

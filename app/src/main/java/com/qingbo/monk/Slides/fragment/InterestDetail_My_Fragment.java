@@ -201,13 +201,14 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         }
         String type = item.getType();
         if (TextUtils.equals(isReprint, "0")) {
+            type = "2";//1是社群 2是兴趣组 3是个人
             ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         } else {
             String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
             if (reprintType.equals("4")) {
                 CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
             } else if (reprintType.equals("1")) {
-                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, true, true);
             } else if (reprintType.equals("0")) {
                 ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
             } else if (reprintType.equals("3")) {
@@ -216,7 +217,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
                 if (TextUtils.equals(source_type, "4")) {
                     CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
                 } else if (TextUtils.equals(source_type, "5")) {
-                    ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                    ArticleDetail_Activity.startActivity(requireActivity(), articleId, true, true);
                 } else {
                     ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
                 }

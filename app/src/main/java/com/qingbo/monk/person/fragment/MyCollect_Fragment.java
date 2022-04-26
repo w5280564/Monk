@@ -16,14 +16,15 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
-import com.qingbo.monk.bean.MyDynamicListBean;
 import com.qingbo.monk.bean.MyDynamic_Bean;
+import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
+import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyCrateArticle_Avtivity;
-import com.qingbo.monk.person.adapter.MyCollect_Adapter;
+import com.qingbo.monk.person.adapter.MyCollect_MoreItem;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -33,7 +34,6 @@ import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.OnClick;
 
@@ -92,7 +92,8 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         getListData( true);
     }
 
-    MyDynamicListBean myDynamicListBean;
+//    MyDynamicListBean myDynamicListBean;
+MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
 
     private void getListData( boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
@@ -103,7 +104,11 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
-                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+//                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamicListBean.class);
+//                    if (myDynamicListBean != null) {
+//                        handleSplitListData(myDynamicListBean, mAdapter, limit);
+//                    }
+                    myDynamicListBean = GsonUtil.getInstance().json2Bean(json_data, MyDynamic_More_ListBean.class);
                     if (myDynamicListBean != null) {
                         handleSplitListData(myDynamicListBean, mAdapter, limit);
                     }
@@ -133,11 +138,12 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new MyCollect_Adapter();
+//        mAdapter = new MyCollect_Adapter();
+        mAdapter = new MyCollect_MoreItem(myDynamicListBean.getList(),true);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
-            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
 //            String articleId = item.getArticleId();
 //            String type = item.getType();
 //            ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
@@ -151,10 +157,11 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
      *
      * Collect_type 0：文章【默认】1：评论 2：仓位组合 3：资讯
      */
-    private void toDetail(MyDynamic_Bean item) {
+    private void toDetail(MyDynamic_MoreItem_Bean item) {
         String type = item.getType();
         String collect_type = item.getCollect_type();
         String biz_id = item.getBiz_id();
+
         if (collect_type.equals("2")) {
             CombinationDetail_Activity.startActivity(requireActivity(), "0", biz_id);
         } else if (collect_type.equals("3")){
@@ -181,7 +188,7 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
     @Override
     protected void initEvent() {
         mAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            MyDynamic_Bean item = (MyDynamic_Bean) adapter.getItem(position);
+            MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) adapter.getItem(position);
             if (item == null) {
                 return;
             }
@@ -214,18 +221,18 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         });
 
 
-        ((MyCollect_Adapter) mAdapter).setOnItemImgClickLister(new MyCollect_Adapter.OnItemImgClickLister() {
-            @Override
-            public void OnItemImgClickLister(int position, List<String> strings) {
-                jumpToPhotoShowActivity(position, strings);
-            }
-        });
+//        ((MyCollect_Adapter) mAdapter).setOnItemImgClickLister(new MyCollect_Adapter.OnItemImgClickLister() {
+//            @Override
+//            public void OnItemImgClickLister(int position, List<String> strings) {
+//                jumpToPhotoShowActivity(position, strings);
+//            }
+//        });
     }
 
     /**
      * 资讯分享
      */
-    private void showShareDialog(MyDynamic_Bean item) {
+    private void showShareDialog(MyDynamic_MoreItem_Bean item) {
         String imgUrl = item.getAvatar();
         String downURl = HttpUrl.appDownUrl;
         String articleId = item.getArticleId();

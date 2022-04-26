@@ -83,6 +83,9 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/fundcombination_adapter.xml" value="0.334375" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/fundmanager_adapter.xml" value="0.33" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_label.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_moreitem_artilce.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_moreitem_combination.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_moreitem_information.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/group_tag.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/insider_adapter.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/adapter/layout/interest_adapter.xml" value="0.33" />
@@ -155,6 +158,7 @@
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/infoshare_dialog.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/interest_head.xml" value="0.36614583333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/interest_label.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_answer.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_have_list.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/item_two.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/app/src/main/res/layouts/dialog/layout/itme_one.xml" value="0.35052083333333334" />
@@ -241,6 +245,7 @@
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_privacy_policy.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_privacy_policy_again.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_quit.xml" value="0.35052083333333334" />
+        <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_set_manager.xml" value="0.35052083333333334" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/dialog_two_button_blue_with_title.xml" value="0.3296875" />
         <entry key="..\:/Monk/lib_common/src/main/res/layout/empty_view_layout.xml" value="0.35052083333333334" />

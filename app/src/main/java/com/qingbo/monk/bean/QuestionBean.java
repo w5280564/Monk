@@ -44,5 +44,7 @@ public class QuestionBean {
         private String type;
         @SerializedName("data_source")
         private String data_source;
+        @SerializedName("pre_author_name")
+        private String pre_author_name;
 
 }

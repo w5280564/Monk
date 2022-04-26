@@ -3,7 +3,10 @@ package com.qingbo.monk.question.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,36 +39,35 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 社群话题全部列表
+ * 社群话题  转发文章
  */
-public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean, BaseViewHolder> {
+public class Group_MoreItem_Article extends BaseItemProvider<OwnPublishBean, BaseViewHolder> {
     private int type;
     private String role_self;
     private String id_self;
 
     @Override
     public int viewType() {
-        return My_MoreItem_Adapter.TYPE_MY;
+        return My_MoreItem_Adapter.TYPE_ARTICLE;
     }
 
     @Override
     public int layout() {
-        return R.layout.item_group_detail_topic;
+        return R.layout.group_moreitem_artilce;
     }
 
-    public GroupDetailTopicListAdapter(int type, String role) {
+    public Group_MoreItem_Article(int type, String role) {
         this.type = type;
         this.role_self = role;
         id_self = SharePref.user().getUserId();
     }
 
 
-
     @Override
-//    public void convert(@NonNull BaseViewHolder helper, MyDynamic_MoreItem_Bean item, int position) {
     public void convert(@NonNull BaseViewHolder helper, OwnPublishBean item, int position) {
         ImageView more_Img = helper.getView(R.id.more_Img);
         LinearLayout ll_bottom = helper.getView(R.id.ll_bottom);
+        TextView report_Tv = helper.getView(R.id.report_Tv);
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
         ImageView group_Img = helper.getView(R.id.group_Img);
@@ -88,7 +90,24 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Img);
-        viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+
+        viewTouchDelegate.expandViewTouchDelegate(more_Img, 50);
+
+        report_Tv.setText("转发动态");
+        if (!TextUtils.isEmpty(item.getExtraContent())) {
+            String name = TextUtils.isEmpty(item.getCommentAuthorName()) ? "" : item.getCommentAuthorName();
+            String comment = TextUtils.isEmpty(item.getCommentComment()) ? "" : item.getCommentComment();
+            String format = String.format("转发评论//@%1$s：%2$s", name, comment);
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", name)).length();
+            String extraContent = item.getExtraContent();
+            if (TextUtils.isEmpty(extraContent) || !extraContent.contains("转发评论")) {
+                setName(format, startLength, startLength, endLength, report_Tv);
+            } else {
+                setName(extraContent, startLength, startLength, endLength, report_Tv);
+            }
+        }
+
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -330,6 +349,19 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
     }
 
     /**
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
+     */
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
+    }
+
+    /**
      * 跳转到查看图片页
      *
      * @param position
@@ -342,6 +374,7 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         mContext.startActivity(intent);
         ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
+
 
 }
 

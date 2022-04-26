@@ -1,35 +1,16 @@
 package com.qingbo.monk.person.activity;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
-import android.view.View;
 
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.HomeInsiderHK_Fragment;
-import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.bean.MyDraftsList_Bean;
-import com.qingbo.monk.bean.OwnPublishBean;
-import com.qingbo.monk.home.fragment.HomeInsider_Fragment;
-import com.qingbo.monk.person.adapter.MyDraftsAdapter;
 import com.qingbo.monk.person.fragment.MyDrafts_Crate_Fragment;
+import com.qingbo.monk.person.fragment.MyDrafts_Group_Fragment;
 import com.qingbo.monk.person.fragment.MyDrafts_question_Fragment;
-import com.qingbo.monk.question.activity.PublisherQuestionActivity;
 import com.xunda.lib.common.bean.AppMenuBean;
-import com.xunda.lib.common.common.Constants;
-import com.xunda.lib.common.common.http.HttpUrl;
-import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
-import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -55,18 +36,18 @@ public class MyDrafts_Activity extends BaseTabLayoutActivity {
 
     @SuppressLint("WrongConstant")
     private void initMenuData() {
-        for (int i = 0; i < 2; i++) {
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("问答广场");
+        tabName.add("发布动态");
+        tabName.add("社群");
+        for (int i = 0; i < tabName.size(); i++) {
             AppMenuBean bean = new AppMenuBean();
-            if (i == 0) {
-                fragments.add(MyDrafts_question_Fragment.newInstance("1"));
-                bean.setName("问答广场");
-            } else {
-                fragments.add(MyDrafts_Crate_Fragment.newInstance("2"));
-                bean.setName("发布动态");
-            }
+            bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-
+        fragments.add(MyDrafts_question_Fragment.newInstance("1"));
+        fragments.add(MyDrafts_Crate_Fragment.newInstance("2"));
+        fragments.add(MyDrafts_Group_Fragment.newInstance("3"));
         initViewPager(0);
     }
 

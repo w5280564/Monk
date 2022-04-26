@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.adapter.InterestDetail_All_Adapter;
 import com.qingbo.monk.Slides.adapter.Interest_MoreItem;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -125,7 +124,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new InterestDetail_All_Adapter();
+//        mAdapter = new InterestDetail_All_Adapter();
         mAdapter = new Interest_MoreItem(myDynamicListBean.getList());
 //        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
         mRecyclerView.setAdapter(mAdapter);
@@ -281,7 +280,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
             if (reprintType.equals("4")) {
                 CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
             } else if (reprintType.equals("1")) {
-                ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, true, true);
             } else if (reprintType.equals("0")) {
                 ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
             } else if (reprintType.equals("3")) {
@@ -290,7 +289,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                 if (TextUtils.equals(source_type, "4")) {
                     CombinationDetail_Activity.startActivity(requireActivity(), "0", articleId);
                 } else if (TextUtils.equals(source_type, "5")) {
-                    ArticleDetail_Activity.startActivity(mActivity, articleId, true, true);
+                    ArticleDetail_Activity.startActivity(requireActivity(), articleId, true, true);
                 } else {
                     ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
                 }

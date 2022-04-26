@@ -1,9 +1,10 @@
 package com.qingbo.monk.question.adapter;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,15 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.provider.BaseItemProvider;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.PhotoShowActivity;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.OwnPublishBean;
-import com.qingbo.monk.home.NineGrid.NineGridAdapter;
-import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.preferences.SharePref;
@@ -30,30 +27,28 @@ import com.xunda.lib.common.common.utils.DateUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * 社群话题全部列表
+ * 社群话题  转发资讯
  */
-public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean, BaseViewHolder> {
+public class Group_MoreItem_Information extends BaseItemProvider<OwnPublishBean, BaseViewHolder> {
     private int type;
     private String role_self;
     private String id_self;
 
     @Override
     public int viewType() {
-        return My_MoreItem_Adapter.TYPE_MY;
+        return My_MoreItem_Adapter.TYPE_INFORMATION;
     }
 
     @Override
     public int layout() {
-        return R.layout.item_group_detail_topic;
+        return R.layout.group_moreitem_information;
     }
 
-    public GroupDetailTopicListAdapter(int type, String role) {
+    public Group_MoreItem_Information(int type, String role) {
         this.type = type;
         this.role_self = role;
         id_self = SharePref.user().getUserId();
@@ -62,10 +57,10 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
 
 
     @Override
-//    public void convert(@NonNull BaseViewHolder helper, MyDynamic_MoreItem_Bean item, int position) {
     public void convert(@NonNull BaseViewHolder helper, OwnPublishBean item, int position) {
         ImageView more_Img = helper.getView(R.id.more_Img);
         LinearLayout ll_bottom = helper.getView(R.id.ll_bottom);
+        TextView report_Tv = helper.getView(R.id.report_Tv);
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
         ImageView group_Img = helper.getView(R.id.group_Img);
@@ -73,13 +68,14 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         TextView tv_role = helper.getView(R.id.tv_role);
         TextView title_Tv = helper.getView(R.id.title_Tv);
         TextView content_Tv = helper.getView(R.id.content_Tv);
+        ImageView art_Img = helper.getView(R.id.art_Img);
         TextView tv_status = helper.getView(R.id.tv_status);
         TextView tv_answer = helper.getView(R.id.tv_answer);
         TextView time_Tv = helper.getView(R.id.time_Tv);
         TextView read_number_Tv = helper.getView(R.id.read_number_Tv);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         TextView mes_Count = helper.getView(R.id.mes_Count);
-        RecyclerView mNineView = helper.getView(R.id.nine_grid);
+//        RecyclerView mNineView = helper.getView(R.id.nine_grid);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView iv_delete = helper.getView(R.id.iv_delete);
@@ -89,6 +85,22 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.follow_Img);
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+
+        report_Tv.setText("转发资讯");
+        if (!TextUtils.isEmpty(item.getExtraContent())) {
+            String name = item.getCommentAuthorName();
+            String comment = item.getCommentComment();
+            String format = String.format("转发评论//@%1$s：%2$s", name, comment);
+            int startLength = "转发评论//".length();
+            int endLength = (String.format("转发评论//@%1$s：", name)).length();
+            String extraContent = item.getExtraContent();
+            if (TextUtils.isEmpty(extraContent) ||  !extraContent.contains("转发评论")) {
+                setName(format, startLength, startLength, endLength, report_Tv);
+            } else {
+                setName(extraContent, startLength, startLength, endLength, report_Tv);
+            }
+        }
+
 
         if (!TextUtils.isEmpty(item.getCreateTime())) {
             String userDate = DateUtil.getUserDate(item.getCreateTime());
@@ -151,7 +163,7 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
             }
             handleCommonData(item.getAvatar(), item.getNickname(), item.getContent(), item.getRole(), item.getAuthorId(), item.getStatusNum()
                     , group_Img, group_Name, content_Tv, tv_role, iv_delete, follow_Tv, send_Mes);
-            handleImageList(item, mNineView);
+            handleImageList(item, art_Img);
             ll_container_answer.setVisibility(View.GONE);
         } else {
             title_Tv.setVisibility(View.GONE);
@@ -165,7 +177,7 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
             } else {
                 handleCommonData(item.getAvatar(), item.getNickname(), item.getContent(), item.getRole(), item.getAuthorId(), item.getStatusNum()
                         , group_Img, group_Name, content_Tv, tv_role, iv_delete, follow_Tv, send_Mes);
-                handleImageList(item, mNineView);
+                handleImageList(item, art_Img);
                 ll_container_answer.setVisibility(View.GONE);
             }
         }
@@ -267,30 +279,16 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         tv_answer_name.setText(item.getNickname());
         tv_answer_content.setText("提问：" + item.getContent());
 
-        handleImageList(item, mNineView);
+//        handleImageList(item, mNineView);
         ll_container_answer.addView(itemView);
     }
 
-    private void handleImageList(OwnPublishBean item, RecyclerView mNineView) {
-        NineGridAdapter nineGridAdapter = new NineGridAdapter();
-        List<String> strings = new ArrayList<>();
-        mNineView.setLayoutManager(new NineGridLayoutManager(mContext));
-        mNineView.setAdapter(nineGridAdapter);
-        //多张图片
+    private void handleImageList(OwnPublishBean item, ImageView art_Img) {
         if (!TextUtils.isEmpty(item.getImages())) {
-            mNineView.setVisibility(View.VISIBLE);
-            String[] imgS = item.getImages().split(",");
-            strings.addAll(Arrays.asList(imgS));
-            nineGridAdapter.setNewData(strings);
-            nineGridAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    jumpToPhotoShowActivity(position, strings);
-                }
-            });
-        } else {
-            mNineView.setVisibility(View.GONE);
-            nineGridAdapter.setNewData(null);
+            List<String> strings = Arrays.asList(item.getImages().split(","));
+            GlideUtils.loadRoundImage(mContext, art_Img, strings.get(0),9);
+        }else {
+            art_Img.setImageResource(R.mipmap.img_pic_none_square);
         }
     }
 
@@ -313,12 +311,6 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
         follow_Count.setText(nowLike + "");
     }
 
-
-//    @Override
-//    public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
-//        super.setOnItemClickListener(listener);
-//    }
-
     public interface OnItemImgClickLister {
         void OnItemImgClickLister(int position, List<String> strings);
     }
@@ -330,18 +322,18 @@ public class GroupDetailTopicListAdapter extends BaseItemProvider<OwnPublishBean
     }
 
     /**
-     * 跳转到查看图片页
-     *
-     * @param position
-     * @param mImageList
+     * @param name        要显示的数据
+     * @param nameLength  要改颜色的字体长度
+     * @param startLength 改色起始位置
+     * @param endLength   改色结束位置
+     * @param viewName
      */
-    public void jumpToPhotoShowActivity(int position, List<String> mImageList) {
-        Intent intent = new Intent(mContext, PhotoShowActivity.class);
-        intent.putExtra("index", position);
-        intent.putExtra("imgList", (Serializable) mImageList);
-        mContext.startActivity(intent);
-        ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    private void setName(String name, int nameLength, int startLength, int endLength, TextView viewName) {
+        SpannableString spannableString = new SpannableString(name);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        viewName.setText(spannableString);
     }
+
 
 }
 

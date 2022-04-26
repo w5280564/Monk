@@ -23,6 +23,7 @@ import com.qingbo.monk.bean.MyDynamic_More_ListBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.person.adapter.My_MoreItem_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -193,6 +194,7 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
 
     /**
      * 详情 转发与原创用的 文章ID不一样
+     *
      * @param item
      */
     private void toDetail(MyDynamic_MoreItem_Bean item) {
@@ -204,7 +206,28 @@ public class MyDynamic_Activity extends BaseRecyclerViewSplitActivity implements
             articleId = item.getPreArticleId();
         }
         String type = item.getType();
-        ArticleDetail_Activity.startActivity(mActivity, articleId, "0", type);
+        if (TextUtils.equals(isReprint, "0")) {
+            ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+        } else {
+            String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
+            if (reprintType.equals("4")) {
+                CombinationDetail_Activity.startActivity(this, "0", articleId);
+            } else if (reprintType.equals("1")) {
+                ArticleDetail_Activity.startActivity(this, articleId, true, true);
+            } else if (reprintType.equals("0")) {
+                ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+            } else if (reprintType.equals("3")) {
+
+                String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+                if (TextUtils.equals(source_type, "4")) {
+                    CombinationDetail_Activity.startActivity(this, "0", articleId);
+                } else if (TextUtils.equals(source_type, "5")) {
+                    ArticleDetail_Activity.startActivity(this, articleId, true, true);
+                } else {
+                    ArticleDetail_Activity.startActivity(this, articleId, "0", type);
+                }
+            }
+        }
     }
 
 

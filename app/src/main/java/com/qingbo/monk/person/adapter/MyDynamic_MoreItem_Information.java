@@ -37,7 +37,14 @@ import java.util.List;
  * 我的动态item 多种布局 转发的资讯
  */
 public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+    private boolean isCollect;
 
+    public MyDynamic_MoreItem_Information() {
+
+    }
+    public MyDynamic_MoreItem_Information(boolean isCollect) {
+        this.isCollect = isCollect;
+    }
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_INFORMATION;
@@ -122,6 +129,11 @@ public class MyDynamic_MoreItem_Information extends BaseItemProvider<MyDynamic_M
             GlideUtils.loadRoundImage(mContext, art_Img, strings.get(0),9);
         }else {
             art_Img.setImageResource(R.mipmap.img_pic_none_square);
+        }
+
+        if (isCollect){
+//            tv_status.setVisibility(View.GONE);
+            more_Img.setVisibility(View.GONE);
         }
 
         helper.addOnClickListener(R.id.follow_Tv);

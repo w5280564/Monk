@@ -26,8 +26,8 @@
             android:background="@drawable/card_edit"
             android:drawableStart="@mipmap/bianji_pen"
             android:drawablePadding="@dimen/dp_10"
-            android:gravity="center_vertical"
             android:drawableTint="@color/white"
+            android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_10"
             android:text="编辑"
             android:textColor="@color/white"
@@ -97,11 +97,11 @@
             android:id="@+id/sex_Img"
             android:layout_width="@dimen/dp_15"
             android:layout_height="@dimen/dp_15"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
-            app:layout_constraintStart_toEndOf="@+id/tv_name"
             android:layout_marginStart="@dimen/dp_16"
             android:baselineAlignBottom="true"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_name" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_name"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintStart_toEndOf="@+id/tv_name" />
 
         <TextView
             android:id="@+id/tv_follow_number"
@@ -126,7 +126,7 @@
             android:textSize="@dimen/sp_10"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_follow_number"
-            app:layout_constraintStart_toEndOf="@+id/tv_follow_number"/>
+            app:layout_constraintStart_toEndOf="@+id/tv_follow_number" />
 
         <View
             android:id="@+id/line"
@@ -165,14 +165,14 @@
             app:layout_constraintStart_toEndOf="@id/tv_fans_number" />
 
 
-        <TextView
+        <com.qingbo.monk.base.baseview.ExpandTextView
             android:id="@+id/brief_Tv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_15"
             android:layout_marginTop="@dimen/dp_17"
             android:layout_marginEnd="@dimen/dp_25"
-            android:ellipsize="end"
+            android:maxLines="3"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -303,6 +303,17 @@
                     app:layout_constraintStart_toEndOf="@+id/view4"
                     app:layout_constraintTop_toTopOf="@id/view4" />
 
+                <TextView
+                    android:id="@+id/urlLabelNone_Tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="暂未填写任何社交主页"
+                    android:textColor="@color/text_color_6f6f6f"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@+id/mesHomepage_Tv"
+                    app:layout_constraintTop_toBottomOf="@+id/mesHomepage_Tv" />
+
                 <LinearLayout
                     android:id="@+id/urlLabel_Lin"
                     android:layout_width="match_parent"
@@ -319,6 +330,7 @@
                 android:layout_height="@dimen/dp_10"
                 android:background="@color/dl_background"
                 app:layout_constraintTop_toBottomOf="@id/home_Con" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/group_Con"
                 android:layout_width="@dimen/dp_106"
@@ -330,6 +342,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lineView2">
+
                 <TextView
                     android:id="@+id/groupName_Tv"
                     android:layout_width="wrap_content"
@@ -340,6 +353,7 @@
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/joinCount_Tv"
                     android:layout_width="0dp"
@@ -352,6 +366,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/groupName_Tv" />
+
                 <LinearLayout
                     android:id="@+id/joinHead_Lin"
                     android:layout_width="wrap_content"
@@ -372,6 +387,7 @@
                 android:background="@drawable/base_gradual"
                 app:layout_constraintStart_toEndOf="@id/group_Con"
                 app:layout_constraintTop_toBottomOf="@id/lineView2">
+
                 <TextView
                     android:id="@+id/interestName_Tv"
                     android:layout_width="wrap_content"
@@ -382,6 +398,7 @@
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/interestJoinCount_Tv"
                     android:layout_width="0dp"
@@ -393,6 +410,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/interestName_Tv" />
+
                 <LinearLayout
                     android:id="@+id/interestHead_Lin"
                     android:layout_width="wrap_content"

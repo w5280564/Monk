@@ -33,10 +33,12 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.baseview.ExpandTextView;
 import com.qingbo.monk.base.behavior.AppBarLayoutOverScrollViewBehavior;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
 import com.qingbo.monk.bean.myCardBean;
+import com.qingbo.monk.dialog.MShareDialog;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.fragment.MyArchives_Fragment;
 import com.qingbo.monk.person.fragment.MyCollect_Fragment;
@@ -52,7 +54,6 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.ShareDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +70,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     @BindView(R.id.back_Btn)
     Button back_Btn;
     @BindView(R.id.brief_Tv)
-    TextView brief_Tv;
+    ExpandTextView brief_Tv;
     @BindView(R.id.iv_img)
     ImageView iv_img;
     @BindView(R.id.head_Img)
@@ -134,6 +135,8 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
     Button setting_Btn;
     @BindView(R.id.sex_Img)
     ImageView sex_Img;
+    @BindView(R.id.urlLabelNone_Tv)
+    TextView urlLabelNone_Tv;
 
     private String userID;
     private boolean isExpert;//专家不显示关注
@@ -358,19 +361,20 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
-                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
-//                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
-//                        brief_Tv.initWidth(width);
-//                        if (userBean.getDescription().isEmpty()) {
-//                            brief_Tv.setText("暂未填写");
-//                        } else {
-//                        brief_Tv.setCloseText("个人说明：\n" + userBean.getDescription());
-//                        }
+//                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
+                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
+                        brief_Tv.initWidth(width);
+                        if (TextUtils.isEmpty(userBean.getDescription())) {
+                            brief_Tv.setText("个人说明：暂未填写");
+                        } else {
+                            brief_Tv.setMaxLines(3);
+                            brief_Tv.setCloseText("个人说明：\n" + userBean.getDescription());
+                        }
 
                         String sex = userBean.getSex();
-                        if (TextUtils.equals(sex,"女")){
+                        if (TextUtils.equals(sex, "女")) {
                             sex_Img.setBackgroundResource(R.mipmap.nv);
-                        }else {
+                        } else {
                             sex_Img.setBackgroundResource(R.mipmap.nan);
                         }
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
@@ -385,7 +389,11 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                             isFollow(userBean.getFollow_status(), follow_Tv, send_Mes);
                         }
                         List<UserBean.ColumnDTO> column = userBean.getColumn();
-                        urlLabelFlow(urlLabel_Lin, mActivity, column);
+                        if (ListUtils.isEmpty(column)) {
+                            urlLabelNone_Tv.setVisibility(View.VISIBLE);
+                        } else {
+                            urlLabelFlow(urlLabel_Lin, mActivity, column);
+                        }
                     }
                 }
             }
@@ -562,7 +570,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
             String downURl = String.format("https://shjr.gsdata.cn/share/get-auth?id=%1$s", userBean.getId());
             String title = String.format("分享 %1$s 的鹅先知主页", userBean.getNickname());
             String content = String.format("%1$s粉丝 %2$s关注", userBean.getFansNum(), userBean.getFollowNum());
-            ShareDialog mShareDialog = new ShareDialog(this, downURl, imgUrl, title, content, "分享");
+            MShareDialog mShareDialog = new MShareDialog(this, downURl, imgUrl, title, content, "分享");
             mShareDialog.show();
         }
     }

@@ -31,7 +31,6 @@ import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import org.greenrobot.eventbus.EventBus;
@@ -100,7 +99,8 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         shequn_id = getIntent().getStringExtra("shequn_id");
         isEdit = getIntent().getBooleanExtra("isEdit",false);
         if (isEdit) {//编辑
-            submitRequestUrl = HttpUrl.editQuestion;
+//            submitRequestUrl = HttpUrl.editQuestion;
+            submitRequestUrl = HttpUrl.createTopic;
             OwnPublishBean mQuestionBeanMy = (OwnPublishBean) getIntent().getSerializableExtra("obj");
             if (mQuestionBeanMy!=null) {
                 questionId = mQuestionBeanMy.getId();
@@ -241,12 +241,12 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
 
         if (!StringUtil.isBlank(mTitle)  || !StringUtil.isBlank(mContent) || !StringUtil.isBlank(images)) {
             if (mDialog == null) {
-                mDialog = new TwoButtonDialogBlue(this, "返回将丢失填写的内容，确定返回吗？", "取消", "确定",
+                mDialog = new TwoButtonDialogBlue(this, "\"是否将内容保存至「我-草稿箱」？", "取消", "确定",
                         new TwoButtonDialogBlue.ConfirmListener() {
 
                             @Override
                             public void onClickRight() {
-                                finish();
+                                createOrEditSaveQuestion("1");
                             }
 
                             @Override
@@ -294,17 +294,18 @@ public class PublisherGroupTopicActivity extends BaseCameraAndGalleryActivity_Mo
         baseMap.put("images", images);
         baseMap.put("shequn_id", shequn_id);
         baseMap.put("is_anonymous", (String) llTag.getTag());
+        baseMap.put("type", "1");
+        baseMap.put("action", "1");
+        baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         if (isEdit) {//编辑
             baseMap.put("id", questionId);
         }else{
-            baseMap.put("type", "1");
-            baseMap.put("action", "1");
-            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
+//            baseMap.put("type", "1");
+//            baseMap.put("action", "3");
+//            baseMap.put("optype", optype);//默认是0,0是发布,1是保存
         }
-
         HttpSender sender = new HttpSender(submitRequestUrl, " 创建或编辑话题，或保存至草稿", baseMap,
                 new MyOnHttpResListener() {
-
                     @Override
                     public void onComplete(String json, int status, String description, String data) {
                         if (status == Constants.REQUEST_SUCCESS_CODE) {

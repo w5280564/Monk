@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MyDynamic_MoreItem_Bean implements Serializable {
+
     @SerializedName("article_id")
     private String articleId;
     @SerializedName("title")
@@ -85,6 +86,12 @@ public class MyDynamic_MoreItem_Bean implements Serializable {
     private Integer like;
     @SerializedName("source_type")
     private String source_type;
+
+    @SerializedName("collect_type")
+    private String collect_type;
+    @SerializedName("biz_id")
+    private String biz_id;
+
 
 
     @SerializedName("id")

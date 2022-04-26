@@ -121,7 +121,8 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
     /**
      * 转发到社群/兴趣圈
      *
-     * @param forGroupType 转发操作类型 0：文章类【默认】 1：仓位组合
+     * @param forGroupType 转发来源 0：文章 1：仓位组合 2：评论 3：资讯
+     *   转发到社群/兴趣圈 op_type
      */
     public void setForGroupType(String forGroupType) {
         this.forGroupType = forGroupType;
