@@ -683,11 +683,13 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
      */
     private void showShareDialog(ArticleCommentBean item) {
         ForWardBean forWardBean = startForWard(true, item, 0);
+//        String id = item.getId();
         forWardBean.setGroup(isGroup);
         CommentShare_Dialog mShareDialog = new CommentShare_Dialog(requireActivity(), articleId, isGroup, "分享");
         mShareDialog.setForWardBean(forWardBean);
         mShareDialog.setAuthor_id(item.getAuthorId());
         mShareDialog.setForGroupType("2");
+        mShareDialog.setCollectType("1");
         if (isStockOrFund){
             mShareDialog.setArticleType("1");
             mShareDialog.setCollectType("3");

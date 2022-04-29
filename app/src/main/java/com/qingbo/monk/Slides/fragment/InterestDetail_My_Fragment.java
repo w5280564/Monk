@@ -127,7 +127,7 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 //        mAdapter = new QuestionListAdapterMy();
-        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList());
+        mAdapter = new My_MoreItem_Adapter(myDynamicListBean.getList(),"true");
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            OwnPublishBean mQuestionBean = (OwnPublishBean) adapter.getItem(position);

@@ -21,10 +21,16 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
     public static final int TYPE_INFORMATION = 3;
     public static final int TYPE_FORWARD = 4;
     public static final int TYPE_Combination = 5;
+    private String isMe;
 
 
     public My_MoreItem_Adapter(List<MyDynamic_MoreItem_Bean> data) {
         super(data);
+        finishInitialize();
+    }
+    public My_MoreItem_Adapter(List<MyDynamic_MoreItem_Bean> data,String isMe) {
+        super(data);
+        this.isMe = isMe;
         finishInitialize();
     }
 
@@ -63,10 +69,10 @@ public class My_MoreItem_Adapter extends MultipleItemRvAdapter<MyDynamic_MoreIte
 
     @Override
     public void registerItemProvider() {
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Adapter());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Article());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Information());
-        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Combination());
+        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Adapter(isMe));
+        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Article(isMe));
+        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Information(isMe));
+        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_Combination(isMe));
 
 //        mProviderDelegate.registerProvider(new MyDynamic_MoreItem_ForWard());
     }

@@ -40,12 +40,18 @@ import java.util.List;
  */
 public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
     private boolean isCollect;
+    private String isMe;
 
     public MyDynamic_MoreItem_Adapter() {
 
     }
+
     public MyDynamic_MoreItem_Adapter(boolean isCollect) {
         this.isCollect = isCollect;
+    }
+
+    public MyDynamic_MoreItem_Adapter(String isMe) {
+        this.isMe = isMe;
     }
 
     @Override
@@ -98,7 +104,7 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
             title_Tv.setVisibility(View.GONE);
         }
 
-        if (!StringUtil.isBlank(item.getContent())) {
+        if (!TextUtils.isEmpty(item.getContent())) {
             content_Tv.setVisibility(View.VISIBLE);
             content_Tv.setText(item.getContent());
         } else {
@@ -135,7 +141,8 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
             nineGridAdapter.setNewData(null);
         }
 
-        if (isMe(item.getAuthorId())) {
+//        if (isMe(item.getAuthorId())) {
+        if (TextUtils.equals(isMe,"true")) {
             more_Img.setVisibility(View.VISIBLE);
             String status = item.getStatus();//0待审核 1通过 2未通过
             if (TextUtils.equals(status, "0")) {
@@ -155,7 +162,7 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
             }
         }
 
-        if (isCollect){
+        if (isCollect) {
             tv_status.setVisibility(View.GONE);
             more_Img.setVisibility(View.GONE);
         }

@@ -180,7 +180,8 @@ public class CommentShare_Dialog extends Dialog implements OnClickListener {
             case R.id.collect_Tv:
 //              dynamicAndCollect_clickLister.collectClick();
                 dismiss();
-                postCollectData(articleId);
+                String commentId = forWardBean.getCommentId();
+                postCollectData(commentId);
                 break;
             case R.id.group_Tv:
                 dismiss();

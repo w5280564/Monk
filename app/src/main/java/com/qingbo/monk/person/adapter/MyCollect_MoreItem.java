@@ -1,7 +1,5 @@
 package com.qingbo.monk.person.adapter;
 
-import android.text.TextUtils;
-
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.MultipleItemRvAdapter;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
@@ -48,14 +46,15 @@ public class MyCollect_MoreItem extends MultipleItemRvAdapter<MyDynamic_MoreItem
                 return TYPE_MY;
             } else if (collect_type.equals("1")) {
 
-                String source_type = entity.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
-                if (TextUtils.equals(source_type, "4")) {
-                    return TYPE_Combination;
-                } else if (TextUtils.equals(source_type, "5")) {
-                    return TYPE_INFORMATION;
-                } else {
-                    return TYPE_ARTICLE;
-                }
+//                String source_type = entity.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
+//                if (TextUtils.equals(source_type, "4")) {
+//                    return TYPE_Combination;
+//                } else if (TextUtils.equals(source_type, "5")) {
+//                    return TYPE_INFORMATION;
+//                } else {
+//                    return TYPE_ARTICLE;
+//                }
+                return TYPE_MY;
 
             } else {
                 return TYPE_MY;

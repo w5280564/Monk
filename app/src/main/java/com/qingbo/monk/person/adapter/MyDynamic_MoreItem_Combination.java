@@ -1,6 +1,7 @@
 package com.qingbo.monk.person.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -32,16 +33,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
+    private String isMe;
+
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_Combination;
+    }
+
+    public MyDynamic_MoreItem_Combination() {
+    }
+
+    public MyDynamic_MoreItem_Combination(String isMe) {
+        this.isMe = isMe;
     }
 
     @Override
     public int layout() {
         return R.layout.mydynamic_combination;
     }
-
 
 
     @Override
@@ -51,7 +60,7 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         TextView group_Name = helper.getView(R.id.group_Name);
         LinearLayout lable_Lin = helper.getView(R.id.lable_Lin);
         TextView time_Tv = helper.getView(R.id.time_Tv);
-
+        TextView tv_status = helper.getView(R.id.tv_status);
         TextView comName_TV = helper.getView(R.id.comName_TV);
         TextView follow_Count = helper.getView(R.id.follow_Count);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
@@ -88,7 +97,27 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
         mes_Count.setText(item.getCommentcount());
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
-        addRecycleData(mNineView, item,more_Tv);
+        addRecycleData(mNineView, item, more_Tv);
+
+        if (TextUtils.equals(isMe, "true")) {
+            more_Img.setVisibility(View.VISIBLE);
+            String status = item.getStatus();//0待审核 1通过 2未通过
+            if (TextUtils.equals(status, "0")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("待审核");
+                setDrawableLeft(R.mipmap.weishenhe, tv_status);
+            } else if (TextUtils.equals(status, "1")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("审核通过");
+                setDrawableLeft(R.mipmap.shenhetongguo, tv_status);
+            } else if (TextUtils.equals(status, "2")) {
+                tv_status.setVisibility(View.VISIBLE);
+                setDrawableLeft(R.mipmap.weitongguo, tv_status);
+                tv_status.setText("未通过");
+            } else {
+                tv_status.setVisibility(View.GONE);
+            }
+        }
 
 
         helper.addOnClickListener(R.id.follow_Img);
@@ -111,8 +140,8 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
      * @param mNineView
      * @param item
      */
-    private void addRecycleData(RecyclerView mNineView, MyDynamic_MoreItem_Bean item,TextView more_Tv) {
-        if (mNineView != null){
+    private void addRecycleData(RecyclerView mNineView, MyDynamic_MoreItem_Bean item, TextView more_Tv) {
+        if (mNineView != null) {
             mNineView.removeAllViews();
         }
 //        mNineView.addItemDecoration(getRecyclerViewDivider(R.drawable.recyleview_solid));//添加横向分割线
@@ -201,6 +230,12 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         SpannableString spannableString = new SpannableString(name);
         spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.text_color_1F8FE5)), startLength, endLength, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         viewName.setText(spannableString);
+    }
+
+    private void setDrawableLeft(int mipmap, TextView status) {
+        Drawable drawableLeft = mContext.getResources().getDrawable(mipmap);
+        status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                null, null, null);
     }
 
 

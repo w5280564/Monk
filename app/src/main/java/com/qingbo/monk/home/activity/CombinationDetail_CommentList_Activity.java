@@ -688,7 +688,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         mShareDialog.setForWardBean(forWardBean);
         mShareDialog.setAuthor_id(forWardBean.getCommentAuthorId());
         mShareDialog.setArticleType("3");
-        mShareDialog.setCollectType("2");
+        mShareDialog.setCollectType("1");
         mShareDialog.setForGroupType("1");
         mShareDialog.show();
     }

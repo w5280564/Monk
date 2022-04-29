@@ -44,6 +44,7 @@ import java.util.List;
  */
 public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreItem_Bean, BaseViewHolder> {
     private boolean isCollect;
+    private String isMe;
 
     public MyDynamic_MoreItem_Article() {
 
@@ -51,6 +52,11 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
     public MyDynamic_MoreItem_Article(boolean isCollect) {
         this.isCollect = isCollect;
     }
+
+    public MyDynamic_MoreItem_Article(String isMe) {
+        this.isMe = isMe;
+    }
+
     @Override
     public int viewType() {
         return My_MoreItem_Adapter.TYPE_ARTICLE;
@@ -157,8 +163,28 @@ public class MyDynamic_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreI
         } else {
             nineGridAdapter.setNewData(null);
         }
-        more_Img.setVisibility(View.VISIBLE);
 
+        if (TextUtils.equals(isMe,"true")) {
+            more_Img.setVisibility(View.VISIBLE);
+            String status = item.getStatus();//0待审核 1通过 2未通过
+            if (TextUtils.equals(status, "0")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("待审核");
+                setDrawableLeft(R.mipmap.weishenhe, tv_status);
+            } else if (TextUtils.equals(status, "1")) {
+                tv_status.setVisibility(View.VISIBLE);
+                tv_status.setText("审核通过");
+                setDrawableLeft(R.mipmap.shenhetongguo, tv_status);
+            } else if (TextUtils.equals(status, "2")) {
+                tv_status.setVisibility(View.VISIBLE);
+                setDrawableLeft(R.mipmap.weitongguo, tv_status);
+                tv_status.setText("未通过");
+            } else {
+                tv_status.setVisibility(View.GONE);
+            }
+        }
+
+        more_Img.setVisibility(View.VISIBLE);
         if (isCollect){
             tv_status.setVisibility(View.GONE);
             more_Img.setVisibility(View.GONE);

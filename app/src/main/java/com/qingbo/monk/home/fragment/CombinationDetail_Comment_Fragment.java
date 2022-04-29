@@ -560,7 +560,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
         mShareDialog.setForWardBean(forWardBean);
         mShareDialog.setAuthor_id(item.getAuthorId());
         mShareDialog.setArticleType("3");
-        mShareDialog.setCollectType("2");
+        mShareDialog.setCollectType("1");
         mShareDialog.setForGroupType("1");
         mShareDialog.show();
     }

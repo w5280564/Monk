@@ -170,6 +170,7 @@ MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
             ArticleDetail_Activity.startActivity(requireActivity(), biz_id, "0", type);
         }else if (collect_type.equals("1")){
 
+            biz_id = item.getArticleId();
             String source_type = item.getSource_type(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯
             if (TextUtils.equals(source_type,"4")){
                 CombinationDetail_Activity.startActivity(requireActivity(), "0", biz_id);

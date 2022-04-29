@@ -32,6 +32,7 @@ import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.baseview.ExpandTextView;
+import com.qingbo.monk.base.baseview.ScreenUtils;
 import com.qingbo.monk.base.behavior.AppBarLayoutOverScrollViewBehavior;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.InterestList_Bean;
@@ -352,16 +353,17 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
                         labelFlow(label_Lin, mActivity, userBean.getTagName());
                         tv_follow_number.setText(userBean.getFollowNum());
                         tv_fans_number.setText(userBean.getFansNum());
-                        int width = com.qingbo.monk.base.baseview.ScreenUtils.getScreenWidth(mActivity) - com.qingbo.monk.base.baseview.ScreenUtils.dip2px(mActivity, 50);
+
+                        int width = ScreenUtils.getScreenWidth(requireActivity()) - ScreenUtils.dip2px(requireActivity(), 50);
                         brief_Tv.initWidth(width);
-                        if (userBean.getDescription().isEmpty()) {
+                        if (TextUtils.isEmpty(userBean.getDescription())) {
                             brief_Tv.setText("个人说明：暂未填写");
                         } else {
                             brief_Tv.setMaxLines(3);
                             brief_Tv.setCloseText("个人说明：\n" + userBean.getDescription());
                         }
+//                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
 
-                        originalValue(userBean.getDescription(), "暂未填写", "个人说明：", brief_Tv);
                         originalValue(userBean.getCity(), "暂未填写", "城市：", address_Tv);
                         originalValue(userBean.getIndustry(), "暂未填写", "行业：", industry_Tv);
                         originalValue(userBean.getWork(), "暂未填写", "工作经验：", job_Tv);
@@ -383,6 +385,7 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
                         if (ListUtils.isEmpty(column)) {
                             urlLabelNone_Tv.setVisibility(View.VISIBLE);
                         } else {
+                            urlLabelNone_Tv.setVisibility(View.GONE);
                             urlLabelFlow(urlLabel_Lin, mActivity, column);
                         }
                     }

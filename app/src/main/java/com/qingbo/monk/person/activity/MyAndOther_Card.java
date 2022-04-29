@@ -392,6 +392,7 @@ public class MyAndOther_Card extends BaseTabLayoutActivity implements View.OnCli
                         if (ListUtils.isEmpty(column)) {
                             urlLabelNone_Tv.setVisibility(View.VISIBLE);
                         } else {
+                            urlLabelNone_Tv.setVisibility(View.GONE);
                             urlLabelFlow(urlLabel_Lin, mActivity, column);
                         }
                     }

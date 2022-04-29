@@ -735,6 +735,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
         mShareDialog.setForWardBean(forWardBean);
         mShareDialog.setAuthor_id(forWardBean.getCommentAuthorId());
         mShareDialog.setForGroupType("2");
+        mShareDialog.setCollectType("1");
         if (isStockOrFund){
             mShareDialog.setArticleType("1");
             mShareDialog.setCollectType("3");
