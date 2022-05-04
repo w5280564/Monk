@@ -13,6 +13,9 @@
         android:textColor="@color/text_color_444444"
         android:textSize="12sp"
         android:layout_marginStart="@dimen/dp_15"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:textColorLink="@color/text_color_1F8FE5"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 

@@ -75,7 +75,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     private PieChart chart;
     private RecyclerView mNineView;
     private ConstraintLayout stock_Con, stockContent_Con;
-    private ConstraintLayout tu_Con;
+//    private ConstraintLayout tu_Con;
 
     /**
      * @param context
@@ -125,8 +125,8 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         title_bar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mRecyclerView = findViewById(R.id.card_Recycler);
-        tu_Con = findViewById(R.id.tu_Con);
-        ConstraintLayout myCl = findViewById(R.id.myCl);
+//        tu_Con = findViewById(R.id.tu_Con);
+//        ConstraintLayout myCl = findViewById(R.id.myCl);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter(true);
     }
@@ -520,7 +520,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         int size = characterDetail_bean.getInfo().get(index).getPieData().getData().size();
         for (int i = 0; i < size; i++) {
             String name = characterDetail_bean.getInfo().get(index).getPieData().getData().get(i).getName();
-            Integer value = characterDetail_bean.getInfo().get(index).getPieData().getData().get(i).getValue();
+            float value = characterDetail_bean.getInfo().get(index).getPieData().getData().get(i).getValue().floatValue();
             entries.add(new PieEntry(value, name));
 //            entries.add(new PieEntry((float) (Math.random() * range) + range / 5, parties[i % parties.length]));
         }

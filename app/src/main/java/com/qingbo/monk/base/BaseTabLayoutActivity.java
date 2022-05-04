@@ -42,11 +42,10 @@ public class BaseTabLayoutActivity extends BaseActivity {
     }
 
 
-    public void setTabTextSize(int selectSize,int normalSize){
+    public void setTabTextSize(int selectSize, int normalSize) {
         this.selectSize = selectSize;
         this.normalSize = normalSize;
     }
-
 
 
     public class MyOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
@@ -81,7 +80,9 @@ public class BaseTabLayoutActivity extends BaseActivity {
     protected void initViewPager(int position) {
         mTabLayout.setTabMode(TabLayout.MODE_AUTO);
         NormalFragmentAdapter mFragmentAdapter = new NormalFragmentAdapter(getSupportFragmentManager(), fragments, menuList);
-        mFragmentAdapter.clear(mViewPager);
+        if (mViewPager != null) {
+            mFragmentAdapter.clear(mViewPager);
+        }
         //给ViewPager设置适配器
         mViewPager.setAdapter(mFragmentAdapter);
         mViewPager.setOffscreenPageLimit(menuList.size());
@@ -103,8 +104,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
     }
 
 
-
-    private void setTextViewStyle(View view, int size, int color, Typeface textStyle,int visibility) {
+    private void setTextViewStyle(View view, int size, int color, Typeface textStyle, int visibility) {
         TextView mTextView = view.findViewById(R.id.tab_item_textview);
         View line = view.findViewById(R.id.line);
         mTextView.setTextSize(size);
@@ -116,6 +116,7 @@ public class BaseTabLayoutActivity extends BaseActivity {
 
     /**
      * 自定义Tab的View
+     *
      * @param currentPosition
      * @return
      */

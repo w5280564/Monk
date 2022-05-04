@@ -101,20 +101,20 @@ public class HomeSeek_Person extends BaseRecyclerViewSplitFragment {
                         }
                     }
                 }, isShowAnimal);
-        sender.setContext(mActivity);
+        sender.setContext(requireActivity());
         sender.sendPost();
     }
 
     private void initRecyclerView() {
         mAdapter = new HomeSeek_Person_Adapter();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeSeekPerson_Bean item = (HomeSeekPerson_Bean) adapter.getItem(position);
             String nickname = item.getNickname();
             String id = item.getId();
-            SideslipPersonAndFund_Activity.startActivity(mActivity, nickname, id, "0");
+            SideslipPersonAndFund_Activity.startActivity(requireActivity(), nickname, id, "0");
         });
 
     }

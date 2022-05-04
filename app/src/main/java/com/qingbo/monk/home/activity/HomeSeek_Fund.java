@@ -1,7 +1,6 @@
 package com.qingbo.monk.home.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,11 +10,10 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipStock_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.HomeSeekFund_All;
 import com.qingbo.monk.bean.HomeSeekFund_Bean;
 import com.qingbo.monk.bean.HomeSeekFund_ListBean;
-import com.qingbo.monk.bean.HomeSeekFund_All;
 import com.qingbo.monk.home.adapter.HomeSeek_Fund_Adapter;
-import com.qingbo.monk.home.adapter.HomeSeek_Person_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -116,20 +114,20 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
                 }
             }
         }, isShowAnimal);
-        sender.setContext(mActivity);
+        sender.setContext(requireActivity());
         sender.sendPost();
     }
 
     private void initRecyclerView() {
         mAdapter = new HomeSeek_Fund_Adapter();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeSeekFund_Bean item = (HomeSeekFund_Bean) adapter.getItem(position);
-                SideslipStock_Activity.startActivity(mActivity, item.getName(), item.getNumber());
+                SideslipStock_Activity.startActivity(requireActivity(), item.getName(), item.getNumber());
             }
         });
     }

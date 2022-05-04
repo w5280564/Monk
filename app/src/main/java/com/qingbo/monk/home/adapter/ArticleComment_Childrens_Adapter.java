@@ -1,36 +1,17 @@
 package com.qingbo.monk.home.adapter;
 
-import android.os.Build;
-import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.qingbo.monk.R;
-import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
-import com.qingbo.monk.home.NineGrid.NineGridAdapter;
-import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
-import com.xunda.lib.common.common.glide.GlideUtils;
-import com.xunda.lib.common.common.utils.DateUtil;
-import com.xunda.lib.common.common.utils.ListUtils;
-import com.xunda.lib.common.common.utils.StringUtil;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ArticleComment_Childrens_Adapter extends BaseQuickAdapter<ArticleCommentBean.ChildrensDTO, BaseViewHolder> {
 

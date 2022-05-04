@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CharacterDetail_Bean {
-
     @SerializedName("code")
     private Integer code;
     @SerializedName("msg")
@@ -41,12 +40,15 @@ public class CharacterDetail_Bean {
             private String avatar;
             @SerializedName("company_name")
             private String companyName;
+            @SerializedName("tags")
+            private String tags;
             @SerializedName("tag_name")
             private String tagName;
-            @SerializedName("stock_name")
-            private String stock_name;
             @SerializedName("info")
             private List<InfoDTO> info;
+
+            @SerializedName("stock_name")
+            private String stock_name;
 
             @NoArgsConstructor
             @Data
@@ -66,7 +68,7 @@ public class CharacterDetail_Bean {
                     @SerializedName("data")
                     private List<DataDT1> data;
                     @SerializedName("total")
-                    private Integer total;
+                    private Double total;
 
                     @NoArgsConstructor
                     @Data
@@ -74,7 +76,7 @@ public class CharacterDetail_Bean {
                         @SerializedName("name")
                         private String name;
                         @SerializedName("value")
-                        private Integer value;
+                        private Double value;
                     }
                 }
 
@@ -103,8 +105,16 @@ public class CharacterDetail_Bean {
                     private String total;
                     @SerializedName("shareholder")
                     private String shareholder;
+                    @SerializedName("quarter")
+                    private String quarter;
+                    @SerializedName("position_id")
+                    private String positionId;
+                    @SerializedName("positionListName")
+                    private String positionListName;
                 }
             }
         }
     }
+
+
 }
