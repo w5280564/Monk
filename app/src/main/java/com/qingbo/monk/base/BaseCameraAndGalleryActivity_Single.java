@@ -50,7 +50,6 @@ public abstract class BaseCameraAndGalleryActivity_Single extends BaseActivity i
                 .choose(MimeType.ofImage())//照片视频全部显示
                 .showSingleMediaType(true)
                 .countable(true)//有序选择图片
-                .capture(true)
                 .maxSelectable(1)//最大选择数量
 //                .gridExpectedSize(240)//图片显示表格的大小
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)//图像选择和预览活动所需的方向。
