@@ -23,6 +23,7 @@
         android:layout_marginStart="@dimen/dp_15"
         android:maxLength="10"
         android:textColor="@color/text_color_444444"
+        android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/group_Img"
         app:layout_constraintTop_toTopOf="@+id/group_Img" />
@@ -69,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/text_color_6f6f6f"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/nickName_Tv"
             app:layout_constraintStart_toEndOf="@+id/nickName_Tv"
             app:layout_constraintTop_toTopOf="@+id/nickName_Tv" />

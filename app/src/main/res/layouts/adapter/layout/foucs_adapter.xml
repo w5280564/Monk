@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15"
         android:maxLength="10"
+        android:textStyle="bold"
         android:textColor="@color/text_color_444444"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/group_Img"
@@ -43,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_6"
         android:textColor="@color/text_color_6f6f6f"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/group_Name"
         app:layout_constraintTop_toBottomOf="@+id/group_Name" />
 
