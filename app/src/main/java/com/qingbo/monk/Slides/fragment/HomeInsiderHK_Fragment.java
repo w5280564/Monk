@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.AAndHKDetail_Activity;
 import com.qingbo.monk.Slides.adapter.InsiderHK_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeInsiderHKBean;
@@ -117,8 +116,10 @@ public class HomeInsiderHK_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 HomeInsiderHKBean item = (HomeInsiderHKBean) adapter.getItem(position);
-                String newsUuid = item.getNewsUuid();
-                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+                String detail_url = item.getItem().getDetail_url();
+                jumpToWebView("",detail_url);
+//                String newsUuid = item.getNewsUuid();
+//                AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
             }
         });
 

@@ -87,11 +87,9 @@
         <activity
             android:name=".home.activity.ForWardGroup_Activity"
             android:exported="false" />
-
         <activity
             android:name=".home.activity.StartPDF_Activity"
             android:exported="false" />
-
         <activity
             android:name=".home.activity.Article_Forward"
             android:exported="false" />
@@ -382,18 +380,17 @@
 
                 <category android:name="com.qingbo.monk" />
             </intent-filter>
-        </receiver>
-
-
-        <!--qq 分享-->
+        </receiver> <!-- qq 分享 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent101997485" />
             </intent-filter>
         </activity>
@@ -402,8 +399,6 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-
     </application>
 
 </manifest>

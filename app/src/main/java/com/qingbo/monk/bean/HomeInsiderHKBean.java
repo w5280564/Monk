@@ -2,8 +2,6 @@ package com.qingbo.monk.bean;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +38,8 @@ public class HomeInsiderHKBean {
         private String category;
         @SerializedName("shareholderName")
         private String shareholderName;
+        @SerializedName("detail_url")
+        private String detail_url;
+
     }
 }
