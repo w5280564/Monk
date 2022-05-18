@@ -170,8 +170,8 @@
                 android:layout_marginStart="@dimen/dp_15"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginEnd="@dimen/dp_15"
-                android:background="@drawable/base_gradual"
                 android:visibility="gone"
+                android:background="@drawable/base_gradual"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"
@@ -218,6 +218,20 @@
                     app:layout_constraintStart_toEndOf="@id/fundTime_Tv"
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
+
+                <TextView
+                    android:id="@+id/foldTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="展开 ∨"
+                    android:layout_marginEnd="@dimen/dp_19"
+                    android:textColor="@color/text_color_1F8FE5"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/stockContent_Con"
                     android:layout_width="match_parent"
@@ -236,7 +250,7 @@
                         android:layout_height="@dimen/dp_29"
                         android:background="@drawable/text_topleft_shape"
                         android:gravity="center"
-                        android:text="股东名称"
+                        android:text="股票名称"
                         android:textColor="@color/text_color_444444"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toStartOf="@+id/textView3"
@@ -248,7 +262,7 @@
                         android:layout_height="@dimen/dp_29"
                         android:background="@color/text_color_EFEFEF"
                         android:gravity="center"
-                        android:text="股持数（万）"
+                        android:text="持股数（万）"
                         android:textColor="@color/text_color_444444"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toStartOf="@id/textView5"

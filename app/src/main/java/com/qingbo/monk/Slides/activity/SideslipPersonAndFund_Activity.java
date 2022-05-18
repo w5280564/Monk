@@ -70,11 +70,12 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
 
     private String stockCode = "";
     private ImageView head_Img;
-    private TextView nickName_Tv, company_Tv, brief_Tv, fundTime_Tv, Keywords_Tv, fundName_Tv;
+    private TextView nickName_Tv, company_Tv, brief_Tv, fundTime_Tv, Keywords_Tv, fundName_Tv, foldTV;
     private FlowLayout lable_Flow;
     private PieChart chart;
     private RecyclerView mNineView;
     private ConstraintLayout stock_Con, stockContent_Con;
+    private int timeIndex = 0;
 //    private ConstraintLayout tu_Con;
 
     /**
@@ -136,6 +137,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         head_Img.setOnClickListener(this);
         fundTime_Tv.setOnClickListener(this);
         fundName_Tv.setOnClickListener(this);
+        foldTV.setOnClickListener(this);
     }
 
 
@@ -263,6 +265,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
         stock_Con = myView.findViewById(R.id.stock_Con);
         stockContent_Con = myView.findViewById(R.id.stockContent_Con);
         fundName_Tv = myView.findViewById(R.id.fundName_Tv);
+        foldTV = myView.findViewById(R.id.foldTV);
 
         initPie();
 
@@ -315,28 +318,11 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
 //                        originalValue(listDTO.getDescription(), "暂未填写", "", brief_Tv);
                         labelFlow(lable_Flow, mActivity, listDTO.getTagName());
                         originalValue(listDTO.getKeywords(), "暂未填写", "", Keywords_Tv);
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                        mNineView.setLayoutManager(linearLayoutManager);
-                        persomCombination_shares_adapter = new PersomCombination_Shares_Adapter();
-                        mNineView.setAdapter(persomCombination_shares_adapter);
-                        if (!ListUtils.isEmpty(listDTO.getInfo())) {
-                            stock_Con.setVisibility(View.VISIBLE);
-                            chart.setVisibility(View.VISIBLE);
-                            if (listDTO.getInfo().get(0).getList() !=null){
-                                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = listDTO.getInfo().get(0).getList();
-                                String quarters = listDTO.getInfo().get(0).getQuarters();
-                                fundTime_Tv.setText(quarters);
-                                persomCombination_shares_adapter.setNewData(list);
-                                setData(0, listDTO);
-                            }
-                        } else {
-                            stock_Con.setVisibility(View.VISIBLE);
-                            stockContent_Con.setVisibility(View.GONE);
-                            chartViewLocation();
-                        }
-
                         originalValue(listDTO.getStock_name(), "暂未填写", "", fundName_Tv);
+
+                        String name = "展开 ∨";
+                        timeIndex = 0;
+                        setFundList(name,timeIndex);
                     }
                 }
             }
@@ -348,7 +334,7 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     /**
      * 饼状图没有数据
      */
-    private void noChartData(){
+    private void noChartData() {
         stock_Con.setVisibility(View.VISIBLE);
         stockContent_Con.setVisibility(View.GONE);
         chartViewLocation();
@@ -357,14 +343,14 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
     /**
      * 饼状图没有数据  调整高度
      */
-    private void chartViewLocation(){
+    private void chartViewLocation() {
         chart.setVisibility(View.VISIBLE);
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(chart.getLayoutParams());
         layoutParams.height = ScreenUtils.dip2px(mActivity, 100);
         layoutParams.topToBottom = R.id.stock_Con;
         layoutParams.startToStart = R.id.tu_Con;
         layoutParams.endToEnd = R.id.tu_Con;
-        layoutParams.bottomToBottom =R.id.parent;
+        layoutParams.bottomToBottom = R.id.parent;
         chart.setLayoutParams(layoutParams);
     }
 
@@ -584,6 +570,57 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
             case R.id.fundName_Tv:
                 setFundName(fundHaveList_bean);
                 break;
+            case R.id.foldTV:
+                String foldString = foldTV.getText().toString();
+                String name = "";
+                if (foldString.contains("展开")) {
+                    name = "收起 ∧";
+                } else {
+                    name = "展开 ∨";
+                }
+                foldTV.setText(name);
+                setFundList(name,timeIndex);
+                break;
+        }
+    }
+
+    /**
+     * 加载基金数据列表
+     */
+    private void setFundList(String fold,int index) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        mNineView.setLayoutManager(linearLayoutManager);
+
+        persomCombination_shares_adapter = new PersomCombination_Shares_Adapter();
+        mNineView.setAdapter(persomCombination_shares_adapter);
+        if (!ListUtils.isEmpty(listDTO.getInfo())) {
+            stock_Con.setVisibility(View.VISIBLE);
+            chart.setVisibility(View.VISIBLE);
+            if (listDTO.getInfo().get(0).getList() != null) {
+                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = listDTO.getInfo().get(index).getList();
+                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> addList = new ArrayList<>();
+                if (fold.contains("展开")) {
+                    if (list.size() > 3) {
+                        for (int i = 0; i < 4; i++) {
+                            addList.add(list.get(i));
+                        }
+                        persomCombination_shares_adapter.setNewData(addList);
+                    } else {
+                        persomCombination_shares_adapter.setNewData(list);
+                    }
+                } else {
+                    persomCombination_shares_adapter.setNewData(list);
+                }
+
+                String quarters = listDTO.getInfo().get(index).getQuarters();
+                fundTime_Tv.setText(quarters);
+                setData(index, listDTO);
+            }
+        } else {
+            stock_Con.setVisibility(View.VISIBLE);
+            stockContent_Con.setVisibility(View.GONE);
+            chartViewLocation();
         }
     }
 
@@ -597,12 +634,15 @@ public class SideslipPersonAndFund_Activity extends BaseRecyclerViewSplitActivit
             mOptionsItems.add(name.getQuarters());
         }
         OptionsPickerView pvOptions = new OptionsPickerBuilder(mActivity, (options1, option2, options3, v) -> {
-            fundTime_Tv.setText(mOptionsItems.get(options1));
-            if (listDTO.getInfo().get(0).getList() !=null) {
-                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(options1).getList();
-                persomCombination_shares_adapter.setNewData(list);
-                setData(options1, characterDetail_bean);
-            }
+            String name = foldTV.getText().toString();
+            timeIndex = options1;
+            setFundList(name,timeIndex);
+//            fundTime_Tv.setText(mOptionsItems.get(options1));
+//            if (listDTO.getInfo().get(0).getList() != null) {
+//                List<CharacterDetail_Bean.DataDTO.ListDTO.InfoDTO.ListDT1> list = characterDetail_bean.getInfo().get(options1).getList();
+//                persomCombination_shares_adapter.setNewData(list);
+//                setData(options1, characterDetail_bean);
+//            }
         }).build();
         pvOptions.setPicker(mOptionsItems);
         pvOptions.show();

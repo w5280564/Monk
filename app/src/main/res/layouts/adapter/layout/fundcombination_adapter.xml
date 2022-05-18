@@ -43,7 +43,7 @@
             android:layout_height="@dimen/dp_29"
             android:background="@drawable/text_topleft_shape"
             android:gravity="center"
-            android:text="股东名称"
+            android:text="股票名称"
             android:textColor="@color/text_color_444444"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/textView3"

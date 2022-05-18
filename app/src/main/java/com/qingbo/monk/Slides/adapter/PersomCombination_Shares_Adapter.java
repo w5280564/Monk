@@ -30,7 +30,7 @@ public class PersomCombination_Shares_Adapter extends BaseQuickAdapter<Character
         TextView change_Tv = helper.getView(R.id.change_Tv);
 
 
-        shareName_Tv.setText(item.getShareholder());
+        shareName_Tv.setText(item.getName());
         if (!TextUtils.isEmpty(item.getHoldingNum())) {
             Double i = Double.parseDouble(item.getHoldingNum()) / 10000;
             cgs_Tv.setText(i + "");
