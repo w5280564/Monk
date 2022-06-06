@@ -71,6 +71,7 @@ public class Interest_MoreItem_Original extends BaseItemProvider<MyDynamic_MoreI
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView more_Img = helper.getView(R.id.more_Img);
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
         more_Img.setVisibility(View.GONE);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
 
@@ -150,12 +151,13 @@ public class Interest_MoreItem_Original extends BaseItemProvider<MyDynamic_MoreI
                 tv_status.setVisibility(View.GONE);
             }
         }
-
+        isCollect(item.getIs_collect(), collect_Tv);
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
         helper.addOnClickListener(R.id.share_Img);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
 
@@ -279,6 +281,20 @@ public class Interest_MoreItem_Original extends BaseItemProvider<MyDynamic_MoreI
         }
     }
 
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
 
 
 

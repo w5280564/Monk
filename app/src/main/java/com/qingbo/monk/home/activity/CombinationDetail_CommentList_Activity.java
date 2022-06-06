@@ -2,6 +2,7 @@ package com.qingbo.monk.home.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
@@ -71,6 +73,7 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
     private String commentId;
     private boolean haveEditMes = false;
     private String combinationName;
+    private TextView topCollect_Tv;
 
     /**
      * @param context
@@ -207,6 +210,11 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                 case R.id.share_Tv:
                     showShareDialog(false, position);
                     break;
+                case R.id.collect_Tv:
+                    position += 1;
+                    String id2 = item.getId();
+                    postCollectData(id2, position);
+                    break;
             }
         });
 
@@ -243,6 +251,10 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
                 break;
             case R.id.share_Tv:
                 showShareDialog(true, 0);
+                break;
+            case R.id.collect_Tv:
+                String id2 = commentListBean.getCommentData().getId();
+                postCollectData(id2, -1);
                 break;
         }
     }
@@ -296,10 +308,12 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         topMes_Img = myView.findViewById(R.id.topMes_Img);
         viewTouchDelegate.expandViewTouchDelegate(topFollow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(topMes_Img, 50);
+        topCollect_Tv = myView.findViewById(R.id.collect_Tv);
         topFollow_Img.setOnClickListener(this);
         topMes_Img.setOnClickListener(this);
         head_Img.setOnClickListener(this);
         share_Tv.setOnClickListener(this);
+        topCollect_Tv.setOnClickListener(this);
         mAdapter.addHeaderView(myView);
         if (commentListBean != null) {
             CommentBean commentData = commentListBean.getCommentData();
@@ -633,6 +647,54 @@ public class CombinationDetail_CommentList_Activity extends BaseRecyclerViewSpli
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "1");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+//                        isCollect(collect_status + "", collect_Tv);
+                        if (position == -1) {
+                            isCollect(collect_status + "", topCollect_Tv);
+                        } else {
+                            TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                            isCollect(collect_status + "", collect_Tv);
+                        }
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
 
     /**

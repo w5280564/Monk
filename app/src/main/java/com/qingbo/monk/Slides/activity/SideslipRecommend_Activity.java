@@ -32,6 +32,7 @@ import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.CommentBean;
 import com.qingbo.monk.bean.CommentListBean;
@@ -297,6 +298,10 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
                     case R.id.share_Img:
                         showShareDialog(item);
                         break;
+                    case R.id.collect_Tv:
+                        String articleId1 = item.getArticleId();
+                        postCollectData(articleId1,position);
+                        break;
                 }
             }
         });
@@ -533,6 +538,33 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
             }
             follow_Count.setText(nowLike + "");
         }
+    }
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "0");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((Follow_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
     /**

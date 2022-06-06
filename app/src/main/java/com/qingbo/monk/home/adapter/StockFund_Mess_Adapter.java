@@ -1,6 +1,7 @@
 package com.qingbo.monk.home.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -30,9 +31,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class StockFund_Mess_Adapter extends BaseQuickAdapter<StockFundMes_Bean, BaseViewHolder> {
+    private boolean isFund;
 
     public StockFund_Mess_Adapter() {
         super(R.layout.stockfund_mess_adapter);
+    }
+    public StockFund_Mess_Adapter(boolean isFund) {
+        super(R.layout.stockfund_mess_adapter);
+        this.isFund = isFund;
     }
 
 
@@ -49,6 +55,7 @@ public class StockFund_Mess_Adapter extends BaseQuickAdapter<StockFundMes_Bean, 
         TextView follow_Tv = helper.getView(R.id.follow_Tv);
         TextView send_Mes = helper.getView(R.id.send_Mes);
         ImageView follow_Img = helper.getView(R.id.follow_Img);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         group_Name.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
@@ -74,11 +81,21 @@ public class StockFund_Mess_Adapter extends BaseQuickAdapter<StockFundMes_Bean, 
         follow_Count.setText(item.getLikecount());
         mes_Count.setText(item.getCommentcount());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
+        isCollect(item.getIs_collect(), collect_Tv);
+
+        if (isFund){
+            group_Img.setVisibility(View.GONE);
+            group_Name.setVisibility(View.GONE);
+            lable_Lin.setVisibility(View.GONE);
+            time_Tv.setVisibility(View.GONE);
+        }
+
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.group_Img);
         helper.addOnClickListener(R.id.share_Img);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
 
@@ -121,6 +138,22 @@ public class StockFund_Mess_Adapter extends BaseQuickAdapter<StockFundMes_Bean, 
             });
         }
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
 
     @Override

@@ -20,6 +20,7 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.dialog.CommentShare_Dialog;
@@ -28,6 +29,7 @@ import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
+import com.qingbo.monk.home.adapter.Combination_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -238,6 +240,10 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     break;
                 case R.id.share_Tv:
                     showShareDialog(item);
+                    break;
+                case R.id.collect_Tv:
+                    String articleId = item.getId();
+                    postCollectData(articleId,position);
                     break;
             }
         });
@@ -542,6 +548,34 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     T.s(json_data, 3000);
                     loadData();
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "1");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((ArticleComment_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
                 }
             }
         }, true);

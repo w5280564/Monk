@@ -103,13 +103,35 @@
                     app:arrowItemTitleColor="@color/text_color_444444"
                     app:layout_constraintTop_toBottomOf="@+id/sex_MyView" />
 
+                <com.xunda.lib.common.view.MyArrowItemView
+                    android:id="@+id/industry_MyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    app:arrowItemAvatarHeight="@dimen/dp_12"
+                    app:arrowItemContent=""
+                    app:arrowItemShowAvatar="false"
+                    app:arrowItemTitle="行业"
+                    app:arrowItemTitleColor="@color/text_color_444444"
+                    app:layout_constraintTop_toBottomOf="@+id/address_MyView" />
+
+                <com.xunda.lib.common.view.MyArrowItemView
+                    android:id="@+id/year_MyView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    app:arrowItemAvatarHeight="@dimen/dp_12"
+                    app:arrowItemContent=""
+                    app:arrowItemShowAvatar="false"
+                    app:arrowItemTitle="工作经验"
+                    app:arrowItemTitleColor="@color/text_color_444444"
+                    app:layout_constraintTop_toBottomOf="@+id/industry_MyView" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/explain_Con"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/dp_10"
-                    app:layout_constraintTop_toBottomOf="@id/address_MyView">
+                    app:layout_constraintTop_toBottomOf="@id/year_MyView">
 
 
                     <TextView

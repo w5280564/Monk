@@ -122,7 +122,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new StockFund_Mess_Adapter();
+        mAdapter = new StockFund_Mess_Adapter(true);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

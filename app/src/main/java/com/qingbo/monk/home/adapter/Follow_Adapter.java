@@ -1,6 +1,7 @@
 package com.qingbo.monk.home.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         ImageView follow_Img = helper.getView(R.id.follow_Img);
         ImageView mes_Img = helper.getView(R.id.mes_Img);
         ImageView share_Img = helper.getView(R.id.share_Img);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 100);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
@@ -121,12 +123,15 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         isLike(item.getLiked_status(), item.getLikedNum(), follow_Img, follow_Count);
         showNineView(item.getImages(), mNineView);//多张图片
 
+        isCollect(item.getIs_collect(), collect_Tv);
+
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.group_Img);
         helper.addOnClickListener(R.id.send_Mes);
         helper.addOnClickListener(R.id.share_Img);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
     /**
@@ -224,6 +229,22 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
             mNineView.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
 
     @Override

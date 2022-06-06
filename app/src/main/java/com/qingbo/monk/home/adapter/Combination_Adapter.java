@@ -1,5 +1,7 @@
 package com.qingbo.monk.home.adapter;
 
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,17 +42,19 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
         TextView time_Tv = helper.getView(R.id.time_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         TextView more_Tv = helper.getView(R.id.more_Tv);
-
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
         comName_TV.setText(item.getName());
         isLike(item.getLike(), item.getLikecount(), follow_Img, follow_Count);
         mes_Count.setText(item.getCommentcount());
         time_Tv.setText(DateUtil.getUserDate(item.getCreateTime()));
 
         addRecycleData(mNineView, item,more_Tv);
+        isCollect(item.getIs_collect(), collect_Tv);
 
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.share_Img);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {
@@ -117,4 +121,21 @@ public class Combination_Adapter extends BaseQuickAdapter<HomeCombinationBean, B
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
         super.setOnItemClickListener(listener);
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
+
 }

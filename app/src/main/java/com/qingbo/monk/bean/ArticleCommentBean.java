@@ -40,6 +40,8 @@ public class ArticleCommentBean implements Serializable {
     private String edit;
     @SerializedName("del")
     private String del;
+    @SerializedName("is_collect")
+    private String  is_collect;
 
 
     @NoArgsConstructor
@@ -67,6 +69,9 @@ public class ArticleCommentBean implements Serializable {
         private String edit;
         @SerializedName("del")
         private String del;
+        @SerializedName("is_collect")
+        private String  is_collect;
+
 
     }
 

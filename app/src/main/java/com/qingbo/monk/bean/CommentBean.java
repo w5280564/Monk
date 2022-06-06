@@ -39,6 +39,7 @@ public class CommentBean implements Serializable {
         private String edit;
         @SerializedName("del")
         private String del;
-
+        @SerializedName("is_collect")
+        private String  is_collect;
 
 }

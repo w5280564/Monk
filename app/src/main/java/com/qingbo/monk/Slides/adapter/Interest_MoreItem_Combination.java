@@ -1,6 +1,7 @@
 package com.qingbo.monk.Slides.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -63,6 +64,7 @@ public class Interest_MoreItem_Combination extends BaseItemProvider<MyDynamic_Mo
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
         TextView more_Tv = helper.getView(R.id.more_Tv);
         ImageView more_Img = helper.getView(R.id.more_Img);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
 
         report_Tv.setText("转发仓位组合");
         if (!TextUtils.isEmpty(item.getExtraContent())) {
@@ -94,10 +96,14 @@ public class Interest_MoreItem_Combination extends BaseItemProvider<MyDynamic_Mo
         addRecycleData(mNineView, item,more_Tv);
 
         isFollow(item.getStatusNum(), follow_Tv, send_Mes);
+        isCollect(item.getIs_collect(), collect_Tv);
 
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.share_Img);
+
+
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {
@@ -238,6 +244,20 @@ public class Interest_MoreItem_Combination extends BaseItemProvider<MyDynamic_Mo
         }
     }
 
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
 
 
 }

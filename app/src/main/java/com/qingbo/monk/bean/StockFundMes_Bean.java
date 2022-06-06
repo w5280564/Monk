@@ -35,5 +35,8 @@ public class StockFundMes_Bean {
     private String data_source;
     @SerializedName("author_id")
     private String author_id;
+    @SerializedName("is_collect")
+    private String  is_collect;
+
 
 }

@@ -1,5 +1,6 @@
 package com.qingbo.monk.Slides.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,12 +17,15 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Interest_MoreItem;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.MyDynamic_More_ListBean;
+import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.xunda.lib.common.common.Constants;
@@ -172,6 +176,12 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                     case R.id.send_Mes:
                         ChatActivity.actionStart(mActivity, item.getAuthorId(), item.getNickname(), item.getAvatar());
                         break;
+                    case R.id.share_Img:
+                        showShareDialog(item);
+                        break;
+                    case R.id.collect_Tv:
+                      collect(item,position);
+                        break;
                 }
             }
         });
@@ -237,6 +247,52 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
+
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", collectType);//0:文章 1：评论 2：仓位组合 3：资讯
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        isCollect(collect_status + "", collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏/取消收藏
+     *
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
     /**
      * 更新数据源
      *
@@ -295,6 +351,42 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
                 }
             }
         }
+    }
+
+    private String collectType;
+
+    private void collect(MyDynamic_MoreItem_Bean item,int position) {
+        String isReprint = item.getIsReprint();//0-原创 1-转发
+        String articleId;
+        collectType = "0";
+        if (TextUtils.equals(isReprint, "0")) {
+            articleId = item.getArticleId();
+        } else {
+            articleId = item.getPreArticleId();
+            String reprintType = item.getReprintType();//0-文章 1-资讯 3-转发评论 4-是仓位组合
+            if (reprintType.equals("4")) {
+                collectType = "2";
+            } else if (reprintType.equals("3")) {
+                collectType = "1";
+            } else if (reprintType.equals("1")) {
+                collectType = "3";
+            }
+        }
+        postCollectData(articleId, position);
+    }
+
+    /**
+     * 资讯分享
+     */
+    private void showShareDialog(MyDynamic_MoreItem_Bean item) {
+        String imgUrl = item.getAvatar();
+        String downURl = HttpUrl.appDownUrl;
+        String articleId = item.getArticleId();
+        String title = item.getTitle();
+        String content = item.getContent();
+        InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(requireActivity(), articleId, false, downURl, imgUrl, title, content, "分享");
+        mShareDialog.setAuthor_id(item.getAuthorId());
+        mShareDialog.show();
     }
 
 

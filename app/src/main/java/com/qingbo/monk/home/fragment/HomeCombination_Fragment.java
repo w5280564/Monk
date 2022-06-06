@@ -15,12 +15,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CombinationListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
+import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -130,6 +132,10 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                 case R.id.share_Img:
                     showShareDialog(item);
                     break;
+                case R.id.collect_Tv:
+                    String articleId = item.getId();
+                    postCollectData(articleId,position);
+                    break;
             }
         });
     }
@@ -167,6 +173,34 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                 }
             }
         }, false);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "2");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((Combination_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
+                }
+            }
+        }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }

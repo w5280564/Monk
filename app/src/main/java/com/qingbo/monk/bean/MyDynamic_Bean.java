@@ -69,7 +69,8 @@ public class MyDynamic_Bean  implements Serializable {
     private String biz_id;
     @SerializedName("source_type")
     private String source_type;
-
+    @SerializedName("is_collect")
+    private String  is_collect;
 
 
 }

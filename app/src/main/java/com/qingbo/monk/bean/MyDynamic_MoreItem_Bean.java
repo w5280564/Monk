@@ -91,6 +91,8 @@ public class MyDynamic_MoreItem_Bean implements Serializable {
     private String collect_type;
     @SerializedName("biz_id")
     private String biz_id;
+    @SerializedName("is_collect")
+    private String  is_collect;
 
 
 

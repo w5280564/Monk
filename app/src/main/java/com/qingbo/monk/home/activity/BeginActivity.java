@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
+
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.MonkApplication;
@@ -45,22 +47,24 @@ public class BeginActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        judgePrivacyPolicy();
         setStatusBar();
-
+        initData();
     }
 
+    //启动页固定5秒
+    private void initData() {
+        new Handler().postDelayed(() -> judgePrivacyPolicy(), 5000);
+    }
 
 
     private void judgePrivacyPolicy() {
         int isAgree = SharePref.local().getIsAgreePrivacyPolicy();
-        if(isAgree==1){//已同意过隐私政策
+        if (isAgree == 1) {//已同意过隐私政策
             goToWhere();
-        }else{//未同意>弹窗
+        } else {//未同意>弹窗
             showPrivacyPolicyDialog();
         }
     }
-
 
 
     /**
@@ -72,8 +76,6 @@ public class BeginActivity extends FragmentActivity {
                 .statusBarDarkFont(true)
                 .init();
     }
-
-
 
 
     private void showPrivacyPolicyDialog() {
@@ -131,7 +133,6 @@ public class BeginActivity extends FragmentActivity {
     }
 
 
-
     /**
      * 关闭app
      */
@@ -141,8 +142,6 @@ public class BeginActivity extends FragmentActivity {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         activityManager.killBackgroundProcesses(getPackageName());
     }
-
-
 
 
     @Override
@@ -157,7 +156,7 @@ public class BeginActivity extends FragmentActivity {
     private void goToWhere() {
         if (PrefUtil.isLogin()) {
             jumpToMainOrWelcomeActivity();
-        }else{
+        } else {
             jumpToLoginActivity();
         }
         finish();
@@ -169,14 +168,14 @@ public class BeginActivity extends FragmentActivity {
      */
     private void jumpToMainOrWelcomeActivity() {
         UserBean mUserBean = SharePref.user().getUserInfo();
-        if (mUserBean!=null) {
+        if (mUserBean != null) {
             String interested = mUserBean.getInterested();
-            L.d("interest",PrefUtil.getUser().getInterested());
+            L.d("interest", PrefUtil.getUser().getInterested());
             int band_wx = mUserBean.getBand_wx();
 
-            if(StringUtil.isBlank(interested)) {//首次登陆
-                WelcomeActivity.actionStart(this,band_wx,2);
-            }else{
+            if (StringUtil.isBlank(interested)) {//首次登陆
+                WelcomeActivity.actionStart(this, band_wx, 2);
+            } else {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
@@ -192,9 +191,6 @@ public class BeginActivity extends FragmentActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
-
-
 
 
 }

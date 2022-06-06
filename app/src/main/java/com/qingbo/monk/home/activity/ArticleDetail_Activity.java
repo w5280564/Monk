@@ -39,6 +39,7 @@ import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -79,6 +80,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView person_Name;
     @BindView(R.id.time_Tv)
     TextView time_Tv;
+    @BindView(R.id.company_Tv)
+    TextView company_Tv;
     @BindView(R.id.lable_Lin)
     LinearLayout lable_Lin;
     @BindView(R.id.follow_Tv)
@@ -135,11 +138,14 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView back_Tv;
     @BindView(R.id.source_Tv)
     TextView source_Tv;
+    @BindView(R.id.comeFrom_Tv)
+    TextView comeFrom_Tv;
     @BindView(R.id.top_Con)
     ConstraintLayout top_Con;
     @BindView(R.id.share_Tv)
     TextView share_Tv;
-
+    @BindView(R.id.collect_Tv)
+    TextView collect_Tv;
 
     private String articleId;
     private String isShowTop;
@@ -250,6 +256,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         send_Mes.setOnClickListener(this);
         source_Tv.setOnClickListener(this);
         share_Tv.setOnClickListener(this);
+        collect_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -328,7 +335,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     showShareDialog(detail);
                 }
                 break;
-
+            case R.id.collect_Tv:
+                String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
+                postCollectData(articleId);
+                break;
         }
     }
 
@@ -338,7 +348,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
      */
     private void showShareDialog(HomeFoucsDetail_Bean.DataDTO.DetailDTO item) {
         String articleId = item.getArticleId();
-        if (isStockOrFund){
+        if (isStockOrFund) {
 
         }
         String imgUrl = item.getAvatar();
@@ -347,7 +357,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         String content = item.getContent();
         InfoOrArticleShare_Dialog mShareDialog = new InfoOrArticleShare_Dialog(this, articleId, false, downURl, imgUrl, title, content, "分享");
         mShareDialog.setAuthor_id(item.getAuthorId());
-        if (isStockOrFund){
+        if (isStockOrFund) {
             mShareDialog.setArticleType("1");
             mShareDialog.setCollectType("3");
             mShareDialog.setForGroupType("3");
@@ -514,8 +524,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //                        center_Tv.setText(detailData.getTitle());
                         content_Tv.setText(detailData.getContent());
                         String companyName = TextUtils.isEmpty(detailData.getCompanyName()) ? "" : detailData.getCompanyName();
-                        String userDate = DateUtil.getUserDate(detailData.getCreateTime()) + " " + companyName;
+                        String userDate = DateUtil.getUserDate(detailData.getCreateTime());
                         time_Tv.setText(userDate);
+                        company_Tv.setText(companyName);
+
+                        String data_source = String.format("来源：%1$s",detailData.getData_source());
+                        comeFrom_Tv.setText(data_source);
+
                         //多张图片
                         if (!TextUtils.isEmpty(detailData.getImages())) {
                             showNineView(detailData.getImages());
@@ -523,6 +538,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         follow_Count.setText(detailData.getLikedNum());
                         mes_Count.setText(detailData.getCommentNum());
                         isLike(detailData.getLikedStatus(), detailData.getLikedNum(), follow_Img, follow_Count);
+                        isCollect(detailData.getIs_collect(), collect_Tv);
 
                         String action = detailData.getAction();
                         if (TextUtils.equals(action, "3") || TextUtils.equals(action, "0")) {//0是资讯  3是个人文章 1是社群 2是兴趣组
@@ -607,6 +623,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         httpSender.sendPost();
     }
 
+
+
     /**
      * 转发
      *
@@ -688,6 +706,51 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        if (isStockOrFund){
+            requestMap.put("type", "3");
+        }else {
+            requestMap.put("type", "0");
+        }
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+                        isCollect(collect_status + "", collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    private void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
     }
 
 

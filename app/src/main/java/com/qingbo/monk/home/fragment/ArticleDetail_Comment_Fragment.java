@@ -21,6 +21,7 @@ import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.baseview.IsMe;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.ArticleCommentListBean;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
@@ -30,6 +31,7 @@ import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.ArticleDetali_CommentList_Activity;
 import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.adapter.ArticleComment_Adapter;
+import com.qingbo.monk.home.adapter.Focus_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.GroupTopicDetailActivity;
 import com.xunda.lib.common.common.Constants;
@@ -305,6 +307,10 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     break;
                 case R.id.share_Tv:
                     showShareDialog(item);
+                    break;
+                case R.id.collect_Tv:
+                    String id2 = item.getId();
+                    postCollectData(id2,position);
                     break;
             }
         });
@@ -676,6 +682,38 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId,int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        if (isStockOrFund){
+            requestMap.put("type", "3");
+        }else {
+            requestMap.put("type", "1");
+        }
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+//                        isCollect(collect_status + "", collect_Tv);
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((ArticleComment_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
     }
 
     /**

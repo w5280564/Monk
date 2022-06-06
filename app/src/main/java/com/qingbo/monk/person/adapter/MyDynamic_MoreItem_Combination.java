@@ -123,6 +123,10 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.share_Img);
+
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
+        changeCollect(item.getIs_collect(), collect_Tv);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
     private void isLike(int isLike, String likes, ImageView follow_Img, TextView follow_Count) {
@@ -236,6 +240,21 @@ public class MyDynamic_MoreItem_Combination extends BaseItemProvider<MyDynamic_M
         Drawable drawableLeft = mContext.getResources().getDrawable(mipmap);
         status.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
                 null, null, null);
+    }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void changeCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
     }
 
 

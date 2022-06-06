@@ -1,6 +1,7 @@
 package com.qingbo.monk.person.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -12,6 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -30,6 +35,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_Single;
 import com.qingbo.monk.base.baseview.MyCardEditView;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.login.activity.ChooseIndustryActivity;
 import com.xunda.lib.common.bean.UserBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
@@ -42,10 +48,12 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.dialog.EditStringDialog;
+import com.xunda.lib.common.dialog.PickStringDialog;
 import com.xunda.lib.common.view.MyArrowItemView;
 import com.xunda.lib.common.view.flowlayout.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -67,6 +75,10 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     MyArrowItemView nickName_MyView;
     @BindView(R.id.sex_MyView)
     MyArrowItemView sex_MyView;
+    @BindView(R.id.industry_MyView)
+    MyArrowItemView industry_MyView;
+    @BindView(R.id.year_MyView)
+    MyArrowItemView year_MyView;
 
     @BindView(R.id.address_MyView)
     MyArrowItemView address_MyView;
@@ -92,11 +104,12 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     @BindView(R.id.harvest_EditView)
     MyCardEditView harvest_EditView;
 
-
     private String userID;
     private boolean isHead = true;
     HashMap<String, String> requestMap = new HashMap<>();
-
+    private String industryName;
+    private ActivityResultLauncher mActivityResultLauncher;
+    private String[] yearList = {"1-3年", "3-5年", "5-10年", "10-15年","15年以上"};
     public static void actionStart(Context context, String userID) {
         Intent intent = new Intent(context, MyAndOtherEdit_Card.class);
         intent.putExtra("userID", userID);
@@ -138,6 +151,24 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         learn_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
         harvest_EditView.getEdit_Tv().setVisibility(View.VISIBLE);
 
+
+        mActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result != null) {
+                    int resultCode = result.getResultCode();
+                    if (resultCode == Activity.RESULT_OK) {
+                        industryName = result.getData().getStringExtra("name");
+                        industry_MyView.getTvContent().setText(industryName);
+                        requestMap.put("industry", industryName);
+                        edit_Info();
+//                        arrowItemView_industry.getTip().setVisibility(View.GONE);
+//                        arrowItemView_industry.getTvContent().setText(industryName);
+                    }
+                }
+            }
+        });
+
         initCity();
     }
 
@@ -148,6 +179,8 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         iv_img.setOnClickListener(this);
         nickName_MyView.setOnClickListener(this);
         address_MyView.setOnClickListener(this);
+        industry_MyView.setOnClickListener(this);
+        year_MyView.setOnClickListener(this);
         explain_Con.setOnClickListener(this);
         home_Con.setOnClickListener(this);
         sex_MyView.setOnClickListener(this);
@@ -180,7 +213,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
-                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(),R.mipmap.card_bg);
+                        GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.card_bg);
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
                         nickName_MyView.getTvContent().setText(userBean.getNickname());
                         String s = userBean.getProvince() + " " + userBean.getCity() + " " + userBean.getCounty();
@@ -195,6 +228,8 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
 
                         originalValue(userBean.getAchievement(), "暂未填写", "", achievement_EditView.getContent_Tv());
                         originalValue(userBean.getSex(), "未知", "", sex_MyView.getTvContent());
+                        originalValue(userBean.getIndustry(), "暂未填写", "", industry_MyView.getTvContent());
+                        originalValue(userBean.getWork(), "暂未填写", "", year_MyView.getTvContent());
 
                         List<UserBean.ColumnDTO> column = userBean.getColumn();
                         urlLabelFlow(urlLabel_Lin, mActivity, column);
@@ -296,8 +331,15 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
             case R.id.address_MyView:
                 mPicker.showCityPicker();//修改居住地
                 break;
+            case R.id.industry_MyView://修改行业
+                Intent intent = new Intent(mActivity, ChooseIndustryActivity.class);
+                mActivityResultLauncher.launch(intent);
+                break;
+            case R.id.year_MyView://修改工作经验
+                showPickStringDialog();
+                break;
             case R.id.explain_Con:
-                Edit_ChangeExplain.actionStart(mActivity, userBean.getNickname(),userBean.getDescription());//修改个人说明
+                Edit_ChangeExplain.actionStart(mActivity, userBean.getNickname(), userBean.getDescription());//修改个人说明
                 break;
             case R.id.home_Con:
                 Edit_ChangePage.actionStart(mActivity, userBean.getNickname());//修改头像
@@ -343,6 +385,7 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
     }
 
     CityPickerView mPicker = new CityPickerView();
+
     private void initCity() {
         //等数据加载完毕再初始化并显示Picker,以免还未加载完数据就显示,造成APP崩溃。
         //预先加载仿iOS滚轮实现的全部数据
@@ -368,6 +411,19 @@ public class MyAndOtherEdit_Card extends BaseCameraAndGalleryActivity_Single imp
         public void onCancel() {
 //            ToastUtils.showLongToast(UserDetail_Set.this, "已取消");
         }
+    }
+
+    private void showPickStringDialog() {
+        PickStringDialog mPickStringDialog = new PickStringDialog(mActivity, Arrays.asList(yearList), "", new PickStringDialog.ChooseCallback() {
+            @Override
+            public void onConfirm(String value) {
+               String work = value;
+                year_MyView.getTvContent().setText(work);
+                requestMap.put("work", work);
+                edit_Info();
+            }
+        });
+        mPickStringDialog.show();
     }
 
     /**

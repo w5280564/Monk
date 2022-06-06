@@ -125,6 +125,9 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
         onBackTop(dingTop_Img);
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
+            HomeInsiderBean homeInsiderBean = (HomeInsiderBean) adapter.getItem(position);
+            String news_url = homeInsiderBean.getNews_url();
+            jumpToWebView("",news_url);
         });
     }
 

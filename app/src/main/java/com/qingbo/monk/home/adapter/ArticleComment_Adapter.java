@@ -1,5 +1,6 @@
 package com.qingbo.monk.home.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
@@ -59,6 +60,8 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         TextView commentMore_Tv = helper.getView(R.id.commentMore_Tv);
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 50);
         viewTouchDelegate.expandViewTouchDelegate(mes_Img, 50);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
+
         nickName_Tv.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});//昵称字数
 
         String is_anonymous = item.getIsAnonymous();//1是匿名
@@ -94,6 +97,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
                 commentMore_Tv.setText(format);
             }
         }
+        isCollect(item.getIs_collect(), collect_Tv);
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
@@ -101,6 +105,7 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.head_Img);
         helper.addOnClickListener(R.id.share_Tv);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
 
@@ -160,6 +165,22 @@ public class ArticleComment_Adapter extends BaseQuickAdapter<ArticleCommentBean,
         });
 
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
     public interface onItemLister {
         void onItemClick(View view, int pos, ArticleCommentBean data);

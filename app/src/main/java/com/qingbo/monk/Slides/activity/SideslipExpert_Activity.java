@@ -1,8 +1,11 @@
 package com.qingbo.monk.Slides.activity;
 
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -11,10 +14,12 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Expert_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.baseview.IsMe;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeFllowBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
+import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.adapter.QuestionGroupAdapter;
 import com.xunda.lib.common.common.Constants;
@@ -118,6 +123,10 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
                     case R.id.share_Img:
                         showShareDialog(item);
                         break;
+                    case R.id.collect_Tv:
+                        String articleId1 = item.getArticleId();
+                        postCollectData(articleId1,position);
+                        break;
                 }
             }
         });
@@ -146,6 +155,35 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
             MyAndOther_Card.actionStart(mActivity, id, true);
         }
     }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "0");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((Expert_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
 
     /**
      * 资讯分享

@@ -59,7 +59,7 @@ public class ImageCardItem extends BaseCardItem {
         vh.down = down;
         convertView.setTag(vh);
 
-        GlideUtils.loadImage(mContext, imageView, findBean.getAvatar());
+        GlideUtils.loadCircleImage(mContext, imageView, findBean.getAvatar());
         nickName_Tv.setText(findBean.getNickname());
         city_Tv.setText(findBean.getCity());
         content_Tv.setText(findBean.getDescription());

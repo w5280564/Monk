@@ -41,6 +41,7 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.viewTouchDelegate;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CombinationLineChart_Bean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.LikedStateBena;
@@ -99,6 +100,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     TextView label_Name;
     @BindView(R.id.share_Tv)
     TextView share_Tv;
+    @BindView(R.id.collect_Tv)
+    TextView collect_Tv;
 
     private String isShowTop;
     boolean isReply = false;
@@ -163,6 +166,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
         share_Tv.setOnClickListener(this);
+        collect_Tv.setOnClickListener(this);
     }
 
     @Override
@@ -192,6 +196,10 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                 if (homeCombinationBean != null) {
                     showShareDialog(homeCombinationBean);
                 }
+                break;
+            case R.id.collect_Tv:
+                String articleId = homeCombinationBean.getId();
+                postCollectData(articleId);
                 break;
         }
     }
@@ -328,6 +336,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                         Combination_Shares_Adapter combination_shares_adapter = new Combination_Shares_Adapter();
                         mNineView.setAdapter(combination_shares_adapter);
                         combination_shares_adapter.setNewData(homeCombinationBean.getDetail());
+                        isCollect(homeCombinationBean.getIs_collect(), collect_Tv);
                         initTab();
                         isChangeFold();
                     }
@@ -386,6 +395,49 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "2");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+                        isCollect(collect_status + "", collect_Tv);
+                    }
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+
+    /**
+     * 收藏/取消收藏
+     *
+     * @param status
+     * @param collect_Tv
+     */
+    private void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
     }
 
 

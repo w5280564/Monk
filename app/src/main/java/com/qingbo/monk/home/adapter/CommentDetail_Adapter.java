@@ -1,5 +1,6 @@
 package com.qingbo.monk.home.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -79,6 +80,9 @@ public class CommentDetail_Adapter extends BaseQuickAdapter<CommentBean, BaseVie
         helper.addOnClickListener(R.id.mes_Img);
         helper.addOnClickListener(R.id.head_Img);
         helper.addOnClickListener(R.id.share_Tv);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
+        isCollect(item.getIs_collect(), collect_Tv);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
 
@@ -122,6 +126,20 @@ public class CommentDetail_Adapter extends BaseQuickAdapter<CommentBean, BaseVie
         viewName.setText(spannableString);
     }
 
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
 
 }
 

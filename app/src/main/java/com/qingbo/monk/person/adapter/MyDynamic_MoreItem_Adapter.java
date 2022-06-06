@@ -171,6 +171,11 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
         helper.addOnClickListener(R.id.follow_Img);
         helper.addOnClickListener(R.id.more_Img);
         helper.addOnClickListener(R.id.share_Img);
+
+
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
+        changeCollect(item.getIs_collect(), collect_Tv);
+        helper.addOnClickListener(R.id.collect_Tv);
     }
 
 
@@ -264,6 +269,22 @@ public class MyDynamic_MoreItem_Adapter extends BaseItemProvider<MyDynamic_MoreI
         mContext.startActivity(intent);
         ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void changeCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
 
 }

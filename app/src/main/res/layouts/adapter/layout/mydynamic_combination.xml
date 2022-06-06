@@ -262,6 +262,21 @@
         app:layout_constraintStart_toEndOf="@+id/mes_Count"
         app:layout_constraintTop_toTopOf="@+id/mes_Count" />
 
+    <TextView
+        android:id="@+id/collect_Tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15"
+        android:drawableEnd="@mipmap/shoucang"
+        android:drawablePadding="@dimen/dp_10"
+        android:text="收藏"
+        android:textColor="@color/text_color_444444"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/share_Img"
+        app:layout_constraintStart_toEndOf="@id/share_Img"
+        app:layout_constraintTop_toTopOf="@id/share_Img" />
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"

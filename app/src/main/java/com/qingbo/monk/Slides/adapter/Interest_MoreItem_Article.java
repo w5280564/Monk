@@ -75,6 +75,7 @@ public class Interest_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreIt
         viewTouchDelegate.expandViewTouchDelegate(follow_Img, 100);
         ImageView more_Img = helper.getView(R.id.more_Img);
         viewTouchDelegate.expandViewTouchDelegate(more_Img, 100);
+        TextView collect_Tv = helper.getView(R.id.collect_Tv);
         more_Img.setVisibility(View.GONE);
         group_Name.setFilters(new InputFilter[]{new ByteLengthFilter(14)});
 
@@ -154,6 +155,7 @@ public class Interest_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreIt
         } else {
             nineGridAdapter.setNewData(null);
         }
+        isCollect(item.getIs_collect(), collect_Tv);
 
         helper.addOnClickListener(R.id.follow_Tv);
         helper.addOnClickListener(R.id.follow_Img);
@@ -309,6 +311,22 @@ public class Interest_MoreItem_Article extends BaseItemProvider<MyDynamic_MoreIt
             send_Mes.setVisibility(View.VISIBLE);
         }
     }
+
+    /**
+     * 收藏/取消收藏
+     * @param status
+     * @param collect_Tv
+     */
+    public void isCollect(String status, TextView collect_Tv) {
+        int mipmap = R.mipmap.shoucang;
+        if (TextUtils.equals(status, "1")) {
+            mipmap = R.mipmap.shoucang_select;
+        }
+        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
+        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
+                null, drawableEnd, null);
+    }
+
 
 
 }

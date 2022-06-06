@@ -18,6 +18,7 @@ import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.baseview.IsMe;
+import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFllowBean;
@@ -164,6 +165,10 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
                     case R.id.share_Img:
                         showShareDialog(item);
                         break;
+                    case R.id.collect_Tv:
+                        String articleId1 = item.getArticleId();
+                        postCollectData(articleId1,position);
+                        break;
                 }
             }
         });
@@ -244,6 +249,34 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
                 }
             }
         }, false);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    /**
+     * 收藏
+     *
+     * @param articleId
+     */
+    private void postCollectData(String articleId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("articleId", articleId + "");
+        requestMap.put("type", "0");
+        HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    CollectStateBean collectStateBean = GsonUtil.getInstance().json2Bean(json_data, CollectStateBean.class);
+                    if (collectStateBean != null) {
+                        Integer collect_status = collectStateBean.getCollect_status();
+
+                        TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
+                        ((Focus_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                    }
+                }
+            }
+        }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
     }
