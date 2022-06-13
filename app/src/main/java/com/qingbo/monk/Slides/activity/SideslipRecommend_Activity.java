@@ -299,6 +299,7 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
                         showShareDialog(item);
                         break;
                     case R.id.collect_Tv:
+                        position += 1;
                         String articleId1 = item.getArticleId();
                         postCollectData(articleId1,position);
                         break;

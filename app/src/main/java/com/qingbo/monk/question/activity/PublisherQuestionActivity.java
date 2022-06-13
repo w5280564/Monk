@@ -4,14 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,8 +24,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
+import com.qingbo.monk.base.rich.bean.MyFontStyle;
+import com.qingbo.monk.base.rich.handle.CustomHtml;
+import com.qingbo.monk.base.rich.view.FontStylePanel;
+import com.qingbo.monk.base.rich.view.RichEditText;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
+import com.qingbo.monk.dialog.LinkDialog;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -46,7 +56,7 @@ import butterknife.OnClick;
 /**
  * 问答广场发布页
  */
-public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More {
+public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More implements FontStylePanel.OnFontPanelListener, RichEditText.OnSelectChangeListener{
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.tv_remains_text)
@@ -58,9 +68,11 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     @BindView(R.id.et_title)
     EditText et_title;
     @BindView(R.id.et_content)
-    EditText et_content;
+    RichEditText et_content;
     @BindView(R.id.recycleView_image)
     RecyclerView recycleView_image;
+    @BindView(R.id.fontStylePanel)
+    FontStylePanel fontStylePanel;
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
     private ChooseImageAdapter mAdapter;
@@ -191,6 +203,8 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
 
             }
         });
+        fontStylePanel.setOnFontPanelListener(this);
+        et_content.setOnSelectChangeListener(this);
     }
 
 
@@ -286,6 +300,8 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
         baseMap.put("type", "1");
         baseMap.put("action", "3");
         baseMap.put("optype", optype);//默认是0,0是发布,1是保存
+        String s = CustomHtml.toHtml(et_content.getEditableText());
+        baseMap.put("html_content", s);
         if (isEdit) {//编辑
             baseMap.put("topic_id", questionId);
         }
@@ -374,5 +390,96 @@ public class PublisherQuestionActivity extends BaseCameraAndGalleryActivity_More
     protected void onUploadFailure(String error_info) {
 
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setBold(boolean isBold) {
+        et_content.setBold(isBold);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setItalic(boolean isItalic) {
+        et_content.setItalic(isItalic);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setUnderline(boolean isUnderline) {
+
+//
+//        et_content.setUnderline(isUnderline);
+        linkDialog();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setStreak(boolean isStreak) {
+//        et_content.setStreak(isStreak);
+        int end = et_content.getSelectionEnd();
+        Editable editableText = et_content.getEditableText();
+        editableText.insert(end, "\n");
+    }
+
+    @Override
+    public void insertImg() {
+
+    }
+
+    @Override
+    public void setFontSize(int size) {
+        et_content.setFontSize(14);
+    }
+
+    @Override
+    public void setFontColor(int color) {
+
+    }
+
+    /**
+     * 样式改变
+     *
+     * @param fontStyle
+     */
+    @Override
+    public void onFontStyleChang(MyFontStyle fontStyle) {
+        fontStylePanel.initFontStyle(fontStyle);
+    }
+
+    @Override
+    public void onSelect(int start, int end) {
+
+    }
+
+    private void linkDialog() {
+        new LinkDialog(mActivity, "", "取消", "确定", new LinkDialog.ConfirmListener() {
+            @Override
+            public void onClickRight(String name, String Url) {
+                setLink(name,Url);
+            }
+
+            @Override
+            public void onClickLeft() {
+            }
+        }).show();
+    }
+
+    private void setLink(String name ,String url){
+        Editable edit = et_content.getEditableText();//获取EditText的文字
+        int start = et_content.getSelectionStart();
+        String text = name;
+        int end = et_content.getSelectionEnd() + text.length();
+        if (start < 0 || start >= edit.length()) {
+            edit.append(text);
+        } else {
+            edit.insert(start, text);//光标所在位置插入文字
+        }
+        et_content.getEditableText().setSpan(new URLSpan(url), start, end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        et_content.setMovementMethod(LinkMovementMethod.getInstance());//可点击
+    }
+
 
 }

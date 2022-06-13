@@ -71,6 +71,8 @@ public class HomeFoucsDetail_Bean {
             private String collect_status;
             @SerializedName("is_collect")
             private String  is_collect;
+            @SerializedName("html_content")
+            private String  html_content;
 
 
             @NoArgsConstructor

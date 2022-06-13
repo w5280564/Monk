@@ -254,9 +254,7 @@ public class Interest_MoreItem_Combination extends BaseItemProvider<MyDynamic_Mo
         if (TextUtils.equals(status, "1")) {
             mipmap = R.mipmap.shoucang_select;
         }
-        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
-        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
-                null, drawableEnd, null);
+        collect_Tv.setBackgroundResource(mipmap);
     }
 
 

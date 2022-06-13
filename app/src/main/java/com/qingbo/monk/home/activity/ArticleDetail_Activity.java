@@ -5,10 +5,19 @@ import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.text.Html;
 import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -522,13 +531,22 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         }
                         title_Tv.setText(detailData.getTitle());
 //                        center_Tv.setText(detailData.getTitle());
-                        content_Tv.setText(detailData.getContent());
+//                        content_Tv.setText(detailData.getContent());
+
+                        if (TextUtils.isEmpty(detailData.getHtml_content())) {
+                            content_Tv.setText(Html.fromHtml(detailData.getContent()));
+                        } else {
+                            Spanned spanned = Html.fromHtml(detailData.getHtml_content());
+//                            content_Tv.setText(spanned);
+                            handleHtmlClickAndStyle(mContext, content_Tv, spanned);
+                        }
+
                         String companyName = TextUtils.isEmpty(detailData.getCompanyName()) ? "" : detailData.getCompanyName();
                         String userDate = DateUtil.getUserDate(detailData.getCreateTime());
                         time_Tv.setText(userDate);
                         company_Tv.setText(companyName);
 
-                        String data_source = String.format("来源：%1$s",detailData.getData_source());
+                        String data_source = String.format("来源：%1$s", detailData.getData_source());
                         comeFrom_Tv.setText(data_source);
 
                         //多张图片
@@ -624,7 +642,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
-
     /**
      * 转发
      *
@@ -716,9 +733,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private void postCollectData(String articleId) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId + "");
-        if (isStockOrFund){
+        if (isStockOrFund) {
             requestMap.put("type", "3");
-        }else {
+        } else {
             requestMap.put("type", "0");
         }
         HttpSender httpSender = new HttpSender(HttpUrl.Collect_Article, "收藏/取消收藏", requestMap, new MyOnHttpResListener() {
@@ -740,6 +757,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 
     /**
      * 收藏/取消收藏
+     *
      * @param status
      * @param collect_Tv
      */
@@ -748,9 +766,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         if (TextUtils.equals(status, "1")) {
             mipmap = R.mipmap.shoucang_select;
         }
-        Drawable drawableEnd = getResources().getDrawable(mipmap);
-        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
-                null, drawableEnd, null);
+        collect_Tv.setBackgroundResource(mipmap);
     }
 
 
@@ -980,6 +996,50 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         Drawable drawableEnd = getResources().getDrawable(mipmap);
         textView.setCompoundDrawablesWithIntrinsicBounds(null,
                 null, drawableEnd, null);
+    }
+
+
+    //文字超链能够点击
+    private void handleHtmlClickAndStyle(Context context, TextView textview, Spanned spanned) {
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(spanned);
+        URLSpan[] urls = spannableStringBuilder.getSpans(0, spanned.length(), URLSpan.class);
+        for (URLSpan url : urls) {
+            CustomURLSpan myURLSpan = new CustomURLSpan(context, url.getURL());
+            int start = spannableStringBuilder.getSpanStart(url);
+            int end = spannableStringBuilder.getSpanEnd(url);
+            int flags = spannableStringBuilder.getSpanFlags(url);
+            spannableStringBuilder.setSpan(myURLSpan, start, end, flags);
+            //一定要加上这一句,看过很多网上的方法，都没加这一句，导致ClickableSpan的onClick方法没有回调，直接用浏览器打开了
+            spannableStringBuilder.removeSpan(url);
+
+        }
+        textview.setText(spannableStringBuilder);
+        //这一句加上以后才能处理点击
+        textview.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    //自定义CustomURLSpan，用来替换默认的URLSpan
+    private class CustomURLSpan extends ClickableSpan {
+        private Context mContext;
+        private String mUrl;
+
+        CustomURLSpan(Context context, String url) {
+            mUrl = url;
+            mContext = context;
+        }
+
+        @Override
+        public void onClick(View view) {
+            //此处处理点击事件  mUrl 为<a>标签的href属性
+            jumpToWebView("", mUrl);
+        }
+
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setColor(Color.parseColor("#1e5494"));//设置文本颜色
+//            ds.setUnderlineText(false);//取消下划线
+        }
     }
 
 

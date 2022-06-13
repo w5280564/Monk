@@ -12,9 +12,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.rich.view.RichEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +23,7 @@ import java.util.Objects;
 /**
  * 内容中添加@消息  固定删除一整个名字
  */
-public class AtEditText extends AppCompatEditText {
+public class AtEditText extends RichEditText {
     ArrayList<Entity> atList;
 //    ArrayList<ChatEmoji> emojiList;
     /**

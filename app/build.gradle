@@ -167,6 +167,8 @@ android {
 //        implementation 'com.squareup.okhttp3:okhttp:3.12.13'//QQ SDK在3.53.0版本及以上时需要集成okhttp官方依赖库，必选
 
         implementation 'io.github.sinaweibosdk:core:12.3.1@aar'
+
+        implementation 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
     }
 
 

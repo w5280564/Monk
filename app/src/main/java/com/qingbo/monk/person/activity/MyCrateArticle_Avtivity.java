@@ -4,15 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Editable;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +31,21 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseCameraAndGalleryActivity_More;
+import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.MyConstant;
 import com.qingbo.monk.base.baseview.AtEditText;
 import com.qingbo.monk.base.livedatas.LiveDataBus;
+import com.qingbo.monk.base.rich.bean.MyFontStyle;
+import com.qingbo.monk.base.rich.handle.CustomHtml;
+import com.qingbo.monk.base.rich.handle.RichEditImageGetter;
+import com.qingbo.monk.base.rich.view.FontStylePanel;
+import com.qingbo.monk.base.rich.view.RichEditText;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.FriendContactBean;
 import com.qingbo.monk.bean.OwnPublishBean;
 import com.qingbo.monk.bean.UploadPictureBean;
+import com.qingbo.monk.dialog.LinkDialog;
+import com.qingbo.monk.dialog.QuitDialog;
 import com.qingbo.monk.question.adapter.ChooseImageAdapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.fileprovider.FileProvider7;
@@ -44,6 +62,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,7 +71,7 @@ import butterknife.OnClick;
 /**
  * 创作者发表文章
  */
-public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More implements View.OnClickListener {
+public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More implements View.OnClickListener, FontStylePanel.OnFontPanelListener, RichEditText.OnSelectChangeListener {
     @BindView(R.id.tv_tag)
     TextView tvTag;
     @BindView(R.id.ll_tag)
@@ -70,6 +90,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     TextView tv_next;
     @BindView(R.id.at_Img)
     ImageView at_Img;
+    @BindView(R.id.fontStylePanel)
+    FontStylePanel fontStylePanel;
 
     private List<UploadPictureBean> imageList = new ArrayList<>();
     private List<String> imageStringList = new ArrayList<>();
@@ -169,6 +191,14 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
                 }
             }
         });
+
+//        HideIMEUtil.wrap(this,et_content);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
+//        showInput(et_content);
+
+//        String html_content = "哈哈<br><b><strike>你看</strike></b><br><i>漂亮</i><br><b><b><i><i><font color='#212121' style='font-size:16px;'>吗</font></i></i></b></b>";
+//        Spanned spanned = CustomHtml.fromHtml(html_content,CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(this,et_content),null);
+//        et_content.setText(spanned);
     }
 
 
@@ -247,6 +277,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
         tv_next.setOnClickListener(this);
         at_Img.setOnClickListener(this);
+        fontStylePanel.setOnFontPanelListener(this);
+        et_content.setOnSelectChangeListener(this);
     }
 
 
@@ -268,7 +300,6 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
             if (mDialog == null) {
                 mDialog = new TwoButtonDialogBlue(this, "是否将内容保存至「我-草稿箱」？", "不保存", "保存",
                         new TwoButtonDialogBlue.ConfirmListener() {
-
                             @Override
                             public void onClickRight() {
                                 createOrEditSaveQuestion("1");
@@ -312,6 +343,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         baseMap.put("isAnonymous", (String) llTag.getTag());
         baseMap.put("images", images);
         baseMap.put("draft", optype);
+        String s = CustomHtml.toHtml(et_content.getEditableText());
+        baseMap.put("html_content", s);
         if (!ListUtils.isEmpty(et_content.getAtList())) {
             StringBuffer alterList = new StringBuffer();
             for (AtEditText.Entity entity : et_content.getAtList()) {
@@ -337,6 +370,21 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         }, true);
         sender.setContext(mActivity);
         sender.sendPost();
+    }
+
+    //unicode转String
+    public String parseUnicodeToStr(String unicodeStr) {
+        String regExp = "&#\\d*;";
+        Matcher m = Pattern.compile(regExp).matcher(unicodeStr);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String s = m.group(0);
+            s = s.replaceAll("(&#)|;", "");
+            char c = (char) Integer.parseInt(s);
+            m.appendReplacement(sb, Character.toString(c));
+        }
+        m.appendTail(sb);
+        return sb.toString();
     }
 
 
@@ -432,6 +480,9 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_next:
+                String content = CustomHtml.toHtml(et_content.getEditableText(), CustomHtml.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE);
+                Log.d("richText", "span转html:" + content);
+
                 getPramsValue();
                 if (StringUtil.isBlank(mContent)) {
                     T.ss("内容必须填写");
@@ -466,5 +517,108 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
         }
     }
 
+    /**
+     * 点击弹出键盘
+     *
+     * @param editView
+     * @param editView 是否回复评论  true是对评论回复
+     */
+    public void showInput(View editView) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        fontStylePanel.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
+//        fontStylePanel.requestLayout();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setBold(boolean isBold) {
+        et_content.setBold(isBold);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setItalic(boolean isItalic) {
+        et_content.setItalic(isItalic);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setUnderline(boolean isUnderline) {
+
+//
+//        et_content.setUnderline(isUnderline);
+        linkDialog();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    public void setStreak(boolean isStreak) {
+//        et_content.setStreak(isStreak);
+        int end = et_content.getSelectionEnd();
+        Editable editableText = et_content.getEditableText();
+        editableText.insert(end, "\n");
+    }
+
+    @Override
+    public void insertImg() {
+
+    }
+
+    @Override
+    public void setFontSize(int size) {
+        et_content.setFontSize(14);
+    }
+
+    @Override
+    public void setFontColor(int color) {
+
+    }
+
+    /**
+     * 样式改变
+     *
+     * @param fontStyle
+     */
+    @Override
+    public void onFontStyleChang(MyFontStyle fontStyle) {
+        fontStylePanel.initFontStyle(fontStyle);
+    }
+
+    @Override
+    public void onSelect(int start, int end) {
+
+    }
+
+    private void linkDialog() {
+        new LinkDialog(mActivity, "", "取消", "确定", new LinkDialog.ConfirmListener() {
+            @Override
+            public void onClickRight(String name, String Url) {
+               setLink(name,Url);
+            }
+
+            @Override
+            public void onClickLeft() {
+            }
+        }).show();
+    }
+
+    private void setLink(String name ,String url){
+        Editable edit = et_content.getEditableText();//获取EditText的文字
+        int start = et_content.getSelectionStart();
+        String text = name;
+        int end = et_content.getSelectionEnd() + text.length();
+        if (start < 0 || start >= edit.length()) {
+            edit.append(text);
+        } else {
+            edit.insert(start, text);//光标所在位置插入文字
+        }
+        //"http://www.baidu.com"
+        et_content.getEditableText().setSpan(new URLSpan(url), start, end,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        et_content.setMovementMethod(LinkMovementMethod.getInstance());//可点击
+    }
 
 }

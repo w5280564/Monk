@@ -240,9 +240,7 @@ public class Follow_Adapter extends BaseQuickAdapter<HomeFllowBean, BaseViewHold
         if (TextUtils.equals(status, "1")) {
             mipmap = R.mipmap.shoucang_select;
         }
-        Drawable drawableEnd = mContext.getResources().getDrawable(mipmap);
-        collect_Tv.setCompoundDrawablesWithIntrinsicBounds(null,
-                null, drawableEnd, null);
+        collect_Tv.setBackgroundResource(mipmap);
     }
 
 
