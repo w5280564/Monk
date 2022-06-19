@@ -44,7 +44,7 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
 
     /**
      * @param type   1是A股2是港股
-     * @param search 查询股票code
+     * @param search 查询股票code 改为name
      * @return
      */
     public static StockNitice_Fragment newInstance(String type, String search) {

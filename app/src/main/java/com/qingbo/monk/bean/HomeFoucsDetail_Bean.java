@@ -73,6 +73,8 @@ public class HomeFoucsDetail_Bean {
             private String  is_collect;
             @SerializedName("html_content")
             private String  html_content;
+            @SerializedName("media_name")
+            private String  media_name;
 
 
             @NoArgsConstructor

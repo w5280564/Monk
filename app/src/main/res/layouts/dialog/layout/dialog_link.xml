@@ -39,6 +39,7 @@
         android:layout_marginEnd="@dimen/dp_15"
         android:background="@null"
         android:hint="链接名称 如:百度"
+        android:visibility="gone"
         android:lines="1"
         android:maxLength="10"
         android:textColor="@color/text_color_a1a1a1"

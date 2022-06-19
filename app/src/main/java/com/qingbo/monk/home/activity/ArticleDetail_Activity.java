@@ -546,8 +546,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         time_Tv.setText(userDate);
                         company_Tv.setText(companyName);
 
-                        String data_source = String.format("来源：%1$s", detailData.getData_source());
-                        comeFrom_Tv.setText(data_source);
+                        if (TextUtils.isEmpty(detailData.getMedia_name())){
+                            comeFrom_Tv.setText("");
+                        }else {
+                            String data_source = String.format("来源：%1$s", detailData.getMedia_name());
+                            comeFrom_Tv.setText(data_source);
+                        }
+
 
                         //多张图片
                         if (!TextUtils.isEmpty(detailData.getImages())) {

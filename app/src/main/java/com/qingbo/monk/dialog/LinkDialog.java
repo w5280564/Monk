@@ -110,10 +110,10 @@ public class LinkDialog extends Dialog implements
     public void onClick(View arg0) {
         int id = arg0.getId();
         if (id == R.id.tv_right) {
-            if (TextUtils.isEmpty(name_edit.getText().toString())){
-                T.s("名称不能为空",2000);
-                return;
-            }
+//            if (TextUtils.isEmpty(name_edit.getText().toString())){
+//                T.s("名称不能为空",2000);
+//                return;
+//            }
             if (!StringUtil.isHttpUrl(pageUrl_edit.getText().toString())){
                 T.s("请输入正确的主页地址",2000);
                 return;
@@ -121,7 +121,8 @@ public class LinkDialog extends Dialog implements
             if (!pageUrl_edit.getText().toString().contains("http://")){
                 pageUrl_edit.setText("http://"+pageUrl_edit.getText().toString());
             }
-            String s = name_edit.getText().toString();
+//            String s = name_edit.getText().toString();
+            String s = pageUrl_edit.getText().toString();
             String s1 = pageUrl_edit.getText().toString();
             listener.onClickRight(s,s1);
             dismiss();

@@ -40,12 +40,20 @@ import java.util.List;
 public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
 
 
-    private String name, code;
+    private String name, code,type;
 
-    public static StockOrFund_Mess_Fragment newInstance(String name, String code) {
+    /**
+     *
+     * @param name
+     * @param code
+     * @param type 1是A股 2是港股
+     * @return
+     */
+    public static StockOrFund_Mess_Fragment newInstance(String name, String code, String type) {
         Bundle args = new Bundle();
         args.putString("name", name);
         args.putString("code", code);
+        args.putString("type", type);
         StockOrFund_Mess_Fragment fragment = new StockOrFund_Mess_Fragment();
         fragment.setArguments(args);
         return fragment;
@@ -69,6 +77,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
     protected void initLocalData() {
         name = getArguments().getString("name");
         code = getArguments().getString("code");
+        type = getArguments().getString("type");
     }
 
     @Override
@@ -85,6 +94,7 @@ public class StockOrFund_Mess_Fragment extends BaseRecyclerViewSplitFragment {
         requestMap.put("limit", limit + "");
         requestMap.put("name", name + "");
         requestMap.put("code", code + "");
+        requestMap.put("type", type + "");
         HttpSender httpSender = new HttpSender(HttpUrl.StockOrFund_Message, "个股/基金--资讯", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

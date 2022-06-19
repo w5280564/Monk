@@ -59,9 +59,9 @@ public class StockHKFragment extends BaseTabLayoutFragment {
         }
 //        name = "凤祥股份";
 //        code = "156154";
-        fragments.add(StockOrFund_Mess_Fragment.newInstance(name, code));
+        fragments.add(StockOrFund_Mess_Fragment.newInstance(name, code,"2"));
         fragments.add(StockOrFund_Question_Fragment.newInstance(name, code));
-        fragments.add(StockNitice_Fragment.newInstance("2", code));
+        fragments.add(StockNitice_Fragment.newInstance("2", name));
         fragments.add(StockThigh_HK_Fragment.newInstance(code, "1"));
 
         initChildViewPager(0);

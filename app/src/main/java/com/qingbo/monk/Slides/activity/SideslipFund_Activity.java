@@ -152,7 +152,7 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity implements View
             menuList.add(bean);
         }
 
-        fragments.add(StockOrFund_Mess_Fragment.newInstance(stockName, stockCode));
+        fragments.add(StockOrFund_Mess_Fragment.newInstance(stockName, stockCode,""));
         fragments.add(StockOrFund_Question_Fragment.newInstance(stockName, stockCode));
         fragments.add(FundNitice_Fragment.newInstance(stockCode));
         fragments.add(FundCombination_Fragment.newInstance(stockCode));//"160613"
