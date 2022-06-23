@@ -32,13 +32,13 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
 
         shareName_Tv.setText(item.getHolderName());
         cgs_Tv.setText(item.getHeldNum() + "");
-        jzbl_Tv.setText(item.getHeldRatio() + "");
+        jzbl_Tv.setText(item.getHeldRatio() + "%");
 
 
         if (TextUtils.isEmpty(item.getCgblbd())) {
             change_Tv.setText("");
         } else {
-            change_Tv.setText(item.getCgblbd() + "");
+            change_Tv.setText(item.getCgblbd() + "%");
             boolean number = isNumber(item.getCgblbd());
             if (number) {
                 double v = Double.parseDouble(item.getCgblbd());

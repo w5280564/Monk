@@ -211,19 +211,20 @@
         android:id="@+id/collect_Tv"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
-        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginStart="@dimen/dp_50"
         android:background="@mipmap/shoucang"
         android:textColor="@color/text_color_444444"
-        app:layout_constraintBottom_toBottomOf="@id/share_Img"
+        app:layout_constraintBottom_toBottomOf="@+id/follow_Img"
         app:layout_constraintStart_toEndOf="@id/share_Img"
-        app:layout_constraintTop_toTopOf="@id/share_Img" />
+        app:layout_constraintTop_toTopOf="@+id/follow_Img" />
 
     <View
+        android:id="@+id/view13"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/text_color_CCCCCC"
         android:layout_marginTop="@dimen/dp_20"
-        app:layout_constraintTop_toBottomOf="@id/mes_Count"/>
+        android:background="@color/text_color_CCCCCC"
+        app:layout_constraintTop_toBottomOf="@id/mes_Count" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

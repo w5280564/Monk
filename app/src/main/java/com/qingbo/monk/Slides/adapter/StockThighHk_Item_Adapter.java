@@ -32,13 +32,13 @@ public class StockThighHk_Item_Adapter extends BaseQuickAdapter<StockThighHK_Bea
 
         shareName_Tv.setText(item.getGdmc());
         cgs_Tv.setText(item.getCgsl() + "");
-        jzbl_Tv.setText(item.getCgbl() + "");
+        jzbl_Tv.setText(item.getCgbl() + "%");
 
 
         if (TextUtils.isEmpty(item.getCgblbd())) {
             change_Tv.setText("");
         } else {
-            change_Tv.setText(item.getCgblbd() + "");
+            change_Tv.setText(item.getCgblbd() + "%");
             boolean number = isNumber(item.getCgblbd());
             if (number) {
                 double v = Double.parseDouble(item.getCgblbd());

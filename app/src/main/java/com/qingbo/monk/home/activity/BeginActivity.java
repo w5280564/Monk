@@ -54,7 +54,7 @@ public class BeginActivity extends FragmentActivity {
 
     //启动页固定5秒
     private void initData() {
-        new Handler().postDelayed(() -> judgePrivacyPolicy(), 5000);
+        new Handler().postDelayed(() -> judgePrivacyPolicy(), 2000);
     }
 
 

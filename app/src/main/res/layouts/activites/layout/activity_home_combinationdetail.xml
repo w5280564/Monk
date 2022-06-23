@@ -152,19 +152,19 @@
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/mes_Count"
                     app:layout_constraintTop_toTopOf="@id/mes_Count"
-                    android:layout_marginStart="@dimen/dp_30"
+                    android:layout_marginStart="@dimen/dp_40"
                     app:layout_constraintBottom_toBottomOf="@id/mes_Count"/>
 
                 <TextView
                     android:id="@+id/collect_Tv"
                     android:layout_width="@dimen/dp_18"
                     android:layout_height="@dimen/dp_18"
-                    android:layout_marginStart="@dimen/dp_30"
+                    android:layout_marginStart="@dimen/dp_50"
                     android:background="@mipmap/shoucang"
                     android:textColor="@color/text_color_444444"
-                    app:layout_constraintBottom_toBottomOf="@id/share_Tv"
+                    app:layout_constraintBottom_toBottomOf="@+id/follow_Img"
                     app:layout_constraintStart_toEndOf="@id/share_Tv"
-                    app:layout_constraintTop_toTopOf="@id/share_Tv" />
+                    app:layout_constraintTop_toTopOf="@+id/follow_Img" />
 
 
                 <View

@@ -21,12 +21,15 @@ import com.qingbo.monk.person.adapter.MyGroupAdapter;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.CreateGroupStepOneActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.xunda.lib.common.bean.BaseSplitIndexBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.preferences.PrefUtil;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
+import com.xunda.lib.common.common.utils.ListUtils;
+import com.xunda.lib.common.common.utils.StringUtil;
 
 import java.util.HashMap;
 
@@ -77,14 +80,16 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mSwipeRefreshLayout.setRefreshing(true);
         if (isMe()) {
-//            getMyGroupHead("1");
             type = "2";
         } else {
             type = "3";
         }
         getMyGroup(type);
     }
+
+
 
     @Override
     public void onRightClick() {
@@ -102,9 +107,10 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         }
         mRecyclerView = findViewById(R.id.mRecyclerView);
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
-        mSwipeRefreshLayout.setRefreshing(true);
+
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+//        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        initSwipeRefreshLayoutAndAdapter(true);
     }
 
 
@@ -164,6 +170,7 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
         top_mRecyclerView.setLayoutManager(mMangaer);
         myGroupAdapter = new MyGroupAdapter(isMe());
         top_mRecyclerView.setAdapter(myGroupAdapter);
+
         mAdapter.addHeaderView(myView);
 
         myGroupAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -221,6 +228,9 @@ public class MyGroupList_Activity extends BaseRecyclerViewSplitActivity {
                         }
                         if (code == Constants.REQUEST_SUCCESS_CODE) {
                             MyGroupList_Bean myGroupList_bean = GsonUtil.getInstance().json2Bean(json_data, MyGroupList_Bean.class);
+                            String user_group_count = GsonUtil.getInstance().getValue(json_data, "user_group_count");
+
+                            int mygroup = Integer.parseInt(user_group_count);
                             handleSplitListData(myGroupList_bean, mAdapter, limit);
                             if (isMe()) {
                                 group_Tv.setText("我加入的社群");

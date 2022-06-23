@@ -30,13 +30,13 @@ public class FundCombination_Shares_Adapter extends BaseQuickAdapter<FundCombina
 
         shareName_Tv.setText(item.getName());
         cgs_Tv.setText(item.getCgs());
-        jzbl_Tv.setText(item.getJzbl());
+        jzbl_Tv.setText(item.getJzbl()+"%");
 
 
         if (TextUtils.isEmpty(item.getChange())) {
             change_Tv.setText("");
         } else {
-            change_Tv.setText(item.getChange() + "");
+            change_Tv.setText(item.getChange() + "%");
             boolean number = isNumber(item.getChange());
             if (number) {
                 double v = Double.parseDouble(item.getChange());

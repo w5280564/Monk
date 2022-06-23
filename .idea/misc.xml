@@ -520,18 +520,21 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/card_head_middle.xml" value="0.43125" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/commentlist_top.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/mycrate_center.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/mygrouplist_top.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/articlecomment_adapter.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/character_adapter.xml" value="0.46875" />
-        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/combination_adapter.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/combination_adapter.xml" value="0.4528302049755674" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/comment_item_adapter.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/find_adapter.xml" value="0.46875" />
-        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/follow_adapter.xml" value="0.39791666666666664" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/follow_adapter.xml" value="0.4528302049755674" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/foucs_adapter.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/fundcombination_adapter.xml" value="0.46145833333333336" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/interest_adapter.xml" value="0.45677083333333335" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/interest_combination.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/interest_item_original.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/interest_moreitem_article.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/interest_moreitem_information.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_fundshares.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_article.xml" value="0.43697916666666664" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_information.xml" value="0.43697916666666664" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.46875" />
@@ -555,6 +558,7 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_pane.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_panel.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_select.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.484375" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_insider.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_message.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_tab.xml" value="0.3880208333333333" />

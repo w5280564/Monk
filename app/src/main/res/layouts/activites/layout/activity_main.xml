@@ -262,7 +262,7 @@
                         app:arrowItemAvatarHeight="@dimen/dp_12"
                         app:arrowItemAvatarSrc="@mipmap/geren"
                         app:arrowItemShowAvatar="true"
-                        app:arrowItemTitle="个人主页"
+                        app:arrowItemTitle=""
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
