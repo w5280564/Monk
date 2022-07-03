@@ -12,13 +12,18 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.fragment.StockAFragment;
 import com.qingbo.monk.Slides.fragment.StockHKFragment;
+import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
+import com.qingbo.monk.base.BaseTabLayoutFragment;
 import com.qingbo.monk.base.TouchRegion;
 import com.qingbo.monk.bean.StockFundMes_ListBean;
 import com.qingbo.monk.bean.Stock_Bean;
@@ -32,6 +37,7 @@ import com.xunda.lib.common.common.utils.ListUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -54,6 +60,7 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
 
     private String stockName;
     public String stockCode;
+    public String AorHKType = "1";
     private int page = 1;
 
     /**
@@ -113,6 +120,7 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
 
         title_Tv.setText(stockName);
         initMenuData();
+
     }
 
     @Override
@@ -130,7 +138,7 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
             stockString = HttpUrl.thigh_List;
             page = 1;
             getListData(true);
-        }else {
+        } else {
             initMenuData();
         }
     }
@@ -151,7 +159,7 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
             bean.setName(tabName.get(i));
             menuList.add(bean);
         }
-        fragments.add(StockAFragment.newInstance(stockName, stockCode));
+        fragments.add(StockAFragment.newInstance(stockName, stockCode, AorHKType));
 //         name = "凤祥股份";
 //         code = "156154";
         fragments.add(StockHKFragment.newInstance(stockName, stockCode));
@@ -213,6 +221,7 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
             stockString = HttpUrl.etf_List;
         }
     }
+
 
 
     private void getListData(boolean isShow) {

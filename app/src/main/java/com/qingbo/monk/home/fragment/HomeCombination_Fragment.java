@@ -206,7 +206,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
     }
 
     /**
-     * 仓位组合分享
+     * 仓位组合
      */
     private void showShareDialog(HomeCombinationBean item) {
         String imgUrl = "";

@@ -22,6 +22,7 @@ import com.qingbo.monk.bean.HomeInsiderHKBean;
 import com.qingbo.monk.bean.InsiderHKListBean;
 import com.qingbo.monk.bean.InsiderListBean;
 import com.qingbo.monk.bean.StockThighHK_ListBean;
+import com.qingbo.monk.home.activity.StartPDF_Activity;
 import com.qingbo.monk.home.adapter.Insider_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -155,7 +156,9 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
                     AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
                 }else {
                     HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
-                    jumpToWebView(item.getNewsTitle(),item.getFile_url());
+//                    jumpToWebView(item.getNewsTitle(),item.getFile_url());
+
+                    StartPDF_Activity.startActivity(requireActivity(),item.getNewsTitle(),item.getFile_url());
                 }
             }
         });

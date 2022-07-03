@@ -342,12 +342,12 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
         switch (view.getId()) {
             case R.id.dynamic_Tv:
                 dismiss();
-                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
-                    if (IsMe.isMy(author_id)) {
-                        T.ss("不能转发自己的文章");
-                        return;
-                    }
-                }
+//                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+//                    if (IsMe.isMy(author_id)) {
+//                        T.ss("不能转发自己的文章");
+//                        return;
+//                    }
+//                }
 //              dynamicAndCollect_clickLister.dynamicClick();
                 postForwardingData(articleId);
                 break;
@@ -358,23 +358,23 @@ public class InfoOrArticleShare_Dialog extends Dialog implements OnClickListener
                 break;
             case R.id.group_Tv:
                 dismiss();
-                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
-                    if (IsMe.isMy(author_id)) {
-                        T.ss("不能转发自己的文章");
-                        return;
-                    }
-                }
+//                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+//                    if (IsMe.isMy(author_id)) {
+//                        T.ss("不能转发自己的文章");
+//                        return;
+//                    }
+//                }
                 String id = PrefUtil.getUser().getId();
                 ForWardGroup_Activity.actionStart(context, id, articleId, forGroupType);
                 break;
             case R.id.interest_Tv:
                 dismiss();
-                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
-                    if (IsMe.isMy(author_id)) {
-                        T.ss("不能转发自己的文章");
-                        return;
-                    }
-                }
+//                if (!isStockOrFund) {//不是资讯类型，判断是否自己发的文章
+//                    if (IsMe.isMy(author_id)) {
+//                        T.ss("不能转发自己的文章");
+//                        return;
+//                    }
+//                }
                 String id1 = PrefUtil.getUser().getId();
                 ForWardInterest_Activity.actionStart(context, id1, articleId, forGroupType);
                 break;

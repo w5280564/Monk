@@ -63,7 +63,9 @@ public class ImageCardItem extends BaseCardItem {
         nickName_Tv.setText(findBean.getNickname());
         city_Tv.setText(findBean.getCity());
         content_Tv.setText(findBean.getDescription());
-        labelFlow(lable_Lin, mContext, findBean.getTagName());
+
+        String tag = findBean.getIndustry()+","+findBean.getWork();
+        labelFlow(lable_Lin, mContext, tag);
 
         convertView.setOnClickListener(v -> {
             String id = findBean.getId();

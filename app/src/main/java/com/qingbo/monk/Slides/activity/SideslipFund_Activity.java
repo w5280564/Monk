@@ -221,7 +221,7 @@ public class SideslipFund_Activity extends BaseTabLayoutActivity implements View
                     if (stock_bean != null) {
                         if (!ListUtils.isEmpty(stock_bean.getList())) {
                             Stock_Bean.ListDTO listDTO = stock_bean.getList().get(0);
-                            stockName = listDTO.getNewsUuid();
+                            stockName = listDTO.getNewsTitle();
                             stockCode = listDTO.getNewsDigest();
                             title_Tv.setText(listDTO.getNewsTitle());
                             initMenuData();

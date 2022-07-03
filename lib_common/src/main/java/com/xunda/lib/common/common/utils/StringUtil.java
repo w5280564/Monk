@@ -744,7 +744,7 @@ public class StringUtil {
         if (TextUtils.isEmpty(str)) {
             return false;
         }
-        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
+        Pattern pattern = Pattern.compile( "^[-\\+]?([0-9]+\\.?)?[0-9]+$");
         return pattern.matcher(str).matches();
     }
 

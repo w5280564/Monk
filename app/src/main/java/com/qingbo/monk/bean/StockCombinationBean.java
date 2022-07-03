@@ -47,7 +47,7 @@ public class StockCombinationBean {
                     @SerializedName("holder_name")
                     private String holderName;
                     @SerializedName("held_ratio")
-                    private Double heldRatio;
+                    private String heldRatio;
                 }
             }
 }

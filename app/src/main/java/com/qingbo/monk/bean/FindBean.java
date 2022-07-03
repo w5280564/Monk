@@ -34,4 +34,9 @@ public class FindBean {
     private String fansNum;
     @SerializedName("follow_status")
     private Integer followStatus;
+    @SerializedName("industry")
+    private String industry;
+    @SerializedName("work")
+    private String work;
+
 }

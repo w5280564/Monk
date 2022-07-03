@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,8 +30,8 @@ public class RichEditImageGetter implements Html.ImageGetter {
     private HashSet<Target> targets;
     private HashSet<GifDrawable> gifDrawables;
     private final Context mContext;
-    private final RichEditText mTextView;
-    public RichEditImageGetter(Context context, RichEditText textView) {
+    private final TextView mTextView;
+    public RichEditImageGetter(Context context, TextView textView) {
         this.mContext = context;
         this.mTextView = textView;
         targets = new HashSet<>();

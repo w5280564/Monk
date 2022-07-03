@@ -3,8 +3,10 @@ package com.qingbo.monk.home.activity;
 import static com.xunda.lib.common.common.utils.StringUtil.changeShapColor;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +40,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
@@ -47,6 +53,9 @@ import com.qingbo.monk.base.BaseActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.rich.handle.CustomHtml;
+import com.qingbo.monk.base.rich.handle.RichEditImageGetter;
+import com.qingbo.monk.base.rich.view.RichEditText;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -71,6 +80,8 @@ import com.xunda.lib.common.common.utils.GsonUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 import com.xunda.lib.common.view.discussionavatarview.DiscussionAvatarView;
+
+import org.apache.commons.codec.language.bm.Rule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -533,22 +544,29 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //                        center_Tv.setText(detailData.getTitle());
 //                        content_Tv.setText(detailData.getContent());
 
+                        Spanned spanned;
                         if (TextUtils.isEmpty(detailData.getHtml_content())) {
-                            content_Tv.setText(Html.fromHtml(detailData.getContent()));
+                            spanned = Html.fromHtml(detailData.getContent());
                         } else {
-                            Spanned spanned = Html.fromHtml(detailData.getHtml_content());
-//                            content_Tv.setText(spanned);
-                            handleHtmlClickAndStyle(mContext, content_Tv, spanned);
+                            String html_content = detailData.getHtml_content();
+                            html_content =  html_content.replaceAll("(?is)<style.*?>.*?</style>", "");
+                            spanned = CustomHtml.fromHtml(html_content,CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(mActivity,  content_Tv),null);
                         }
+                        // remove css
+                        handleHtmlClickAndStyle(mContext, content_Tv, spanned);
+
+//                        Spanned sp = CustomHtml.fromHtml(detailData.getHtml_content(),CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(mActivity,  content_Tv),null);
+//                        content_Tv.setText(sp);
+
 
                         String companyName = TextUtils.isEmpty(detailData.getCompanyName()) ? "" : detailData.getCompanyName();
                         String userDate = DateUtil.getUserDate(detailData.getCreateTime());
                         time_Tv.setText(userDate);
                         company_Tv.setText(companyName);
 
-                        if (TextUtils.isEmpty(detailData.getMedia_name())){
+                        if (TextUtils.isEmpty(detailData.getMedia_name())) {
                             comeFrom_Tv.setText("");
-                        }else {
+                        } else {
                             String data_source = String.format("来源：%1$s", detailData.getMedia_name());
                             comeFrom_Tv.setText(data_source);
                         }
@@ -1046,6 +1064,17 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //            ds.setUnderlineText(false);//取消下划线
         }
     }
+
+//    private void parseCSSFromText(String text, SpanStack spanStack){
+//        try{
+//            for(Rule rule : CSSParser.parse(text)) {
+//                spanStack.registerCompiledRule(CSSCompiler.compile(rule, getSpanner()));
+//            }
+//        }catch(Exception e) {
+//            Log.e("StyleNodeHandler","Unparseable CSS definition", e);
+//        }
+//    }
+
 
 
 }

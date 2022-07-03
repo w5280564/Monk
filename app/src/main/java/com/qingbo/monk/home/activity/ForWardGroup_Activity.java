@@ -129,7 +129,8 @@ public class ForWardGroup_Activity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout = findViewById(R.id.refresh_layout);
         mSwipeRefreshLayout.setRefreshing(true);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        initSwipeRefreshLayoutAndAdapter(true);
+//        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
 

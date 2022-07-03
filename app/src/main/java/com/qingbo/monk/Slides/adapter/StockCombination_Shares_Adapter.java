@@ -32,15 +32,17 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
 
         shareName_Tv.setText(item.getHolderName());
         cgs_Tv.setText(item.getHeldNum() + "");
-        jzbl_Tv.setText(item.getHeldRatio() + "%");
+        jzbl_Tv.setText(item.getHeldRatio() + "");
 
 
         if (TextUtils.isEmpty(item.getCgblbd())) {
-            change_Tv.setText("");
+            change_Tv.setText("新进");
+            change_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
         } else {
-            change_Tv.setText(item.getCgblbd() + "%");
+            change_Tv.setText(item.getCgblbd() );
             boolean number = isNumber(item.getCgblbd());
             if (number) {
+                change_Tv.setText(item.getCgblbd() + "%");
                 double v = Double.parseDouble(item.getCgblbd());
                 if (v == 0) {
                     change_Tv.setText("不变");

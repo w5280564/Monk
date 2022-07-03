@@ -36,7 +36,8 @@ public class StockThighHk_Item_Adapter extends BaseQuickAdapter<StockThighHK_Bea
 
 
         if (TextUtils.isEmpty(item.getCgblbd())) {
-            change_Tv.setText("");
+            change_Tv.setText("新进");
+            change_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
         } else {
             change_Tv.setText(item.getCgblbd() + "%");
             boolean number = isNumber(item.getCgblbd());

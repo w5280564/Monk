@@ -34,11 +34,13 @@ public class FundCombination_Shares_Adapter extends BaseQuickAdapter<FundCombina
 
 
         if (TextUtils.isEmpty(item.getChange())) {
-            change_Tv.setText("");
+            change_Tv.setText("新进");
+            change_Tv.setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
         } else {
-            change_Tv.setText(item.getChange() + "%");
+            change_Tv.setText(item.getChange());
             boolean number = isNumber(item.getChange());
             if (number) {
+                change_Tv.setText(item.getChange() + "%");
                 double v = Double.parseDouble(item.getChange());
                 if (v == 0) {
                     change_Tv.setText("不变");

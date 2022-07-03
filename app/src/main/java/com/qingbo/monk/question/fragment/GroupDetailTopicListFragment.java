@@ -368,7 +368,7 @@ public class GroupDetailTopicListFragment extends BaseRecyclerViewSplitFragment 
             } else if (reprintType.equals("1")) {
                 ArticleDetail_Activity.startActivity(requireActivity(), articleId, true, true);
             } else if (reprintType.equals("0")) {
-                ArticleDetail_Activity.startActivity(requireActivity(), articleId, "1", type);
+                ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
             } else if (reprintType.equals("3")) {
 
                 String source_type = item.getSourceType(); //1社群 2问答 3创作者中心文章 4仓位组合策略 5资讯

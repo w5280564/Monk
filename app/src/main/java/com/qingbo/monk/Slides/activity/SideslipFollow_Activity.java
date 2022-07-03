@@ -285,10 +285,10 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
      * 资讯分享
      */
     private void showShareDialog(HomeFllowBean item) {
-        if (IsMe.isMy(item.getAuthorId())) {
-            T.ss("不能转发自己的文章");
-            return;
-        }
+//        if (IsMe.isMy(item.getAuthorId())) {
+//            T.ss("不能转发自己的文章");
+//            return;
+//        }
         String imgUrl = item.getAvatar();
         String downURl = HttpUrl.appDownUrl;
         String articleId = item.getArticleId();

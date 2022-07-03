@@ -18,7 +18,7 @@ import okhttp3.WebSocketListener;
  */
 public class WebSocketService extends Service {
     private static final String TAG = "websocket";
-    private static final String WS = "wss://shjr.gsdata.cn:8080";
+    private static final String WS = "wss://toptopv.com:8080";
 
     private WebSocket webSocket;
     private WebSocketCallback webSocketCallback;

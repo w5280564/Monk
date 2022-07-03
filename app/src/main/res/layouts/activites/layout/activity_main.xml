@@ -102,6 +102,7 @@
                         app:arrowItemAvatarSrc="@mipmap/guanzhu"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="关注"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
@@ -112,6 +113,7 @@
                         app:arrowItemAvatarSrc="@mipmap/tuijian"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="推荐"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/focus_MyView" />
 
@@ -123,6 +125,7 @@
                         app:arrowItemAvatarSrc="@mipmap/dalao"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="大咖"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/recomm_MyView" />
 
@@ -135,6 +138,7 @@
                         app:arrowItemAvatarSrc="@mipmap/neiburen"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="内部人"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/mogul_MyView" />
 
@@ -147,6 +151,7 @@
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="专家"
                         app:arrowItemShowDivider="false"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/Insider_MyView" />
 
@@ -178,6 +183,7 @@
                         app:arrowItemAvatarSrc="@mipmap/gegu"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="个股"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
@@ -188,6 +194,7 @@
                         app:arrowItemAvatarSrc="@mipmap/jijin"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="基金"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/gu_MyView" />
 
@@ -199,6 +206,7 @@
                         app:arrowItemAvatarSrc="@mipmap/cangwei"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="仓位组合"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/fund_MyView" />
 
@@ -210,6 +218,7 @@
                         app:arrowItemAvatarSrc="@mipmap/renwu"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="人物"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/cang_MyView" />
 
@@ -221,6 +230,7 @@
                         app:arrowItemAvatarSrc="@mipmap/wenda"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="问答广场"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/person_MyView" />
 
@@ -233,6 +243,7 @@
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="兴趣组"
                         app:arrowItemShowDivider="false"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/wen_MyView" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -262,7 +273,8 @@
                         app:arrowItemAvatarHeight="@dimen/dp_12"
                         app:arrowItemAvatarSrc="@mipmap/geren"
                         app:arrowItemShowAvatar="true"
-                        app:arrowItemTitle=""
+                        app:arrowItemTitle="个人主页"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f" />
 
                     <com.xunda.lib.common.view.MyArrowItemView
@@ -273,6 +285,7 @@
                         app:arrowItemAvatarSrc="@mipmap/fankui"
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="意见反馈"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/gen_MyView" />
 
@@ -285,6 +298,7 @@
                         app:arrowItemShowAvatar="true"
                         app:arrowItemTitle="设置中心"
                         app:arrowItemShowDivider="false"
+                        app:arrowItemAvatarWidth="@dimen/dp_24"
                         app:arrowItemTitleColor="@color/text_color_6f6f6f"
                         app:layout_constraintTop_toBottomOf="@+id/yijian_MyView" />
 

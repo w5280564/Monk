@@ -46,7 +46,7 @@ public class StockHKFragment extends BaseTabLayoutFragment {
     }
 
 
-    private void initMenuData() {
+    public void initMenuData() {
         ArrayList<String> tabName = new ArrayList<>();
         tabName.add("资讯");
         tabName.add("问答");

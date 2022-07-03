@@ -32,8 +32,9 @@ public class PersomCombination_Shares_Adapter extends BaseQuickAdapter<Character
 
         shareName_Tv.setText(item.getName());
         if (!TextUtils.isEmpty(item.getHoldingNum())) {
-            Double i = Double.parseDouble(item.getHoldingNum()) / 10000;
-            cgs_Tv.setText(i + "");
+//            Double i = Double.parseDouble(item.getHoldingNum()) / 10000;
+            String holdingNum = subZeroAndDot(item.getHoldingNum());
+            cgs_Tv.setText(holdingNum );
         }
         jzbl_Tv.setText(item.getPosition());
 
@@ -55,6 +56,19 @@ public class PersomCombination_Shares_Adapter extends BaseQuickAdapter<Character
         }
 
 
+    }
+
+    /**
+     * 使用java正则表达式去掉多余的.与0
+     * @param s
+     * @return
+     */
+    public static String subZeroAndDot(String s){
+        if(s.indexOf(".") > 0){
+            s = s.replaceAll("0+?$", "");//去掉多余的0
+            s = s.replaceAll("[.]$", "");//如最后一位是.则去掉
+        }
+        return s;
     }
 
 

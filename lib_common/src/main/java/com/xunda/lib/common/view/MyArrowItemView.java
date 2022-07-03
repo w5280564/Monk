@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -142,7 +143,6 @@ public class MyArrowItemView extends ConstraintLayout {
         count_Tv.setVisibility(showCountTv ? VISIBLE : GONE);
 
 
-
         int avatarHeightId = a.getResourceId(R.styleable.ArrowItemView_arrowItemAvatarHeight, -1);
         float height = a.getDimension(R.styleable.ArrowItemView_arrowItemAvatarHeight, 0);
         if (avatarHeightId != -1) {
@@ -154,8 +154,11 @@ public class MyArrowItemView extends ConstraintLayout {
         if (avatarWidthId != -1) {
             width = getResources().getDimension(avatarWidthId);
         }
-
         a.recycle();
+
+        ViewGroup.LayoutParams params = avatar.getLayoutParams();
+        params.height = height == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : (int) height;
+        params.width = width == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : (int) width;
 
     }
 
@@ -167,10 +170,17 @@ public class MyArrowItemView extends ConstraintLayout {
         return tvTitle;
     }
 
-    public ImageView getIMG() { return tv_img; }
-    public ImageView getArrow() { return ivArrow; }
+    public ImageView getIMG() {
+        return tv_img;
+    }
+
+    public ImageView getArrow() {
+        return ivArrow;
+    }
+
     public TextView getTip() {
-        return tv_tip; }
+        return tv_tip;
+    }
 
     /**
      * sp to px

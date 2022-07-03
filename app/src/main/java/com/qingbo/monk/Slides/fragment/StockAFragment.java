@@ -19,11 +19,20 @@ import java.util.ArrayList;
 public class StockAFragment extends BaseTabLayoutFragment {
     public String name;
     public String code;
+    private String AorHKType;
 
-    public static StockAFragment newInstance(String name, String code) {
+    /**
+     *
+     * @param name
+     * @param code
+     * @param AorHKType 1是A股 2是港股
+     * @return
+     */
+    public static StockAFragment newInstance(String name, String code, String AorHKType) {
         Bundle args = new Bundle();
         args.putString("name", name);
         args.putString("code", code);
+        args.putString("AorHKType", AorHKType);
         StockAFragment fragment = new StockAFragment();
         fragment.setArguments(args);
         return fragment;
@@ -52,6 +61,7 @@ public class StockAFragment extends BaseTabLayoutFragment {
     protected void initLocalData() {
         name = getArguments().getString("name");
         code = getArguments().getString("code");
+        AorHKType = getArguments().getString("AorHKType");
     }
 
     @Override
