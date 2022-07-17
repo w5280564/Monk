@@ -2,6 +2,7 @@ package com.qingbo.monk.Slides.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +17,7 @@ import com.qingbo.monk.Slides.adapter.FundNotice_Insider_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
 import com.qingbo.monk.bean.HomeInsiderBean;
 import com.qingbo.monk.bean.InsiderListBean;
+import com.qingbo.monk.home.activity.StartPDF_Activity;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -126,8 +128,12 @@ public class FundNitice_Fragment extends BaseRecyclerViewSplitFragment {
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeInsiderBean homeInsiderBean = (HomeInsiderBean) adapter.getItem(position);
-            String news_url = homeInsiderBean.getNews_url();
-            jumpToWebView("",news_url);
+//            String news_url = homeInsiderBean.getNews_url();
+//            jumpToWebView("",news_url);
+            if (TextUtils.isEmpty(homeInsiderBean.getFile_url())){
+                return;
+            }
+            StartPDF_Activity.startActivity(requireActivity(),homeInsiderBean.getNewsTitle(),homeInsiderBean.getFile_url());
         });
     }
 

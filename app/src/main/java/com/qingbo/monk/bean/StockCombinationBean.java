@@ -41,7 +41,7 @@ public class StockCombinationBean {
                     @SerializedName("gdmc")
                     private String gdmc;
                     @SerializedName("held_num")
-                    private Integer heldNum;
+                    private String heldNum;
                     @SerializedName("cgblbd")
                     private String cgblbd;
                     @SerializedName("holder_name")

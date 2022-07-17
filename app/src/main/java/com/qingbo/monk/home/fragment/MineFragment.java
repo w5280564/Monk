@@ -421,7 +421,7 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
                                     groupString = "他的社群";
                                 }
                                 groupName_Tv.setText(groupString);
-                                String format = String.format("拥有%1$s个社群", myCardBean.getData().getCount());
+                                String format = String.format("创建%1$s个社群", myCardBean.getData().getUser_group_count());
                                 joinCount_Tv.setText(format);
                                 groupHeadFlow(joinHead_Lin, mActivity, myCardBean);
                             }

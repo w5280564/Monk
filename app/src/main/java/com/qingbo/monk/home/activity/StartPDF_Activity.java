@@ -1,15 +1,10 @@
 package com.qingbo.monk.home.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.activity.SideslipInsider_Activity;
 import com.qingbo.monk.base.BaseActivity;
 import com.wdeo3601.pdfview.PDFView;
 import com.xunda.lib.common.common.titlebar.CustomTitleBar;
@@ -78,5 +73,6 @@ public class StartPDF_Activity extends BaseActivity {
         if (!TextUtils.isEmpty(pdfUrl)){
         pdfView.showPdfFromUrl(pdfUrl);// 从网络打开 pdf
         }
+
     }
 }

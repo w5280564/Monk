@@ -30,7 +30,11 @@ public class FundCombination_Shares_Adapter extends BaseQuickAdapter<FundCombina
 
         shareName_Tv.setText(item.getName());
         cgs_Tv.setText(item.getCgs());
-        jzbl_Tv.setText(item.getJzbl()+"%");
+        if (item.getJzbl().contains("%")){
+            jzbl_Tv.setText(item.getJzbl());
+        }else {
+            jzbl_Tv.setText(item.getJzbl() + "%");
+        }
 
 
         if (TextUtils.isEmpty(item.getChange())) {

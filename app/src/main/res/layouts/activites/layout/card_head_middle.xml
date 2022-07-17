@@ -21,7 +21,6 @@
             android:id="@+id/editUser_Tv_"
             android:layout_width="@dimen/dp_67"
             android:layout_height="@dimen/dp_28"
-            android:layout_marginTop="@dimen/dp_7"
             android:layout_marginEnd="@dimen/dp_15"
             android:background="@drawable/card_edit"
             android:drawableStart="@mipmap/bianji_pen"
@@ -34,7 +33,7 @@
             android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/head_Img" />
+            app:layout_constraintBottom_toBottomOf="@id/head_Img" />
 
         <TextView
             android:id="@+id/follow_Tv"

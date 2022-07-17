@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.URLSpan;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ import com.xunda.lib.common.common.itemdecoration.GridDividerItemDecoration;
 import com.xunda.lib.common.common.utils.DisplayUtil;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
-import com.xunda.lib.common.dialog.ToastDialog;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.io.File;

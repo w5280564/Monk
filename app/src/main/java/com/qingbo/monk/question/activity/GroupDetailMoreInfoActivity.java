@@ -195,6 +195,10 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
             } else {
                 arrowItemViewApplyExit.getTvTitle().setText("退出社群");
                 arrowItemViewApplyExit.getTvTitle().setTextColor(ContextCompat.getColor(mContext, R.color.text_color_FC0000));
+                if(role.equals("3")){
+                    arrowItemViewApplyExit.getTvTitle().setText("解散社群");
+                }
+
             }
         }
     }
@@ -246,7 +250,7 @@ public class GroupDetailMoreInfoActivity extends BaseActivity {
                 SelectMemberListActivity.actionStart(mActivity,id,1);
                 break;
             case R.id.arrowItemView_apply_exit:
-                ApplyExitGroupOrMoneyActivity.actionStart(mActivity,back,id,sheQunBean.getShequnFee());
+                ApplyExitGroupOrMoneyActivity.actionStart(mActivity,back,id,sheQunBean.getShequnFee(),sheQunBean);
                 break;
             case R.id.ll_back:
                 back();

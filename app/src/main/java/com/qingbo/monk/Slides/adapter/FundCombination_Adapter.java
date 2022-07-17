@@ -25,6 +25,7 @@ public class FundCombination_Adapter extends BaseQuickAdapter<FundCombinationBea
     protected void convert(@NonNull BaseViewHolder helper, FundCombinationBean item) {
         TextView fundTime_Tv = helper.getView(R.id.fundTime_Tv);
         RecyclerView mNineView = helper.getView(R.id.nine_grid);
+        helper.setText(R.id.textView3,"持股数（万）");
 
         fundTime_Tv.setText(item.getNewsTitle());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);

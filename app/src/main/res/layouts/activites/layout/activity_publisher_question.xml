@@ -28,6 +28,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/comment_Con"
         app:layout_constraintTop_toBottomOf="@id/title_bar">
 
         <LinearLayout

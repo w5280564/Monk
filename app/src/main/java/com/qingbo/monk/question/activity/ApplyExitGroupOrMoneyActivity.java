@@ -4,11 +4,13 @@ package com.qingbo.monk.question.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.TextView;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.bean.GroupMoreInfoBean;
 import com.qingbo.monk.bean.GroupQuit_Bean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.eventbus.FinishEvent;
@@ -32,9 +34,15 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
     TextView tvToast2;
     @BindView(R.id.tv_confirm)
     TextView tvConfirm;
+    @BindView(R.id.groupTitle_Tv)
+    TextView groupTitle_Tv;
+    @BindView(R.id.groupTip_Tv)
+    TextView groupTip_Tv;
+
     private String back;
     private String id;
     private String shequn_fee;
+    private GroupMoreInfoBean sheQunBean;
 
     /**
      * @param context
@@ -42,11 +50,12 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
      * @param id         社群id
      * @param shequn_fee 退群费
      */
-    public static void actionStart(Context context, String back, String id, String shequn_fee) {
+    public static void actionStart(Context context, String back, String id, String shequn_fee, GroupMoreInfoBean sheQunBean) {
         Intent intent = new Intent(context, ApplyExitGroupOrMoneyActivity.class);
         intent.putExtra("back", back);
         intent.putExtra("id", id);
         intent.putExtra("shequn_fee", shequn_fee);
+        intent.putExtra("sheQunBean", sheQunBean);
         context.startActivity(intent);
     }
 
@@ -57,6 +66,7 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
 
     @Override
     protected void initLocalData() {
+         sheQunBean = (GroupMoreInfoBean) getIntent().getSerializableExtra("sheQunBean");
         back = getIntent().getStringExtra("back");
         id = getIntent().getStringExtra("id");
         shequn_fee = getIntent().getStringExtra("shequn_fee");
@@ -66,7 +76,18 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
         } else {
             tvToast1.setText("申请确定后入群费用概不退还");
             tvConfirm.setText("退出社群");
+            if (sheQunBean != null) {
+                String role = sheQunBean.getRole();
+                if (role.equals("3")) {//1管理员2合伙人0一般用户3群主
+                    tvConfirm.setText("解散社群");
+//                    groupTitle_Tv.setText("您正在进行解散社群操作");
+//                    groupTip_Tv.setText("解散群后：");
+//                    tvToast2.setText("申请确定后直接解散社群");
+                }
+            }
         }
+
+
     }
 
     @OnClick(R.id.tv_confirm)
@@ -76,6 +97,9 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
 
     private void showCancelRoleDialog() {
         String format = "确定退出该社群吗";
+        if (sheQunBean.getRole().equals("3")) {
+             format = "确定解散该社群吗";
+        }
         if (TextUtils.equals(back, "1")) {
             double v = Double.parseDouble(shequn_fee);
             if (v > 0) {

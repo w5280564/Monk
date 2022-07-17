@@ -45,7 +45,8 @@ public class Config {
          */
         static {
             if (!Setting.DEBUG) {
-                URL_WHOLE = "https://shjr.gsdata.cn/";
+//                URL_WHOLE = "https://shjr.gsdata.cn/"
+                URL_WHOLE = "https://toptopv.com/";
             }
         }
 

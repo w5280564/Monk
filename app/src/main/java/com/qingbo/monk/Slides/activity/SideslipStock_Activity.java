@@ -168,6 +168,9 @@ public class SideslipStock_Activity extends BaseTabLayoutActivity implements Vie
         if (selectedTabPosition == -1) {
             selectedTabPosition = 0;
         }
+        if (stockName.contains("H")){// 带“H”的是港股
+            selectedTabPosition = 1;
+        }
         initViewPager(selectedTabPosition);
     }
 
