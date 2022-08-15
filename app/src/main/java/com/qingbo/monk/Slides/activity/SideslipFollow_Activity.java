@@ -1,6 +1,5 @@
 package com.qingbo.monk.Slides.activity;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
-import com.qingbo.monk.Slides.fragment.SideslipFind_Card_Fragment;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
-import com.qingbo.monk.base.BaseTabLayoutActivity;
-import com.qingbo.monk.base.baseview.IsMe;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -27,15 +25,12 @@ import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
 import com.qingbo.monk.home.adapter.Focus_Adapter;
-import com.qingbo.monk.home.fragment.HomeFocus_Fragment;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
-import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
-import com.xunda.lib.common.common.utils.T;
 
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +112,7 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Focus_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
@@ -128,6 +124,13 @@ public class SideslipFollow_Activity extends BaseRecyclerViewSplitActivity {
 
     }
 
+    /**
+     * 更新列表状态
+     */
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(this, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
+    }
 
     @Override
     protected void initEvent() {

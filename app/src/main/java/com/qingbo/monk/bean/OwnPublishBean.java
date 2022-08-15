@@ -1,5 +1,7 @@
 package com.qingbo.monk.bean;
 
+import android.text.Editable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -95,7 +97,10 @@ public class OwnPublishBean implements Serializable {
     private String commentAuthorName;
     @SerializedName("comment_comment")
     private String commentComment;
-
+    @SerializedName("editableContent")
+    private Editable editableContent;
+    @SerializedName("html_content")
+    private String  html_content;
 
     @NoArgsConstructor
     @Data

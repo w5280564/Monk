@@ -17,6 +17,8 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.InterestDetail_Activity;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -63,6 +65,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂无推荐数据", 0, true);
+
     }
 
     @Override
@@ -70,6 +73,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
+
 
     FollowListBean homeFllowBean;
 
@@ -118,6 +122,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Follow_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String action = item.getAction();//1是社群 2是兴趣组 3是个人
@@ -127,6 +132,11 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
 
         });
 
+    }
+
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(mActivity, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
     }
 
 
@@ -164,7 +174,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                         break;
                     case R.id.collect_Tv:
                         String articleId1 = item.getArticleId();
-                        postCollectData(articleId1,position);
+                        postCollectData(articleId1, position);
                         break;
                 }
             }
@@ -288,6 +298,9 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                 follow_Img.setBackgroundResource(R.mipmap.dianzan);
                 nowLike += 1;
             }
+            if (nowLike < 0) {
+                nowLike = 0;
+            }
             follow_Count.setText(nowLike + "");
         }
     }
@@ -311,7 +324,7 @@ public class HomeCommendFragment extends BaseRecyclerViewSplitFragment {
                         Integer collect_status = collectStateBean.getCollect_status();
 
                         TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
-                        ((Follow_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                        ((Follow_Adapter) mAdapter).isCollect(collect_status + "", collect_Tv);
                     }
                 }
             }

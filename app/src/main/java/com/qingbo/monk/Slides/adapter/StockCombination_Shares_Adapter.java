@@ -20,6 +20,11 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
     public StockCombination_Shares_Adapter() {
         super(R.layout.item_fundshares);
     }
+    public StockCombination_Shares_Adapter(String type) {
+        super(R.layout.item_fundshares);
+        this.type = type;
+    }
+    private String type;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -43,6 +48,11 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
             boolean number = isNumber(item.getCgblbd());
             if (number) {
                 change_Tv.setText(item.getCgblbd() + "%");
+
+                if (TextUtils.equals(type, "3")) {
+                    change_Tv.setText(item.getCgblbd());
+                }
+
                 double v = Double.parseDouble(item.getCgblbd());
                 if (v == 0) {
                     change_Tv.setText("不变");
@@ -53,6 +63,8 @@ public class StockCombination_Shares_Adapter extends BaseQuickAdapter<StockCombi
                 }
             }
         }
+
+
 
 
     }

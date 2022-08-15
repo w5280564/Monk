@@ -80,9 +80,9 @@ public class ApplyExitGroupOrMoneyActivity extends BaseActivity {
                 String role = sheQunBean.getRole();
                 if (role.equals("3")) {//1管理员2合伙人0一般用户3群主
                     tvConfirm.setText("解散社群");
-//                    groupTitle_Tv.setText("您正在进行解散社群操作");
-//                    groupTip_Tv.setText("解散群后：");
-//                    tvToast2.setText("申请确定后直接解散社群");
+                    groupTitle_Tv.setText("您正在进行解散社群操作");
+                    groupTip_Tv.setText("解散群后：");
+                    tvToast2.setText("申请确定后直接解散社群");
                 }
             }
         }

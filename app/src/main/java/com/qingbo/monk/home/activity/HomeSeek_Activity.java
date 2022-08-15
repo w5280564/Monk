@@ -59,7 +59,7 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         seek_Tv.setOnClickListener(this);
         back_Img.setOnClickListener(this);
 
-        changeTab();
+//        changeTab();
         query_Edit.addTextChangedListener(new query_EditTextChangeListener());
     }
 
@@ -110,14 +110,15 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
         }
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
             if (!TextUtils.isEmpty(s)) {
                 int selectedTabPosition = mTabLayout.getSelectedTabPosition();
                 CharSequence text = mTabLayout.getTabAt(selectedTabPosition).getText();
                 changeSeekData(text.toString(), s.toString());
             }
-        }
-        @Override
-        public void afterTextChanged(Editable s) {
         }
     }
 
@@ -171,7 +172,7 @@ public class HomeSeek_Activity extends BaseTabLayoutActivity implements View.OnC
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                changeTabAndRefresh(position);
+//                changeTabAndRefresh(position);
             }
 
             @Override

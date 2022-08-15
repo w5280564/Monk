@@ -29,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,27 +50,39 @@ import com.google.android.material.tabs.TabLayout;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
+import com.qingbo.monk.Slides.fragment.InterestDetail_All_Fragment;
+import com.qingbo.monk.Slides.fragment.InterestDetail_My_Fragment;
+import com.qingbo.monk.Slides.fragment.SideslipMogul_Fragment;
 import com.qingbo.monk.base.BaseActivity;
+import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.MyConstant;
 import com.qingbo.monk.base.baseview.AppBarStateChangeListener;
 import com.qingbo.monk.base.baseview.ByteLengthFilter;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
 import com.qingbo.monk.base.rich.handle.CustomHtml;
 import com.qingbo.monk.base.rich.handle.RichEditImageGetter;
+import com.qingbo.monk.base.rich.handle.htmlClick;
 import com.qingbo.monk.base.rich.view.RichEditText;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.SheQuDataChangeListener;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.HomeFoucsDetail_Bean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.UpdateDataBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.NineGrid.NineGridAdapter;
 import com.qingbo.monk.home.NineGrid.NineGridLayoutManager;
 import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
+import com.qingbo.monk.home.fragment.InterestDetail_Member_Fragment;
 import com.qingbo.monk.message.activity.ChatActivity;
 import com.qingbo.monk.person.activity.MyAndOther_Card;
 import com.qingbo.monk.question.activity.CheckOtherGroupDetailActivity;
 import com.qingbo.monk.question.activity.GroupDetailActivity;
+import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.glide.GlideUtils;
 import com.xunda.lib.common.common.http.HttpUrl;
@@ -93,7 +106,7 @@ import butterknife.BindView;
 /**
  * 个人文章详情
  */
-public class ArticleDetail_Activity extends BaseActivity implements View.OnClickListener {
+public class ArticleDetail_Activity extends BaseTabLayoutActivity implements View.OnClickListener {
     @BindView(R.id.person_Img)
     ImageView person_Img;
     @BindView(R.id.person_Name)
@@ -132,10 +145,10 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     TextView join_Tv;
     @BindView(R.id.headListView)
     DiscussionAvatarView headListView;
-    @BindView(R.id.card_Tab)
-    TabLayout card_Tab;
-    @BindView(R.id.card_ViewPager)
-    ViewPager card_ViewPager;
+    //    @BindView(R.id.card_Tab)
+//    TabLayout card_Tab;
+//    @BindView(R.id.card_ViewPager)
+//    ViewPager card_ViewPager;
     @BindView(R.id.appLayout)
     AppBarLayout appLayout;
     @BindView(R.id.group_Con)
@@ -175,6 +188,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     private boolean isExpert;
     private boolean isInformation;
     public boolean isStockOrFund;
+    private String liked_num; //点赞数量
+    UpdateDataBean updateDataBean; //需要更新的状态 点赞、收藏、
 
     /**
      * @param context
@@ -260,10 +275,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         viewTouchDelegate.expandViewTouchDelegate(share_Tv, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
+        mViewPager = findViewById(R.id.card_ViewPager);
+        mTabLayout = findViewById(R.id.card_Tab);
     }
 
     @Override
     protected void initEvent() {
+        super.initEvent();
         follow_Tv.setOnClickListener(this);
         follow_Img.setOnClickListener(this);
         join_Tv.setOnClickListener(this);
@@ -324,7 +342,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     return;
                 }
                 if (isReply) {
-                    ArticleDetail_Comment_Fragment o = (ArticleDetail_Comment_Fragment) tabFragmentList.get(0);
+                    ArticleDetail_Comment_Fragment o = (ArticleDetail_Comment_Fragment) fragments.get(0);
                     o.onClick(release_Tv);
                 } else {
                     addComment(this.articleId, type, s);
@@ -455,53 +473,39 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
         editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
     }
 
-    private List<Object> tabFragmentList = new ArrayList<>();
 
     @SuppressLint("WrongConstant")
-    private void initTab() {
-        List<String> tabsList = new ArrayList<>();
-        tabsList.add("评论");
-        tabsList.add("赞");
-        card_Tab.setTabMode(TabLayout.MODE_AUTO);
-        card_Tab.setTabIndicatorFullWidth(false);//下标跟字一样宽
-        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
-        card_Tab.setTabTextColors(ContextCompat.getColor(mActivity, R.color.text_color_6f6f6f), ContextCompat.getColor(mActivity, R.color.text_color_444444));
-//        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity,R.color.text_color_444444));
-        //添加tab
-        int sizes = tabsList.size();
-        for (int i = 0; i < sizes; i++) {
-            card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
+    private void initMenuData() {
+        if (fragments != null) {
+            fragments.clear();
+        }
+        if (menuList != null) {
+            menuList.clear();
+        }
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("评论");
+        String zanCount = String.format("赞(%1$s)", liked_num);
+        tabName.add(zanCount);
+        for (int i = 0; i < tabName.size(); i++) {
+            AppMenuBean bean = new AppMenuBean();
+            bean.setName(tabName.get(i));
+            menuList.add(bean);
         }
         String articleId = homeFoucsDetail_bean.getData().getDetail().getArticleId();
         String type = homeFoucsDetail_bean.getData().getDetail().getType();
-        tabFragmentList.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type, isStockOrFund));
-        tabFragmentList.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
-
-        card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return (Fragment) tabFragmentList.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return tabFragmentList.size();
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return tabsList.get(position);
-            }
-        });
-        card_Tab.setupWithViewPager(card_ViewPager, false);
+        fragments.add(ArticleDetail_Comment_Fragment.newInstance(articleId, type, isStockOrFund));
+        fragments.add(ArticleDetail_Zan_Fragment.newInstance(articleId, type));
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
+        initViewPager(selectedTabPosition);
     }
 
 
     public HomeFoucsDetail_Bean homeFoucsDetail_bean;
 
-    private void getUserDetail(boolean isShow) {
+    public void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("articleId", articleId);
         if (isStockOrFund) {
@@ -515,7 +519,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     homeFoucsDetail_bean = GsonUtil.getInstance().json2Bean(json_root, HomeFoucsDetail_Bean.class);
                     if (homeFoucsDetail_bean != null) {
                         HomeFoucsDetail_Bean.DataDTO.DetailDTO detailData = homeFoucsDetail_bean.getData().getDetail();
+                        setComStatusData();
                         type = detailData.getType();
+                        liked_num = detailData.getLikedNum();
                         String source_url = detailData.getSource_url();
                         if (TextUtils.isEmpty(source_url)) {
                             source_Tv.setVisibility(View.GONE);
@@ -549,16 +555,14 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                             spanned = Html.fromHtml(detailData.getContent());
                         } else {
                             String html_content = detailData.getHtml_content();
-                            html_content =  html_content.replaceAll("(?is)<style.*?>.*?</style>", "");
-                            spanned = CustomHtml.fromHtml(html_content,CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(mActivity,  content_Tv),null);
+                            html_content = html_content.replaceAll("(?is)<style.*?>.*?</style>", "");
+                            spanned = CustomHtml.fromHtml(html_content, CustomHtml.FROM_HTML_MODE_LEGACY, new RichEditImageGetter(mActivity, content_Tv), null);
                         }
                         // remove css
-                        handleHtmlClickAndStyle(mContext, content_Tv, spanned);
+                        htmlClick.handleHtmlClickAndStyle(mActivity, content_Tv, spanned);
 
 //                        Spanned sp = CustomHtml.fromHtml(detailData.getHtml_content(),CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(mActivity,  content_Tv),null);
 //                        content_Tv.setText(sp);
-
-
                         String companyName = TextUtils.isEmpty(detailData.getCompanyName()) ? "" : detailData.getCompanyName();
                         String userDate = DateUtil.getUserDate(detailData.getCreateTime());
                         time_Tv.setText(userDate);
@@ -594,14 +598,30 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                                 isJoinGroup(detailData.getExtra().getIsJoin());
                             }
                         }
-                        initTab();
+                        initMenuData();
                         isChangeFold();
                     }
+                } else if (code == -100) {
+                    Toast.makeText(mActivity, msg, Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         }, isShow);
         httpSender.setContext(mActivity);
         httpSender.sendGet();
+    }
+
+    private void setComStatusData() {
+        updateDataBean = new UpdateDataBean();
+        if (updateDataBean == null || homeFoucsDetail_bean == null) {
+            return;
+        }
+        HomeFoucsDetail_Bean.DataDTO.DetailDTO detail = homeFoucsDetail_bean.getData().getDetail();
+        updateDataBean.setId(articleId);
+        updateDataBean.setZanState(detail.getLikedStatus());
+        updateDataBean.setZanCount(detail.getLikedNum());
+        updateDataBean.setIsCollect(detail.getIs_collect());
+        updateDataBean.setFollowState(detail.getFollowStatus());
     }
 
     private void postFollowData(String otherUserId, TextView followView, View sendView) {
@@ -622,6 +642,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                         } else {
                             isFollow(followStatus, titleFollow_Tv, titleSend_Mes, isAnonymous);
                         }
+
+                        ArticleDataChange.ins().onDataChange(articleId, SheQuDataChangeListener.TYPE_FOLLOW, isExpanded, followStatus);
+
+                        updateDataBean.setFollowState(followStatus);
+                        LiveDataBus.get().with(MyConstant.UPDATE_DATA).setValue(updateDataBean);
                     }
                 }
             }
@@ -656,6 +681,13 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                             nowLike += 1;
                         }
                         follow_Count.setText(nowLike + "");
+
+                        boolean Liked_status = likedStateBena.getLiked_status() == 1;
+                        ArticleDataChange.ins().onDataChange(likeId, SheQuDataChangeListener.TYPE_PRAISE, Liked_status, nowLike);
+
+                        updateDataBean.setZanState(likedStateBena.getLiked_status());
+                        updateDataBean.setZanCount(nowLike + "");
+                        LiveDataBus.get().with(MyConstant.UPDATE_DATA).setValue(updateDataBean);
                     }
                 }
             }
@@ -741,6 +773,7 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    getUserDetail(true);
                 }
             }
         }, true);
@@ -770,6 +803,11 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
                     if (collectStateBean != null) {
                         Integer collect_status = collectStateBean.getCollect_status();
                         isCollect(collect_status + "", collect_Tv);
+
+                        boolean status = collect_status == 1;
+                        ArticleDataChange.ins().onDataChange(articleId, SheQuDataChangeListener.TYPE_COLLECT, status, collect_status);
+
+
                     }
                 }
             }
@@ -790,6 +828,9 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             mipmap = R.mipmap.shoucang_select;
         }
         collect_Tv.setBackgroundResource(mipmap);
+
+        updateDataBean.setIsCollect(status);
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA).setValue(updateDataBean);
     }
 
 
@@ -843,6 +884,8 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
             follow_Img.setBackgroundResource(R.mipmap.dianzan);
         }
         follow_Count.setText(nowLike + "");
+
+
     }
 
 
@@ -1022,49 +1065,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
     }
 
 
-    //文字超链能够点击
-    private void handleHtmlClickAndStyle(Context context, TextView textview, Spanned spanned) {
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(spanned);
-        URLSpan[] urls = spannableStringBuilder.getSpans(0, spanned.length(), URLSpan.class);
-        for (URLSpan url : urls) {
-            CustomURLSpan myURLSpan = new CustomURLSpan(context, url.getURL());
-            int start = spannableStringBuilder.getSpanStart(url);
-            int end = spannableStringBuilder.getSpanEnd(url);
-            int flags = spannableStringBuilder.getSpanFlags(url);
-            spannableStringBuilder.setSpan(myURLSpan, start, end, flags);
-            //一定要加上这一句,看过很多网上的方法，都没加这一句，导致ClickableSpan的onClick方法没有回调，直接用浏览器打开了
-            spannableStringBuilder.removeSpan(url);
-
-        }
-        textview.setText(spannableStringBuilder);
-        //这一句加上以后才能处理点击
-        textview.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    //自定义CustomURLSpan，用来替换默认的URLSpan
-    private class CustomURLSpan extends ClickableSpan {
-        private Context mContext;
-        private String mUrl;
-
-        CustomURLSpan(Context context, String url) {
-            mUrl = url;
-            mContext = context;
-        }
-
-        @Override
-        public void onClick(View view) {
-            //此处处理点击事件  mUrl 为<a>标签的href属性
-            jumpToWebView("", mUrl);
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            super.updateDrawState(ds);
-            ds.setColor(Color.parseColor("#1e5494"));//设置文本颜色
-//            ds.setUnderlineText(false);//取消下划线
-        }
-    }
-
 //    private void parseCSSFromText(String text, SpanStack spanStack){
 //        try{
 //            for(Rule rule : CSSParser.parse(text)) {
@@ -1074,7 +1074,6 @@ public class ArticleDetail_Activity extends BaseActivity implements View.OnClick
 //            Log.e("StyleNodeHandler","Unparseable CSS definition", e);
 //        }
 //    }
-
 
 
 }

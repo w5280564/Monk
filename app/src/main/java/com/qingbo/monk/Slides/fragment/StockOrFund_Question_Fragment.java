@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 侧边栏 个股/基金--问答
+ * 侧边栏 /基金--问答
  */
 public class StockOrFund_Question_Fragment extends BaseRecyclerViewSplitFragment {
 

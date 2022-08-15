@@ -195,8 +195,6 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
 
     @Override
     protected void getServerData() {
-        getMyGroup(userID, false);
-        getInterestData(userID, false);
     }
 
 
@@ -204,6 +202,9 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
     public void onResume() {
         super.onResume();
         getUserData(userID, true);
+
+        getMyGroup(userID, false);
+        getInterestData(userID, false);
     }
 
     @Override
@@ -344,6 +345,7 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     userBean = GsonUtil.getInstance().json2Bean(json_data, UserBean.class);
                     if (userBean != null) {
+                        saveUserInfo(userBean);
                         iv_img.setTag("overScroll"); //BaseApplication中添加了ViewTarget
                         GlideUtils.loadImage(mActivity, iv_img, userBean.getCover_image(), R.mipmap.mycard_bg);
                         GlideUtils.loadCircleImage(mActivity, head_Img, userBean.getAvatar());
@@ -732,6 +734,18 @@ public class MineFragment extends BaseTabLayoutFragment implements View.OnClickL
             });
         }
     }
+
+    /**
+     * 保存用户信息
+     *
+     * @param userObj 用户对象
+     */
+    private void saveUserInfo(UserBean userObj) {
+        if (userObj != null) {
+            PrefUtil.saveUser(userObj, "");
+        }
+    }
+
 
 
 }

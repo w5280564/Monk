@@ -55,6 +55,7 @@ public class HttpSender {
 		this.requestName = requestName;
 		if (mRequestObj != null) {
 			this.paramsMap = GsonUtil.getInstance().Obj2Map(mRequestObj);
+			paramsMap.put("isMobile","1");
 		}
 
 		if (!StringUtil.isBlank(SharePref.user().getToken())){

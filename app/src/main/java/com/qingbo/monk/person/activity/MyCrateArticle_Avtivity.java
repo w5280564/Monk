@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
+import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -34,6 +35,8 @@ import com.qingbo.monk.base.baseview.AtEditText;
 import com.qingbo.monk.base.livedatas.LiveDataBus;
 import com.qingbo.monk.base.rich.bean.MyFontStyle;
 import com.qingbo.monk.base.rich.handle.CustomHtml;
+import com.qingbo.monk.base.rich.handle.RichEditImageGetter;
+import com.qingbo.monk.base.rich.handle.htmlClick;
 import com.qingbo.monk.base.rich.view.FontStylePanel;
 import com.qingbo.monk.base.rich.view.RichEditText;
 import com.qingbo.monk.base.viewTouchDelegate;
@@ -134,7 +137,8 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
 
     private void handleEditOtherData(OwnPublishBean mQuestionBeanMy) {
         et_title.setText(StringUtil.getStringValue(mQuestionBeanMy.getTitle()));
-        et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+//        et_content.setText(StringUtil.getStringValue(mQuestionBeanMy.getContent()));
+        changeEdit(et_content,mQuestionBeanMy);
         tv_remains_text.setText(String.format("%s/2000", StringUtil.getEditText(et_content).length()));
         String is_anonymous = mQuestionBeanMy.getIsAnonymous();//1是匿名
         if (TextUtils.equals(is_anonymous, "1")) {
@@ -163,6 +167,24 @@ public class MyCrateArticle_Avtivity extends BaseCameraAndGalleryActivity_More i
             imageStringList.addAll(tempStringUrlList);
             showImageListImages(urlList);
         }
+    }
+
+    /**
+     * 显示富文本样式
+     * @param editText
+     * @param mQuestionBeanMy
+     */
+    private void changeEdit(EditText editText,OwnPublishBean mQuestionBeanMy){
+        Spanned spanned;
+        if (TextUtils.isEmpty(mQuestionBeanMy.getHtml_content())) {
+            spanned = Html.fromHtml(mQuestionBeanMy.getContent());
+        } else {
+            String html_content = mQuestionBeanMy.getHtml_content();
+            html_content =  html_content.replaceAll("(?is)<style.*?>.*?</style>", "");//去除标签 符号
+            spanned = CustomHtml.fromHtml(html_content,CustomHtml.FROM_HTML_MODE_LEGACY,new RichEditImageGetter(mActivity,  editText),null);
+        }
+        // remove css
+        htmlClick.handleHtmlClickAndStyle(mActivity, editText, spanned);
     }
 
 

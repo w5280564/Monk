@@ -49,6 +49,11 @@ public class PrefUtil {
             SharePref.user().setToken(accessToken);
         }
 
+        if (!StringUtil.isBlank(user.getIsOriginator())) {
+            SharePref.user().setIsOriginator(user.getIsOriginator());
+        }
+
+
     }
 
 

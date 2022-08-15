@@ -511,6 +511,7 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/actiivty_check_other_group_detail.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_answer_question_to_people.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_apply_group_money.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_contact_at.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_group_detail_more_info.xml" value="0.43854166666666666" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/activity_home_aandhk.xml" value="0.46875" />
@@ -524,7 +525,7 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/beginactivity.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/card_head_middle.xml" value="0.43125" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/commentlist_top.xml" value="0.46875" />
-        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/mycrate_center.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/mycrate_center.xml" value="0.4" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/activites/layout/mygrouplist_top.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/articlecomment_adapter.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/character_adapter.xml" value="0.46875" />
@@ -543,6 +544,7 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_fundshares.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_article.xml" value="0.43697916666666664" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_moreitem_information.xml" value="0.43697916666666664" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_all.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/item_question_list_my.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/mydynamic_combination.xml" value="0.43697916666666664" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/adapter/layout/stockfund_mess_adapter.xml" value="0.46875" />
@@ -550,7 +552,9 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_ask_question_to_people.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_edit_changadd.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_edit_changename.xml" value="0.4015625" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_homeseek.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_myandother_card.xml" value="0.3880208333333333" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_myset_aboutme.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_publisher_group_topic.xml" value="0.4390625" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_sideslip_personandfund.xml" value="0.46145833333333336" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/activity_slideslip_fund.xml" value="0.43697916666666664" />
@@ -559,16 +563,18 @@
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/commentshare_dialog.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/dialog_link.xml" value="0.45677083333333335" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/find_card.xml" value="0.46875" />
-        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/group_label.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/group_label.xml" value="0.72" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/homeseek_topic.xml" value="0.45625" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/infoshare_dialog.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/myandother_edit_card.xml" value="0.484375" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/mycrate_articleat_seek.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_pane.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_panel.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/dialog/layout/view_font_style_select.xml" value="0.46875" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_home.xml" value="0.484375" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_insider.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_message.xml" value="0.46875" />
+        <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_question_list.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/fragment_tab.xml" value="0.3880208333333333" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/homeseek_fund_fragment.xml" value="0.39791666666666664" />
         <entry key="..\:/workspace/Monk/app/src/main/res/layouts/fragments/layout/interest_lable.xml" value="0.46875" />

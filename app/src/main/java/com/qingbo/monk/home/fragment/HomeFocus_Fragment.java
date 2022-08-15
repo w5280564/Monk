@@ -16,6 +16,8 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -68,6 +70,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         getListData(false);
     }
 
+
     FollowListBean homeFllowBean;
 
     private void getListData(boolean isShow) {
@@ -115,6 +118,7 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Focus_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
@@ -125,6 +129,14 @@ public class HomeFocus_Fragment extends BaseRecyclerViewSplitFragment {
         });
 
     }
+    /**
+     * 更新列表状态
+     */
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(mActivity, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
+    }
+
 
 
     @Override

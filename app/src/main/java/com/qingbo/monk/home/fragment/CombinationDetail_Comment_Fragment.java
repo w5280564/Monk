@@ -25,6 +25,7 @@ import com.qingbo.monk.bean.CommendLikedStateBena;
 import com.qingbo.monk.bean.ForWardBean;
 import com.qingbo.monk.dialog.CommentShare_Dialog;
 import com.qingbo.monk.dialog.MesMore_Dialog;
+import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.Article_Forward;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_CommentList_Activity;
@@ -322,6 +323,7 @@ public class CombinationDetail_Comment_Fragment extends BaseRecyclerViewSplitFra
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    ((CombinationDetail_Activity)getActivity()).getUserDetail(true);
                 }
             }
         }, true);

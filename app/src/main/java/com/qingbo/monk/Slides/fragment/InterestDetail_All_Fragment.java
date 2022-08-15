@@ -84,6 +84,12 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
+//        getListData(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getListData(true);
     }
 
@@ -101,6 +107,7 @@ public class InterestDetail_All_Fragment extends BaseRecyclerViewSplitFragment {
         requestMap.put("id", id + "");
         requestMap.put("page", page + "");
         requestMap.put("limit", limit + "");
+        requestMap.put("client", "mobile");
         HttpSender httpSender = new HttpSender(HttpUrl.groupDetailAllTab, "兴趣组详情-全部", requestMap, new MyOnHttpResListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

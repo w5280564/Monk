@@ -251,7 +251,7 @@ public abstract class BaseActivity extends FragmentActivity implements CustomTit
     /**
      * 跳转到默认H5展示页面
      */
-    protected void jumpToWebView(String title, String url) {
+    public void jumpToWebView(String title, String url) {
         Intent intent = new Intent(mActivity, WebviewActivity.class);
         intent.putExtra("title", title);
         intent.putExtra("url", url);

@@ -54,9 +54,14 @@ public class QuestionListFragmentAll extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getSquareList(true);
+//        getSquareList(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSquareList(true);
+    }
 
     private void getSquareList(boolean isShowAnimal) {
         HashMap<String, String> requestMap = new HashMap<>();

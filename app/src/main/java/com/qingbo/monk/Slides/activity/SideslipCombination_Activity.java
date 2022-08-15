@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,10 +15,13 @@ import com.gyf.barlibrary.ImmersionBar;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
+import com.qingbo.monk.base.MyConstant;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CombinationListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.UpdateDataBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.activity.HomeSeek_Activity;
@@ -29,6 +33,7 @@ import com.xunda.lib.common.common.titlebar.CustomTitleBar;
 import com.xunda.lib.common.common.utils.GsonUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -54,6 +59,8 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
         title_bar.setTitle("仓位组合");
         title_bar.showTitle();
         title_bar.setBackgroundColor(ContextCompat.getColor(mActivity,R.color.black));
+
+        getComStatusData();
     }
 
 
@@ -81,6 +88,12 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void onRefreshData() {
         page = 1;
         getListData(false);
@@ -90,6 +103,53 @@ public class SideslipCombination_Activity extends BaseRecyclerViewSplitActivity 
     protected void onLoadMoreData() {
         page++;
         getListData(false);
+    }
+
+    /**
+     * 刷新 点赞 收藏状态
+     */
+    private void getComStatusData() {
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA, UpdateDataBean.class).observe(this, new Observer<UpdateDataBean>() {
+            @Override
+            public void onChanged(UpdateDataBean updateDataBean) {
+                changeList(updateDataBean);
+            }
+        });
+    }
+
+    /**
+     * 根据ID 获取修改的POS
+     * @param updateDataBean
+     * @return
+     */
+    private int setData(UpdateDataBean updateDataBean) {
+        if (mAdapter == null) {
+            return 0;
+        }
+        String id = updateDataBean.getId();
+        List<HomeCombinationBean> data =  mAdapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            HomeCombinationBean homeCombinationBean = data.get(i);
+            String itemID = homeCombinationBean.getId();
+            if (TextUtils.equals(id,itemID)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 修改列表点赞 、点赞数量、收藏 状态
+     * @param updateDataBean
+     */
+    private void changeList(UpdateDataBean updateDataBean){
+        int pos = setData(updateDataBean);
+        HomeCombinationBean item = (HomeCombinationBean) mAdapter.getItem(pos);
+        item.setLike(updateDataBean.getZanState());
+        item.setLikecount(updateDataBean.getZanCount());
+        item.setIs_collect(updateDataBean.getIsCollect());
+        mAdapter.setData(pos,item);
+        mAdapter.notifyItemChanged(pos);
     }
 
     CombinationListBean combinationListBean;

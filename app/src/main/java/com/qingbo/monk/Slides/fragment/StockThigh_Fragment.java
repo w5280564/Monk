@@ -2,6 +2,7 @@ package com.qingbo.monk.Slides.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -57,7 +58,7 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
     }
 
     @Override
@@ -118,9 +119,12 @@ public class StockThigh_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setLayoutManager(mMangaer);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-        mAdapter = new StockCombination_Adapter();
+        if (TextUtils.equals(type, "3")) {
+            mAdapter = new StockCombination_Adapter(type);
+        } else {
+            mAdapter = new StockCombination_Adapter();
+        }
         mRecyclerView.setAdapter(mAdapter);
-
 
         onBackTop(dingTop_Img);
 

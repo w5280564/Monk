@@ -151,9 +151,14 @@ public class StockNitice_Fragment extends BaseRecyclerViewSplitFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (TextUtils.equals(type, "2")) {
+//                    HomeInsiderHKBean item = (HomeInsiderHKBean) adapter.getItem(position);
+//                    String newsUuid = item.getNewsUuid();
+//                    AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+//
                     HomeInsiderHKBean item = (HomeInsiderHKBean) adapter.getItem(position);
-                    String newsUuid = item.getNewsUuid();
-                    AAndHKDetail_Activity.startActivity(requireActivity(),newsUuid,"0","0");
+                    String detail_url = item.getItem().getDetail_url();
+                    jumpToWebView("",detail_url);
+
                 }else {
                     HomeInsiderBean item = (HomeInsiderBean) adapter.getItem(position);
 //                    jumpToWebView(item.getNewsTitle(),item.getFile_url());

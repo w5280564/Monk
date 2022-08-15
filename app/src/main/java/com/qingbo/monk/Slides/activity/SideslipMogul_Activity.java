@@ -57,6 +57,7 @@ public class SideslipMogul_Activity extends BaseTabLayoutActivity {
         getTagListData(true);
     }
 
+
     @SuppressLint("WrongConstant")
     private void initMenuData() {
         if (mogulTagListBean != null) {

@@ -139,7 +139,7 @@ public class HomeSeek_Whole_Fragment extends BaseRecyclerViewSplitFragment imple
     public void onResume() {
         super.onResume();
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        SearchAllList(word, false);
+//        SearchAllList(word, false);
     }
 
     @Override

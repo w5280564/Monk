@@ -474,6 +474,12 @@
                 android:id="@+id/card_Tab"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_33"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_bar"
+                app:tabBackground="@color/transparent"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabIndicatorHeight="@dimen/dp_0"
+                app:tabMode="scrollable"
                 app:tabRippleColor="@android:color/transparent"
                 app:tabTextAppearance="@style/TabLayoutTextStyle"
                 app:tabTextColor="@color/text_color_6f6f6f" />

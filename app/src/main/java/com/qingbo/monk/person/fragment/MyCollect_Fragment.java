@@ -1,6 +1,5 @@
 package com.qingbo.monk.person.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,18 +8,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.MyConstant;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowStateBena;
 import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.bean.MyDynamic_Bean;
 import com.qingbo.monk.bean.MyDynamic_MoreItem_Bean;
 import com.qingbo.monk.bean.MyDynamic_More_ListBean;
+import com.qingbo.monk.bean.UpdateDataBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
@@ -36,6 +39,7 @@ import com.xunda.lib.common.dialog.MyPopWindow;
 import com.xunda.lib.common.dialog.TwoButtonDialogBlue;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.OnClick;
 
@@ -46,6 +50,7 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
 
     private String userID;
     private boolean isExpert;
+    private String collectType; //0:文章 1：评论 2：仓位组合 3：资讯
 
     public static MyCollect_Fragment newInstance(String userID) {
         Bundle args = new Bundle();
@@ -75,6 +80,7 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
         initSwipeRefreshLayoutAndAdapter("暂未收藏", 0, false);
+        getComStatusData();
     }
 
     @Override
@@ -85,12 +91,6 @@ public class MyCollect_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
         getListData( true);
     }
 
@@ -184,9 +184,6 @@ MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
 
         }
     }
-
-
-
 
     @Override
     protected void initEvent() {
@@ -314,7 +311,7 @@ MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
         httpSender.sendPost();
     }
 
-    private String collectType;
+
 
     private void collect(MyDynamic_MoreItem_Bean item,int position) {
         String collect_type = item.getCollect_type(); //Collect_type 0：文章【默认】1：评论 2：仓位组合 3：资讯
@@ -446,6 +443,73 @@ MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
                 break;
         }
     }
+
+    /**
+     * 刷新 点赞 收藏状态
+     */
+    private void getComStatusData() {
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA, UpdateDataBean.class).observe(this, new Observer<UpdateDataBean>() {
+            @Override
+            public void onChanged(UpdateDataBean updateDataBean) {
+                changeList(updateDataBean);
+            }
+        });
+    }
+
+    /**
+     * 根据ID 获取修改的POS
+     * @param updateDataBean
+     * @return
+     */
+    private int setData(UpdateDataBean updateDataBean) {
+        if (mAdapter == null) {
+            return 0;
+        }
+        String id = updateDataBean.getId();
+        List<MyDynamic_MoreItem_Bean> data =  mAdapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            MyDynamic_MoreItem_Bean itemBean = data.get(i);
+            String itemID =getArtID(itemBean);
+            if (TextUtils.equals(id,itemID)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 原创与转发使用的文章ID不一样
+     * @param item
+     * @return 0：文章【默认】1：评论 2：仓位组合 3：资讯
+     */
+    private String getArtID(MyDynamic_MoreItem_Bean item){
+        String collect_type = item.getCollect_type();
+        String articleId =item.getBiz_id();;
+        if (collect_type.equals("1")){
+            articleId = item.getArticleId();
+        }
+        return articleId;
+    }
+
+
+    /**
+     * 修改列表点赞 、点赞数量、收藏 状态
+     * @param updateDataBean
+     */
+    private void changeList(UpdateDataBean updateDataBean){
+        int pos = setData(updateDataBean);
+        MyDynamic_MoreItem_Bean item = (MyDynamic_MoreItem_Bean) mAdapter.getItem(pos);
+        item.setLike(updateDataBean.getZanState());
+        item.setLikecount(updateDataBean.getZanCount());
+        item.setIs_collect(updateDataBean.getIsCollect());
+        item.setFollowStatus(updateDataBean.getFollowState());
+        mAdapter.setData(pos,item);
+        if (updateDataBean.getIsCollect().equals("0")) {
+            mAdapter.remove(pos);
+            mAdapter.notifyItemChanged(pos);
+        }
+    }
+
 
 
 }

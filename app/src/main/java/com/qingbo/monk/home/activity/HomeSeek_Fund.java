@@ -61,8 +61,8 @@ public class HomeSeek_Fund extends BaseRecyclerViewSplitFragment {
     @Override
     protected void loadData() {
         word = ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        mSwipeRefreshLayout.setRefreshing(true);
-        getExpertList(word, false);
+//        mSwipeRefreshLayout.setRefreshing(true);
+//        getExpertList(word, false);
     }
 
     @Override

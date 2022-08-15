@@ -85,9 +85,14 @@ public class InterestDetail_My_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        getSquareList(true);
+//        getSquareList(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSquareList(true);
+    }
 
     MyDynamic_More_ListBean myDynamicListBean = new MyDynamic_More_ListBean();
 

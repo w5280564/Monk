@@ -72,11 +72,16 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
     @Override
     protected void loadData() {
         mSwipeRefreshLayout.setRefreshing(true);
+//        getListData(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getListData(false);
     }
 
     InterestMember_ListBean interestMember_listBean;
-
     private void getListData(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id + "");
@@ -142,7 +147,7 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
                 switch (view.getId()) {
                     case R.id.follow_Tv:
                         String likeId = item.getId();
-                        postFollowData(likeId, position);
+                        postFollowData(likeId, position,item);
                         break;
                     case R.id.head_Img:
                         String id = item.getId();
@@ -164,7 +169,7 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
         });
     }
 
-    private void postFollowData(String otherUserId, int position) {
+    private void postFollowData(String otherUserId, int position,InterestMember_Bean item) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("otherUserId", otherUserId + "");
         HttpSender httpSender = new HttpSender(HttpUrl.User_Follow, "关注-取消关注", requestMap, new MyOnHttpResListener() {
@@ -179,7 +184,7 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
                     Integer followStatus = followStateBena.getFollowStatus();
                     ((InterestMember_Adapter) mAdapter).isFollow(followStatus + "", follow_Tv, send_Mes);
 
-                    changeFans(position, followStatus, content_Tv);
+                    changeFans(followStatus, content_Tv,item);
                 }
             }
         }, true);
@@ -189,23 +194,22 @@ public class InterestDetail_Member_Fragment extends BaseRecyclerViewSplitFragmen
 
     /**
      * 关注人的粉丝数量
-     * @param pos
      * @param followStatus
      * @param textView
      */
-    private void changeFans(int pos, int followStatus, TextView textView) {
-        if (interestMember_listBean != null) {
+    private void changeFans(int followStatus, TextView textView,InterestMember_Bean item) {
+        if (item != null) {
             int nowLike;
-            String fansNum = interestMember_listBean.getList().get(pos).getFansNum();
+            String fansNum = item.getFansNum();
             nowLike = TextUtils.isEmpty(fansNum) ? 0 : Integer.parseInt(fansNum);
             if (followStatus == 0 || followStatus == 3) {
                 nowLike -= 1;
-                interestMember_listBean.getList().get(pos).setFansNum(nowLike + "");
+                item.setFansNum(nowLike + "");
             } else if (followStatus == 2 || followStatus == 4) {
                 nowLike += 1;
-                interestMember_listBean.getList().get(pos).setFansNum(nowLike + "");
+                item.setFansNum(nowLike + "");
             }
-            String followerNum = interestMember_listBean.getList().get(pos).getFollowerNum();
+            String followerNum = item.getFollowerNum();
             String format = String.format("关注%1$s人，粉丝%2$s人",  followerNum, nowLike);
             textView.setText(format);
         }

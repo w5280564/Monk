@@ -85,7 +85,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
      */
     public static void startActivity(Context context, ArticleCommentBean item, String articleId, String type, boolean isStockOrFund, boolean isGroup) {
         Intent intent = new Intent(context, ArticleDetali_CommentList_Activity.class);
-        intent.putExtra("item", (Serializable) item);
+        intent.putExtra("item", item);
         intent.putExtra("articleId", articleId);
         intent.putExtra("type", type);
         intent.putExtra("isStockOrFund", isStockOrFund);
@@ -425,6 +425,7 @@ public class ArticleDetali_CommentList_Activity extends BaseRecyclerViewSplitAct
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    getServerData();
                 }
             }
         }, true);

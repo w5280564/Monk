@@ -25,6 +25,12 @@ public interface UserPreferences {
 	void setUserName(String userName);
 	String getUserName();
 
+	/**
+	 * 是否是创作者
+	 */
+	void setIsOriginator(String isOriginator);
+	String getIsOriginator();
+
 
 	/**
 	 * userId

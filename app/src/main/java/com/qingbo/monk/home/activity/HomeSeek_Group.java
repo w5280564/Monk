@@ -70,7 +70,7 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-//        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
+        word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
 //        mSwipeRefreshLayout.setRefreshing(true);
 //        getExpertList(word,false);
     }
@@ -79,8 +79,8 @@ public class HomeSeek_Group extends BaseRecyclerViewSplitFragment {
     public void onResume() {
         super.onResume();
         word =  ((HomeSeek_Activity) requireActivity()).query_Edit.getText().toString();
-        mSwipeRefreshLayout.setRefreshing(true);
-        getExpertList(word,false);
+//        mSwipeRefreshLayout.setRefreshing(true);
+//        getExpertList(word,false);
     }
 
     @Override

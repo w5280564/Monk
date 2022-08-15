@@ -3,6 +3,7 @@ package com.qingbo.monk.Slides.activity;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -14,9 +15,12 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.adapter.Expert_Adapter;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.baseview.IsMe;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.HomeFllowBean;
+import com.qingbo.monk.bean.LikedStateBena;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.ArticleDetail_Activity;
 import com.qingbo.monk.home.adapter.Follow_Adapter;
@@ -56,6 +60,8 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
         mSwipeRefreshLayout.setRefreshing(true);
         getExpertList(false);
     }
+
+
 
     @Override
     protected void onRefreshData() {
@@ -102,6 +108,7 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new Expert_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String articleId = item.getArticleId();
@@ -117,6 +124,10 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
                     return;
                 }
                 switch (view.getId()) {
+                    case R.id.follow_Img:
+                        String likeId = item.getArticleId();
+                        postLikedData(likeId, position);
+                        break;
                     case R.id.group_Img:
                         startPerson(item);
                         break;
@@ -137,6 +148,14 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
                 jumpToPhotoShowActivity(position, strings);
             }
         });
+    }
+
+    /**
+     * 更新列表状态
+     */
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(mActivity, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
     }
 
     /**
@@ -182,6 +201,44 @@ public class SideslipExpert_Activity extends BaseRecyclerViewSplitActivity {
         }, true);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    private void postLikedData(String likeId, int position) {
+        HashMap<String, String> requestMap = new HashMap<>();
+        requestMap.put("id", likeId + "");
+        HttpSender httpSender = new HttpSender(HttpUrl.Topic_Like, "点赞/取消点赞", requestMap, new MyOnHttpResListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onComplete(String json_root, int code, String msg, String json_data) {
+                if (code == Constants.REQUEST_SUCCESS_CODE) {
+                    LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
+                    likeCount(position, likedStateBena);
+                }
+            }
+        }, true);
+        httpSender.setContext(mActivity);
+        httpSender.sendPost();
+    }
+
+    private void likeCount(int position, LikedStateBena likedStateBena) {
+        ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+        TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLiked_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLiked_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            if (nowLike < 0) {
+                nowLike = 0;
+            }
+            follow_Count.setText(nowLike + "");
+        }
     }
 
 

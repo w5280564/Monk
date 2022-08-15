@@ -14,7 +14,7 @@ public class Constants {
     public static final int REQUEST_FAILURE_SERVER = -8885;//服务器错误(OKhttp报的错)
     public static final int REQUEST_FAILURE_INTERNET = -8884;//网络错误（网络连接不上）
 
-    public static final String WEB_SITE_URL = "https://www.baidu.com";
+    public static final String WEB_SITE_URL = "https://www.pgyer.com/TvE6";
 
 //    public static final String WECHAT_APPID = "wx9891dbe23d8ce255"; //微信开发者账号appid
     public static final String WECHAT_APPID = "wx29ec979253fb53bf"; //微信开发者账号appid

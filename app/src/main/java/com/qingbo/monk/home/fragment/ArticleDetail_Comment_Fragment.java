@@ -400,6 +400,7 @@ public class ArticleDetail_Comment_Fragment extends BaseRecyclerViewSplitFragmen
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    ((ArticleDetail_Activity)getActivity()).getUserDetail(true);
                 }
             }
         }, true);

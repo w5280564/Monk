@@ -30,6 +30,8 @@ import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitActivity;
 import com.qingbo.monk.base.HideIMEUtil;
 import com.qingbo.monk.base.baseview.IsMe;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.ArticleCommentBean;
 import com.qingbo.monk.bean.CollectStateBean;
@@ -123,7 +125,7 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
     }
     @Override
     protected void getServerData() {
-        mSwipeRefreshLayout.setRefreshing(true);
+//        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
 
     }
@@ -255,6 +257,7 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
         mAdapter = new Follow_Adapter();
         addHeadView();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
             String action = item.getAction();//1是社群 2是兴趣组 3是个人
@@ -262,6 +265,14 @@ public class SideslipRecommend_Activity extends BaseRecyclerViewSplitActivity im
             String type = item.getType();
             ArticleDetail_Activity.startActivity(mActivity, articleId, "0", type);
         });
+    }
+
+    /**
+     * 更新列表状态
+     */
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(mActivity, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
     }
 
     @Override

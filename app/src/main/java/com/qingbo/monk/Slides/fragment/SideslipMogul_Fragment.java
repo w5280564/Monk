@@ -16,6 +16,8 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.Slides.activity.SideslipPersonAndFund_Activity;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.FollowListBean;
 import com.qingbo.monk.bean.FollowStateBena;
@@ -72,9 +74,10 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
 
     @Override
     protected void loadData() {
-        mSwipeRefreshLayout.setRefreshing(true);
+//        mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
     }
+
 
     FollowListBean homeFllowBean;
 
@@ -124,6 +127,7 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Focus_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        updateData();
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
 //            skipAnotherActivity(ArticleDetail_Activity.class);
             HomeFllowBean item = (HomeFllowBean) adapter.getItem(position);
@@ -132,7 +136,14 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
             String type = item.getType();
             ArticleDetail_Activity.startActivity(requireActivity(), articleId, "0", type);
         });
+    }
 
+    /**
+     * 更新列表状态
+     */
+    private void updateData() {
+        OnSheQuDataChangeImpl onSheQuDataChange = new OnSheQuDataChangeImpl(mActivity, mAdapter);
+        ArticleDataChange.ins().setArticleDataChangeListener(onSheQuDataChange);
     }
 
 
@@ -236,26 +247,33 @@ public class SideslipMogul_Fragment extends BaseRecyclerViewSplitFragment {
             public void onComplete(String json_root, int code, String msg, String json_data) {
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
-                    ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
-                    TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
-                    if (likedStateBena != null) {
-                        //0取消点赞成功，1点赞成功
-                        int nowLike;
-                        nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
-                        if (likedStateBena.getLiked_status() == 0) {
-                            nowLike -= 1;
-                            follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
-                        } else if (likedStateBena.getLiked_status() == 1) {
-                            follow_Img.setBackgroundResource(R.mipmap.dianzan);
-                            nowLike += 1;
-                        }
-                        follow_Count.setText(nowLike + "");
-                    }
+                    likeCount(position, likedStateBena);
                 }
             }
         }, false);
         httpSender.setContext(mActivity);
         httpSender.sendPost();
+    }
+
+    private void likeCount(int position, LikedStateBena likedStateBena) {
+        ImageView follow_Img = (ImageView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Img);
+        TextView follow_Count = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.follow_Count);
+        if (likedStateBena != null) {
+            //0取消点赞成功，1点赞成功
+            int nowLike;
+            nowLike = TextUtils.isEmpty(follow_Count.getText().toString()) ? 0 : Integer.parseInt(follow_Count.getText().toString());
+            if (likedStateBena.getLiked_status() == 0) {
+                nowLike -= 1;
+                follow_Img.setBackgroundResource(R.mipmap.icon_dainzan);
+            } else if (likedStateBena.getLiked_status() == 1) {
+                follow_Img.setBackgroundResource(R.mipmap.dianzan);
+                nowLike += 1;
+            }
+            if (nowLike < 0) {
+                nowLike = 0;
+            }
+            follow_Count.setText(nowLike + "");
+        }
     }
 
     /**

@@ -30,7 +30,9 @@
 
     <LinearLayout
         android:id="@+id/lable_Lin"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginEnd="@dimen/dp_10"
+        app:layout_constraintEnd_toStartOf="@id/follow_Tv"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/group_Name"

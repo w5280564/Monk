@@ -40,15 +40,23 @@ import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseTabLayoutActivity;
 import com.qingbo.monk.base.HideIMEUtil;
+import com.qingbo.monk.base.MyConstant;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.SheQuDataChangeListener;
 import com.qingbo.monk.base.viewTouchDelegate;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CombinationLineChart_Bean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.UpdateDataBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.adapter.Combination_Shares_Adapter;
+import com.qingbo.monk.home.fragment.ArticleDetail_Comment_Fragment;
+import com.qingbo.monk.home.fragment.ArticleDetail_Zan_Fragment;
 import com.qingbo.monk.home.fragment.CombinationDetail_Comment_Fragment;
 import com.qingbo.monk.home.fragment.CombinationDetail_Zan_Fragment;
+import com.xunda.lib.common.bean.AppMenuBean;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
@@ -60,7 +68,9 @@ import com.xunda.lib.common.common.utils.ListUtils;
 import com.xunda.lib.common.common.utils.StringUtil;
 import com.xunda.lib.common.common.utils.T;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -82,10 +92,10 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     ImageView mes_Img;
     @BindView(R.id.mes_Count)
     TextView mes_Count;
-    @BindView(R.id.card_Tab)
-    TabLayout card_Tab;
-    @BindView(R.id.card_ViewPager)
-    ViewPager card_ViewPager;
+    //    @BindView(R.id.card_Tab)
+//    TabLayout card_Tab;
+//    @BindView(R.id.card_ViewPager)
+//    ViewPager card_ViewPager;
     @BindView(R.id.appLayout)
     AppBarLayout appLayout;
     @BindView(R.id.sendComment_Et)
@@ -106,6 +116,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     private String isShowTop;
     boolean isReply = false;
     private String id;
+    private String liked_num; //点赞数量
+    UpdateDataBean updateDataBean; //需要更新的状态 点赞、收藏、
 
     /**
      * @param context
@@ -155,13 +167,18 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         viewTouchDelegate.expandViewTouchDelegate(share_Tv, 50);
         HideIMEUtil.wrap(this, sendComment_Et);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);//弹起键盘不遮挡布局，背景布局不会顶起
-        initLineChart();
+
         StringUtil.setColor(mContext, 0, label_Name);
+        mViewPager = findViewById(R.id.card_ViewPager);
+        mTabLayout = findViewById(R.id.card_Tab);
+
+
     }
 
 
     @Override
     protected void initEvent() {
+        super.initEvent();
         follow_Img.setOnClickListener(this);
         mes_Img.setOnClickListener(this);
         release_Tv.setOnClickListener(this);
@@ -235,7 +252,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             return;
         }
         if (isReply) {
-            CombinationDetail_Comment_Fragment o = (CombinationDetail_Comment_Fragment) tabFragmentList.get(0);
+            CombinationDetail_Comment_Fragment o = (CombinationDetail_Comment_Fragment) fragments.get(0);
             o.onClick(release_Tv);
         } else {
             addComment(id, s);
@@ -270,51 +287,38 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         editView.requestFocus();//setFocus方法无效 //addAddressRemarkInfo is EditText
     }
 
-    private List<Object> tabFragmentList = new ArrayList<>();
 
     @SuppressLint("WrongConstant")
-    private void initTab() {
-        List<String> tabsList = new ArrayList<>();
-        tabsList.add("评论");
-        tabsList.add("赞");
-        card_Tab.setTabMode(TabLayout.MODE_AUTO);
-        card_Tab.setTabIndicatorFullWidth(false);//下标跟字一样宽
-        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity, R.color.app_main_color));
-        card_Tab.setTabTextColors(ContextCompat.getColor(mActivity, R.color.text_color_6f6f6f), ContextCompat.getColor(mActivity, R.color.text_color_444444));
-//        card_Tab.setSelectedTabIndicatorColor(ContextCompat.getColor(mActivity,R.color.text_color_444444));
-        //添加tab
-        int sizes = tabsList.size();
-        for (int i = 0; i < sizes; i++) {
-            card_Tab.addTab(card_Tab.newTab().setText(tabsList.get(i)));
+    private void initMenuData() {
+        if (fragments != null) {
+            fragments.clear();
         }
-        tabFragmentList.add(CombinationDetail_Comment_Fragment.newInstance(id, homeCombinationBean.getName()));
-        tabFragmentList.add(CombinationDetail_Zan_Fragment.newInstance(id, ""));
+        if (menuList != null) {
+            menuList.clear();
+        }
+        ArrayList<String> tabName = new ArrayList<>();
+        tabName.add("评论");
+        String zanCount = String.format("赞(%1$s)", liked_num);
+        tabName.add(zanCount);
+        for (int i = 0; i < tabName.size(); i++) {
+            AppMenuBean bean = new AppMenuBean();
+            bean.setName(tabName.get(i));
+            menuList.add(bean);
+        }
+        fragments.add(CombinationDetail_Comment_Fragment.newInstance(id, homeCombinationBean.getName()));
+        fragments.add(CombinationDetail_Zan_Fragment.newInstance(id, ""));
 
-        card_ViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-            @NonNull
-            @Override
-            public Fragment getItem(int position) {
-                return (Fragment) tabFragmentList.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return tabFragmentList.size();
-            }
-
-            @Nullable
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return tabsList.get(position);
-            }
-        });
-        //设置TabLayout和ViewPager联动
-        card_Tab.setupWithViewPager(card_ViewPager, false);
+        int selectedTabPosition = mTabLayout.getSelectedTabPosition();
+        if (selectedTabPosition == -1) {
+            selectedTabPosition = 0;
+        }
+        initViewPager(selectedTabPosition);
     }
+
 
     HomeCombinationBean homeCombinationBean;
 
-    private void getUserDetail(boolean isShow) {
+    public void getUserDetail(boolean isShow) {
         HashMap<String, String> requestMap = new HashMap<>();
         requestMap.put("id", id);
         HttpSender httpSender = new HttpSender(HttpUrl.Square_Position_List, "仓位组合详情", requestMap, new MyOnHttpResListener() {
@@ -324,6 +328,9 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                 if (code == Constants.REQUEST_SUCCESS_CODE) {
                     homeCombinationBean = GsonUtil.getInstance().json2Bean(json_data, HomeCombinationBean.class);
                     if (homeCombinationBean != null) {
+                        setComStatusData();
+
+                        liked_num = homeCombinationBean.getLikecount();
                         comName_TV.setText(homeCombinationBean.getName());
                         isLike(homeCombinationBean.getLike(), homeCombinationBean.getLikecount(), follow_Img, follow_Count);
                         mes_Count.setText(homeCombinationBean.getCommentcount());
@@ -337,7 +344,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                         mNineView.setAdapter(combination_shares_adapter);
                         combination_shares_adapter.setNewData(homeCombinationBean.getDetail());
                         isCollect(homeCombinationBean.getIs_collect(), collect_Tv);
-                        initTab();
+//                        initTab();
+                        initMenuData();
                         isChangeFold();
                     }
 
@@ -348,6 +356,17 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         httpSender.sendGet();
     }
 
+
+    private void setComStatusData() {
+        updateDataBean = new UpdateDataBean();
+        if (updateDataBean == null || homeCombinationBean == null) {
+            return;
+        }
+        updateDataBean.setId(homeCombinationBean.getId());
+        updateDataBean.setZanState(homeCombinationBean.getLike());
+        updateDataBean.setZanCount(homeCombinationBean.getLikecount());
+        updateDataBean.setIsCollect(homeCombinationBean.getIs_collect());
+    }
 
     /**
      * 折线图数据
@@ -368,6 +387,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                     CombinationLineChart_Bean combinationLineChart_bean = GsonUtil.getInstance().json2Bean(json_data, CombinationLineChart_Bean.class);
                     if (combinationLineChart_bean != null) {
                         int labelCount = chart.getXAxis().getLabelCount();
+                        initLineChart(combinationLineChart_bean);
                         setLineChartData(combinationLineChart_bean);
                     }
                 }
@@ -389,6 +409,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                     LikedStateBena likedStateBena = GsonUtil.getInstance().json2Bean(json_data, LikedStateBena.class);
                     if (likedStateBena != null) {
                         changeLike(likedStateBena);
+
                     }
                 }
             }
@@ -436,6 +457,8 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             mipmap = R.mipmap.shoucang_select;
         }
         collect_Tv.setBackgroundResource(mipmap);
+        updateDataBean.setIsCollect(status);
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA).setValue(updateDataBean);
     }
 
 
@@ -458,6 +481,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
                     T.s(json_data, 3000);
                     sendComment_Et.setText("");
                     sendComment_Et.setHint("");
+                    getUserDetail(true);
                 }
             }
         }, true);
@@ -468,7 +492,7 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
     /**
      * 折线图初始化
      */
-    private void initLineChart() {
+    private void initLineChart(CombinationLineChart_Bean combinationLineChart_bean) {
         // apply styling
         // holder.chart.setValueTypeface(mTf);
         chart.getDescription().setEnabled(false); // 不显示描述
@@ -490,9 +514,15 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         YAxis leftAxis = chart.getAxisLeft();
         // 强制显示Y轴6个坐标 第二个参数表示是否平均分配 如果为true则按比例分为6个点、如果为false则适配X刻度的值来分配点
         leftAxis.setLabelCount(5, true);
-        leftAxis.setAxisMinimum(0f); // y轴坐标最少
-//        leftAxis.setAxisMaximum(1.3f);// y轴坐标最大
+        List<String> jingzhiLine = combinationLineChart_bean.getData().getJingzhiLine();
+        float max = Float.parseFloat(Collections.max(jingzhiLine));
+        max += max * 0.05;
+        leftAxis.setAxisMaximum(max);// y轴坐标最大
 //        leftAxis.setDrawGridLines(false); //Y轴横线线
+        float min = Float.parseFloat(Collections.min(jingzhiLine));
+        min -= min * 0.05;
+        leftAxis.setAxisMinimum(min); // y轴坐标最少
+
         //y轴右边
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);// disable dual axis (only use LEFT axis) 右边数据不显示
@@ -532,7 +562,9 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
         int size = combinationLineChart_bean.getData().getJingzhiLine().size();
         for (int i = 0; i < size; i++) {
             float v = Float.parseFloat(combinationLineChart_bean.getData().getJingzhiLine().get(i));
-            values1.add(new Entry(i, v));
+            DecimalFormat df = new DecimalFormat("#.00");
+            float xData = Float.parseFloat(df.format(v));
+            values1.add(new Entry(i, xData));
         }
         LineDataSet d1 = new LineDataSet(values1, ""); //label是显示提示
         d1.setLineWidth(1f);
@@ -581,6 +613,11 @@ public class CombinationDetail_Activity extends BaseTabLayoutActivity implements
             nowLike += 1;
         }
         follow_Count.setText(nowLike + "");
+
+
+        updateDataBean.setZanState(likedStateBena.getLiked_status());
+        updateDataBean.setZanCount(nowLike + "");
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA).setValue(updateDataBean);
     }
 
     /**

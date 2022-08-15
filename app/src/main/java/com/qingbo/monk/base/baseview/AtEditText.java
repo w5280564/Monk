@@ -2,6 +2,7 @@ package com.qingbo.monk.base.baseview;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -11,8 +12,11 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.qingbo.monk.R;
+import com.qingbo.monk.base.rich.handle.CustomHtml;
+import com.qingbo.monk.base.rich.handle.RichEditImageGetter;
 import com.qingbo.monk.base.rich.view.RichEditText;
 
 import java.util.ArrayList;
@@ -82,15 +86,24 @@ public class AtEditText extends RichEditText {
         int selectionStart = getSelectionStart();
 //        int selectionStart = 0;
         // 获取当前内容 添加一条空格
-        String sss = " " + Objects.requireNonNull(getText());
-        // 获取光标前以为字符
-        String s = selectionStart != 0 ? sss.toCharArray()[selectionStart - 1] + "" : "";
+//        String sss = " " + Objects.requireNonNull(getText());
+        // 获取光标前一位字符
+//        String s = selectionStart != 0 ? sss.toCharArray()[selectionStart - 1] + "" : "";
         // 将内容插入 , 改变文字颜色
 //        setText(changeTextColor(sss.substring(0, selectionStart) + (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(selectionStart, sss.length()))); //字符串替换，删掉符合条件的字符串
-        String s1 = (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(0, selectionStart) + sss.substring(selectionStart);
-        setText(changeTextColor(s1)); //字符串替换，删掉符合条件的字符串
+//        String s1 = (!s.equals("@") ? "@" : "") + parm[1] + sss.substring(0, selectionStart) + sss.substring(selectionStart);
+//        setText(changeTextColor(s1)); //字符串替换，删掉符合条件的字符串
+
+        Editable sss = getEditableText();//富文本需要使用
+        sss.insert(0, " ");
+        // 获取光标前一位字符
+        String s = selectionStart != 0 ? sss.toString().toCharArray()[selectionStart - 1] + "" : "";
+        String s2 = (!s.equals("@") ? "@" : "") + parm[1];
+        sss.insert(0, s2);
+        sss.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.text_color_1F8FE5)),0,s2.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        setText(sss);
         // 设置光标位置
-        int length = s1.length();
+        int length = sss.length();
         setSelection(length);
     }
 

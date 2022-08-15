@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,20 +16,25 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qingbo.monk.HttpSender;
 import com.qingbo.monk.R;
 import com.qingbo.monk.base.BaseRecyclerViewSplitFragment;
+import com.qingbo.monk.base.MyConstant;
+import com.qingbo.monk.base.livedatas.LiveDataBus;
+import com.qingbo.monk.base.status.ArticleDataChange;
+import com.qingbo.monk.base.status.OnSheQuDataChangeImpl;
 import com.qingbo.monk.bean.CollectStateBean;
 import com.qingbo.monk.bean.CombinationListBean;
 import com.qingbo.monk.bean.HomeCombinationBean;
 import com.qingbo.monk.bean.LikedStateBena;
+import com.qingbo.monk.bean.UpdateDataBean;
 import com.qingbo.monk.dialog.InfoOrArticleShare_Dialog;
 import com.qingbo.monk.home.activity.CombinationDetail_Activity;
 import com.qingbo.monk.home.adapter.Combination_Adapter;
-import com.qingbo.monk.home.adapter.Follow_Adapter;
 import com.xunda.lib.common.common.Constants;
 import com.xunda.lib.common.common.http.HttpUrl;
 import com.xunda.lib.common.common.http.MyOnHttpResListener;
 import com.xunda.lib.common.common.utils.GsonUtil;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 首页滑动tab页--仓位组合
@@ -54,13 +60,67 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mSwipeRefreshLayout = mView.findViewById(R.id.refresh_layout);
         mRecyclerView = mView.findViewById(R.id.card_Recycler);
         initRecyclerView();
-        initSwipeRefreshLayoutAndAdapter("暂无数据", 0,true);
+        initSwipeRefreshLayoutAndAdapter("暂无数据", 0, true);
+        getComStatusData();
     }
 
     @Override
     protected void loadData() {
         mSwipeRefreshLayout.setRefreshing(true);
         getListData(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        getListData(false);
+    }
+
+    /**
+     * 刷新 点赞 收藏状态
+     */
+    private void getComStatusData() {
+        LiveDataBus.get().with(MyConstant.UPDATE_DATA, UpdateDataBean.class).observe(this, new Observer<UpdateDataBean>() {
+            @Override
+            public void onChanged(UpdateDataBean updateDataBean) {
+               changeList(updateDataBean);
+            }
+        });
+    }
+
+    /**
+     * 根据ID 获取修改的POS
+     * @param updateDataBean
+     * @return
+     */
+    private int setData(UpdateDataBean updateDataBean) {
+        if (mAdapter == null) {
+            return 0;
+        }
+        String id = updateDataBean.getId();
+        List<HomeCombinationBean> data =  mAdapter.getData();
+        for (int i = 0; i < data.size(); i++) {
+            HomeCombinationBean homeCombinationBean = data.get(i);
+            String itemID = homeCombinationBean.getId();
+            if (TextUtils.equals(id,itemID)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 修改列表点赞 、点赞数量、收藏 状态
+     * @param updateDataBean
+     */
+    private void changeList(UpdateDataBean updateDataBean){
+        int pos = setData(updateDataBean);
+        HomeCombinationBean item = (HomeCombinationBean) mAdapter.getItem(pos);
+        item.setLike(updateDataBean.getZanState());
+        item.setLikecount(updateDataBean.getZanCount());
+        item.setIs_collect(updateDataBean.getIsCollect());
+        mAdapter.setData(pos,item);
+        mAdapter.notifyItemChanged(pos);
     }
 
     CombinationListBean combinationListBean;
@@ -110,6 +170,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new Combination_Adapter();
         mRecyclerView.setAdapter(mAdapter);
+
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -134,11 +195,12 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                     break;
                 case R.id.collect_Tv:
                     String articleId = item.getId();
-                    postCollectData(articleId,position);
+                    postCollectData(articleId, position);
                     break;
             }
         });
     }
+
 
     @Override
     protected void initEvent() {
@@ -196,7 +258,7 @@ public class HomeCombination_Fragment extends BaseRecyclerViewSplitFragment {
                         Integer collect_status = collectStateBean.getCollect_status();
 
                         TextView collect_Tv = (TextView) mAdapter.getViewByPosition(mRecyclerView, position, R.id.collect_Tv);
-                        ((Combination_Adapter)mAdapter).isCollect(collect_status + "",collect_Tv);
+                        ((Combination_Adapter) mAdapter).isCollect(collect_status + "", collect_Tv);
                     }
                 }
             }
